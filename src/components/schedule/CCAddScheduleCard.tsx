@@ -1,8 +1,8 @@
 "use client";
 
-import AddSVG from "@/icons/add.svg";
+import AddSVG from "/public/icons/add.svg";
 import { useModal } from "@/hooks/useModal";
-import ScheduleFormModal from "@/components/modal/scheduleFormModal";
+import ScheduleFormModal from "@/components/schedule/scheduleFormModal";
 
 export default function CCAddScheduleCard() {
   const { isOpenModal, setIsOpenModal, modalOutsideRef } = useModal();

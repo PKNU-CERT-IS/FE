@@ -1,9 +1,9 @@
 "server-only";
 import { mockScheduleData } from "@/mocks/mockScheduleData";
 import { getTypeColor, getTypeLabel } from "@/utils/scheduleUtils";
-import ScheduleSVG from "@/icons/schedule.svg";
-import LocationSVG from "@/icons/location.svg";
-import TimeSVG from "@/icons/time.svg";
+import ScheduleSVG from "/public/icons/schedule.svg";
+import LocationSVG from "/public/icons/location.svg";
+import TimeSVG from "/public/icons/time.svg";
 
 interface SCScheduleListProps {
   date?: string;

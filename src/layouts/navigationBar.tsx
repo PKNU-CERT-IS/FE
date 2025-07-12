@@ -10,7 +10,7 @@ const navBarList = [
   { name: "Study", href: "/study" },
   { name: "Blog", href: "/blog" },
   { name: "Members", href: "/members" },
-  { name: "User", href: "/user" },
+  { name: "Profile", href: "/profile" },
 ];
 const NavigationBar = () => {
   return (

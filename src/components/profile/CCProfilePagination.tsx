@@ -1,36 +1,34 @@
+"use client";
+
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import AngleSVG from "/public/icons/angle.svg";
 import { getPageNumbers } from "@/utils/paginationUtils";
-import { BoardCategoryType } from "@/types/board";
 
-interface BoardPaginationProps {
+interface ProfilePaginationProps {
   currentPage: number;
   totalItems: number;
   itemsPerPage: number;
-  currentSearch: string;
-  currentCategory: BoardCategoryType;
 }
 
-export default function BoardPagination({
+export default function CCProfilePagination({
   currentPage,
   totalItems,
   itemsPerPage,
-  currentSearch,
-  currentCategory,
-}: BoardPaginationProps) {
+}: ProfilePaginationProps) {
   const totalPages = Math.ceil(totalItems / itemsPerPage);
-
   if (totalPages <= 1) return null;
 
-  const createPageUrl = (page: number) => {
-    const params = {
-      ...(currentSearch && { search: currentSearch }),
-      ...(currentCategory !== "전체" && { category: currentCategory }),
-      ...(page > 1 && { page: page.toString() }),
-    };
+  const searchParams = useSearchParams();
+  const tab = searchParams.get("tab") ?? "study";
 
-    const query = new URLSearchParams(params).toString();
-    return `/board${query ? `?${query}` : ""}`;
+  const createPageUrl = (page: number): string => {
+    const queryParams = new URLSearchParams({
+      ...(tab && { tab }),
+      ...(page > 1 && { page: page.toString() }),
+    });
+
+    return `/profile?${queryParams.toString()}`;
   };
 
   const pageNumbers = getPageNumbers(currentPage, totalPages);

@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import DefaultSearchBar from "@/components/ui/defaultSearchBar";
-import SearchSVG from "@/icons/search.svg";
+import SearchSVG from "/public/icons/search.svg";
 
 const DEBOUNCE_DELAY = 200;
 interface BoardSearchBarProps {

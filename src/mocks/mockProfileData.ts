@@ -1,0 +1,146 @@
+import {
+  ProfileBlogDataType,
+  ProfileDataType,
+  ProfileStudyDataType,
+} from "@/types/profile";
+
+export const mockProfileData: ProfileDataType[] = [
+  {
+    id: 1,
+    name: "김동아리",
+    role: "회장",
+    grade: "4",
+    major: "컴퓨터공학과",
+    profileImage: "/placeholder.svg?height=80&width=80",
+    email: "president@club.com",
+    github: "github.com/president",
+    joinDate: "2021-03",
+    skills: ["React", "Node.js", "Python", "AWS"],
+    bio: "풀스택 개발자를 꿈꾸며 다양한 프로젝트를 진행하고 있습니다. 팀워크와 소통을 중시합니다.",
+    achievements: ["해커톤 1위", "프로그래밍 대회 입상", "오픈소스 기여"],
+    penaltyPoint: 1,
+    penaltyPeriod: 5,
+  },
+];
+
+// study mock
+export const mockProfileStudyData: ProfileStudyDataType[] = [
+  {
+    id: 1,
+    title: "교내 사물함 대여 서비스",
+    date: "2024-01-15",
+    category: "Project",
+    tags: ["React", "Frontend", "JavaScript"],
+  },
+  {
+    id: 2,
+    title: "코테 스터디",
+    date: "2024-01-10",
+    category: "Study",
+    tags: ["Algorithm", "CodingTest"],
+  },
+  {
+    id: 3,
+    title: "교내 사물함 대여 서비스",
+    date: "2024-01-15",
+    category: "Project",
+    tags: ["React", "Frontend", "JavaScript"],
+  },
+  {
+    id: 4,
+    title: "코테 스터디2",
+    date: "2024-01-10",
+    category: "Study",
+    tags: ["Algorithm", "CodingTest"],
+  },
+  {
+    id: 5,
+    title: "밥 먹기",
+    date: "2024-01-15",
+    category: "Project",
+    tags: ["React", "Frontend", "JavaScript"],
+  },
+  {
+    id: 6,
+    title: "자스 스터디",
+    date: "2024-01-10",
+    category: "Study",
+    tags: ["Algorithm", "CodingTest"],
+  },
+];
+
+// blog mock
+export const mockProfileBlogData: ProfileBlogDataType[] = [
+  {
+    id: 1,
+    title: "첫 번째 프로젝트 회고: React로 만든 할 일 관리 앱",
+    date: "2024-01-15",
+    category: "개발",
+    views: 234,
+    likes: 18,
+    comments: 10,
+  },
+  {
+    id: 2,
+    title: "동아리 해커톤 참가 후기",
+    date: "2024-01-12",
+    category: "활동",
+    views: 156,
+    likes: 31,
+    comments: 9,
+  },
+  {
+    id: 3,
+    title: "첫 번째 프로젝트 회고: React로 만든 할 일 관리 앱",
+    date: "2024-01-15",
+    category: "개발",
+    views: 234,
+    likes: 18,
+    comments: 10,
+  },
+  {
+    id: 4,
+    title: "동아리 해커톤 참가 후기",
+    date: "2024-01-12",
+    category: "회고",
+    views: 156,
+    likes: 31,
+    comments: 9,
+  },
+  {
+    id: 5,
+    title: "두 번째 레슨",
+    date: "2024-01-15",
+    category: "기타",
+    views: 234,
+    likes: 18,
+    comments: 10,
+  },
+  {
+    id: 6,
+    title: "부산 해커톤 참가 후기",
+    date: "2024-01-12",
+    category: "활동",
+    views: 156,
+    likes: 31,
+    comments: 9,
+  },
+  {
+    id: 7,
+    title: "네 번째 프로젝트 회고: Next 사용",
+    date: "2024-01-15",
+    category: "기타",
+    views: 234,
+    likes: 18,
+    comments: 10,
+  },
+  {
+    id: 8,
+    title: "동아리 해커톤 참가 후기",
+    date: "2024-01-12",
+    category: "활동",
+    views: 156,
+    likes: 31,
+    comments: 9,
+  },
+];

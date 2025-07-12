@@ -6,7 +6,7 @@ import ShieldSVG from "/public/icons/shield.svg";
 import LockSVG from "/public/icons/lock.svg";
 import EyeSVG from "/public/icons/eye.svg";
 import PeopleSVG from "/public/icons/people.svg";
-import ScheduleSVG from "/public/icons/scheduel.svg";
+import ScheduleSVG from "/public/icons/schedule.svg";
 import StudySVG from "/public/icons/study.svg";
 import BlogSVG from "/public/icons/blog.svg";
 import BugSVG from "/public/icons/bug.svg";
@@ -14,6 +14,7 @@ import ThunderSVG from "/public/icons/thunder.svg";
 import GlobeRedSVG from "/public/icons/globe-red.svg";
 import ServerSVG from "/public/icons/server.svg";
 import SectionBadge from "@/components/sectionBadge";
+import MiniCalendar from "@/components/miniCalendar";
 
 // 캘린더 동적 이벤트 생성 -> 이 부분은 추후 /schedule 과 연동하여 제거될 변수입니다
 const generateUpcomingEvents = () => {

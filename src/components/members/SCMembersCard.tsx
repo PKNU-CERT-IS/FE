@@ -2,8 +2,8 @@ import DefaultBadge from "@/components/ui/defaultBadge";
 import { MembersDataType } from "@/types/members";
 import { getRoleBadgeStyle, getRoleBorderStyle } from "@/utils/membersUtils";
 import Image from "next/image";
-import GithubSVG from "@/icons/github.svg";
-import EmailSVG from "@/icons/email.svg";
+import GithubSVG from "/public/icons/github.svg";
+import EmailSVG from "/public/icons/email.svg";
 
 interface MembersCardProps {
   members: MembersDataType;

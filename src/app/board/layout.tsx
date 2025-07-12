@@ -1,6 +1,6 @@
 import PageLayout from "@/layouts/pageLayout";
 import { Metadata } from "next";
-import ShieldSVG from "@/icons/shield.svg";
+import ShieldSVG from "/public/icons/shield.svg";
 
 export const metadata: Metadata = {
   title: "Security Board",

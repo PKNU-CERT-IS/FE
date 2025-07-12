@@ -1,9 +1,9 @@
 import Link from "next/link";
-import ThunderSVG from "@/icons/thunder.svg";
-import EyeSVG from "@/icons/eye.svg";
-import InfoSVG from "@/icons/info.svg";
-import AlertTriangleSVG from "@/icons/alert-triangle.svg";
-import ThumbsUpSVG from "@/icons/thumbs-up.svg";
+import ThunderSVG from "/public/icons/thunder.svg";
+import EyeSVG from "/public/icons/eye.svg";
+import InfoSVG from "/public/icons/info.svg";
+import AlertTriangleSVG from "/public/icons/alert-triangle.svg";
+import ThumbsUpSVG from "/public/icons/thumbs-up.svg";
 import DefaultBadge from "@/components/ui/defaultBadge";
 import { BoardPriorityType } from "@/types/board";
 import { BoardDataType } from "@/types/board";

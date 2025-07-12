@@ -1,5 +1,5 @@
 import PageLayout from "@/layouts/pageLayout";
-import MembersSVG from "@/icons/members.svg";
+import MembersSVG from "/public/icons/members.svg";
 
 export default function MembersLayout({
   children,

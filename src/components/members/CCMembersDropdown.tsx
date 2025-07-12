@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import ChevronDownSVG from "@/icons/angle.svg";
+import ChevronDownSVG from "/public/icons/angle.svg";
 import { cn } from "@/lib/utils";
 import DefaultButton from "@/components/ui/defaultButton";
 

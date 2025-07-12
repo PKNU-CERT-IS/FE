@@ -1,8 +1,8 @@
 "server-only";
 
-import ScheduleSVG from "@/icons/schedule.svg";
-import LocationSVG from "@/icons/location.svg";
-import TimeSVG from "@/icons/time.svg";
+import ScheduleSVG from "/public/icons/schedule.svg";
+import LocationSVG from "/public/icons/location.svg";
+import TimeSVG from "/public/icons/time.svg";
 import { mockScheduleData } from "@/mocks/mockScheduleData";
 import { ScheduleInfo } from "@/types/schedule";
 import {

@@ -1,4 +1,4 @@
-import MembersSVG from "@/icons/members.svg";
+import MembersSVG from "/public/icons/members.svg";
 import SCMembersCard from "./SCMembersCard";
 import DefaultNoneResultUi from "@/components/ui/defaultNoneResultUi";
 import { MembersDataType } from "@/types/members";

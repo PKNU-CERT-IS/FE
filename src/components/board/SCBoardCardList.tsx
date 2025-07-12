@@ -1,6 +1,6 @@
 import BoardCard from "@/components/board/SCBoardCard";
 import DefaultNoneResultUi from "@/components/ui/defaultNoneResultUi";
-import ShieldSVG from "@/icons/shield.svg";
+import ShieldSVG from "/public/icons/shield.svg";
 import { BoardDataType } from "@/types/board";
 
 export default function BoardCardList({

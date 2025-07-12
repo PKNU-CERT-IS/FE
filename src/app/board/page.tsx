@@ -4,7 +4,7 @@ import BoardSearchBar from "@/components/board/CCBoardSearchBar";
 import BoardCategory from "@/components/board/CCBoardCategory";
 import BoardCardList from "@/components/board/SCBoardCardList";
 import BoardPagination from "@/components/board/SCBoardPagination";
-import PlusSVG from "@/icons/plus.svg";
+import PlusSVG from "/public/icons/plus.svg";
 import { boardCategories, BoardCategoryType } from "@/types/board";
 import { filterBoardData } from "@/utils/boardUtils";
 const ITEMS_PER_PAGE = 4;
