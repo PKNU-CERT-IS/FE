@@ -1,6 +1,5 @@
 /* Tailwind v4 CSS-First Configuration */
 @import "tailwindcss";
-@plugin "@tailwindcss/typography";
 
 /* 다크모드 설정 */
 @custom-variant dark (&:where(.dark, .dark *));

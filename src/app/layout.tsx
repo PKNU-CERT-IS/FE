@@ -19,10 +19,7 @@ export default function RootLayout({
         <header>
           <NavigationBar />
         </header>
-
         <main className="flex-1">{children}</main>
-        <div id="modal-root"></div>
-
         <footer>
           <Footer />
         </footer>
