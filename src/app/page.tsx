@@ -87,7 +87,9 @@ const Home = () => {
               text={
                 "실제 시스템 취약점 분석과 모의해킹을 통한 보안 강화 기법을 학습합니다"
               }
-              svgComponent={<ShieldSVG width={64} />}
+              svgComponent={
+                <ShieldSVG width={64} className="stroke-cert-dark-red" />
+              }
             />
             <DefaultCard
               title={"Cryptography"}
@@ -228,7 +230,7 @@ const Home = () => {
               </div>
               <div className="flex flex-col text-gray-500 mt-10">
                 <div className="flex flex-row items-center">
-                  <ThunderSVG />
+                  <ThunderSVG className="text-cert-dark-red" />
                   <span className="my-2 mx-3">
                     실시간 위협 분석 및 대응 훈련
                   </span>
@@ -246,7 +248,7 @@ const Home = () => {
                   </span>
                 </div>
                 <div className="flex flex-row items-center">
-                  <ShieldSVG width={24} />
+                  <ShieldSVG width={24} className="stroke-cert-dark-red" />
                   <span className="my-2 mx-3">
                     보안 자격증 취득 지원 프로그램
                   </span>

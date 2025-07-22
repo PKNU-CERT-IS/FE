@@ -6,6 +6,7 @@ import { useModal } from "@/hooks/useModal";
 import { ScheduleInfo } from "@/types/schedule";
 import { useSchedule } from "@/hooks/useSchedule";
 import { getTypeLabel } from "@/utils/scheduleUtils";
+import { X } from "lucide-react";
 
 interface ModalProps {
   closeModal: () => void;
@@ -55,7 +56,7 @@ const ScheduleFormModal = ({ closeModal, schedule, modalRef }: ModalProps) => {
               onClick={closeModal}
               className="absolute top-4 right-4 text-md hover:bg-gray-100 w-8 h-8 rounded-full flex items-center justify-center"
             >
-              X
+              <X />
             </button>
             <p className="text-gray-900">새 일정</p>
             <p className="text-gray-500 text-sm">

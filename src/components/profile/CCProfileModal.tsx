@@ -4,6 +4,7 @@ import DefaultButton from "@/components/ui/defaultButton";
 import { mockProfileData } from "@/mocks/mockProfileData";
 import { RefObject, useState } from "react";
 import Image from "next/image";
+import { X } from "lucide-react";
 
 interface ModalProps {
   closeModal: () => void;
@@ -26,7 +27,7 @@ export default function CCProfileModal({ closeModal, modalRef }: ModalProps) {
               onClick={closeModal}
               className="absolute top-4 right-4 text-md hover:bg-gray-100 w-8 h-8 rounded-full flex items-center justify-center"
             >
-              X
+              <X />
             </button>
             <p className="text-gray-900">프로필 수정</p>
             <p className="text-gray-500 text-sm">
