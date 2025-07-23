@@ -1,6 +1,6 @@
 import PageLayout from "@/layouts/pageLayout";
 import { Metadata } from "next";
-import ChatLargeSVG from "/public/icons/chat.svg";
+import TerminalSVG from "/public/icons/terminal.svg";
 
 export const metadata: Metadata = {
   title: "Security Board",
@@ -17,9 +17,11 @@ export default function BoardLayout({
   return (
     <div>
       <PageLayout
-        title={"Blog"}
-        description={"동아리 멤버들의 경험과 지식을 공유하는 공간입니다."}
-        icon={<ChatLargeSVG />}
+        title={"Study"}
+        description={
+          "        보안 연구 자료와 학습 리소스를 공유하는 공간입니다."
+        }
+        icon={<TerminalSVG className="stroke-cert-dark-red" />}
       >
         {children}
         {modal}

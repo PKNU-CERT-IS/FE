@@ -77,207 +77,203 @@ export default async function StudyMaterialDetailPage({
   const dDay = studyData.endDate ? calculateDDay(studyData.endDate) : null;
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <div className="max-w-6xl mx-auto px-4 py-8">
-        {/* Header */}
-        <div className="flex items-center gap-4 mb-6">
-          <button>뒤로가기</button>
-        </div>
+    <div>
+      {/* Header */}
+      <div className="flex items-center gap-4 mb-6">
+        <button>뒤로가기</button>
+      </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Main Content */}
-          <div className="lg:col-span-2 space-y-6">
-            {/* Study Material Info Card */}
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700">
-              <div className="p-6 pb-0">
-                <div className="flex items-start justify-between mb-4">
-                  <div className="space-y-2">
-                    <h1 className="text-2xl font-bold text-black dark:text-white">
-                      {studyData.title}
-                    </h1>
-                    <div className="flex items-center gap-2">
-                      <DefaultBadge
-                        className={getStatusColor(studyData.status)}
-                      >
-                        {studyData.status}
-                      </DefaultBadge>
-                      {dDay !== null && (
-                        <DefaultBadge
-                          variant="outline"
-                          className="text-cert-red border-cert-red"
-                        >
-                          {dDay > 0
-                            ? `D-${dDay}`
-                            : dDay === 0
-                            ? "D-Day"
-                            : `D+${Math.abs(dDay)}`}
-                        </DefaultBadge>
-                      )}
-                    </div>
-                  </div>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* Main Content */}
+        <div className="lg:col-span-2 space-y-6">
+          {/* Study Material Info Card */}
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700">
+            <div className="p-6 pb-0">
+              <div className="flex items-start justify-between mb-4">
+                <div className="space-y-2">
+                  <h1 className="text-2xl font-bold text-black dark:text-white">
+                    {studyData.title}
+                  </h1>
                   <div className="flex items-center gap-2">
-                    <button className="px-4 py-2 bg-cert-red hover:bg-cert-red/80 text-white rounded-lg font-medium transition-colors">
-                      스터디 참여하기
-                    </button>
-                    <button className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
-                      <MoreVertical className="w-4 h-4 text-gray-500" />
-                    </button>
+                    <DefaultBadge className={getStatusColor(studyData.status)}>
+                      {studyData.status}
+                    </DefaultBadge>
+                    {dDay !== null && (
+                      <DefaultBadge
+                        variant="outline"
+                        className="text-cert-red border-cert-red"
+                      >
+                        {dDay > 0
+                          ? `D-${dDay}`
+                          : dDay === 0
+                          ? "D-Day"
+                          : `D+${Math.abs(dDay)}`}
+                      </DefaultBadge>
+                    )}
+                  </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  <button className="px-4 py-2 bg-cert-red hover:bg-cert-red/80 text-white rounded-lg font-medium transition-colors">
+                    스터디 참여하기
+                  </button>
+                  <button className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+                    <MoreVertical className="w-4 h-4 text-gray-500" />
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div className="p-6 space-y-6">
+              {/* Basic Description + Detail Content */}
+              <div className="space-y-4">
+                <p className="text-black dark:text-gray-300 leading-relaxed">
+                  {studyData.description}
+                </p>
+                <MarkdownRenderer content={studyData.detailContent} />
+              </div>
+
+              <div className="w-full h-px bg-gray-200 dark:bg-gray-700"></div>
+
+              {/* Study Details */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="flex items-center gap-3">
+                  <Calendar className="w-5 h-5 text-cert-red" />
+                  <div>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                      일정
+                    </p>
+                    <p className="font-medium text-black dark:text-white">
+                      {studyData.schedule.day}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3">
+                  <Clock className="w-5 h-5 text-cert-red" />
+                  <div>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                      시간
+                    </p>
+                    <p className="font-medium text-black dark:text-white">
+                      {studyData.schedule.time}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3">
+                  <Users className="w-5 h-5 text-cert-red" />
+                  <div>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                      참여 인원
+                    </p>
+                    <p className="font-medium text-black dark:text-white">
+                      {studyData.currentParticipants}/
+                      {studyData.maxParticipants}명
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3">
+                  <Calendar className="w-5 h-5 text-cert-red" />
+                  <div>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                      기간
+                    </p>
+                    <p className="font-medium text-black dark:text-white">
+                      {studyData.period}
+                    </p>
                   </div>
                 </div>
               </div>
 
-              <div className="p-6 space-y-6">
-                {/* Basic Description + Detail Content */}
-                <div className="space-y-4">
-                  <p className="text-black dark:text-gray-300 leading-relaxed">
-                    {studyData.description}
+              {/* Tags */}
+              <div className="flex gap-2 pt-6 border-t border-gray-300">
+                {studyData.tags.map((tag) => (
+                  <DefaultBadge
+                    key={tag}
+                    className="text-xs bg-gray-100 text-gray-600 hover:bg-gray-200 cursor-pointer"
+                  >
+                    <Tag className="w-3 h-3 mr-1" />
+                    {tag}
+                  </DefaultBadge>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Sidebar */}
+        <div className="space-y-6">
+          {/* Study Leader */}
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700">
+            <div className="p-6">
+              <h3 className="text-lg font-bold text-black dark:text-white mb-4">
+                스터디 리더
+              </h3>
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 bg-cert-red rounded-full flex items-center justify-center text-white font-medium">
+                  {studyData.leader.name[0]}
+                </div>
+                <div>
+                  <p className="font-medium text-black dark:text-white">
+                    {studyData.leader.name}
                   </p>
-                  <MarkdownRenderer content={studyData.detailContent} />
-                </div>
-
-                <div className="w-full h-px bg-gray-200 dark:bg-gray-700"></div>
-
-                {/* Study Details */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="flex items-center gap-3">
-                    <Calendar className="w-5 h-5 text-cert-red" />
-                    <div>
-                      <p className="text-sm text-gray-500 dark:text-gray-400">
-                        일정
-                      </p>
-                      <p className="font-medium text-black dark:text-white">
-                        {studyData.schedule.day}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <Clock className="w-5 h-5 text-cert-red" />
-                    <div>
-                      <p className="text-sm text-gray-500 dark:text-gray-400">
-                        시간
-                      </p>
-                      <p className="font-medium text-black dark:text-white">
-                        {studyData.schedule.time}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <Users className="w-5 h-5 text-cert-red" />
-                    <div>
-                      <p className="text-sm text-gray-500 dark:text-gray-400">
-                        참여 인원
-                      </p>
-                      <p className="font-medium text-black dark:text-white">
-                        {studyData.currentParticipants}/
-                        {studyData.maxParticipants}명
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <Calendar className="w-5 h-5 text-cert-red" />
-                    <div>
-                      <p className="text-sm text-gray-500 dark:text-gray-400">
-                        기간
-                      </p>
-                      <p className="font-medium text-black dark:text-white">
-                        {studyData.period}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Tags */}
-                <div className="flex gap-2 pt-6 border-t border-gray-300">
-                  {studyData.tags.map((tag) => (
-                    <DefaultBadge
-                      key={tag}
-                      className="text-xs bg-gray-100 text-gray-600 hover:bg-gray-200 cursor-pointer"
-                    >
-                      <Tag className="w-3 h-3 mr-1" />
-                      {tag}
-                    </DefaultBadge>
-                  ))}
+                  <p className="text-sm text-gray-500 dark:text-gray-400">
+                    {studyData.leader.role}
+                  </p>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Sidebar */}
-          <div className="space-y-6">
-            {/* Study Leader */}
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700">
-              <div className="p-6">
-                <h3 className="text-lg font-bold text-black dark:text-white mb-4">
-                  스터디 리더
-                </h3>
-                <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 bg-cert-red rounded-full flex items-center justify-center text-white font-medium">
-                    {studyData.leader.name[0]}
-                  </div>
-                  <div>
-                    <p className="font-medium text-black dark:text-white">
-                      {studyData.leader.name}
-                    </p>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">
-                      {studyData.leader.role}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Participants */}
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700">
-              <div className="p-6">
-                <h3 className="text-lg font-bold text-black dark:text-white mb-4">
-                  참여자
-                </h3>
-                <div className="space-y-3">
-                  {studyData.participants.length > 0 ? (
-                    studyData.participants.map((participant, index) => (
-                      <div key={index} className="flex items-center gap-3">
-                        <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center text-black text-xs font-medium">
-                          {participant.name[0]}
-                        </div>
-                        <div>
-                          <p className="text-sm font-medium text-black dark:text-white">
-                            {participant.name}
-                          </p>
-                          <p className="text-xs text-gray-500 dark:text-gray-400">
-                            {participant.role}
-                          </p>
-                        </div>
+          {/* Participants */}
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700">
+            <div className="p-6">
+              <h3 className="text-lg font-bold text-black dark:text-white mb-4">
+                참여자
+              </h3>
+              <div className="space-y-3">
+                {studyData.participants.length > 0 ? (
+                  studyData.participants.map((participant, index) => (
+                    <div key={index} className="flex items-center gap-3">
+                      <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center text-black text-xs font-medium">
+                        {participant.name[0]}
                       </div>
-                    ))
-                  ) : (
-                    <p className="text-sm text-gray-500 dark:text-gray-400">
-                      아직 참여자가 없습니다.
-                    </p>
-                  )}
-                </div>
+                      <div>
+                        <p className="text-sm font-medium text-black dark:text-white">
+                          {participant.name}
+                        </p>
+                        <p className="text-xs text-gray-500 dark:text-gray-400">
+                          {participant.role}
+                        </p>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <p className="text-sm text-gray-500 dark:text-gray-400">
+                    아직 참여자가 없습니다.
+                  </p>
+                )}
               </div>
             </div>
+          </div>
 
-            {/* Study Period */}
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700">
-              <div className="p-6">
-                <h3 className="text-lg font-bold text-black dark:text-white mb-4">
-                  스터디 기간
-                </h3>
-                <div className="text-center">
-                  {dDay !== null && (
-                    <p className="text-2xl font-bold text-cert-red mb-2">
-                      {dDay > 0
-                        ? `D-${dDay}`
-                        : dDay === 0
-                        ? "D-Day"
-                        : `D+${Math.abs(dDay)}`}
-                    </p>
-                  )}
-                  <p className="text-sm text-gray-600 dark:text-gray-400">
-                    {studyData.period}
+          {/* Study Period */}
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700">
+            <div className="p-6">
+              <h3 className="text-lg font-bold text-black dark:text-white mb-4">
+                스터디 기간
+              </h3>
+              <div className="text-center">
+                {dDay !== null && (
+                  <p className="text-2xl font-bold text-cert-red mb-2">
+                    {dDay > 0
+                      ? `D-${dDay}`
+                      : dDay === 0
+                      ? "D-Day"
+                      : `D+${Math.abs(dDay)}`}
                   </p>
-                </div>
+                )}
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  {studyData.period}
+                </p>
               </div>
             </div>
           </div>

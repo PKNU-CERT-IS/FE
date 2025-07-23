@@ -133,13 +133,6 @@ export default function CCStudyPagination({
           </svg>
         </Link>
       )}
-
-      {/* 페이지 정보 */}
-      <div className="hidden sm:flex items-center ml-4">
-        <span className="text-sm text-gray-700">
-          {totalPages}페이지 중 {currentPage}페이지
-        </span>
-      </div>
     </div>
   );
 }
