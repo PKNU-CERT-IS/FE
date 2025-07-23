@@ -10,6 +10,7 @@ const navBarList = [
   { name: "Board", href: "/board" },
   { name: "Schedule", href: "/schedule" },
   { name: "Study", href: "/study" },
+  { name: "Project", href: "/project" },
   { name: "Blog", href: "/blog" },
   { name: "Members", href: "/members" },
   { name: "Profile", href: "/profile" },

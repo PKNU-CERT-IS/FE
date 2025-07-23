@@ -342,7 +342,7 @@ export default async function SCProjectContent({
                       {/* 참가하기 버튼 */}
                       <button
                         type="button"
-                        className="px-4 py-2 bg-purple-600 text-white text-sm font-medium rounded-lg hover:bg-purple-700 transition-colors"
+                        className="px-4 py-2 bg-primary text-white text-sm font-medium rounded-lg hover:bg-red-600 transition-colors"
                       >
                         참가하기
                       </button>

@@ -214,7 +214,7 @@ export default function CCStudyFilter({ currentFilters }: StudyFilterProps) {
           className="w-full px-3 py-3 bg-[#4B5563] text-white rounded-lg hover:bg-[#374151] transition-colors flex items-center justify-center gap-2 text-sm font-medium"
         >
           <Plus className="w-4 h-4" />
-          <span>스터디 생성</span>
+          <span>프로젝트 생성</span>
         </button>
       </div>
 
