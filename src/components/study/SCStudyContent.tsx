@@ -16,6 +16,8 @@ import { joinStudy } from "@/actions/study/StudyJoinServerAction";
 import DownloadGraySVG from "/public/icons/download-gray.svg";
 import PdfSVG from "/public/icons/pdf.svg";
 
+import Link from "next/link";
+
 // 학습 자료 데이터를 가져오는 함수 (실제로는 DB에서 가져올 것)
 async function getStudyMaterials(): Promise<StudyMaterial[]> {
   // 실제 환경에서는 데이터베이스에서 가져올 데이터
@@ -293,153 +295,160 @@ export default async function SCStudyContent({
             const progressColor = getProgressColor(participationRate);
 
             return (
-              <div
-                key={material.id}
-                className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow"
-              >
-                {/* 상태 및 날짜 정보 */}
-                <div className="flex flex-wrap gap-2 mb-3 items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <span
-                      className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(
-                        material.status
-                      )}`}
-                    >
-                      {STATUS_LABELS[material.status]}
-                    </span>
-                    {/* 날짜 정보를 클라이언트 컴포넌트로 교체 */}
-                    <CCStudyDateInfo
-                      status={material.status}
-                      startDate={material.startDate}
-                      endDate={material.endDate}
-                      semester={material.semester}
-                    />
-                  </div>
-                </div>
-
-                {/* 제목 및 설명 */}
-                <h3 className="text-xl font-bold text-gray-900 mb-2">
-                  {material.title}
-                </h3>
-                <p className="text-gray-600 text-sm leading-relaxed mb-4">
-                  {material.description}
-                </p>
-
-                {/* 커스텀 태그 */}
-                <div className="flex flex-wrap gap-2 mb-4">
-                  {material.customTags.map((tag, index) => (
-                    <span
-                      key={index}
-                      className={`px-2 py-1 rounded text-xs font-medium ${tag.color}`}
-                    >
-                      {tag.name}
-                    </span>
-                  ))}
-                </div>
-
-                {/* 파일 목록 */}
-                <div className="space-y-2 mb-4">
-                  <h4 className="text-sm font-medium text-gray-900 flex items-center gap-2">
-                    <svg
-                      className="w-4 h-4"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+              <Link href={`/study/${material.id}`} key={material.id}>
+                <div
+                  key={material.id}
+                  className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow"
+                >
+                  {/* 상태 및 날짜 정보 */}
+                  <div className="flex flex-wrap gap-2 mb-3 items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <span
+                        className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(
+                          material.status
+                        )}`}
+                      >
+                        {STATUS_LABELS[material.status]}
+                      </span>
+                      {/* 날짜 정보를 클라이언트 컴포넌트로 교체 */}
+                      <CCStudyDateInfo
+                        status={material.status}
+                        startDate={material.startDate}
+                        endDate={material.endDate}
+                        semester={material.semester}
                       />
-                    </svg>
-                    첨부 파일
-                  </h4>
-                  {material.files.map((file, index) => (
-                    <div
-                      key={index}
-                      className="flex items-center justify-between bg-gray-50 rounded-lg p-3"
-                    >
-                      <div className="flex items-center gap-3">
-                        <PdfSVG className="w-5 h-5 text-red-500" />
-                        <div>
-                          <p className="text-sm font-medium text-gray-900">
-                            {file.name}
-                          </p>
-                          <p className="text-xs text-gray-500">{file.size}</p>
-                        </div>
-                      </div>
-                      <form action={downloadFile}>
-                        <input
-                          type="hidden"
-                          name="fileName"
-                          value={file.name}
+                    </div>
+                  </div>
+
+                  {/* 제목 및 설명 */}
+                  <h3 className="text-xl font-bold text-gray-900 mb-2">
+                    {material.title}
+                  </h3>
+                  <p className="text-gray-600 text-sm leading-relaxed mb-4">
+                    {material.description}
+                  </p>
+
+                  {/* 커스텀 태그 */}
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    {material.customTags.map((tag, index) => (
+                      <span
+                        key={index}
+                        className={`px-2 py-1 rounded text-xs font-medium ${tag.color}`}
+                      >
+                        {tag.name}
+                      </span>
+                    ))}
+                  </div>
+
+                  {/* 파일 목록 */}
+                  <div className="space-y-2 mb-4">
+                    <h4 className="text-sm font-medium text-gray-900 flex items-center gap-2">
+                      <svg
+                        className="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
                         />
+                      </svg>
+                      첨부 파일
+                    </h4>
+                    {material.files.map((file, index) => (
+                      <div
+                        key={index}
+                        className="flex items-center justify-between bg-gray-50 rounded-lg p-3"
+                      >
+                        <div className="flex items-center gap-3">
+                          <PdfSVG className="w-5 h-5 text-red-500" />
+                          <div>
+                            <p className="text-sm font-medium text-gray-900">
+                              {file.name}
+                            </p>
+                            <p className="text-xs text-gray-500">{file.size}</p>
+                          </div>
+                        </div>
+                        <form action={downloadFile}>
+                          <input
+                            type="hidden"
+                            name="fileName"
+                            value={file.name}
+                          />
+                          <input
+                            type="hidden"
+                            name="studyId"
+                            value={material.id}
+                          />
+                          <button type="submit">
+                            <DownloadGraySVG className="text-gray-400 hover:text-gray-600" />
+                          </button>
+                        </form>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* 참가 인원 Progress 바 */}
+                  <div className="mb-4">
+                    <div className="flex justify-between items-center mb-2">
+                      <span className="text-sm text-gray-600">참가자</span>
+                      <span className="text-sm font-medium text-gray-900">
+                        {material.currentParticipants}/
+                        {material.maxParticipants}
+                      </span>
+                    </div>
+                    <div className="w-full bg-gray-200 rounded-full h-2">
+                      <div
+                        className="h-2 rounded-full transition-all duration-300"
+                        style={{
+                          width: `${participationRate}%`,
+                          backgroundColor: progressColor,
+                        }}
+                      />
+                    </div>
+                    <span className="text-xs text-gray-500 mt-1 block">
+                      {participationRate}%
+                    </span>
+                  </div>
+
+                  {/* 작성자 및 참가하기 버튼 */}
+                  <div className="flex items-center justify-between pt-4 border-t border-gray-100">
+                    <div className="flex items-center gap-2">
+                      <span
+                        className={`px-2 py-1 rounded text-xs font-medium ${
+                          material.authorStatus === "student"
+                            ? "bg-blue-100 text-blue-800"
+                            : "bg-gray-100 text-gray-800"
+                        }`}
+                      >
+                        {AUTHOR_STATUS_LABELS[material.authorStatus]}
+                      </span>
+                      <span className="text-sm text-gray-500">
+                        {material.author}
+                      </span>
+                    </div>
+
+                    {material.status === "in_progress" && (
+                      <form action={joinStudy}>
                         <input
                           type="hidden"
                           name="studyId"
                           value={material.id}
                         />
-                        <button type="submit">
-                          <DownloadGraySVG className="text-gray-400 hover:text-gray-600" />
+                        <button
+                          type="submit"
+                          className="px-4 py-2 bg-primary text-white text-sm font-medium rounded-lg hover:bg-red-600 transition-colors"
+                        >
+                          참가하기
                         </button>
                       </form>
-                    </div>
-                  ))}
-                </div>
-
-                {/* 참가 인원 Progress 바 */}
-                <div className="mb-4">
-                  <div className="flex justify-between items-center mb-2">
-                    <span className="text-sm text-gray-600">참가자</span>
-                    <span className="text-sm font-medium text-gray-900">
-                      {material.currentParticipants}/{material.maxParticipants}
-                    </span>
+                    )}
                   </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2">
-                    <div
-                      className="h-2 rounded-full transition-all duration-300"
-                      style={{
-                        width: `${participationRate}%`,
-                        backgroundColor: progressColor,
-                      }}
-                    />
-                  </div>
-                  <span className="text-xs text-gray-500 mt-1 block">
-                    {participationRate}%
-                  </span>
                 </div>
-
-                {/* 작성자 및 참가하기 버튼 */}
-                <div className="flex items-center justify-between pt-4 border-t border-gray-100">
-                  <div className="flex items-center gap-2">
-                    <span
-                      className={`px-2 py-1 rounded text-xs font-medium ${
-                        material.authorStatus === "student"
-                          ? "bg-blue-100 text-blue-800"
-                          : "bg-gray-100 text-gray-800"
-                      }`}
-                    >
-                      {AUTHOR_STATUS_LABELS[material.authorStatus]}
-                    </span>
-                    <span className="text-sm text-gray-500">
-                      {material.author}
-                    </span>
-                  </div>
-
-                  {material.status === "in_progress" && (
-                    <form action={joinStudy}>
-                      <input type="hidden" name="studyId" value={material.id} />
-                      <button
-                        type="submit"
-                        className="px-4 py-2 bg-primary text-white text-sm font-medium rounded-lg hover:bg-red-600 transition-colors"
-                      >
-                        참가하기
-                      </button>
-                    </form>
-                  )}
-                </div>
-              </div>
+              </Link>
             );
           })}
         </div>

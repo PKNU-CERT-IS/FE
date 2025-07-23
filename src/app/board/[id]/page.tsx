@@ -71,9 +71,10 @@ function getFileIcon(type: string) {
 export default async function DetailPage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
-  const data = await getDataById(params.id);
+  const { id } = await params;
+  const data = getDataById(id);
 
   if (!data) {
     notFound();

@@ -6,11 +6,11 @@ import DefaultSearchBar from "@/components/ui/defaultSearchBar";
 import SearchSVG from "/public/icons/search.svg";
 
 const DEBOUNCE_DELAY = 200;
-interface BoardSearchBarProps {
+interface BlogSearchBarProps {
   currentSearch: string;
 }
 
-export default function BoardSearchBar({ currentSearch }: BoardSearchBarProps) {
+export default function BlogSearchBar({ currentSearch }: BlogSearchBarProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [searchInput, setSearchInput] = useState<string>(currentSearch);
