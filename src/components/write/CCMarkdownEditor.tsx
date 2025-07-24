@@ -1,5 +1,5 @@
 "use client";
-import MarkdownRenderer from "../ui/defaultMarkdownRenderer";
+import MarkdownRenderer from "@/components/ui/defaultMarkdownRenderer";
 import "highlight.js/styles/github.css";
 import { Edit, Eye } from "lucide-react";
 

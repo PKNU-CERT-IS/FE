@@ -6,7 +6,7 @@ function getId(id: string) {
   return dataId;
 }
 
-export default async function BoardEditPage({
+export default async function BlogEditPage({
   params,
 }: {
   params: Promise<{ id: string }>;
@@ -19,7 +19,7 @@ export default async function BoardEditPage({
         <div className="p-10">
           <h1 className="text-2xl font-bold text-gray-900 mb-2">게시글 수정</h1>
           <div className="border-t border-gray-300 mb-5 mt-5"></div>
-          <EditForm type="board" dataId={dataId} />
+          <EditForm type="blog" dataId={dataId} />
         </div>
       </div>
     </div>

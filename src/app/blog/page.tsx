@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import { mockBlogPosts } from "@/data/blogData";
+import { mockBlogPosts } from "@/mocks/blogData";
 import CCBlogPagination from "@/components/blog/CCBlogPagination";
 import CCBlogCategoryFilter from "@/components/blog/CCBlogCategoryFilter";
 import { Plus } from "lucide-react";

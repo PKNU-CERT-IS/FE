@@ -2,7 +2,7 @@ import { BlogPost } from "@/types/blog";
 
 export const mockBlogPosts: BlogPost[] = [
   {
-    id: "1",
+    id: 1,
     title: "React 18의 새로운 기능들과 성능 최적화",
     excerpt:
       "React 18에서 도입된 Concurrent Features와 Automatic Batching을 활용한 성능 최적화 방법을 알아봅니다.",
@@ -40,7 +40,7 @@ setTimeout(() => {
     published: true,
   },
   {
-    id: "2",
+    id: 2,
     title: "웹 보안의 기초: XSS와 CSRF 공격 방어하기",
     excerpt:
       "웹 애플리케이션에서 가장 흔히 발생하는 XSS와 CSRF 공격의 원리와 방어 방법을 상세히 설명합니다.",
@@ -77,7 +77,7 @@ setTimeout(() => {
     published: true,
   },
   {
-    id: "3",
+    id: 3,
     title: "타입스크립트 고급 패턴과 유틸리티 타입",
     excerpt:
       "TypeScript의 고급 타입 시스템을 활용한 패턴들과 내장 유틸리티 타입들의 실제 활용 방법을 알아봅니다.",
@@ -121,7 +121,7 @@ type UserWithoutId = Omit<User, 'id'>;
     published: true,
   },
   {
-    id: "4",
+    id: 4,
     title: "알고리즘 문제 해결 전략: 동적 계획법",
     excerpt:
       "동적 계획법의 핵심 개념부터 실제 코딩 테스트에서 자주 출제되는 문제 유형과 해결 전략을 정리했습니다.",
@@ -168,7 +168,7 @@ def fibonacci(n):
     published: true,
   },
   {
-    id: "5",
+    id: 5,
     title: "Docker와 Kubernetes를 활용한 마이크로서비스 배포",
     excerpt:
       "컨테이너 기술을 활용하여 마이크로서비스 아키텍처를 구성하고 배포하는 과정을 단계별로 설명합니다.",
@@ -221,7 +221,7 @@ spec:
     published: true,
   },
   {
-    id: "6",
+    id: 6,
     title: "개발자 컨퍼런스 참석 후기: NHN FORWARD 2024",
     excerpt:
       "NHN FORWARD 2024 컨퍼런스에서 인상 깊었던 세션들과 업무 인사이트를 공유합니다.",
@@ -256,7 +256,7 @@ spec:
     published: true,
   },
   {
-    id: "7",
+    id: 7,
     title: "개발자 컨퍼런스 참석 후기: NHN FORWARD 2024",
     excerpt:
       "NHN FORWARD 2024 컨퍼런스에서 인상 깊었던 세션들과 업무 인사이트를 공유합니다.",

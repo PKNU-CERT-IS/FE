@@ -7,7 +7,7 @@ export const ITEMS_PER_PAGE = 6;
 
 // 블로그 포스트 인터페이스
 export interface BlogPost {
-  id: string;
+  id: number;
   title: string;
   content?: string;
   excerpt: string;

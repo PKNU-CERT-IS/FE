@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { Calendar, User, Tag, Eye } from "lucide-react";
-import { mockBlogPosts } from "@/data/blogData";
+import { mockBlogPosts } from "@/mocks/blogData";
 import BackToListButton from "@/components/detail/SCBackToListButton";
 import KebabMenuButton from "@/components/detail/CCKebabMenu";
 import ShareButton from "@/components/detail/CCShareButton";
@@ -23,7 +23,8 @@ export async function generateMetadata({
   params,
 }: GenerateMetadataProps): Promise<Metadata> {
   const resolvedParams = await params;
-  const post = mockBlogPosts.find((p) => p.id === resolvedParams.id);
+  const blogId = parseInt(resolvedParams.id, 10);
+  const post = mockBlogPosts.find((p) => p.id === blogId);
 
   if (!post) {
     return {
@@ -49,7 +50,7 @@ export async function generateMetadata({
 export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
   const resolvedParams = await params;
   const blogId = parseInt(resolvedParams.id, 10);
-  const post = mockBlogPosts.find((p) => p.id === resolvedParams.id);
+  const post = mockBlogPosts.find((p) => p.id === blogId);
 
   if (!post) {
     notFound();

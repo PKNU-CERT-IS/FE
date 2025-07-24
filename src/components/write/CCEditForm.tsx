@@ -5,9 +5,10 @@ import DefaultButton from "@/components/ui/defaultButton";
 import { Calendar, ChevronDown } from "lucide-react";
 import TagInput from "@/components/write/CCTagInput";
 import FileUpload from "@/components/write/CCFileUpload";
-import MarkdownEditor from "./CCMarkdownEditor";
+import MarkdownEditor from "@/components/write/CCMarkdownEditor";
 import { mockBoardData } from "@/mocks/mockBoardData";
 import { mockBoardDetailData } from "@/mocks/mockBoardDetailData";
+import { mockBlogPosts } from "@/mocks/blogData";
 
 interface EditFormProps {
   type: "board" | "blog" | "study";
@@ -51,6 +52,16 @@ export default function EditForm({ type, dataId }: EditFormProps) {
               attachments: boardDetailData.attachments || [],
             };
           }
+        } else if (type === "blog") {
+          const blogData = mockBlogPosts.find((item) => item.id === dataId);
+          if (blogData) {
+            initialData = {
+              title: blogData.title,
+              content: blogData.content,
+              category: blogData.category,
+              tags: blogData.tags || [],
+            };
+          }
         }
         // 초기 데이터가 존재하면 state 설정
         if (initialData) {
@@ -58,6 +69,7 @@ export default function EditForm({ type, dataId }: EditFormProps) {
           setContent(initialData.content || "");
           setCategory(initialData.category || "");
           setTags(initialData.tags || []);
+          setAttachments(initialData.attachments || []); // 향후 타입 수정
         }
       } catch (error) {
         console.error("데이터 로드 실패:", error);
@@ -148,7 +160,7 @@ export default function EditForm({ type, dataId }: EditFormProps) {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 p-4">
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">
           제목 *
@@ -277,8 +289,7 @@ export default function EditForm({ type, dataId }: EditFormProps) {
         <TagInput tags={tags} setTags={setTags} />
       </div>
 
-      {/* 파일 업로드 (스터디만) */}
-      {type === "study" && (
+      {(type === "study" || type === "board") && (
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
             첨부 파일
