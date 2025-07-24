@@ -16,7 +16,8 @@ const NavBarItems = ({ navBarList }: NavBarItemsProps) => {
   return (
     <>
       {navBarList.map((item) => {
-        const isActive = pathname === item.href;
+        const isActive =
+          pathname === item.href || pathname.startsWith(item.href + "/"); // 현재 경로가 해당 링크와 일치하거나, 해당 링크의 하위 경로인 경우 css 적용
         return (
           <Link
             key={item.name}
