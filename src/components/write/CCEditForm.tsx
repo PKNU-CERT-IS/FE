@@ -9,6 +9,7 @@ import MarkdownEditor from "@/components/write/CCMarkdownEditor";
 import { mockBoardData } from "@/mocks/mockBoardData";
 import { mockBoardDetailData } from "@/mocks/mockBoardDetailData";
 import { mockBlogPosts } from "@/mocks/blogData";
+import { mockStudyDetailData } from "@/mocks/mockStudyDetailData";
 
 interface EditFormProps {
   type: "board" | "blog" | "study";
@@ -62,6 +63,22 @@ export default function EditForm({ type, dataId }: EditFormProps) {
               tags: blogData.tags || [],
             };
           }
+        } else if (type === "study") {
+          const studyData = mockStudyDetailData.find(
+            (item) => item.id === dataId
+          );
+          if (studyData) {
+            initialData = {
+              title: studyData.title,
+              content: studyData.detailContent,
+              category: studyData.category,
+              tags: studyData.tags || [],
+              attachments: studyData.files || [],
+              startDate: studyData.startDate,
+              endDate: studyData.endDate || "",
+              maxParticipants: String(studyData.maxParticipants || ""),
+            };
+          }
         }
         // 초기 데이터가 존재하면 state 설정
         if (initialData) {
@@ -70,6 +87,9 @@ export default function EditForm({ type, dataId }: EditFormProps) {
           setCategory(initialData.category || "");
           setTags(initialData.tags || []);
           setAttachments(initialData.attachments || []); // 향후 타입 수정
+          setStartDate(initialData.startDate || "");
+          setEndDate(initialData.endDate || "");
+          setMaxParticipants(initialData.maxParticipants || "");
         }
       } catch (error) {
         console.error("데이터 로드 실패:", error);
@@ -160,7 +180,7 @@ export default function EditForm({ type, dataId }: EditFormProps) {
   }
 
   return (
-    <div className="space-y-6 p-4">
+    <div className="space-y-6">
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">
           제목 *
