@@ -1,15 +1,19 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { Calendar, Clock, Users, Tag, MoreVertical } from "lucide-react";
+import { Calendar, Clock, Users, Tag } from "lucide-react";
 import DefaultBadge from "@/components/ui/defaultBadge";
 import MarkdownRenderer from "@/components/ui/defaultMarkdownRenderer";
 import {
   mockStudyDetailData,
-  StudyMaterial,
+  StudyDetailData,
 } from "@/mocks/mockStudyDetailData";
+import BackToListButton from "@/components/detail/SCBackToListButton";
+import KebabMenu from "@/components/detail/CCKebabMenu";
+import CCShareButton from "@/components/detail/CCShareButton";
 
-function getStudyDataById(id: string): StudyMaterial | null {
-  return mockStudyDetailData.find((material) => material.id === id) || null;
+function getStudyDataById(id: string): StudyDetailData | null {
+  const parsedId = parseInt(id, 10);
+  return mockStudyDetailData.find((data) => data.id === parsedId) || null;
 }
 
 function calculateDDay(endDate: string): number {
@@ -79,19 +83,19 @@ export default async function StudyMaterialDetailPage({
   return (
     <div>
       {/* Header */}
-      <div className="flex items-center gap-4 mb-6">
-        <button>뒤로가기</button>
+      <div className="space-y-6">
+        <BackToListButton currentUrl={"study"} />
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8  mt-6">
         {/* Main Content */}
-        <div className="lg:col-span-2 space-y-6">
+        <div className="lg:col-span-2  space-y-6">
           {/* Study Material Info Card */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700">
-            <div className="p-6 pb-0">
-              <div className="flex items-start justify-between mb-4">
-                <div className="space-y-2">
-                  <h1 className="text-2xl font-bold text-black dark:text-white">
+          <div className="bg-white dark:bg-gray-800 p-1 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700">
+            <div className="p-6 pb-0 ">
+              <div className="flex items-start  justify-between mb-4">
+                <div className="space-y-2 ">
+                  <h1 className="text-2xl font-bold  text-black dark:text-white">
                     {studyData.title}
                   </h1>
                   <div className="flex items-center gap-2">
@@ -114,11 +118,12 @@ export default async function StudyMaterialDetailPage({
                 </div>
                 <div className="flex items-center gap-2">
                   <button className="px-4 py-2 bg-cert-red hover:bg-cert-red/80 text-white rounded-lg font-medium transition-colors">
-                    스터디 참여하기
+                    스터디 참가하기
                   </button>
-                  <button className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
-                    <MoreVertical className="w-4 h-4 text-gray-500" />
-                  </button>
+                  <KebabMenu
+                    currentId={studyData.id}
+                    currentUrl={"study"}
+                  ></KebabMenu>
                 </div>
               </div>
             </div>
@@ -126,7 +131,7 @@ export default async function StudyMaterialDetailPage({
             <div className="p-6 space-y-6">
               {/* Basic Description + Detail Content */}
               <div className="space-y-4">
-                <p className="text-black dark:text-gray-300 leading-relaxed">
+                <p className="text-black dark:text-gray-300 leading-relaxed border-b border-gray-200 pb-6">
                   {studyData.description}
                 </p>
                 <MarkdownRenderer content={studyData.detailContent} />
@@ -184,16 +189,19 @@ export default async function StudyMaterialDetailPage({
               </div>
 
               {/* Tags */}
-              <div className="flex gap-2 pt-6 border-t border-gray-300">
-                {studyData.tags.map((tag) => (
-                  <DefaultBadge
-                    key={tag}
-                    className="text-xs bg-gray-100 text-gray-600 hover:bg-gray-200 cursor-pointer"
-                  >
-                    <Tag className="w-3 h-3 mr-1" />
-                    {tag}
-                  </DefaultBadge>
-                ))}
+              <div className="flex justify-between p-1  pt-6 border-t border-gray-300">
+                <div className="flex flex-wrap gap-2">
+                  {studyData.tags.map((tag) => (
+                    <DefaultBadge
+                      key={tag}
+                      className="text-xs h-6 bg-gray-100 text-gray-600 hover:bg-gray-200 "
+                    >
+                      <Tag className="w-3 h-3 mr-1" />
+                      {tag}
+                    </DefaultBadge>
+                  ))}
+                </div>
+                <CCShareButton />
               </div>
             </div>
           </div>

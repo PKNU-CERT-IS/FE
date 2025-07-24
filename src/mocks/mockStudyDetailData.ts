@@ -1,6 +1,6 @@
 // 타입 정의
-export interface StudyMaterial {
-  id: string;
+export interface StudyDetailData {
+  id: number;
   title: string;
   description: string;
   leader: {
@@ -35,9 +35,9 @@ export interface StudyMaterial {
 }
 
 // Mock 데이터
-export const mockStudyDetailData: StudyMaterial[] = [
+export const mockStudyDetailData: StudyDetailData[] = [
   {
-    id: "1",
+    id: 1,
     title: "OWASP Top 10 2023 취약점 분석",
     description: "최신 OWASP Top 10 취약점에 대한 상세 분석 자료입니다.",
     leader: {
@@ -124,7 +124,7 @@ export const mockStudyDetailData: StudyMaterial[] = [
 - 열정적인 학습 의지`,
   },
   {
-    id: "2",
+    id: 2,
     title: "Metasploit Framework 완전 정복",
     description:
       "Metasploit을 활용한 침투 테스트 기법과 실습 자료를 종합적으로 다룹니다.",
@@ -203,7 +203,7 @@ Metasploit Framework는 침투 테스팅과 보안 연구를 위한 강력한 �
 - 기본적인 리눅스 명령어 지식`,
   },
   {
-    id: "3",
+    id: 3,
     title: "암호화 기초의 RSA 구현",
     description:
       "암호학의 기초 이론부터 RSA 공개키암호시스템의 Python 구현까지 다룹니다.",

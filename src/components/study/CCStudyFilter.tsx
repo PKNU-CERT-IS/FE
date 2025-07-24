@@ -18,6 +18,7 @@ import {
   TECHNIQUE_LABELS,
   STATUS_LABELS,
 } from "@/types/study";
+import Link from "next/link";
 
 export default function CCStudyFilter({ currentFilters }: StudyFilterProps) {
   const router = useRouter();
@@ -137,7 +138,6 @@ export default function CCStudyFilter({ currentFilters }: StudyFilterProps) {
             </div>
           )}
         </div>
-
         {/* 기법 필터 */}
         <div className="relative">
           <button
@@ -172,7 +172,6 @@ export default function CCStudyFilter({ currentFilters }: StudyFilterProps) {
             </div>
           )}
         </div>
-
         {/* 상태 필터 */}
         <div className="relative">
           <button
@@ -207,15 +206,14 @@ export default function CCStudyFilter({ currentFilters }: StudyFilterProps) {
             </div>
           )}
         </div>
-
-        {/* 스터디 생성 버튼 */}
-        <button
-          type="button"
-          className="w-full px-3 py-3 bg-[#4B5563] text-white rounded-lg hover:bg-[#374151] transition-colors flex items-center justify-center gap-2 text-sm font-medium"
+        {/* 서버 컴포넌트 분리 필요해 보임 */}
+        <Link
+          href={"/study/write"}
+          className="inline-flex items-center gap-4 px-6 bg-cert-red text-white rounded-md hover:bg-cert-red/80"
         >
           <Plus className="w-4 h-4" />
-          <span>프로젝트 생성</span>
-        </button>
+          <span>스터디 생성</span>
+        </Link>
       </div>
 
       {/* 활성 필터 태그 (한국어 표시) */}

@@ -207,18 +207,19 @@ export default function WriteForm({ type }: WriteFormProps) {
         <TagInput tags={tags} setTags={setTags} />
       </div>
 
-      {/* 파일 업로드 (스터디만) */}
-      {type === "study" && (
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            첨부 파일
-          </label>
-          <FileUpload
-            attachments={attachments}
-            onAttachmentsChange={setAttachments}
-          />
-        </div>
-      )}
+      {/* 파일 업로드  */}
+      {type === "study" ||
+        (type === "board" && (
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              첨부 파일
+            </label>
+            <FileUpload
+              attachments={attachments}
+              onAttachmentsChange={setAttachments}
+            />
+          </div>
+        ))}
 
       {/* 마크다운 에디터 */}
       <div>

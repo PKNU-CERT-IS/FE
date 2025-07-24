@@ -56,7 +56,7 @@ export default function KebabMenu({ currentId, currentUrl }: KebabMenuProps) {
         <DefaultButton
           variant="outline"
           size="sm"
-          className="cursor-pointer"
+          className="cursor-pointer border-0 hover:bg-white hover:text-cert-dark-red"
           onClick={() => setIsKebabOpen(!isKebabOpen)}
         >
           <MoreVertical className="w-4 h-4" />

@@ -85,7 +85,7 @@ export default async function DetailPage({
       <BackToListButton currentUrl={"board"} />
 
       {/* 게시글 카드 */}
-      <div className="bg-white border border-gray-200 rounded-lg shadow-lg mt-6">
+      <div className="bg-white border border-gray-200 rounded-lg shadow-lg mt-6 p-4">
         {/* 게시글 헤더 */}
         <div className="p-6 pb-0">
           <div className="flex items-start justify-between mb-4">
