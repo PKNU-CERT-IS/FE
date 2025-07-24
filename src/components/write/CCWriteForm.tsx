@@ -43,7 +43,7 @@ export default function WriteForm({ type }: WriteFormProps) {
       case "board":
         return ["공지사항", "보안이슈", "기술자료", "스터디", "프로젝트"];
       case "blog":
-        return ["개발", "학습", "활동", "가이드", "디자인"];
+        return ["개발", "학습", "활동"];
       case "study":
         return [
           "웹 보안",
