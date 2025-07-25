@@ -63,6 +63,7 @@ export default async function BoardPage({ searchParams }: BoardPageProps) {
         <BoardSearchBar currentSearch={currentSearch} />
         <BoardCategory selectedCategory={currentCategory} />
         <Link
+          scroll={false}
           href="/board/write"
           className="inline-flex items-center gap-2 px-4 py-2 bg-cert-red text-white rounded-md hover:bg-cert-red/80"
         >
