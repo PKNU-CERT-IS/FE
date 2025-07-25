@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
-import { Plus, Users, Edit, Trash2, Calendar } from "lucide-react";
+import { Plus, Users, Edit, Trash2, Calendar, X } from "lucide-react";
 import DefaultButton from "@/components/ui/defaultButton";
 import ConfirmModal from "@/components/ui/defaultConfirmModal";
 
@@ -16,6 +16,10 @@ const mockMeetingMinutes = [
       "HTTP 프로토콜의 기본 구조와 요청/응답 메커니즘에 대해 학습했습니다. Burp Suite를 이용한 HTTP 트래픽 분석 실습을 진행했습니다.",
     attendees: ["김보안", "이해커", "박펜테", "최시큐"],
     author: "김보안",
+    links: [
+      { title: "HTTP 기본 자료", url: "https://example.com/web-basics" },
+      { title: "Burp Suite 가이드", url: "https://example.com/burp-guide" },
+    ],
   },
   {
     id: 2,
@@ -26,6 +30,12 @@ const mockMeetingMinutes = [
       "SQL Injection의 원리와 다양한 공격 기법에 대해 학습했습니다. DVWA를 이용한 실습을 통해 Union-based, Boolean-based, Time-based SQL Injection을 실습했습니다.",
     attendees: ["김보안", "이해커", "박펜테", "최시큐", "정웹해"],
     author: "김보안",
+    links: [
+      {
+        title: "SQL Injection 실습 자료",
+        url: "https://example.com/sql-injection",
+      },
+    ],
   },
 ];
 
@@ -35,8 +45,13 @@ interface MeetingMinutesProps {
   studyLeaderId: number;
 }
 
+interface LinkItem {
+  title: string;
+  url: string;
+}
+
 export default function MeetingMinutes({
-  studyId, // 스터디 ID DB 접근시 필요
+  studyId,
   currentUserId,
   studyLeaderId,
 }: MeetingMinutesProps) {
@@ -46,6 +61,7 @@ export default function MeetingMinutes({
   const [newMinute, setNewMinute] = useState({
     title: "",
     content: "",
+    links: [] as LinkItem[],
   });
   const [deleteMinuteId, setDeleteMinuteId] = useState<number | null>(null);
   const [isModalMounted, setIsModalMounted] = useState<boolean>(false);
@@ -57,7 +73,7 @@ export default function MeetingMinutes({
   // 모달 열기 함수 (트랜지션을 위해 약간의 지연 추가)
   const openModal = () => {
     setIsModalMounted(true);
-    setTimeout(() => setShowAddModal(true), 10); // 트랜지션 트리거
+    setTimeout(() => setShowAddModal(true), 10);
   };
 
   const closeModal = () => {
@@ -86,29 +102,63 @@ export default function MeetingMinutes({
     }
 
     return () => {
-      document.body.style.overflow = "unset"; // 모달 닫을 때 스크롤 복원
-      document.removeEventListener("keydown", handleEsc); // 이벤트 리스너 제거
+      document.body.style.overflow = "unset";
+      document.removeEventListener("keydown", handleEsc);
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [showAddModal]);
 
+  // 링크 추가 함수
+  const addLink = () => {
+    setNewMinute({
+      ...newMinute,
+      links: [...newMinute.links, { title: "", url: "" }],
+    });
+  };
+
+  // 링크 제거 함수
+  const removeLink = (index: number) => {
+    setNewMinute({
+      ...newMinute,
+      links: newMinute.links.filter((_, i) => i !== index),
+    });
+  };
+
+  // 링크 업데이트 함수
+  const updateLink = (index: number, field: "title" | "url", value: string) => {
+    const updatedLinks = newMinute.links.map((link, i) =>
+      i === index ? { ...link, [field]: value } : link
+    );
+    setNewMinute({
+      ...newMinute,
+      links: updatedLinks,
+    });
+  };
+
   const handleAddMinute = () => {
     if (!newMinute.title.trim() || !newMinute.content.trim()) return;
 
+    // 빈 링크 제거 (제목과 URL이 모두 있는 것만 유지)
+    const validLinks = newMinute.links.filter(
+      (link) => link.title.trim() && link.url.trim()
+    );
+
     const minute = {
-      id: Date.now(), // 실제로는 API에서 ID를 받아옴
+      id: Date.now(),
       week: meetingMinutes.length + 1,
       title: newMinute.title,
       date: new Date().toLocaleDateString("ko-KR"),
       content: newMinute.content,
-      attendees: ["현재 사용자"], // 실제로는 API에서 가져옴
-      author: "현재 사용자", // 실제로는 현재 로그인 사용자
+      links: validLinks,
+      attendees: ["현재 사용자"],
+      author: "현재 사용자",
     };
 
     setMeetingMinutes([...meetingMinutes, minute]);
     setNewMinute({
       title: "",
       content: "",
+      links: [],
     });
     setShowAddModal(false);
   };
@@ -118,6 +168,7 @@ export default function MeetingMinutes({
     setNewMinute({
       title: minute.title,
       content: minute.content,
+      links: minute.links || [],
     });
     openModal();
   };
@@ -125,19 +176,25 @@ export default function MeetingMinutes({
   const handleUpdateMinute = () => {
     if (!editingMinute) return;
 
+    // 빈 링크 제거
+    const validLinks = newMinute.links.filter(
+      (link) => link.title.trim() && link.url.trim()
+    );
+
     const updated = meetingMinutes.map((minute) =>
       minute.id === editingMinute.id
         ? {
             ...minute,
             title: newMinute.title,
             content: newMinute.content,
+            links: validLinks,
           }
         : minute
     );
 
     setMeetingMinutes(updated);
     setEditingMinute(null);
-    setNewMinute({ title: "", content: "" });
+    setNewMinute({ title: "", content: "", links: [] });
     setShowAddModal(false);
   };
 
@@ -216,7 +273,7 @@ export default function MeetingMinutes({
                   {minute.content}
                 </p>
 
-                <div className="flex items-center justify-between text-sm">
+                <div className="flex items-center justify-between text-sm mb-3">
                   <div className="flex items-center gap-4">
                     <div className="flex items-center gap-2">
                       <Users className="w-4 h-4 text-gray-400" />
@@ -227,6 +284,23 @@ export default function MeetingMinutes({
                   </div>
                   <span className="text-gray-500">작성자: {minute.author}</span>
                 </div>
+
+                {/* 다중 링크 표시 */}
+                {minute.links && minute.links.length > 0 && (
+                  <div className="space-y-1">
+                    {minute.links.map((link, index) => (
+                      <a
+                        key={index}
+                        href={link.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center text-sm text-blue-600 hover:underline mr-4"
+                      >
+                        🔗 {link.title}
+                      </a>
+                    ))}
+                  </div>
+                )}
               </div>
             ))
           )}
@@ -250,7 +324,7 @@ export default function MeetingMinutes({
                 onClick={() => {
                   closeModal();
                   setEditingMinute(null);
-                  setNewMinute({ title: "", content: "" });
+                  setNewMinute({ title: "", content: "", links: [] });
                 }}
                 className="text-gray-400 hover:text-gray-600"
               >
@@ -293,13 +367,71 @@ export default function MeetingMinutes({
                 />
               </div>
 
+              {/* 다중 링크 입력 섹션 */}
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <label className="block text-sm font-medium text-gray-700">
+                    관련 링크 (선택)
+                  </label>
+                  <DefaultButton
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={addLink}
+                  >
+                    <Plus className="w-4 h-4 mr-1" />
+                    링크 추가
+                  </DefaultButton>
+                </div>
+
+                <div className="space-y-3">
+                  {newMinute.links.map((link, index) => (
+                    <div key={index} className="flex gap-2 items-start">
+                      <div className="flex-1 space-y-2">
+                        <input
+                          type="text"
+                          value={link.title}
+                          onChange={(e) =>
+                            updateLink(index, "title", e.target.value)
+                          }
+                          placeholder="링크 제목"
+                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent text-sm"
+                        />
+                        <input
+                          type="url"
+                          value={link.url}
+                          onChange={(e) =>
+                            updateLink(index, "url", e.target.value)
+                          }
+                          placeholder="https://example.com"
+                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent text-sm"
+                        />
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => removeLink(index)}
+                        className="mt-1 p-1 text-gray-400 hover:text-red-500 transition-colors"
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                    </div>
+                  ))}
+
+                  {newMinute.links.length === 0 && (
+                    <p className="text-sm text-gray-500 italic">
+                      링크를 추가하려면 "링크 추가" 버튼을 클릭하세요.
+                    </p>
+                  )}
+                </div>
+              </div>
+
               <div className="flex gap-3 pt-4">
                 <DefaultButton
                   variant="outline"
                   onClick={() => {
                     closeModal();
                     setEditingMinute(null);
-                    setNewMinute({ title: "", content: "" });
+                    setNewMinute({ title: "", content: "", links: [] });
                   }}
                   className="flex-1"
                 >
