@@ -9,6 +9,7 @@ import CommentSVG from "/public/icons/comment.svg";
 import { BlogCategoryType, ProfileBlogDataType } from "@/types/profile";
 import { getBlogCategoryColor } from "@/utils/profileUtils";
 import Link from "next/link";
+import { Plus } from "lucide-react";
 
 interface SCBlogListProps {
   searchParams: Promise<{
@@ -29,17 +30,14 @@ export default async function SCBlogList({
   return (
     <>
       {currentTab === "blog" && (
-        <div className="space-y-4 mt-6 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
+        <div className="space-y-4 mt-8 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
           <div className="flex justify-between items-center">
             <h3 className="text-lg font-semibold text-gray-900 transition-colors duration-300">
               내가 작성한 블로그 포스트
             </h3>
             <Link href="/blog">
-              <DefaultButton
-                size="sm"
-                className="bg-red-600 hover:bg-red-700 text-white transition-all duration-300"
-              >
-                새 포스트 작성
+              <DefaultButton size="sm" className="transition-all duration-300">
+                <Plus className="w-4 h-4" />새 포스트 작성
               </DefaultButton>
             </Link>
           </div>

@@ -23,7 +23,7 @@ export default async function SCProfileContent({
 }: SCProfileContentProps) {
   const { page } = await searchParams;
 
-  const ITEMS_PER_PAGE = 4;
+  const ITEMS_PER_PAGE = 5; // 페이지당 아이템 수
 
   const currentPage = parseInt(page || "1", 10);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
