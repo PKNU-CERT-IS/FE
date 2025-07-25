@@ -10,6 +10,7 @@ import {
 import BackToListButton from "@/components/detail/SCBackToListButton";
 import KebabMenu from "@/components/detail/CCKebabMenu";
 import CCShareButton from "@/components/detail/CCShareButton";
+import MeetingMinutes from "@/components/study/CCMeetingMinutes";
 
 function getStudyDataById(id: string): StudyDetailData | null {
   const parsedId = parseInt(id, 10);
@@ -91,7 +92,7 @@ export default async function StudyMaterialDetailPage({
         {/* Main Content */}
         <div className="lg:col-span-2  space-y-6">
           {/* Study Material Info Card */}
-          <div className="bg-white dark:bg-gray-800 p-1 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700">
+          <div className="bg-white dark:bg-gray-800 p-1 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
             <div className="p-6 pb-0 ">
               <div className="flex items-start  justify-between mb-4">
                 <div className="space-y-2 ">
@@ -205,6 +206,11 @@ export default async function StudyMaterialDetailPage({
               </div>
             </div>
           </div>
+          <MeetingMinutes
+            studyId={"1"} // 임시로 ID 설정, 실제로는 params에서 받아와야 함 현재 스터디 ID를 나타내는 ID
+            currentUserId={1} // 임시로 현재 사용자 ID 설정, 실제로는 로그인 정보에서 받아와야 함
+            studyLeaderId={1} // 임시로 스터디 리더 ID 설정, 실제로는 스터디 데이터에서 받아와야 함
+          />
         </div>
 
         {/* Sidebar */}
