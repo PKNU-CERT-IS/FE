@@ -1,116 +1,237 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { Metadata } from "next";
-import { mockProjects } from "@/mocks/mockProjectData";
-import { Project, ProjectCategoryType } from "@/types/project";
+import { ProjectMaterial } from "@/types/project";
+import { ArrowLeft } from "lucide-react";
+
+import { getProjectMaterials } from "@/mocks/mockProjectData";
 
 interface ProjectDetailPageProps {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
-// 데이터를 가져오는 함수 (실제로는 API 호출)
-const getProjectById = (id: number): Project | undefined => {
-  return mockProjects.find((p) => p.id === id);
+const getProjectById = async (
+  id: string
+): Promise<ProjectMaterial | undefined> => {
+  const projects = await getProjectMaterials();
+  return projects.find((p) => p.id === id);
 };
 
 // 동적 메타데이터 생성
 export async function generateMetadata({
   params,
 }: ProjectDetailPageProps): Promise<Metadata> {
-  const project = getProjectById(parseInt(params.id, 10));
+  const resolvedParams = await params;
+  const project = await getProjectById(resolvedParams.id);
+
   if (!project) {
     return { title: "프로젝트를 찾을 수 없음" };
   }
+
   return {
     title: `${project.title} | 프로젝트`,
     description: project.description.substring(0, 150),
   };
 }
 
-// 카테고리 뱃지 스타일
-const CATEGORY_STYLES: { [key in ProjectCategoryType]?: string } = {
-  "웹 해킹": "bg-blue-100 text-blue-800",
-  리버싱: "bg-green-100 text-green-800",
-  시스템: "bg-red-100 text-red-800",
-  암호학: "bg-purple-100 text-purple-800",
+// 상태 배지 스타일
+const getStatusColor = (status: string) => {
+  switch (status) {
+    case "not_started":
+      return "bg-gray-100 text-gray-800";
+    case "in_progress":
+      return "bg-blue-100 text-blue-800";
+    case "completed":
+      return "bg-green-100 text-green-800";
+    default:
+      return "bg-gray-100 text-gray-800";
+  }
 };
 
-export default function ProjectDetailPage({ params }: ProjectDetailPageProps) {
-  const project = getProjectById(parseInt(params.id, 10));
+const STATUS_LABELS = {
+  not_started: "시작 예정",
+  in_progress: "진행 중",
+  completed: "완료",
+};
+
+const AUTHOR_STATUS_LABELS = {
+  student: "학부생",
+  graduate: "대학원생",
+  organization: "기관/단체",
+};
+
+export default async function ProjectDetailPage({
+  params,
+}: ProjectDetailPageProps) {
+  const resolvedParams = await params;
+  const project = await getProjectById(resolvedParams.id);
 
   if (!project) {
-    notFound(); // 프로젝트가 없으면 404 페이지를 보여줌
+    notFound();
   }
 
   return (
-    <div className="bg-white py-12">
-      <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
-        {/* 뒤로가기 버튼 */}
-        <Link
-          href="/project"
-          className="mb-8 inline-flex items-center gap-2 text-sm font-medium text-gray-600 hover:text-red-600"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-4 w-4"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-          >
-            <path
-              fillRule="evenodd"
-              d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z"
-              clipRule="evenodd"
+    <div className="mx-auto max-w-full bg-white">
+      {/* 뒤로가기 버튼 */}
+      <Link
+        href="/project"
+        className="mb-8 inline-flex items-center gap-2 text-sm font-medium text-gray-600 hover:text-red-600"
+      >
+        <ArrowLeft className="w-4 h-4" />
+        목록으로 돌아가기
+      </Link>
+
+      <article>
+        {/* 프로젝트 이미지 */}
+        <div className="relative h-96 mb-8 bg-gradient-to-br from-purple-400 to-indigo-600 overflow-hidden rounded-lg">
+          {project.image ? (
+            <img
+              src={project.image}
+              alt={project.title}
+              className="w-full h-full object-cover"
             />
-          </svg>
-          목록으로 돌아가기
-        </Link>
-
-        <article>
-          {/* 헤더 */}
-          <header className="mb-8 border-b pb-6">
-            <span
-              className={`mb-4 inline-block rounded-md px-2.5 py-1 text-sm font-medium ${
-                CATEGORY_STYLES[project.category] || "bg-gray-100 text-gray-800"
-              }`}
-            >
-              {project.category}
-            </span>
-            <h1 className="text-4xl font-extrabold tracking-tight text-gray-900 sm:text-5xl">
-              {project.title}
-            </h1>
-            <div className="mt-6 flex items-center gap-6 text-sm text-gray-500">
-              <span>
-                <strong>작성자:</strong> {project.author}
-              </span>
-              <span>
-                <strong>작성일:</strong> {project.date}
-              </span>
+          ) : (
+            <div className="w-full h-full bg-gradient-to-br from-red-400 to-primary flex items-center justify-center">
+              <div className="text-white text-6xl font-bold opacity-20">
+                {project.title.charAt(0)}
+              </div>
             </div>
-          </header>
+          )}
 
-          {/* 본문 */}
-          <div className="prose prose-lg max-w-none">
-            <p>{project.description}</p>
+          {/* 상태 배지 */}
+          <div className="absolute top-4 left-4">
+            <span
+              className={`px-3 py-1 rounded-full text-xs font-medium backdrop-blur-sm ${getStatusColor(
+                project.status
+              )}`}
+            >
+              {STATUS_LABELS[project.status as keyof typeof STATUS_LABELS]}
+            </span>
+          </div>
+        </div>
+
+        {/* 헤더 */}
+        <header className="mb-8 border-b pb-6">
+          <div className="flex flex-wrap gap-2 mb-4">
+            {project.customTags.map((tag, index) => (
+              <span
+                key={index}
+                className={`px-2 py-1 rounded text-xs font-medium ${tag.color}`}
+              >
+                {tag.name}
+              </span>
+            ))}
           </div>
 
-          {/* 기술 스택 */}
-          <footer className="mt-10 border-t pt-6">
-            <h4 className="text-lg font-semibold text-gray-800 mb-4">
-              핵심 요소 (기술)
-            </h4>
-            <div className="flex flex-wrap gap-3">
-              {project.techStack.map((tech) => (
-                <span
-                  key={tech}
-                  className="rounded-full bg-gray-200 px-4 py-1.5 text-sm font-medium text-gray-800"
-                >
-                  {tech}
-                </span>
-              ))}
+          <h1 className="text-4xl font-extrabold tracking-tight text-gray-900 sm:text-5xl mb-4">
+            {project.title}
+          </h1>
+
+          <div className="flex items-center gap-6 text-sm text-gray-500 mb-6">
+            <div className="flex items-center gap-2">
+              <span
+                className={`px-2 py-1 rounded text-xs font-medium ${
+                  project.authorStatus === "student"
+                    ? "bg-blue-100 text-blue-800"
+                    : project.authorStatus === "graduate"
+                    ? "bg-purple-100 text-black"
+                    : "bg-gray-100 text-gray-800"
+                }`}
+              >
+                {AUTHOR_STATUS_LABELS[project.authorStatus]}
+              </span>
+              <span>{project.author}</span>
             </div>
-          </footer>
-        </article>
-      </div>
+            <span>
+              <strong>학기:</strong> {project.semester}
+            </span>
+            <span>
+              <strong>카테고리:</strong> {project.category}
+            </span>
+          </div>
+
+          {/* 프로젝트 기간 및 참가 정보 */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 bg-gray-50 rounded-lg">
+            <div>
+              <h4 className="font-semibold text-gray-700 mb-1">
+                프로젝트 기간
+              </h4>
+              <p className="text-sm text-gray-600">
+                {project.startDate} {project.endDate && `~ ${project.endDate}`}
+              </p>
+            </div>
+            <div>
+              <h4 className="font-semibold text-gray-700 mb-1">참가 인원</h4>
+              <p className="text-sm text-gray-600">
+                {project.currentParticipants} / {project.maxParticipants}명
+              </p>
+            </div>
+            {project.stars && (
+              <div>
+                <h4 className="font-semibold text-gray-700 mb-1">
+                  GitHub Stars
+                </h4>
+                <p className="text-sm text-gray-600">⭐ {project.stars}</p>
+              </div>
+            )}
+          </div>
+        </header>
+
+        {/* 본문 */}
+        <div className="prose prose-lg max-w-none mb-8">
+          <h2>프로젝트 소개</h2>
+          <p className="text-lg leading-relaxed">{project.description}</p>
+        </div>
+
+        {/* 액션 버튼들 */}
+        <div className="flex flex-wrap gap-4 mb-8">
+          {project.githubUrl && (
+            <a
+              href={project.githubUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-4 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors"
+            >
+              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                <path
+                  fillRule="evenodd"
+                  d="M10 0C4.477 0 0 4.484 0 10.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0110 4.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.203 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.942.359.31.678.921.678 1.856 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0020 10.017C20 4.484 15.522 0 10 0z"
+                  clipRule="evenodd"
+                />
+              </svg>
+              GitHub 저장소
+            </a>
+          )}
+
+          {project.demoUrl && (
+            <a
+              href={project.demoUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            >
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                />
+              </svg>
+              데모 사이트
+            </a>
+          )}
+
+          <button className="inline-flex items-center gap-2 px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors">
+            프로젝트 참가하기
+          </button>
+        </div>
+      </article>
     </div>
   );
 }

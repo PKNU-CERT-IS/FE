@@ -11,7 +11,7 @@ export interface ProjectMaterial {
   author: string;
   authorStatus: "student" | "graduate" | "organization";
   semester: string;
-  category: string;
+  category: ProjectCategoryType; // string에서 ProjectCategoryType으로 변경
   hackingTechnique: TechniqueType;
   status: StatusType;
   startDate: string;
@@ -25,6 +25,7 @@ export interface ProjectMaterial {
 
 export interface CurrentFilters {
   search: string;
+  category: ProjectCategoryType; // 추가
   semester: SemesterType;
   technique: TechniqueType;
   status: StatusType;
@@ -38,6 +39,7 @@ export interface ProjectFilterProps {
 export interface ProjectPageProps {
   searchParams: Promise<{
     search?: string;
+    category?: string; // 추가
     semester?: string;
     technique?: string;
     status?: string;
@@ -45,7 +47,30 @@ export interface ProjectPageProps {
   }>;
 }
 
-export type FilterKey = "search" | "semester" | "technique" | "status";
+export type FilterKey =
+  | "search"
+  | "category"
+  | "semester"
+  | "technique"
+  | "status"; // category 추가
+
+// 프로젝트 카테고리 타입 정의
+export type ProjectCategoryType =
+  | "전체"
+  | "CTF"
+  | "버그헌팅"
+  | "모의해킹"
+  | "보안도구개발"
+  | "취약점분석"
+  | "포렌식"
+  | "암호화"
+  | "네트워크보안"
+  | "웹보안"
+  | "모바일보안"
+  | "AI보안"
+  | "블록체인보안"
+  | "IoT보안"
+  | "연구개발";
 
 export type SemesterType =
   | "all"
@@ -74,6 +99,24 @@ export type TechniqueType =
 export type StatusType = "all" | "not_started" | "in_progress" | "completed";
 
 // 옵션 배열들
+export const PROJECT_CATEGORIES: ProjectCategoryType[] = [
+  "전체",
+  "CTF",
+  "버그헌팅",
+  "모의해킹",
+  "보안도구개발",
+  "취약점분석",
+  "포렌식",
+  "암호화",
+  "네트워크보안",
+  "웹보안",
+  "모바일보안",
+  "AI보안",
+  "블록체인보안",
+  "IoT보안",
+  "연구개발",
+];
+
 export const SEMESTER_OPTIONS: SemesterType[] = [
   "all",
   "2025-2",
