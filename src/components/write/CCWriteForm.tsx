@@ -8,7 +8,7 @@ import FileUpload from "@/components/write/CCFileUpload";
 import MarkdownEditor from "./CCMarkdownEditor";
 
 interface WriteFormProps {
-  type: "board" | "blog" | "study";
+  type: "board" | "blog" | "study" | "project";
 }
 
 export default function WriteForm({ type }: WriteFormProps) {
@@ -45,6 +45,15 @@ export default function WriteForm({ type }: WriteFormProps) {
       case "blog":
         return ["개발", "학습", "활동"];
       case "study":
+        return [
+          "웹 보안",
+          "모의해킹",
+          "암호학",
+          "디지철 포렌식",
+          "네트워크 보안",
+          "기타",
+        ];
+      case "project":
         return [
           "웹 보안",
           "모의해킹",
