@@ -1,4 +1,35 @@
 // types/project.ts
+
+// 첨부파일 타입 정의
+export interface AttachedFile {
+  id: string;
+  name: string;
+  size: number; // bytes
+  type: string; // MIME type
+  category: FileCategory;
+  downloadUrl: string;
+  uploadDate: string;
+  description?: string;
+}
+
+export type FileCategory =
+  | "document"
+  | "image"
+  | "video"
+  | "audio"
+  | "archive"
+  | "code"
+  | "dataset"
+  | "report"
+  | "presentation"
+  | "other";
+
+export interface ExternalLink {
+  url: string;
+  label: string;
+  type?: "notion" | "gdocs" | "drive" | "figma" | "web";
+}
+
 export interface ProjectMaterial {
   id: string;
   title: string;
@@ -21,6 +52,8 @@ export interface ProjectMaterial {
   githubUrl?: string; // GitHub 저장소 URL
   demoUrl?: string; // 데모/배포 URL
   stars?: number; // GitHub 스타 수
+  attachedFiles?: AttachedFile[]; // 첨부파일 배열 추가
+  externalLinks?: ExternalLink[]; // 외부 문서/링크 배열 추가
 }
 
 export interface CurrentFilters {

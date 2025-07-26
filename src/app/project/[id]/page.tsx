@@ -3,6 +3,9 @@ import Link from "next/link";
 import { Metadata } from "next";
 import { ProjectMaterial } from "@/types/project";
 import { ArrowLeft } from "lucide-react";
+import ChainSVG from "/public/icons/chain.svg";
+import AttachedFilesDownload from "@/components/project/SCAttachedFilesDownload";
+import { Globe, FileText, BookText } from "lucide-react";
 
 import { getProjectMaterials } from "@/mocks/mockProjectData";
 
@@ -58,6 +61,42 @@ const AUTHOR_STATUS_LABELS = {
   student: "학부생",
   graduate: "대학원생",
   organization: "기관/단체",
+};
+
+// 외부 링크용 아이콘 반환
+const getExternalLinkIcon = (type?: string) => {
+  switch (type) {
+    case "notion":
+      return (
+        <div className="w-5 h-5 bg-white border border-gray-300 rounded flex items-center justify-center">
+          <span className="text-black font-bold text-sm">N</span>
+        </div>
+      );
+    case "gdocs":
+      return (
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <rect width="20" height="20" rx="4" fill="#fff" />
+          <rect x="5" y="3" width="10" height="14" rx="2" fill="#4285F4" />
+          <rect x="7" y="6" width="6" height="1.2" rx="0.6" fill="#fff" />
+          <rect x="7" y="8.5" width="6" height="1.2" rx="0.6" fill="#fff" />
+          <rect x="7" y="11" width="4" height="1.2" rx="0.6" fill="#fff" />
+        </svg>
+      );
+    case "drive":
+      return <BookText className="w-5 h-5" />;
+    case "figma":
+      return (
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <circle cx="10" cy="10" r="8" fill="#fff" />
+          <circle cx="10" cy="6.5" r="2.5" fill="#F24E1E" />
+          <circle cx="10" cy="13.5" r="2.5" fill="#1ABCFE" />
+          <circle cx="6.5" cy="10" r="2.5" fill="#A259FF" />
+          <circle cx="13.5" cy="10" r="2.5" fill="#0ACF83" />
+        </svg>
+      );
+    default:
+      return <Globe className="w-5 h-5" />;
+  }
 };
 
 export default async function ProjectDetailPage({
@@ -231,6 +270,33 @@ export default async function ProjectDetailPage({
             프로젝트 참가하기
           </button>
         </div>
+
+        {/* 첨부파일 섹션 */}
+        {project.attachedFiles && project.attachedFiles.length > 0 && (
+          <div className="mb-8">
+            <AttachedFilesDownload files={project.attachedFiles} />
+          </div>
+        )}
+
+        {/* 외부 문서/링크 섹션 */}
+        {project.externalLinks && project.externalLinks.length > 0 && (
+          <div className="mb-8">
+            <div className="flex flex-wrap gap-3">
+              {project.externalLinks.map((link, idx) => (
+                <a
+                  key={idx}
+                  href={link.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-blue-100 transition-colors border border-gray-200"
+                >
+                  {getExternalLinkIcon(link.type)}
+                  <span className="font-medium">{link.label}</span>
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
       </article>
     </div>
   );
