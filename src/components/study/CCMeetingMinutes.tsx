@@ -216,13 +216,26 @@ export default function MeetingMinutes({
       {/* 헤더 */}
       <div className="p-6 border-b border-gray-200">
         <div className="flex items-center justify-between">
-          <h2 className="text-xl font-bold text-cert-black">스터디 회의록</h2>
-          {isStudyLeader && (
-            <DefaultButton size="sm" onClick={openModal}>
-              <Plus className="w-4 h-4 mr-2" />
-              회의록 추가
-            </DefaultButton>
-          )}
+          <div>
+            <h2 className="text-xl font-bold text-cert-black">스터디 회의록</h2>
+            <div className="mt-1 space-y-1  rounded-lg">
+              <p className="text-sm text-gray-500">
+                스터디 회의록을 작성하고 관리합니다.
+                <br /> 스터디 장만 회의록을 추가할 수 있습니다.
+                <br />
+                회의록은 회차별로 관리되며 주에 한 번이상 결과물을 작성해주시기
+                바랍니다.
+              </p>
+            </div>
+          </div>
+          <div>
+            {isStudyLeader && (
+              <DefaultButton size="sm" onClick={openModal}>
+                <Plus className="w-4 h-4 mr-2" />
+                회의록 추가
+              </DefaultButton>
+            )}
+          </div>
         </div>
       </div>
 
@@ -242,7 +255,7 @@ export default function MeetingMinutes({
                 <div className="flex items-start justify-between mb-3">
                   <div>
                     <h4 className="font-semibold text-gray-900">
-                      {minute.week}주차: {minute.title}
+                      {minute.week}회차: {minute.title}
                     </h4>
                     <div className="flex items-center gap-2 mt-1">
                       <Calendar className="w-4 h-4 text-gray-400" />
