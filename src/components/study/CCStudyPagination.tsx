@@ -81,11 +81,11 @@ export default function CCStudyPagination({
         {visiblePages.map((page) => (
           <Link key={page} href={createSafePageUrl(page)}>
             <div
-              className={`text-sm font-medium shadow-lg inline-flex items-center justify-center h-9 px-3 rounded-md min-w-[40px] ${
+              className={`w-10 h-10 text-sm font-medium flex items-center justify-center rounded-md transition-colors border  ${
                 page === currentPage
-                  ? "bg-cert-red text-white"
-                  : "border border-gray-300 text-gray-600 hover:bg-cert-red hover:border-cert-red hover:text-white"
-              } transition-colors`}
+                  ? "bg-cert-red text-white shadow-md border-cert-red"
+                  : "bg-white text-gray-700 border-gray-300 hover:bg-cert-red hover:text-white hover:border-cert-red"
+              }`}
             >
               {page}
             </div>

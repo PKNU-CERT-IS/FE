@@ -61,7 +61,7 @@ export default function CCProfilePagination({
             return (
               <span
                 key={`ellipsis-${index}`}
-                className="px-3 py-2 text-gray-500 text-sm"
+                className="w-10 h-10 flex items-center justify-center text-gray-500 text-sm"
               >
                 ...
               </span>
@@ -73,13 +73,13 @@ export default function CCProfilePagination({
           return pageNumber === currentPage ? (
             <div
               key={pageNumber}
-              className="text-sm font-medium shadow-lg inline-flex items-center justify-center h-9 px-3 rounded-md bg-cert-red text-white min-w-[40px]"
+              className="w-10 h-10 text-sm font-medium shadow-md flex items-center justify-center rounded-md bg-cert-red text-white border border-cert-red"
             >
               {pageNumber}
             </div>
           ) : (
             <Link key={pageNumber} href={createPageUrl(pageNumber)}>
-              <div className="text-sm font-medium shadow-lg inline-flex items-center justify-center h-9 px-3 rounded-md border border-gray-300 text-gray-600 hover:bg-cert-red hover:border-cert-red hover:text-white transition-colors min-w-[40px]">
+              <div className="w-10 h-10 text-sm font-medium flex items-center justify-center rounded-md border border-gray-300 text-gray-700 bg-white hover:bg-gray-100 transition-colors">
                 {pageNumber}
               </div>
             </Link>

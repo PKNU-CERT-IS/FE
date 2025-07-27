@@ -114,14 +114,16 @@ export default function BlogPagination({
         {visiblePages.map((page, index) => (
           <div key={index}>
             {page === "..." ? (
-              <span className="px-3 py-2 text-gray-500 text-sm">...</span>
+              <span className="w-10 h-10 flex items-center justify-center text-gray-500 text-sm">
+                ...
+              </span>
             ) : (
               <button
                 onClick={() => handlePageChange(page as number)}
-                className={`px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 min-w-[40px] ${
+                className={`w-10 h-10 rounded-md text-sm font-medium transition-all duration-200 flex items-center justify-center border ${
                   currentPage === page
-                    ? "bg-cert-red text-white shadow-lg"
-                    : "bg-white text-gray-700 border border-gray-300 hover:bg-gray-50"
+                    ? "bg-cert-red text-white shadow-md border-cert-red"
+                    : "bg-white text-gray-700 border-gray-300 hover:bg-gray-100"
                 }`}
               >
                 {page}
