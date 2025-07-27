@@ -1,7 +1,6 @@
 "server-only";
 
 import Link from "next/link";
-import LockSVG from "/public/icons/lock.svg";
 import { UserPlus, LockOpen } from "lucide-react";
 
 type AuthSwitchPromptProps = {

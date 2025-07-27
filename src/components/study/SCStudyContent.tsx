@@ -296,10 +296,7 @@ export default async function SCStudyContent({
 
             return (
               <Link href={`/study/${material.id}`} key={material.id}>
-                <div
-                  key={material.id}
-                  className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow"
-                >
+                <div key={material.id} className="card-list bg-white p-6">
                   {/* 상태 및 날짜 정보 */}
                   <div className="flex flex-wrap gap-2 mb-3 items-center justify-between">
                     <div className="flex items-center gap-2">
@@ -440,7 +437,7 @@ export default async function SCStudyContent({
                         />
                         <button
                           type="submit"
-                          className="px-4 py-2 bg-primary text-white text-sm font-medium rounded-lg hover:bg-red-600 transition-colors"
+                          className="px-4 py-2 action-button text-sm"
                         >
                           참가하기
                         </button>

@@ -115,7 +115,7 @@ function ProjectContentRenderer({
                 <Link
                   href={`/project/${project.id}`}
                   key={project.id}
-                  className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-lg transition-all duration-300 group relative flex flex-col"
+                  className="card-list bg-white overflow-hidd group relative flex flex-col"
                 >
                   {/* 프로젝트 이미지 */}
                   <div className="relative h-76 bg-gradient-to-br from-purple-400 to-indigo-600 overflow-hidden">
@@ -231,7 +231,7 @@ function ProjectContentRenderer({
                         {/* 참가하기 버튼 */}
                         <button
                           type="button"
-                          className="px-4 py-2 bg-primary text-white text-sm font-medium rounded-lg hover:bg-red-600 transition-colors"
+                          className="px-4 py-2 action-button text-sm"
                           onClick={(e) => e.preventDefault()}
                         >
                           참가하기

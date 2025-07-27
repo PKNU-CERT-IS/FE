@@ -18,7 +18,7 @@ export default function CCProfileModal({ closeModal, modalRef }: ModalProps) {
   return (
     <div
       ref={modalRef}
-      className="fixed inset-0 bg-black/80 flex justify-center items-center z-20 "
+      className="fixed inset-0 bg-cert-black/50  flex justify-center items-center z-20"
     >
       <div className="rounded-lg border bg-white border-gray-200 shadow-sm w-96 relative animate-pop-in">
         <div className="flex flex-col space-y-1.5 p-6 text-center pb-6">
@@ -107,7 +107,7 @@ export default function CCProfileModal({ closeModal, modalRef }: ModalProps) {
             <DefaultButton
               variant="outline"
               onClick={closeModal}
-              className="border-gray-300 text-gray-600 hover:border-red-400 hover:bg-cert-red/0 hover:text-red-600 "
+              className="border-gray-300 text-gray-600 hover:border-red-400 hover:bg-cert-red/0 hover:text-red-600"
             >
               취소
             </DefaultButton>

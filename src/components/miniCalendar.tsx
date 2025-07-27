@@ -1,7 +1,7 @@
 "use client";
 
 import AngleSVG from "/public/icons/angle.svg";
-import { useMemo, useState } from "react";
+import { memo, useMemo, useState } from "react";
 import { DAY_NAMES, MONTH_NAMES } from "@/utils/scheduleUtils";
 
 const MiniCalendar = () => {
@@ -47,7 +47,7 @@ const MiniCalendar = () => {
       <div className="flex items-center justify-between mb-4">
         <button
           onClick={prevMonth}
-          className="text-gray-600 p-2 rounded-md hover:text-gray-900 hover:bg-gray-100"
+          className="text-gray-600 p-2 rounded-md hover:text-gray-900 hover:bg-gray-100 duration-200"
         >
           <AngleSVG className="rotate-90" width={13} />
         </button>
@@ -56,7 +56,7 @@ const MiniCalendar = () => {
         </h3>
         <button
           onClick={nextMonth}
-          className="text-gray-600 p-2 rounded-md hover:text-gray-900 hover:bg-gray-100"
+          className="text-gray-600 p-2 rounded-md hover:text-gray-900 hover:bg-gray-100 duration-200"
         >
           <AngleSVG className="rotate-270" width={13} />
         </button>
@@ -83,13 +83,13 @@ const MiniCalendar = () => {
             <div
               key={index}
               className={`
-                relative p-2 text-center text-sm rounded cursor-pointer
+                relative p-2 text-center text-sm rounded cursor-pointer duration-200
                 ${isCurrentMonth ? "text-gray-900" : "text-gray-400"}
                 ${isToday ? "text-white font-bold bg-cert-dark-red" : ""}
                 ${!isToday && !hasEvent ? "hover:bg-gray-100" : ""}
                 ${
                   hasEvent
-                    ? "border bg-cert-dark-red-5 border-cert-dark-red-20"
+                    ? "border bg-cert-dark-red/5 border-cert-dark-red/20"
                     : ""
                 }
                 `}
@@ -106,4 +106,4 @@ const MiniCalendar = () => {
     </div>
   );
 };
-export default MiniCalendar;
+export default memo(MiniCalendar, () => false);

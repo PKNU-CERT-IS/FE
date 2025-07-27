@@ -36,7 +36,7 @@ export default async function CCScheduleList({ date }: SCScheduleListProps) {
           {filteredSchedules.map((schedule) => (
             <div
               key={schedule.id}
-              className="rounded-lg border text-card-foreground shadow-sm bg-white border-gray-200 hover:border-cert-red/50 transition-all duration-300 hover:shadow-lg"
+              className="card-list text-card-foreground bg-white"
             >
               <div className="flex flex-col space-y-1.5 p-6">
                 <div className="flex items-start justify-between">

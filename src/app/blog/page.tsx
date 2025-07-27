@@ -100,7 +100,7 @@ export default async function BlogPage({
               {/* 새 글 작성 버튼 */}
               <Link
                 href="/blog/write"
-                className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-md hover:bg-red-600 transition-colors font-slim whitespace-nowrap"
+                className="action-button inline-flex gap-2 px-4 py-2 whitespace-nowrap "
               >
                 <Plus className="w-4 h-4" />새 글 작성
               </Link>
@@ -114,7 +114,7 @@ export default async function BlogPage({
                 <Link
                   key={post.id}
                   href={`/blog/${post.id}`}
-                  className="block bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow cursor-pointer"
+                  className="card-list block overflow-hidden"
                 >
                   <div className="p-5">
                     {/* 카테고리 및 날짜 */}

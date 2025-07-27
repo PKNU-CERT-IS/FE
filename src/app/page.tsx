@@ -1,3 +1,5 @@
+"server-only";
+
 import Link from "next/link";
 import TypingAnimation from "@/components/typingAnimation";
 import DefaultCard from "@/components/defaultCard";
@@ -15,6 +17,7 @@ import GlobeRedSVG from "/public/icons/globe-red.svg";
 import ServerSVG from "/public/icons/server.svg";
 import SectionBadge from "@/components/sectionBadge";
 import MiniCalendar from "@/components/miniCalendar";
+import DefaultButton from "@/components/ui/defaultButton";
 
 // 캘린더 동적 이벤트 생성 -> 이 부분은 추후 /schedule 과 연동하여 제거될 변수입니다
 const generateUpcomingEvents = () => {
@@ -54,16 +57,16 @@ const Home = () => {
           </>
           <>
             <div className="absolute top-32 left-10 animate-bounce opacity-20">
-              <LockSVG width={24} className="stroke-cert-dark-red" />
+              <LockSVG className="w-6 h-6 stroke-cert-dark-red" />
             </div>
             <div className="absolute bottom-20 right-10 animate-bounce opacity-20">
-              <ShieldSVG width={35} className="stroke-cert-dark-red" />
+              <ShieldSVG className="w-9 h-9 stroke-cert-dark-red" />
             </div>
             <div className="absolute top-1/3 right-20 animate-bounce opacity-20">
-              <EyeSVG width={30} className="text-cert-dark-red" />
+              <EyeSVG className="w-8 h-8 text-cert-dark-red" />
             </div>
             <div className="absolute bottom-1/3 left-20 animate-bounce opacity-15 text-cert-dark-red">
-              <BugSVG width={30} />
+              <BugSVG className="w-8 h-8" />
             </div>
           </>
         </section>
@@ -88,7 +91,7 @@ const Home = () => {
                 "실제 시스템 취약점 분석과 모의해킹을 통한 보안 강화 기법을 학습합니다"
               }
               svgComponent={
-                <ShieldSVG width={64} className="stroke-cert-dark-red" />
+                <ShieldSVG className="w-16 h-16 stroke-cert-dark-red" />
               }
             />
             <DefaultCard
@@ -97,7 +100,7 @@ const Home = () => {
                 "암호학 이론과 실습을 통한 데이터 보호 기술 및 암호화 시스템을 구축합니다"
               }
               svgComponent={
-                <LockSVG width={64} className="stroke-cert-dark-red" />
+                <LockSVG className="w-16 h-16 stroke-cert-dark-red" />
               }
             />
             <DefaultCard
@@ -105,16 +108,14 @@ const Home = () => {
               text={
                 "디지털 증거 수집과 분석을 통한 사이버 범죄 수사 기법을 연구합니다"
               }
-              svgComponent={
-                <EyeSVG width={64} className="text-cert-dark-red" />
-              }
+              svgComponent={<EyeSVG className="w-16 h-16 text-cert-dark-red" />}
             />
             <DefaultCard
               title={"Incident Response"}
               text={
                 "보안 사고 대응과 복구를 위한 체계적인 프로세스와 절차를 학습합니다"
               }
-              svgComponent={<StudySVG width={64} />}
+              svgComponent={<StudySVG className="w-16 h-16" />}
             />
           </div>
         </section>
@@ -166,9 +167,12 @@ const Home = () => {
                 </div>
                 <div className="mt-6 pt-3 border-t border-gray-200">
                   <Link href={"/schedule"}>
-                    <button className="w-full rounded-md py-2.5 border  border-cert-dark-red-20  text-cert-dark-red hover:bg-cert-dark-red-10 cursor-pointer">
+                    <DefaultButton
+                      size="lg"
+                      className="text-md w-full bg-white rounded-md py-2.5 border  border-cert-dark-red/20  text-cert-dark-red hover:bg-cert-dark-red/10 cursor-pointer duration-300"
+                    >
                       전체 일정 보기
-                    </button>
+                    </DefaultButton>
                   </Link>
                 </div>
               </div>
@@ -195,13 +199,13 @@ const Home = () => {
               title={"Schedule"}
               text={"체계적인 교육 일정 관리"}
               svgComponent={
-                <ScheduleSVG width={48} className="stroke-cert-dark-red" />
+                <ScheduleSVG className="w-12 h-12 stroke-cert-dark-red" />
               }
             />
             <DefaultCard
               title={"Study"}
               text={"최신 보안 기술 연구 자료"}
-              svgComponent={<StudySVG width={48} />}
+              svgComponent={<StudySVG className="w-12 h-12" />}
             />
             <DefaultCard
               title={"Blog"}
@@ -230,7 +234,7 @@ const Home = () => {
               </div>
               <div className="flex flex-col text-gray-500 mt-10">
                 <div className="flex flex-row items-center">
-                  <ThunderSVG className="text-cert-dark-red" />
+                  <ThunderSVG className="text-cert-dark-red w-6 h-6" />
                   <span className="my-2 mx-3">
                     실시간 위협 분석 및 대응 훈련
                   </span>
@@ -248,7 +252,7 @@ const Home = () => {
                   </span>
                 </div>
                 <div className="flex flex-row items-center">
-                  <ShieldSVG width={24} className="stroke-cert-dark-red" />
+                  <ShieldSVG className="w-6 h-6 stroke-cert-dark-red" />
                   <span className="my-2 mx-3">
                     보안 자격증 취득 지원 프로그램
                   </span>
@@ -258,7 +262,7 @@ const Home = () => {
             <div className="bg-white border border-gray-200 rounded-2xl p-10 shadow-sm">
               <div className="flex flex-col space-y-1.5 p-6 text-center pb-6 items-center">
                 <div className="mb-6">
-                  <LogoSVG width={80} />
+                  <LogoSVG className="w-20 h-20" />
                 </div>
                 <div className="text-3xl font-bold tracking-tight text-gray-900">
                   Join CERT-IS
@@ -285,7 +289,7 @@ const Home = () => {
                     </span>
                   </div>
                 </div>
-                <button className="w-full rounded-md py-2.5 bg-cert-dark-red text-white hover:opacity-90 cursor-pointer">
+                <button className="w-full rounded-md py-2.5 action-button text-white cursor-pointer duration-300">
                   지원하기
                 </button>
               </div>

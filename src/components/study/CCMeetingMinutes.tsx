@@ -341,7 +341,7 @@ export default function MeetingMinutes({
                 }}
                 className="text-gray-400 hover:text-gray-600"
               >
-                ✕
+                <X />
               </button>
             </div>
 

@@ -7,7 +7,7 @@ const defaultButtonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-cert-red hover:bg-cert-red/80 text-white",
+        default: "bg-cert-red hover:bg-red-700 text-white",
         outline:
           "border border-input bg-background hover:bg-accent hover:text-accent-foreground hover:border-cert-red",
         ghost: "hover:bg-accent hover:text-white",

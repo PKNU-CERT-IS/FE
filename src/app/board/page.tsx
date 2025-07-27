@@ -59,13 +59,13 @@ export default async function BoardPage({ searchParams }: BoardPageProps) {
 
   return (
     <div className="space-y-6">
-      <div className="mb-6 flex flex-col sm:flex-row gap-4">
+      <div className="mb-6 flex flex-col sm:flex-row gap-4 items-center">
         <BoardSearchBar currentSearch={currentSearch} />
         <BoardCategory selectedCategory={currentCategory} />
         <Link
           scroll={false}
           href="/board/write"
-          className="inline-flex items-center gap-2 px-4 py-2 bg-cert-red text-white rounded-md hover:bg-cert-red/80"
+          className="inline-flex gap-2 px-4 py-2 action-button"
         >
           <PlusSVG className="w-4 h-4" />새 글 작성
         </Link>

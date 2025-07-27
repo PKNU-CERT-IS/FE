@@ -67,22 +67,22 @@ export default function KebabMenu({ currentId, currentUrl }: KebabMenuProps) {
             <div className="p-1">
               <button
                 onClick={handleEdit}
-                className="w-full text-left px-3 py-2 text-sm hover:bg-gray-100 rounded flex items-center gap-2 no-underline text-gray-700"
+                className="w-full text-left px-3 py-2 text-sm hover:bg-gray-100 rounded flex items-center gap-2 no-underline text-gray-700 duration-200"
               >
                 <Edit className="w-4 h-4" />
                 수정
               </button>
               <button
                 onClick={handleReport}
-                className="w-full text-left px-3 py-2 text-sm hover:bg-gray-100 rounded flex items-center gap-2"
+                className="w-full text-left px-3 py-2 text-sm hover:bg-gray-100 rounded flex items-center gap-2 duration-200"
               >
                 <Flag className="w-4 h-4" />
                 신고
               </button>
-              <hr className="my-1" />
+              <hr className="my-1 text-gray-300 " />
               <button
                 onClick={handleDeleteClick}
-                className="w-full text-left px-3 py-2 text-sm hover:bg-gray-100 rounded flex items-center gap-2 text-red-600"
+                className="w-full text-left px-3 py-2 text-sm hover:bg-gray-100 rounded flex items-center gap-2 text-red-600 duration-200"
               >
                 <Trash2 className="w-4 h-4" />
                 삭제

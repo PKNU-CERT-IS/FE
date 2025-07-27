@@ -1,8 +1,8 @@
 "use client";
-import { useState } from "react";
-import ChevronDownSVG from "/public/icons/angle.svg";
+import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import DefaultButton from "@/components/ui/defaultButton";
+import { ChevronDown } from "lucide-react";
 
 interface DropdownOption {
   value: string;
@@ -26,8 +26,9 @@ export default function MembersDropdow<T>({
   className,
   disabled = false,
 }: MembersDropdownProps<T>) {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   const selectedOption = options.find((option) => option.value === value);
+
   return (
     <div className={cn("relative", className)}>
       <DefaultButton
@@ -35,9 +36,9 @@ export default function MembersDropdow<T>({
         size="default"
         className={cn(
           "w-full justify-between text-left font-normal transition-all duration-200 cursor-pointer",
-          "border-gray-300 bg-gray-50/50 hover:border-cert-red hover:bg-white  hover:text-cert-black",
+          "bg-white border-gray-300 hover:border-cert-red hover:bg-white hover:text-cert-black",
           "focus:border-cert-red focus:ring-2 focus:ring-cert-red/20",
-          disabled && "cursor-not-allowed opacity-50 bg-cert-dark-red-5"
+          disabled && "cursor-not-allowed opacity-50 bg-cert-dark-red/5"
         )}
         onClick={() => !disabled && setIsOpen(!isOpen)}
         disabled={disabled}
@@ -45,13 +46,13 @@ export default function MembersDropdow<T>({
         <span className={cn(!selectedOption && "text-gray-400")}>
           {selectedOption?.label || placeholder}
         </span>
-        <ChevronDownSVG
-          className={cn(
-            "h-4 w-4 opacity-50 transition-transform duration-300 fill-cert-black ",
-            isOpen && "rotate-180"
-          )}
+        <ChevronDown
+          className={`h-4 w-4 transition-transform duration-300 text-gray-400 ${
+            isOpen ? "rotate-180" : ""
+          }`}
         />
       </DefaultButton>
+
       {isOpen && !disabled && (
         <>
           <div

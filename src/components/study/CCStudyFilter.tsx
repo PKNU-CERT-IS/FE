@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition, useRef, useCallback } from "react";
+import { useState, useTransition, useRef, useCallback, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Search, ChevronDown, Plus } from "lucide-react";
 import type {
@@ -34,6 +34,8 @@ export default function CCStudyFilter({ currentFilters }: StudyFilterProps) {
   const [showTechniqueDropdown, setShowTechniqueDropdown] =
     useState<boolean>(false);
   const [showStatusDropdown, setShowStatusDropdown] = useState<boolean>(false);
+
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   // URL 파라미터 업데이트 함수 (영어 값으로 저장)
   const updateFilter = useCallback(
@@ -81,6 +83,23 @@ export default function CCStudyFilter({ currentFilters }: StudyFilterProps) {
     setShowStatusDropdown(false);
   }, []);
 
+  // 외부 클릭 감지
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(e.target as Node)
+      ) {
+        setShowSemesterDropdown(false);
+        setShowTechniqueDropdown(false);
+        setShowStatusDropdown(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   return (
     <div className="mb-4">
       {/* 검색바 */}
@@ -89,7 +108,7 @@ export default function CCStudyFilter({ currentFilters }: StudyFilterProps) {
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
           <input
             type="text"
-            placeholder="제목, 내용, 작성자로 검색..."
+            placeholder="제목, 내용, 작성자로 검색하세요..."
             defaultValue={currentFilters.search}
             onChange={handleSearchChange}
             className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg bg-white text-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-red-500 focus:border-transparent"
@@ -105,21 +124,26 @@ export default function CCStudyFilter({ currentFilters }: StudyFilterProps) {
       {/* 필터 그리드 */}
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
         {/* 학기별 필터 */}
-        <div className="relative">
+        <div className="relative" ref={dropdownRef}>
           <button
             type="button"
-            className="w-full flex items-center justify-between px-3 py-3 border border-gray-300 rounded-lg bg-white hover:bg-gray-50 focus:ring-2 focus:ring-red-500 transition-colors text-sm"
             onClick={() => {
               setShowSemesterDropdown(!showSemesterDropdown);
               setShowTechniqueDropdown(false);
               setShowStatusDropdown(false);
             }}
+            className="w-full flex items-center justify-between px-3 py-3 border border-gray-300 rounded-lg bg-white hover:bg-gray-50 focus:ring-2 focus:ring-red-500 transition-colors text-sm"
           >
             <span className="text-gray-700 truncate pr-1">
               {SEMESTER_LABELS[currentFilters.semester]}
             </span>
-            <ChevronDown className="w-4 h-4 text-gray-400 flex-shrink-0" />
+            <ChevronDown
+              className={`h-4 w-4 transition-transform duration-300 text-gray-400 ${
+                showSemesterDropdown ? "rotate-180" : ""
+              }`}
+            />
           </button>
+
           {showSemesterDropdown && (
             <div className="absolute top-full mt-1 w-full bg-white border border-gray-300 rounded-lg shadow-lg z-20 max-h-48 overflow-y-auto">
               {SEMESTER_OPTIONS.map((option: SemesterType) => (
@@ -139,20 +163,24 @@ export default function CCStudyFilter({ currentFilters }: StudyFilterProps) {
           )}
         </div>
         {/* 기법 필터 */}
-        <div className="relative">
+        <div className="relative" ref={dropdownRef}>
           <button
             type="button"
-            className="w-full flex items-center justify-between px-3 py-3 border border-gray-300 rounded-lg bg-white hover:bg-gray-50 focus:ring-2 focus:ring-red-500 transition-colors text-sm"
             onClick={() => {
               setShowTechniqueDropdown(!showTechniqueDropdown);
               setShowSemesterDropdown(false);
               setShowStatusDropdown(false);
             }}
+            className="w-full flex items-center justify-between px-3 py-3 border border-gray-300 rounded-lg bg-white hover:bg-gray-50 focus:ring-2 focus:ring-red-500 transition-colors text-sm"
           >
             <span className="text-gray-700 truncate pr-1">
               {TECHNIQUE_LABELS[currentFilters.technique]}
             </span>
-            <ChevronDown className="w-4 h-4 text-gray-400 flex-shrink-0" />
+            <ChevronDown
+              className={`h-4 w-4 transition-transform duration-300 text-gray-400 ${
+                showTechniqueDropdown ? "rotate-180" : ""
+              }`}
+            />
           </button>
           {showTechniqueDropdown && (
             <div className="absolute top-full mt-1 w-full bg-white border border-gray-300 rounded-lg shadow-lg z-20 max-h-48 overflow-y-auto">
@@ -172,22 +200,28 @@ export default function CCStudyFilter({ currentFilters }: StudyFilterProps) {
             </div>
           )}
         </div>
+
         {/* 상태 필터 */}
-        <div className="relative">
+        <div className="relative" ref={dropdownRef}>
           <button
             type="button"
-            className="w-full flex items-center justify-between px-3 py-3 border border-gray-300 rounded-lg bg-white hover:bg-gray-50 focus:ring-2 focus:ring-red-500 transition-colors text-sm"
             onClick={() => {
               setShowStatusDropdown(!showStatusDropdown);
               setShowSemesterDropdown(false);
               setShowTechniqueDropdown(false);
             }}
+            className="w-full flex items-center justify-between px-3 py-3 border border-gray-300 rounded-lg bg-white hover:bg-gray-50 focus:ring-2 focus:ring-red-500 transition-colors text-sm"
           >
             <span className="text-gray-700 truncate pr-1">
               {STATUS_LABELS[currentFilters.status]}
             </span>
-            <ChevronDown className="w-4 h-4 text-gray-400 flex-shrink-0" />
+            <ChevronDown
+              className={`h-4 w-4 transition-transform duration-300 text-gray-400 ${
+                showStatusDropdown ? "rotate-180" : ""
+              }`}
+            />
           </button>
+
           {showStatusDropdown && (
             <div className="absolute top-full mt-1 w-full bg-white border border-gray-300 rounded-lg shadow-lg z-20 max-h-48 overflow-y-auto">
               {STATUS_OPTIONS.map((option: StatusType) => (
@@ -209,7 +243,7 @@ export default function CCStudyFilter({ currentFilters }: StudyFilterProps) {
         {/* 서버 컴포넌트 분리 필요해 보임 */}
         <Link
           href={"/study/write"}
-          className="inline-flex items-center gap-4 px-6 bg-cert-red text-white rounded-md hover:bg-cert-red/80"
+          className="inline-flex items-center justify-center gap-4 px-6 text-white rounded-md action-button"
         >
           <Plus className="w-4 h-4" />
           <span>스터디 생성</span>

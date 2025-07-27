@@ -34,7 +34,7 @@ export default function HamburgerMenu({ navBarList }: HamburgerMenuProps) {
           variant="ghost"
           size="sm"
           onClick={() => setIsOpen(!isOpen)}
-          className="text-gray-900 p-2 transition-all duration-300 hover:text-cert-dark-red hover:bg-cert-dark-red-5"
+          className="text-gray-900 p-2 transition-all duration-300 hover:text-cert-dark-red hover:bg-cert-dark-red/5"
         >
           {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
         </DefaultButton>
@@ -47,7 +47,7 @@ export default function HamburgerMenu({ navBarList }: HamburgerMenuProps) {
               <Link
                 key={item.name}
                 href={item.href}
-                className={`block px-4 py-3 text-base font-medium transition-all duration-300 rounded-lg hover:bg-cert-dark-red-5 ${
+                className={`block px-4 py-3 text-base font-medium transition-all duration-300 rounded-lg hover:bg-cert-dark-red/5 ${
                   pathname === item.href
                     ? "text-cert-dark-red bg-cert-dark-red/5 shadow-lg"
                     : "text-gray-900"

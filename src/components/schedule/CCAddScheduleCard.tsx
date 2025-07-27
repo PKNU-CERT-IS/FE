@@ -23,7 +23,7 @@ export default function CCAddScheduleCard() {
           onClick={() => {
             setIsOpenModal(true);
           }}
-          className="w-full rounded-md py-2.5 bg-cert-red text-white hover:opacity-90 cursor-pointer"
+          className="action-button w-full py-2.5"
         >
           일정 추가
         </button>

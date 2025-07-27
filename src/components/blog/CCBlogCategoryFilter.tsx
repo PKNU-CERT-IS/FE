@@ -51,8 +51,8 @@ export default function CCBlogCategoryFilter({
           onClick={() => handleCategoryChange(category)}
           className={
             currentCategory === category
-              ? "bg-cert-red text-white hover:bg-cert-red/80"
-              : "border-gray-300 text-gray-600 hover:border-cert-red"
+              ? "category-filter-active"
+              : "category-filter"
           }
         >
           {category}

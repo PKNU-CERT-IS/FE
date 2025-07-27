@@ -174,7 +174,7 @@ export default function CCSignUpForm() {
 
       <DefaultButton
         type="submit"
-        className="w-full h-12 bg-cert-dark-red text-white font-medium transition-all duration-300 shadow-lg cursor-pointer hover:shadow-xl hover:bg-cert-dark-red/80"
+        className="w-full h-12 text-white font-medium transition-all duration-300 shadow-lg cursor-pointer hover:shadow-xl "
       >
         <UserPlus className="w-4 h-4 mr-1" />
         회원가입

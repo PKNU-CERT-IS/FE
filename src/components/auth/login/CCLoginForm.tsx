@@ -103,7 +103,7 @@ export default function CCLoginInput() {
 
       <DefaultButton
         type="submit"
-        className="w-full h-12 bg-cert-dark-red text-white font-medium shadow-lg hover:bg-cert-dark-red/80"
+        className="w-full h-12 text-white font-medium shadow-lg "
       >
         <LockOpen className="w-4 h-4 stroke-white" />
         로그인

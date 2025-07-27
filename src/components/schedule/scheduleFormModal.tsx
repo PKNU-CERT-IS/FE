@@ -47,14 +47,14 @@ const ScheduleFormModal = ({ closeModal, schedule, modalRef }: ModalProps) => {
   return (
     <div
       ref={modalRef}
-      className="fixed inset-0 bg-black/80 flex justify-center items-center z-20 "
+      className="fixed inset-0 bg-cert-black/50 flex justify-center items-center z-20 "
     >
       <div className="rounded-lg border bg-white border-gray-200 shadow-sm w-96 relative animate-pop-in">
         <div className="flex flex-col space-y-1.5 p-6 text-center pb-6">
           <div className="flex flex-col space-y-1.5 text-center sm:text-left">
             <button
               onClick={closeModal}
-              className="absolute top-4 right-4 text-md hover:bg-gray-100 w-8 h-8 rounded-full flex items-center justify-center"
+              className="absolute top-4 right-4 text-md text-gray-400 hover:text-gray-600 flex items-center justify-center"
             >
               <X />
             </button>
@@ -68,14 +68,14 @@ const ScheduleFormModal = ({ closeModal, schedule, modalRef }: ModalProps) => {
               <p className="text-sm mb-1.5">활동명</p>
               <input
                 defaultValue={schedule?.title ?? ""}
-                className="required flex h-10 w-full rounded-md border px-3 py-2 bg-white border-gray-300 text-gray-900"
+                className="text-sm required flex h-10 w-full rounded-md border px-3 py-2 bg-white border-gray-300 text-gray-900"
               />
             </div>
             <div>
               <p className="text-sm mb-1.5">장소</p>
               <input
                 defaultValue={schedule?.location ?? ""}
-                className="flex h-10 w-full rounded-md border px-3 py-2 bg-white border-gray-300 text-gray-900"
+                className="text-sm flex h-10 w-full rounded-md border px-3 py-2 bg-white border-gray-300 text-gray-900"
               />
             </div>
             <div className="grid grid-cols-2 gap-4 z-10"></div>
@@ -86,7 +86,7 @@ const ScheduleFormModal = ({ closeModal, schedule, modalRef }: ModalProps) => {
                   type="date"
                   placeholder="날짜를 선택해주세요."
                   defaultValue={schedule?.date ?? ""}
-                  className={`flex h-10 w-full rounded-md border px-3 py-2 bg-white border-gray-300 text-gray-900 cursor-pointer`}
+                  className={`text-sm flex h-10 w-full rounded-md border px-3 py-2 bg-white border-gray-300 text-gray-900 cursor-pointer`}
                 />
               </div>
 
@@ -95,7 +95,7 @@ const ScheduleFormModal = ({ closeModal, schedule, modalRef }: ModalProps) => {
                 <button
                   onClick={toggleDropdown}
                   defaultValue={schedule?.type ?? ""}
-                  className="flex h-10 w-full rounded-md border px-3 py-2 bg-white border-gray-300 text-gray-900 justify-between cursor-pointer"
+                  className="text-sm flex h-10 w-full rounded-md border px-3 py-2 bg-white border-gray-300 text-gray-900 justify-between cursor-pointer"
                 >
                   {selectedActivity}
                   <AngleSVG width={14} />
@@ -108,7 +108,7 @@ const ScheduleFormModal = ({ closeModal, schedule, modalRef }: ModalProps) => {
                         <button
                           key={label}
                           onClick={() => handleActivity(label)}
-                          className="flex h-10 w-full rounded-md px-3 py-2 text-gray-900 hover:bg-cert-red hover:text-white"
+                          className="text-sm items-center flex h-10 w-full rounded-md px-3 py-2 text-gray-900 hover:bg-cert-red hover:text-white"
                         >
                           {label}
                         </button>
@@ -124,7 +124,7 @@ const ScheduleFormModal = ({ closeModal, schedule, modalRef }: ModalProps) => {
                 <p className="text-sm mb-1.5">시작 시간</p>
                 <button
                   onClick={toggleStartTimeDropdown}
-                  className="flex h-10 w-full rounded-md border px-3 py-2 bg-white border-gray-300 text-gray-900 justify-between cursor-pointer"
+                  className="text-sm flex h-10 w-full rounded-md border px-3 py-2 bg-white border-gray-300 text-gray-900 justify-between cursor-pointer"
                 >
                   {selectedStartTime}
                   <AngleSVG width={14} />
@@ -136,7 +136,7 @@ const ScheduleFormModal = ({ closeModal, schedule, modalRef }: ModalProps) => {
                         key={time}
                         onClick={() => handleStartTime(time)}
                         defaultValue={schedule?.startTime ?? ""}
-                        className="flex h-10 w-full rounded-md px-3 py-2 text-gray-900 hover:bg-red-500 hover:text-white"
+                        className="text-sm items-center flex h-10 w-full rounded-md px-3 py-2 text-gray-900 hover:bg-cert-red hover:text-white"
                       >
                         {time}
                       </button>
@@ -148,7 +148,7 @@ const ScheduleFormModal = ({ closeModal, schedule, modalRef }: ModalProps) => {
                 <p className="text-sm mb-1.5">종료 시간</p>
                 <button
                   onClick={toggleEndTimeDropdown}
-                  className="flex h-10 w-full rounded-md border px-3 py-2 bg-white border-gray-300 text-gray-900 justify-between cursor-pointer"
+                  className="text-sm flex h-10 w-full rounded-md border px-3 py-2 bg-white border-gray-300 text-gray-900 justify-between cursor-pointer"
                 >
                   {selectedEndTime}
                   <AngleSVG width={14} />
@@ -160,7 +160,7 @@ const ScheduleFormModal = ({ closeModal, schedule, modalRef }: ModalProps) => {
                         key={time}
                         onClick={() => handleEndTime(time)}
                         defaultValue={schedule?.endTime ?? ""}
-                        className="flex h-10 w-full rounded-md px-3 py-2 text-gray-900 hover:bg-red-500 hover:text-white"
+                        className="text-sm items-center flex h-10 w-full rounded-md px-3 py-2 text-gray-900 hover:bg-cert-red hover:text-white"
                       >
                         {time}
                       </button>
@@ -175,9 +175,9 @@ const ScheduleFormModal = ({ closeModal, schedule, modalRef }: ModalProps) => {
               addSchedule();
               closeModal();
             }}
-            className="w-full rounded-md py-2.5 bg-cert-red text-white hover:opacity-90 cursor-pointer"
+            className="w-full rounded-md py-2.5 bg-cert-red text-white hover:bg-red-700 cursor-pointer duration-300"
           >
-            일정 추가
+            신청
           </button>
         </div>
       </div>

@@ -25,10 +25,10 @@ const NavBarItems = ({ navBarList }: NavBarItemsProps) => {
             className={`px-4 py-2 text-sm mx-0.5 transition-all duration-300 rounded-lg relative group overflow-hidden
               ${
                 isActive
-                  ? "text-cert-dark-red bg-cert-dark-red-5 shadow-cert-navbar"
+                  ? "text-cert-dark-red bg-cert-dark-red/5 shadow-cert-navbar"
                   : ""
               }
-              hover:text-cert-dark-red hover:bg-cert-dark-red-5`}
+              hover:text-cert-dark-red hover:bg-cert-dark-red/5`}
           >
             <div className="relative z-10">{item.name}</div>
             {isActive && (

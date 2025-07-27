@@ -3,10 +3,8 @@ import Link from "next/link";
 import { Metadata } from "next";
 import { ProjectMaterial } from "@/types/project";
 import { ArrowLeft } from "lucide-react";
-import ChainSVG from "/public/icons/chain.svg";
 import AttachedFilesDownload from "@/components/project/SCAttachedFilesDownload";
-import { Globe, FileText, BookText } from "lucide-react";
-
+import { Globe, BookText } from "lucide-react";
 import { getProjectMaterials } from "@/mocks/mockProjectData";
 
 interface ProjectDetailPageProps {
@@ -266,7 +264,7 @@ export default async function ProjectDetailPage({
             </a>
           )}
 
-          <button className="inline-flex items-center gap-2 px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors">
+          <button className="action-button inline-flex items-center gap-2 px-6 py-2">
             프로젝트 참가하기
           </button>
         </div>

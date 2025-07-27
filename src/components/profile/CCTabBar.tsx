@@ -30,9 +30,9 @@ export default function CCTabBar({ currentTab }: CCTabBarProps) {
           <button
             key={tab}
             onClick={() => handleTabClick(tab)}
-            className={`inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium transition-all duration-300
+            className={`inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium transition-all duration-300 cursor-pointer
               ${
-                isActive ? "bg-red-600 text-white shadow-sm" : "text-gray-500"
+                isActive ? "bg-cert-red text-white shadow-sm" : "text-gray-500"
               }`}
           >
             <Icon

@@ -50,7 +50,7 @@ export default async function ProjectPage({ searchParams }: ProjectPageProps) {
         <Link
           scroll={false}
           href="/project/write"
-          className="inline-flex items-center gap-2 px-4 py-2 bg-cert-red text-white rounded-md hover:bg-cert-red/80"
+          className="inline-flex items-center gap-2 px-4 py-2  text-white rounded-md action-button"
         >
           <PlusSVG className="w-4 h-4" />새 프로젝트 작성
         </Link>

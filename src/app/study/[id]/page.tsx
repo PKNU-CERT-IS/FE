@@ -118,7 +118,7 @@ export default async function StudyMaterialDetailPage({
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
-                  <button className="px-4 py-2 bg-cert-red hover:bg-cert-red/80 text-white rounded-lg font-medium transition-colors">
+                  <button className="px-4 py-2 action-button">
                     스터디 참가하기
                   </button>
                   <KebabMenu

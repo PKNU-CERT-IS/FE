@@ -11,7 +11,7 @@ export default function CCEditProfileCard() {
     <div>
       <DefaultButton
         onClick={() => setIsOpenModal(true)}
-        className="w-full bg-red-600 hover:bg-red-700 text-white transition-all duration-300"
+        className="w-full transition-all duration-300"
       >
         <EditSVG className="w-4 h-4 mr-2 stroke-white" />
         프로필 수정

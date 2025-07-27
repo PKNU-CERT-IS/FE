@@ -2,6 +2,7 @@ import Link from "next/link";
 import { useMemo } from "react";
 import type { StudySearchParams } from "@/types/study";
 import { createPageUrl } from "@/utils/study/studyHelper";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 interface CCStudyPaginationProps {
   currentPage: number;
@@ -41,98 +42,89 @@ export default function CCStudyPagination({
   }, [searchParams]);
 
   return (
-    <div className="flex items-center justify-center space-x-2 mt-8">
-      {/* 이전 버튼 */}
-      {currentPage > 1 && (
-        <Link
-          href={createSafePageUrl(currentPage - 1)}
-          className="px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-50 hover:text-gray-700 transition-colors"
-        >
-          <span className="sr-only">이전 페이지</span>
-          <svg
-            className="w-4 h-4"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M15 19l-7-7 7-7"
-            />
-          </svg>
-        </Link>
-      )}
-
-      {/* 첫 페이지 */}
-      {visiblePages[0] > 1 && (
-        <>
-          <Link
-            href={createSafePageUrl(1)}
-            className="px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-50 hover:text-gray-700 transition-colors"
-          >
-            1
+    <div className="mt-8">
+      <div className="flex justify-center items-center space-x-2 flex-wrap gap-y-2">
+        {/* 이전 페이지 버튼 */}
+        {currentPage > 1 ? (
+          <Link href={createSafePageUrl(currentPage - 1)}>
+            <div
+              className="p-2 rounded-md transition-all duration-200 text-gray-700 hover:bg-gray-100"
+              title="이전 페이지"
+            >
+              <ChevronLeft className="w-4 h-4" />
+            </div>
           </Link>
-          {visiblePages[0] > 2 && (
-            <span className="px-2 py-2 text-sm text-gray-500">...</span>
-          )}
-        </>
-      )}
-
-      {/* 페이지 번호들 */}
-      {visiblePages.map((page) => (
-        <Link
-          key={page}
-          href={createSafePageUrl(page)}
-          className={`px-3 py-2 text-sm font-medium rounded-md transition-colors ${
-            page === currentPage
-              ? "bg-primary text-white border border-primary shadow-sm"
-              : "text-gray-500 bg-white border border-gray-300 hover:bg-gray-50 hover:text-gray-700"
-          }`}
-          aria-current={page === currentPage ? "page" : undefined}
-        >
-          {page}
-        </Link>
-      ))}
-
-      {/* 마지막 페이지 */}
-      {visiblePages[visiblePages.length - 1] < totalPages && (
-        <>
-          {visiblePages[visiblePages.length - 1] < totalPages - 1 && (
-            <span className="px-2 py-2 text-sm text-gray-500">...</span>
-          )}
-          <Link
-            href={createSafePageUrl(totalPages)}
-            className="px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-50 hover:text-gray-700 transition-colors"
+        ) : (
+          <div
+            className="p-2 rounded-md transition-all duration-200 text-gray-400 cursor-not-allowed"
+            title="이전 페이지"
           >
-            {totalPages}
+            <ChevronLeft className="w-4 h-4" />
+          </div>
+        )}
+
+        {/* 첫 페이지 */}
+        {visiblePages[0] > 1 && (
+          <>
+            <Link key={1} href={createSafePageUrl(1)}>
+              <div className="text-sm font-medium shadow-lg inline-flex items-center justify-center h-9 px-3 rounded-md border border-gray-300 text-gray-600 hover:bg-cert-red hover:border-cert-red hover:text-white transition-colors min-w-[40px]">
+                1
+              </div>
+            </Link>
+            {visiblePages[0] > 2 && (
+              <span className="px-3 py-2 text-gray-500 text-sm">...</span>
+            )}
+          </>
+        )}
+
+        {/* 페이지 번호들 */}
+        {visiblePages.map((page) => (
+          <Link key={page} href={createSafePageUrl(page)}>
+            <div
+              className={`text-sm font-medium shadow-lg inline-flex items-center justify-center h-9 px-3 rounded-md min-w-[40px] ${
+                page === currentPage
+                  ? "bg-cert-red text-white"
+                  : "border border-gray-300 text-gray-600 hover:bg-cert-red hover:border-cert-red hover:text-white"
+              } transition-colors`}
+            >
+              {page}
+            </div>
           </Link>
-        </>
-      )}
+        ))}
 
-      {/* 다음 버튼 */}
-      {currentPage < totalPages && (
-        <Link
-          href={createSafePageUrl(currentPage + 1)}
-          className="px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-50 hover:text-gray-700 transition-colors"
-        >
-          <span className="sr-only">다음 페이지</span>
-          <svg
-            className="w-4 h-4"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
+        {/* 마지막 페이지 */}
+        {visiblePages[visiblePages.length - 1] < totalPages && (
+          <>
+            {visiblePages[visiblePages.length - 1] < totalPages - 1 && (
+              <span className="px-3 py-2 text-gray-500 text-sm">...</span>
+            )}
+            <Link key={totalPages} href={createSafePageUrl(totalPages)}>
+              <div className="text-sm font-medium shadow-lg inline-flex items-center justify-center h-9 px-3 rounded-md border border-gray-300 text-gray-600 hover:bg-cert-red hover:border-cert-red hover:text-white transition-colors min-w-[40px]">
+                {totalPages}
+              </div>
+            </Link>
+          </>
+        )}
+
+        {/* 다음 페이지 버튼 */}
+        {currentPage < totalPages ? (
+          <Link href={createSafePageUrl(currentPage + 1)}>
+            <div
+              className="p-2 rounded-md transition-all duration-200 text-gray-700 hover:bg-gray-100"
+              title="다음 페이지"
+            >
+              <ChevronRight className="w-4 h-4" />
+            </div>
+          </Link>
+        ) : (
+          <div
+            className="p-2 rounded-md transition-all duration-200 text-gray-400 cursor-not-allowed"
+            title="다음 페이지"
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M9 5l7 7-7 7"
-            />
-          </svg>
-        </Link>
-      )}
+            <ChevronRight className="w-4 h-4" />
+          </div>
+        )}
+      </div>
     </div>
   );
 }

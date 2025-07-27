@@ -47,7 +47,7 @@ export default function BlogSearchBar({ currentSearch }: BlogSearchBarProps) {
     <div className="relative flex-1">
       <SearchSVG className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
       <DefaultSearchBar
-        placeholder="제목,내용,작성자로 검색하세요..."
+        placeholder="제목, 내용, 작성자로 검색하세요..."
         value={searchInput}
         onChange={(e) => setSearchInput(e.target.value)}
         className="pl-10"

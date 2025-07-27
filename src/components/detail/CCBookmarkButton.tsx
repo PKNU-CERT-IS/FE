@@ -17,10 +17,14 @@ export default function BookmarkButton() {
       size="sm"
       onClick={handleBookmark}
       className={`${
-        isBookmarked ? "text-cert-red " : ""
-      } border-0 hover:bg-white hover:text-cert-red`}
+        isBookmarked ? "text-yellow-500 " : ""
+      } border-0 hover:bg-white hover:text-yellow-500`}
     >
-      <Bookmark className="h-4 w-4" />
+      <Bookmark
+        className={`h-4 w-4 ${
+          isBookmarked ? "fill-yellow-500 text-yellow-500" : ""
+        }`}
+      />
       북마크
     </DefaultButton>
   );

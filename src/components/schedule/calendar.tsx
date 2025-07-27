@@ -71,13 +71,13 @@ export default function Calendar() {
         <div>
           <button
             onClick={prevMonth}
-            className="text-gray-600 p-3 rounded-md hover:text-gray-900 hover:bg-gray-100 mr-3"
+            className="text-gray-600 p-3 rounded-md hover:text-gray-900 hover:bg-gray-100 mr-3 duration-200"
           >
             <AngleSVG className="rotate-90" width={13} />
           </button>
           <button
             onClick={nextMonth}
-            className="text-gray-600 p-3 rounded-md hover:text-gray-900 hover:bg-gray-100"
+            className="text-gray-600 p-3 rounded-md hover:text-gray-900 hover:bg-gray-100 duration-200"
           >
             <AngleSVG className="rotate-270" width={13} />
           </button>
@@ -111,16 +111,23 @@ export default function Calendar() {
                     ? "text-gray-900 bg-white"
                     : "text-gray-400 text-xs"
                 }
-                ${isToday ? "text-red-700 border" : ""}
                 ${
                   schedule.length > 0
                     ? "border bg-gray-300/10 border-cert-dark-red-20"
                     : "hover:bg-gray-100"
                 }
+                  ${isToday ? "text-white" : ""}
               `}
               title={schedule[0]?.title}
             >
-              <div>{day.getDate()}</div>
+              <div className="flex justify-center items-center">
+                {isToday && (
+                  <span className="absolute w-7 h-7 bg-cert-red/85 rounded-full z-10 pointer-events-none"></span>
+                )}
+                <span className={isToday ? "relative z-20" : ""}>
+                  {day.getDate()}
+                </span>
+              </div>
               {schedule.length > 0 && (
                 <div className="mt-1 space-y-1">
                   {schedule.slice(0, 3).map((s, idx) => (

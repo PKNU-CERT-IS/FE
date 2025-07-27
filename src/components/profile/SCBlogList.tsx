@@ -43,10 +43,7 @@ export default async function SCBlogList({
           </div>
 
           {blogs.map((blog) => (
-            <div
-              key={blog.id}
-              className="rounded-lg border text-card-foreground shadow-sm hover:shadow-lg transition-all duration-300 bg-white border-gray-200 hover:border-red-300 dark:hover:border-red-500 group"
-            >
+            <div key={blog.id} className="card-list text-card-foreground group">
               <div className="flex flex-col space-y-1.5 p-6">
                 <div className="flex items-start justify-between">
                   <div>
@@ -56,7 +53,7 @@ export default async function SCBlogList({
                     <div className="flex items-center gap-4 mt-2 text-sm text-gray-600 transition-colors duration-300">
                       <span>{blog.date}</span>
                       <DefaultBadge
-                        className={`border-gray-200 text-gray-600 hover:text-gray-900 hover:border-red-300 transition-colors ${getBlogCategoryColor(
+                        className={`border-gray-200 text-gray-600 ${getBlogCategoryColor(
                           blog.category as BlogCategoryType
                         )}`}
                       >
@@ -76,15 +73,15 @@ export default async function SCBlogList({
               </div>
               <div className="p-6 pt-0">
                 <div className="flex items-center gap-4 text-sm text-gray-600 dark:text-gray-400 transition-colors duration-300">
-                  <div className="flex items-center gap-1 hover:text-gray-900 dark:hover:text-gray-200 transition-colors">
+                  <div className="flex items-center gap-1">
                     <EyeSVG className="w-4 h-4" />
                     {blog.views}
                   </div>
-                  <div className="flex items-center gap-1 hover:text-red-600 dark:hover:text-red-400 transition-colors">
+                  <div className="flex items-center gap-1">
                     <ThumbsUpSVG />
                     {blog.likes}
                   </div>
-                  <div className="flex items-center gap-1 hover:text-red-600 dark:hover:text-red-400 transition-colors">
+                  <div className="flex items-center gap-1">
                     <CommentSVG className="stroke-gray-600" />
                     {blog.comments}
                   </div>

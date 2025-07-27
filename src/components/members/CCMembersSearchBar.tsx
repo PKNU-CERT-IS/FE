@@ -48,7 +48,7 @@ export default function MembersSearchBar({
     <div className="relative flex-1">
       <SearchSVG className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
       <DefaultSearchBar
-        placeholder="이름,전공,기술 스택으로 검색하세요..."
+        placeholder="이름, 전공, 기술 스택으로 검색하세요..."
         value={searchInput}
         onChange={(e) => setSearchInput(e.target.value)}
         className="pl-10"

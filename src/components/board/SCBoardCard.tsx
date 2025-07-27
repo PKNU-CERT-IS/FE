@@ -3,11 +3,11 @@ import ThunderSVG from "/public/icons/thunder.svg";
 import EyeSVG from "/public/icons/eye.svg";
 import InfoSVG from "/public/icons/info.svg";
 import AlertTriangleSVG from "/public/icons/alert-triangle.svg";
-import ThumbsUpSVG from "/public/icons/thumbs-up.svg";
 import DefaultBadge from "@/components/ui/defaultBadge";
 import { BoardPriorityType } from "@/types/board";
 import { BoardDataType } from "@/types/board";
 import { getCategoryColor } from "@/utils/boardUtils";
+import { Heart } from "lucide-react";
 
 // svg 요소가 있어 util로 빼기 애매함
 const getPriorityIcon = (priority: BoardPriorityType) => {
@@ -17,7 +17,7 @@ const getPriorityIcon = (priority: BoardPriorityType) => {
     case "medium":
       return <InfoSVG />;
     default:
-      return <ThunderSVG className="text-cert-accent" />;
+      return <ThunderSVG className="text-cert-accent w-4 h-4" />;
   }
 };
 
@@ -36,24 +36,22 @@ export default function BoardCard({
   return (
     <Link href={`/board/${id}`}>
       <div
-        className={`rounded-lg border shadow-sm hover:shadow-lg cursor-pointer transition-all duration-300 group hover:border-cert-red/50 ${
+        className={`card-list group hover:border-cert-red/50  ${
           isNotice ? "border-red-200 bg-red-50" : "border-gray-200"
         }`}
       >
         <div className="flex flex-col space-y-1.5 p-6 pb-3">
-          <div className="flex items-start justify-between">
-            <div className="flex items-center gap-3 flex-1">
-              <div className="flex items-center gap-2">
-                {getPriorityIcon(priority)}
-                <DefaultBadge className={getCategoryColor(category)}>
-                  {category}
+          <div className="flex items-center gap-3 flex-1 justify-between">
+            <div className="flex items-center gap-2">
+              {getPriorityIcon(priority)}
+              <DefaultBadge className={getCategoryColor(category)}>
+                {category}
+              </DefaultBadge>
+              {isNotice && (
+                <DefaultBadge className="bg-cert-red text-white">
+                  공지
                 </DefaultBadge>
-                {isNotice && (
-                  <DefaultBadge className="bg-cert-red text-white">
-                    공지
-                  </DefaultBadge>
-                )}
-              </div>
+              )}
             </div>
             <span className="text-sm text-gray-500">{date}</span>
           </div>
@@ -77,7 +75,7 @@ export default function BoardCard({
                   <span>{views}</span>
                 </div>
                 <div className="flex items-center gap-1 hover:text-cert-red transition-colors">
-                  <ThumbsUpSVG className="w-4 text-cert-dark-red" />
+                  <Heart className="w-4 text-cert-dark-red" />
                   <span>{likes}</span>
                 </div>
               </div>

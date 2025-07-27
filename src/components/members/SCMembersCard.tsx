@@ -12,7 +12,7 @@ interface MembersCardProps {
 export default function MembersCard({ members }: MembersCardProps) {
   return (
     <div
-      className={`bg-white border border-gray-200 rounded-lg p-6 transition-all duration-300 group transform hover:-translate-y-2 hover:shadow-2xl hover:shadow-gray-300/50 shadow-sm ${getRoleBorderStyle(
+      className={`card-list p-6 group transform hover:-translate-y-2 hover:shadow-2xl hover:shadow-gray-300/50 shadow-sm ${getRoleBorderStyle(
         members.role
       )} flex flex-col h-full`}
     >

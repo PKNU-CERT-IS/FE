@@ -59,9 +59,6 @@
   --color-cert-border: #262626;
   --color-cert-muted: #404040;
   --color-cert-dark-red: #9e0101;
-  --color-cert-dark-red-5: rgba(158, 1, 1, 0.05);
-  --color-cert-dark-red-10: rgba(158, 1, 1, 0.1);
-  --color-cert-dark-red-20: rgba(158, 1, 1, 0.2);
 
   /* Border Radius (CSS 변수 기반) */
   --radius-lg: var(--radius);
@@ -178,11 +175,6 @@
   }
 }
 
-/* 기본 스타일 */
-/* * {
-  border-color: hsl(var(--border));
-} */
-
 body {
   background-color: hsl(var(--background));
   color: hsl(var(--foreground));
@@ -235,5 +227,25 @@ body {
   input[type="number"]::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
+  }
+}
+
+@layer components {
+  /* 액션 버튼 스타일 */
+  .action-button {
+    @apply bg-cert-red hover:bg-red-700 text-white rounded-md items-center duration-300;
+  }
+  /* 카드 리스트 스타일 */
+  .card-list {
+    @apply bg-white rounded-lg border shadow-sm hover:shadow-lg cursor-pointer transition-all duration-300 border-gray-200 hover:border-cert-red/50;
+  }
+
+  /* 카테고리 필터 버튼 스타일 */
+  .category-filter {
+    @apply border-gray-300 text-gray-600 hover:border-cert-red duration-200;
+  }
+  /* 카테고리 필터 활성화 스타일 */
+  .category-filter-active {
+    @apply bg-cert-red text-white hover:bg-cert-red/80 duration-200;
   }
 }
