@@ -35,7 +35,9 @@ export default function CCStudyFilter({ currentFilters }: StudyFilterProps) {
     useState<boolean>(false);
   const [showStatusDropdown, setShowStatusDropdown] = useState<boolean>(false);
 
-  const dropdownRef = useRef<HTMLDivElement>(null);
+  const semesterRef = useRef<HTMLDivElement>(null);
+  const techniqueRef = useRef<HTMLDivElement>(null);
+  const statusRef = useRef<HTMLDivElement>(null);
 
   // URL 파라미터 업데이트 함수 (영어 값으로 저장)
   const updateFilter = useCallback(
@@ -86,19 +88,23 @@ export default function CCStudyFilter({ currentFilters }: StudyFilterProps) {
   // 외부 클릭 감지
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
+      const target = e.target as Node;
+
       if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(e.target as Node)
+        semesterRef.current?.contains(target) ||
+        techniqueRef.current?.contains(target) ||
+        statusRef.current?.contains(target)
       ) {
-        setShowSemesterDropdown(false);
-        setShowTechniqueDropdown(false);
-        setShowStatusDropdown(false);
+        return; // 내부 클릭이면 무시
       }
+
+      // 외부 클릭이면 닫기
+      closeAllDropdowns();
     };
 
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+  }, [closeAllDropdowns]);
 
   return (
     <div className="mb-4">
@@ -124,7 +130,7 @@ export default function CCStudyFilter({ currentFilters }: StudyFilterProps) {
       {/* 필터 그리드 */}
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
         {/* 학기별 필터 */}
-        <div className="relative" ref={dropdownRef}>
+        <div className="relative" ref={semesterRef}>
           <button
             type="button"
             onClick={() => {
@@ -163,7 +169,7 @@ export default function CCStudyFilter({ currentFilters }: StudyFilterProps) {
           )}
         </div>
         {/* 기법 필터 */}
-        <div className="relative" ref={dropdownRef}>
+        <div className="relative" ref={techniqueRef}>
           <button
             type="button"
             onClick={() => {
@@ -202,7 +208,7 @@ export default function CCStudyFilter({ currentFilters }: StudyFilterProps) {
         </div>
 
         {/* 상태 필터 */}
-        <div className="relative" ref={dropdownRef}>
+        <div className="relative" ref={statusRef}>
           <button
             type="button"
             onClick={() => {

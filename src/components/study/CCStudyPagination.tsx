@@ -84,7 +84,7 @@ export default function CCStudyPagination({
               className={`w-10 h-10 text-sm font-medium flex items-center justify-center rounded-md transition-colors border  ${
                 page === currentPage
                   ? "bg-cert-red text-white shadow-md border-cert-red"
-                  : "bg-white text-gray-700 border-gray-300 hover:bg-cert-red hover:text-white hover:border-cert-red"
+                  : "bg-white text-gray-700 border-gray-300 hover:bg-gray-100"
               }`}
             >
               {page}
