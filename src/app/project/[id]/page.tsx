@@ -3,8 +3,10 @@ import Link from "next/link";
 import { Metadata } from "next";
 import { ProjectMaterial } from "@/types/project";
 import { ArrowLeft } from "lucide-react";
+import ChainSVG from "/public/icons/chain.svg";
 import AttachedFilesDownload from "@/components/project/SCAttachedFilesDownload";
-import { Globe, BookText } from "lucide-react";
+import { Globe, FileText, BookText } from "lucide-react";
+
 import { getProjectMaterials } from "@/mocks/mockProjectData";
 
 interface ProjectDetailPageProps {
@@ -263,6 +265,7 @@ export default async function ProjectDetailPage({
               데모 사이트
             </a>
           )}
+
 
           <button className="action-button inline-flex items-center gap-2 px-6 py-2">
             프로젝트 참가하기

@@ -206,7 +206,6 @@ export default function CCStudyFilter({ currentFilters }: StudyFilterProps) {
             </div>
           )}
         </div>
-
         {/* 상태 필터 */}
         <div className="relative" ref={statusRef}>
           <button
