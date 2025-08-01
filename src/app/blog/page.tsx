@@ -60,8 +60,7 @@ export default async function BlogPage({
   searchParams,
   children,
 }: BlogPageProps) {
-  const resolvedSearchParams = await searchParams;
-  const { page, search, category } = resolvedSearchParams;
+  const { page, search, category } = await searchParams;
 
   const currentPage = Math.max(1, parseInt(page || "1", 10));
   const currentSearch = search?.trim() || "";
