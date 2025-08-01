@@ -12,6 +12,7 @@ import { filterBlogPosts } from "@/utils/blogUtils";
 import Link from "next/link";
 import BlogSearchBar from "@/components/blog/CCBlogSearchBar";
 
+// children prop 제거
 interface BlogPageProps {
   searchParams: Promise<{
     page?: string;
