@@ -1,3 +1,5 @@
+import { AttachedFile } from "@/types/attachedFile";
+
 export type SemesterType = "all" | "2025-2";
 
 export type TechniqueType =
@@ -48,11 +50,7 @@ export interface StudyMaterial {
   author: string;
   authorStatus: AuthorStatusType;
   semester: SemesterType;
-  files: {
-    name: string;
-    size: string;
-    type: "pdf" | "zip" | "py" | "dd" | "conf" | "ova";
-  }[];
+  attachedFiles?: AttachedFile[];
   category: string;
   hackingTechnique?: TechniqueType;
   status: StatusType;
@@ -187,4 +185,21 @@ export interface StudyMaterialsResponse {
 
 export interface FilterParams extends Omit<CurrentFilters, "page"> {
   page: number;
+}
+
+// Meeting minute 타입 정의
+export interface MeetingMinute {
+  id: number;
+  week: number;
+  title: string;
+  date: string;
+  content: string;
+  attendees: string[];
+  author: string;
+  links: LinkItem[];
+}
+
+export interface LinkItem {
+  title: string;
+  url: string;
 }

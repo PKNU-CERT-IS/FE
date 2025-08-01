@@ -42,7 +42,7 @@ const ScheduleFormModal = ({ closeModal, schedule, modalRef }: ModalProps) => {
       handleStartTime(schedule.startTime);
       handleEndTime(schedule.endTime);
     }
-  }, [schedule]);
+  }, [schedule, handleActivity, handleStartTime, handleEndTime]);
 
   return (
     <div

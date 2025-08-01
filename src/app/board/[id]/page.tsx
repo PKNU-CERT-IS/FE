@@ -13,6 +13,8 @@ import KebabMenuButton from "@/components/detail/CCKebabMenu";
 import LikeButton from "@/components/detail/CCLikeButton";
 import BookmarkButton from "@/components/detail/CCBookmarkButton";
 import ShareButton from "@/components/detail/CCShareButton";
+import { formatFileSize } from "@/utils/attachedFileUtils";
+import { getFileIcon } from "@/types/attachedFile";
 
 function getDataById(id: string) {
   const dataId = parseInt(id, 10);
@@ -57,15 +59,6 @@ export async function generateMetadata({
       tags: data.tags,
     },
   };
-}
-
-// 파일 아이콘 함수(변경 가능)
-function getFileIcon(type: string) {
-  if (type.includes("pdf")) return "📄";
-  if (type.includes("excel") || type.includes("spreadsheet")) return "📊";
-  if (type.includes("word") || type.includes("document")) return "📝";
-  if (type.includes("image")) return "🖼️";
-  return "📎";
 }
 
 export default async function DetailPage({
@@ -162,14 +155,14 @@ export default async function DetailPage({
           </div>
 
           {/* 첨부파일 */}
-          {data.attachments && data.attachments.length > 0 && (
+          {data.attachedFiles && data.attachedFiles.length > 0 && (
             <div className="border-t border-gray-300 pt-6 mb-6">
               <h4 className="font-medium text-gray-900 mb-4 flex items-center gap-2">
                 <Download className="w-4 h-4" />
-                첨부파일 ({data.attachments.length})
+                첨부파일 ({data.attachedFiles.length})
               </h4>
               <div className="space-y-3">
-                {data.attachments.map((file, index) => (
+                {data.attachedFiles.map((file, index) => (
                   <div
                     key={index}
                     className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
@@ -177,7 +170,10 @@ export default async function DetailPage({
                     <span className="text-2xl">{getFileIcon(file.type)}</span>
                     <div className="flex-1">
                       <p className="font-medium text-gray-900">{file.name}</p>
-                      <p className="text-sm text-gray-500">{file.size}</p>
+                      <p className="text-sm text-gray-500">
+                        {" "}
+                        {formatFileSize(file.size)}
+                      </p>
                     </div>
                     <DownloadButton fileName={file.name} />
                   </div>

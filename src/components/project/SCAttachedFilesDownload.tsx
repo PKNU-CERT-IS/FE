@@ -1,12 +1,12 @@
 "use client";
 
 import React, { useState } from "react";
-import { AttachedFile, FileCategory } from "@/types/project";
+import { FileCategory } from "@/types/project";
 import {
   Download,
   File,
   FileText,
-  Image,
+  Image as ImageIcon,
   Video,
   Music,
   Archive,
@@ -19,6 +19,7 @@ import {
   CheckCircle2,
   DownloadCloud,
 } from "lucide-react";
+import { AttachedFile } from "@/types/attachedFile";
 
 interface AttachedFilesDownloadProps {
   files: AttachedFile[];
@@ -41,7 +42,7 @@ const getFileIcon = (category: FileCategory) => {
     case "document":
       return <FileText className={iconClass} />;
     case "image":
-      return <Image className={iconClass} />;
+      return <ImageIcon className={iconClass} />;
     case "video":
       return <Video className={iconClass} />;
     case "audio":

@@ -5,7 +5,7 @@ import DefaultButton from "@/components/ui/defaultButton";
 import { ChevronDown, Info } from "lucide-react";
 import TagInput from "@/components/write/CCTagInput";
 import FileUpload from "@/components/write/CCFileUpload";
-import MarkdownEditor from "./CCMarkdownEditor";
+import MarkdownEditor from "@/components/write/CCMarkdownEditor";
 import { NewPageCategoryType } from "@/types/newPageForm";
 import {
   getCategories,
@@ -13,6 +13,7 @@ import {
   getDescriptionPlaceholder,
   isFormValid,
 } from "@/utils/newPageFormUtils";
+import { AttachedFile } from "@/types/attachedFile";
 
 interface WriteFormProps {
   type: NewPageCategoryType;
@@ -25,7 +26,7 @@ export default function WriteForm({ type }: WriteFormProps) {
   const [content, setContent] = useState<string>("");
   const [category, setCategory] = useState("");
   const [tags, setTags] = useState<string[]>([]);
-  const [attachments, setAttachments] = useState<File[]>([]);
+  const [attachments, setAttachments] = useState<AttachedFile[]>([]);
   const [startDate, setStartDate] = useState<string>("");
   const [endDate, setEndDate] = useState<string>("");
   const [maxParticipants, setMaxParticipants] = useState("");
@@ -370,7 +371,7 @@ export default function WriteForm({ type }: WriteFormProps) {
             첨부 파일
           </label>
           <FileUpload
-            attachments={attachments}
+            attachedFiles={attachments}
             onAttachmentsChange={setAttachments}
           />
         </div>

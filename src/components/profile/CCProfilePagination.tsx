@@ -18,7 +18,7 @@ export default function CCProfilePagination({
 }: ProfilePaginationProps) {
   const searchParams = useSearchParams();
   const tab = searchParams.get("tab") ?? "study";
-  const status = searchParams.get("status"); // ✅ 추가
+  const status = searchParams.get("status");
 
   const totalPages = Math.ceil(totalItems / itemsPerPage);
   if (totalPages <= 1) return null;

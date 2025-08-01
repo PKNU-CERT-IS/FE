@@ -5,7 +5,7 @@ import DefaultButton from "@/components/ui/defaultButton";
 import { Menu, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 interface NavItem {
   name: string;
@@ -21,20 +21,28 @@ export default function HamburgerMenu({ navBarList }: HamburgerMenuProps) {
   const [isClosing, setIsClosing] = useState<boolean>(false);
   const pathname = usePathname();
 
-  const handleClose = () => {
+  const isOpenRef = useRef(false);
+
+  const handleClose = useCallback(() => {
     setIsClosing(true);
     setTimeout(() => {
       setIsOpen(false);
       setIsClosing(false);
+      isOpenRef.current = false;
     }, 300);
-  };
+  }, []);
 
-  // pathname이 변경되면 메뉴 닫기 (로고 클릭이나 다른 링크 클릭 시)
+  // isOpen 상태가 변경될 때 ref도 업데이트
   useEffect(() => {
-    if (isOpen) {
+    isOpenRef.current = isOpen;
+  }, [isOpen]);
+
+  // pathname이 변경될 때 메뉴 닫기
+  useEffect(() => {
+    if (isOpenRef.current) {
       handleClose();
     }
-  }, [pathname]);
+  }, [pathname, handleClose]); // handleClose를 의존성 배열에 추가
 
   return (
     <>
@@ -42,7 +50,14 @@ export default function HamburgerMenu({ navBarList }: HamburgerMenuProps) {
         <DefaultButton
           variant="ghost"
           size="sm"
-          onClick={() => (isOpen ? handleClose() : setIsOpen(true))}
+          onClick={() => {
+            if (isOpen) {
+              handleClose();
+            } else {
+              setIsOpen(true);
+              isOpenRef.current = true;
+            }
+          }}
           className="text-gray-900 p-2 transition-all duration-300 hover:text-cert-dark-red hover:bg-cert-dark-red/5"
         >
           {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
