@@ -35,8 +35,7 @@ const isValidCategory = (category: string): category is BlogCategoryType => {
 export async function generateMetadata({
   searchParams,
 }: GenerateMetadataProps): Promise<Metadata> {
-  const resolvedSearchParams = await searchParams;
-  const { search, category } = resolvedSearchParams;
+  const { search, category } = await searchParams;
 
   const validCategory =
     category && isValidCategory(category) ? category : "전체";
