@@ -25,21 +25,6 @@ interface EditFormProps {
   dataId: number;
 }
 
-interface InitialData {
-  title: string;
-  content?: string;
-  category: string;
-  tags: string[];
-  attachedFiles?: AttachedFile[];
-  description?: string;
-  startDate?: string;
-  endDate?: string;
-  maxParticipants?: string;
-  githubUrl?: string;
-  demoUrl?: string;
-  externalLinks?: { label: string; url: string }[];
-}
-
 export default function EditForm({ type, dataId }: EditFormProps) {
   const router = useRouter();
   const [title, setTitle] = useState<string>("");
