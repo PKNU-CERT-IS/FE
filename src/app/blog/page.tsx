@@ -13,13 +13,13 @@ import Link from "next/link";
 import BlogSearchBar from "@/components/blog/CCBlogSearchBar";
 
 // children prop 제거
-interface BlogPageProps {
-  searchParams: Promise<{
-    page?: string;
-    search?: string;
-    category?: string;
-  }>;
-}
+// interface BlogPageProps {
+//   searchParams: Promise<{
+//     page?: string;
+//     search?: string;
+//     category?: string;
+//   }>;
+// }
 
 interface GenerateMetadataProps {
   searchParams: Promise<{
@@ -58,7 +58,15 @@ export async function generateMetadata({
 }
 
 // children 매개변수 제거
-export default async function BlogPage({ searchParams }: BlogPageProps) {
+export default async function BlogPage({
+  searchParams,
+}: {
+  searchParams: Promise<{
+    page?: string;
+    search?: string;
+    category?: string;
+  }>;
+}) {
   const { page, search, category } = await searchParams;
 
   const currentPage = Math.max(1, parseInt(page || "1", 10));
