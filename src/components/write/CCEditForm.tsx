@@ -69,7 +69,7 @@ export default function EditForm({ type, dataId }: EditFormProps) {
       try {
         setIsLoading(true);
 
-        let initialData: InitialData | undefined = undefined;
+        let initialData;
 
         if (type === "board") {
           const boardData = mockBoardData.find((item) => item.id === dataId);
