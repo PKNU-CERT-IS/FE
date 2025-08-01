@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import { ProjectMaterial } from "@/types/project";
 import AttachedFilesDownload from "@/components/project/SCAttachedFilesDownload";
-import { Globe, BookText,ArrowLeft } from "lucide-react";
+import { Globe, BookText } from "lucide-react";
 import Image from "next/image";
 import { getProjectMaterials } from "@/mocks/mockProjectData";
 import BackToListButton from "@/components/detail/SCBackToListButton";

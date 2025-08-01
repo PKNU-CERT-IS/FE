@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { Calendar, Clock, Users, Tag } from "lucide-react";
+import { Calendar, Users, Tag } from "lucide-react";
 import DefaultBadge from "@/components/ui/defaultBadge";
 import MarkdownRenderer from "@/components/ui/defaultMarkdownRenderer";
 import {

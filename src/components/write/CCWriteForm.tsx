@@ -39,6 +39,7 @@ export default function WriteForm({ type }: WriteFormProps) {
     { label: string; url: string; type?: string }[]
   >([]);
   const [projectImage, setProjectImage] = useState<File | null>(null);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [semester, setSemester] = useState<string>("");
 
   useEffect(() => {

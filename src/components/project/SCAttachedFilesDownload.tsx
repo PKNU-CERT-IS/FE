@@ -15,7 +15,6 @@ import {
   FileBarChart,
   Presentation,
   Folder,
-  Eye,
   Info,
   CheckCircle2,
   DownloadCloud,
@@ -35,7 +34,7 @@ const formatFileSize = (bytes: number): string => {
 };
 
 // 파일 카테고리별 아이콘 반환
-const getFileIcon = (category: FileCategory, type: string) => {
+const getFileIcon = (category: FileCategory) => {
   const iconClass = "w-5 h-5";
 
   switch (category) {
@@ -221,7 +220,7 @@ export default function AttachedFilesDownload({
                       file.category
                     )}`}
                   >
-                    {getFileIcon(file.category, file.type)}
+                    {getFileIcon(file.category)}
                   </div>
 
                   <div className="flex-1 min-w-0">
