@@ -1,5 +1,5 @@
 import NewPageModal from "@/components/write/CCNewPageModal";
-import ProjectWritePage from "@/app/project/write/page";
+import ProjectWritePage from "@/app/(main)/project/write/page";
 export default function WriteModalPage() {
   return (
     <NewPageModal>

@@ -1,10 +1,9 @@
 import NewPageModal from "@/components/write/CCNewPageModal";
-import BlogWritePage from "@/app/blog/write/page";
-
+import StudyWritePage from "@/app/(main)/study/write/page";
 export default function WriteModalPage() {
   return (
     <NewPageModal>
-      <BlogWritePage />
+      <StudyWritePage />
     </NewPageModal>
   );
 }
