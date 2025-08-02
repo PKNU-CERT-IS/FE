@@ -7,13 +7,7 @@ import DefaultSearchBar from "@/components/ui/defaultSearchBar";
 import SearchSVG from "/public/icons/search.svg";
 import { useEffect } from "react";
 
-import type {
-  StudyFilterProps,
-  FilterKey,
-  SemesterType,
-  TechniqueType,
-  StatusType,
-} from "@/types/study";
+import type { StudyFilterProps, FilterKey } from "@/types/study";
 import {
   SEMESTER_OPTIONS,
   TECHNIQUE_OPTIONS,

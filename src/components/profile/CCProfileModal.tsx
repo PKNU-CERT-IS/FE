@@ -14,6 +14,7 @@ interface ModalProps {
 export default function CCProfileModal({ closeModal, modalRef }: ModalProps) {
   const user = mockProfileData[0];
   const [editedUser, setEditedUser] = useState(user);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [profileImageFile, setProfileImageFile] = useState<File | null>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(
     user.profileImage || null

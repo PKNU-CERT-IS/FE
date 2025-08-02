@@ -1,16 +1,6 @@
 // types/project.ts
 
-// 첨부파일 타입 정의
-export interface AttachedFile {
-  id: string;
-  name: string;
-  size: number; // bytes
-  type: string; // MIME type
-  category: FileCategory;
-  downloadUrl: string;
-  uploadDate: string;
-  description?: string;
-}
+import { AttachedFile } from "@/types/attachedFile";
 
 export type FileCategory =
   | "document"

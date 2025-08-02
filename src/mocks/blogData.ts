@@ -293,7 +293,7 @@ spec:
 ];
 
 // 블로그 데이터 유틸리티 함수들
-export const getBlogPostById = (id: string): BlogPost | undefined => {
+export const getBlogPostById = (id: number): BlogPost | undefined => {
   return mockBlogPosts.find((post) => post.id === id);
 };
 

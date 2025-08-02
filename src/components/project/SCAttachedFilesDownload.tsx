@@ -1,12 +1,12 @@
 "use client";
 
 import React, { useState } from "react";
-import { AttachedFile, FileCategory } from "@/types/project";
+import { FileCategory } from "@/types/project";
 import {
   Download,
   File,
   FileText,
-  Image,
+  Image as ImageIcon,
   Video,
   Music,
   Archive,
@@ -15,11 +15,11 @@ import {
   FileBarChart,
   Presentation,
   Folder,
-  Eye,
   Info,
   CheckCircle2,
   DownloadCloud,
 } from "lucide-react";
+import { AttachedFile } from "@/types/attachedFile";
 
 interface AttachedFilesDownloadProps {
   files: AttachedFile[];
@@ -35,14 +35,14 @@ const formatFileSize = (bytes: number): string => {
 };
 
 // 파일 카테고리별 아이콘 반환
-const getFileIcon = (category: FileCategory, type: string) => {
+const getFileIcon = (category: FileCategory) => {
   const iconClass = "w-5 h-5";
 
   switch (category) {
     case "document":
       return <FileText className={iconClass} />;
     case "image":
-      return <Image className={iconClass} />;
+      return <ImageIcon className={iconClass} />;
     case "video":
       return <Video className={iconClass} />;
     case "audio":
@@ -221,7 +221,7 @@ export default function AttachedFilesDownload({
                       file.category
                     )}`}
                   >
-                    {getFileIcon(file.category, file.type)}
+                    {getFileIcon(file.category)}
                   </div>
 
                   <div className="flex-1 min-w-0">
