@@ -14,7 +14,7 @@ import LikeButton from "@/components/detail/CCLikeButton";
 import BookmarkButton from "@/components/detail/CCBookmarkButton";
 import ShareButton from "@/components/detail/CCShareButton";
 import { formatFileSize } from "@/utils/attachedFileUtils";
-import { getFileIcon } from "@/types/attachedFile";
+import { getFileIcon } from "@/utils/attachedFileUtils";
 
 function getDataById(id: string) {
   const dataId = parseInt(id, 10);

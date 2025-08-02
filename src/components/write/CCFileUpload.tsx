@@ -1,24 +1,18 @@
 "use client";
 
-import { AttachedFile, getFileIcon } from "@/types/attachedFile";
+import { AttachedFile } from "@/types/attachedFile";
 import DefaultButton from "@/components/ui/defaultButton";
 import { Upload, Trash2 } from "lucide-react";
-import { formatFileSize } from "@/utils/attachedFileUtils";
+import {
+  convertFileToAttachedFile,
+  formatFileSize,
+} from "@/utils/attachedFileUtils";
+import { getFileIcon } from "@/utils/attachedFileUtils";
 
 interface FileUploadProps {
   attachedFiles: AttachedFile[];
   onAttachmentsChange: (files: AttachedFile[]) => void;
 }
-
-const convertFileToAttachedFile = (file: File): AttachedFile => ({
-  id: crypto.randomUUID(),
-  name: file.name,
-  size: file.size,
-  type: file.type,
-  category: "other",
-  downloadUrl: "",
-  uploadDate: new Date().toISOString(),
-});
 
 export default function FileUpload({
   attachedFiles,

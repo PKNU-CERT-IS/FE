@@ -13,7 +13,7 @@ import CCShareButton from "@/components/detail/CCShareButton";
 import MeetingMinutes from "@/components/study/CCMeetingMinutes";
 import DownloadButton from "@/components/detail/SCDownloadButton";
 import { formatFileSize } from "@/utils/attachedFileUtils";
-import { getFileIcon } from "@/types/attachedFile";
+import { getFileIcon } from "@/utils/attachedFileUtils";
 
 function getStudyDataById(id: string): StudyDetailData | null {
   const parsedId = parseInt(id, 10);
