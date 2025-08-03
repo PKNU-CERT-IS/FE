@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { Calendar, Clock, Users, Tag } from "lucide-react";
+import { Calendar, Users, Tag, Download } from "lucide-react";
 import DefaultBadge from "@/components/ui/defaultBadge";
 import MarkdownRenderer from "@/components/ui/defaultMarkdownRenderer";
 import {
@@ -11,6 +11,9 @@ import BackToListButton from "@/components/detail/SCBackToListButton";
 import KebabMenu from "@/components/detail/CCKebabMenu";
 import CCShareButton from "@/components/detail/CCShareButton";
 import MeetingMinutes from "@/components/study/CCMeetingMinutes";
+import DownloadButton from "@/components/detail/SCDownloadButton";
+import { formatFileSize } from "@/utils/attachedFileUtils";
+import { getFileIcon } from "@/utils/attachedFileUtils";
 
 function getStudyDataById(id: string): StudyDetailData | null {
   const parsedId = parseInt(id, 10);
@@ -42,7 +45,7 @@ function getStatusColor(status: string) {
 export async function generateMetadata({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }): Promise<Metadata> {
   const { id } = await params;
   const studyData = getStudyDataById(id);
@@ -166,7 +169,36 @@ export default async function StudyMaterialDetailPage({
                   </div>
                 </div>
               </div>
-
+              {studyData.attachedFiles &&
+                studyData.attachedFiles.length > 0 && (
+                  <div className="border-t border-gray-300 pt-6 mb-6">
+                    <h4 className="font-medium text-gray-900 mb-4 flex items-center gap-2">
+                      <Download className="w-4 h-4" />
+                      첨부파일 ({studyData.attachedFiles.length})
+                    </h4>
+                    <div className="space-y-3">
+                      {studyData.attachedFiles.map((file, index) => (
+                        <div
+                          key={index}
+                          className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                        >
+                          <span className="text-2xl">
+                            {getFileIcon(file.type)}
+                          </span>
+                          <div className="flex-1">
+                            <p className="font-medium text-gray-900">
+                              {file.name}
+                            </p>
+                            <p className="text-sm text-gray-500">
+                              {formatFileSize(file.size)}
+                            </p>
+                          </div>
+                          <DownloadButton fileName={file.name} />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
               {/* Tags */}
               <div className="flex justify-between p-1  pt-6 border-t border-gray-300">
                 <div className="flex flex-wrap gap-2">

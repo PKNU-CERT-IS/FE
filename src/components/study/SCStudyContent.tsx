@@ -34,9 +34,17 @@ async function getStudyMaterials(): Promise<StudyMaterial[]> {
       author: "김보안",
       authorStatus: "student",
       semester: "2025-2",
-      files: [
-        { name: "OWASP_Top10_2023_Analysis.pdf", size: "3.2MB", type: "pdf" },
-        { name: "Exploit_Examples.zip", size: "1.8MB", type: "zip" },
+      attachedFiles: [
+        {
+          id: "file_1_1",
+          name: "해커톤_기획서.pdf",
+          size: 2547892,
+          type: "application/pdf",
+          category: "document",
+          downloadUrl: "/api/files/download/hackathon_plan.pdf",
+          uploadDate: "2025-01-15T09:30:00Z",
+          description: "해커톤 전체 기획서 및 일정표",
+        },
       ],
       category: "Web Security",
       hackingTechnique: "web_security",
@@ -59,9 +67,17 @@ async function getStudyMaterials(): Promise<StudyMaterial[]> {
       author: "이해커",
       authorStatus: "graduate",
       semester: "2025-2",
-      files: [
-        { name: "Metasploit_Guide.pdf", size: "5.1MB", type: "pdf" },
-        { name: "Lab_Environment.ova", size: "2.3GB", type: "ova" },
+      attachedFiles: [
+        {
+          id: "file_1_1",
+          name: "해커톤_기획서.pdf",
+          size: 2547892,
+          type: "application/pdf",
+          category: "document",
+          downloadUrl: "/api/files/download/hackathon_plan.pdf",
+          uploadDate: "2025-01-15T09:30:00Z",
+          description: "해커톤 전체 기획서 및 일정표",
+        },
       ],
       category: "Penetration Testing",
       hackingTechnique: "penetration_testing",
@@ -84,9 +100,17 @@ async function getStudyMaterials(): Promise<StudyMaterial[]> {
       author: "박암호",
       authorStatus: "student",
       semester: "2025-2",
-      files: [
-        { name: "Cryptography_Basics.pdf", size: "2.7MB", type: "pdf" },
-        { name: "RSA_Implementation.py", size: "15KB", type: "py" },
+      attachedFiles: [
+        {
+          id: "file_1_1",
+          name: "해커톤_기획서.pdf",
+          size: 2547892,
+          type: "application/pdf",
+          category: "document",
+          downloadUrl: "/api/files/download/hackathon_plan.pdf",
+          uploadDate: "2025-01-15T09:30:00Z",
+          description: "해커톤 전체 기획서 및 일정표",
+        },
       ],
       category: "Cryptography",
       hackingTechnique: "cryptography",
@@ -108,9 +132,17 @@ async function getStudyMaterials(): Promise<StudyMaterial[]> {
       author: "최포렌식",
       authorStatus: "graduate",
       semester: "2025-2",
-      files: [
-        { name: "Forensics_Guide.pdf", size: "4.8MB", type: "pdf" },
-        { name: "Sample_Evidence.dd", size: "512MB", type: "dd" },
+      attachedFiles: [
+        {
+          id: "file_1_1",
+          name: "해커톤_기획서.pdf",
+          size: 2547892,
+          type: "application/pdf",
+          category: "document",
+          downloadUrl: "/api/files/download/hackathon_plan.pdf",
+          uploadDate: "2025-01-15T09:30:00Z",
+          description: "해커톤 전체 기획서 및 일정표",
+        },
       ],
       category: "Digital Forensics",
       hackingTechnique: "digital_forensics",
@@ -133,9 +165,17 @@ async function getStudyMaterials(): Promise<StudyMaterial[]> {
       author: "정네트워크",
       authorStatus: "student",
       semester: "2025-2",
-      files: [
-        { name: "Network_Monitoring.pdf", size: "3.8MB", type: "pdf" },
-        { name: "Snort_Rules.conf", size: "45KB", type: "conf" },
+      attachedFiles: [
+        {
+          id: "file_1_1",
+          name: "해커톤_기획서.pdf",
+          size: 2547892,
+          type: "application/pdf",
+          category: "document",
+          downloadUrl: "/api/files/download/hackathon_plan.pdf",
+          uploadDate: "2025-01-15T09:30:00Z",
+          description: "해커톤 전체 기획서 및 일정표",
+        },
       ],
       category: "Network Security",
       hackingTechnique: "network_security",
@@ -158,9 +198,17 @@ async function getStudyMaterials(): Promise<StudyMaterial[]> {
       author: "김웹해킹",
       authorStatus: "graduate",
       semester: "2025-2",
-      files: [
-        { name: "SQLi_Analysis.pdf", size: "2.9MB", type: "pdf" },
-        { name: "Vulnerable_App.zip", size: "850KB", type: "zip" },
+      attachedFiles: [
+        {
+          id: "file_1_1",
+          name: "해커톤_기획서.pdf",
+          size: 2547892,
+          type: "application/pdf",
+          category: "document",
+          downloadUrl: "/api/files/download/hackathon_plan.pdf",
+          uploadDate: "2025-01-15T09:30:00Z",
+          description: "해커톤 전체 기획서 및 일정표",
+        },
       ],
       category: "Web Security",
       hackingTechnique: "web_security",
@@ -182,9 +230,17 @@ async function getStudyMaterials(): Promise<StudyMaterial[]> {
       author: "이모바일",
       authorStatus: "student",
       semester: "2025-2",
-      files: [
-        { name: "Mobile_Security_Guide.pdf", size: "4.1MB", type: "pdf" },
-        { name: "Test_APK.zip", size: "2.5MB", type: "zip" },
+      attachedFiles: [
+        {
+          id: "file_1_1",
+          name: "해커톤_기획서.pdf",
+          size: 2547892,
+          type: "application/pdf",
+          category: "document",
+          downloadUrl: "/api/files/download/hackathon_plan.pdf",
+          uploadDate: "2025-01-15T09:30:00Z",
+          description: "해커톤 전체 기획서 및 일정표",
+        },
       ],
       category: "Mobile Security",
       hackingTechnique: "mobile_security",
@@ -355,7 +411,7 @@ export default async function SCStudyContent({
                       </svg>
                       첨부 파일
                     </h4>
-                    {material.files.map((file, index) => (
+                    {material.attachedFiles?.map((file, index) => (
                       <div
                         key={index}
                         className="flex items-center justify-between bg-gray-50 rounded-lg p-3"

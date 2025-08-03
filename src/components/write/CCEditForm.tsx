@@ -18,6 +18,7 @@ import {
   getDescriptionPlaceholder,
   isFormValid,
 } from "@/utils/newPageFormUtils";
+import { AttachedFile } from "@/types/attachedFile";
 
 interface EditFormProps {
   type: NewPageCategoryType;
@@ -31,7 +32,7 @@ export default function EditForm({ type, dataId }: EditFormProps) {
   const [content, setContent] = useState<string>("");
   const [category, setCategory] = useState<string>("");
   const [tags, setTags] = useState<string[]>([]);
-  const [attachments, setAttachments] = useState<File[]>([]);
+  const [attachments, setAttachments] = useState<AttachedFile[]>([]);
   const [startDate, setStartDate] = useState<string>("");
   const [endDate, setEndDate] = useState<string>("");
   const [maxParticipants, setMaxParticipants] = useState("");
@@ -67,7 +68,7 @@ export default function EditForm({ type, dataId }: EditFormProps) {
               content: boardDetailData.detailContent,
               category: boardData.category,
               tags: boardDetailData.tags || [],
-              attachments: boardDetailData.attachments || [],
+              attachedFiles: boardDetailData.attachedFiles || [],
             };
           }
         } else if (type === "blog") {
@@ -90,7 +91,7 @@ export default function EditForm({ type, dataId }: EditFormProps) {
               content: studyData.detailContent,
               category: studyData.category,
               tags: studyData.tags || [],
-              attachments: studyData.files || [],
+              attachedFiles: studyData.attachedFiles || [],
               startDate: studyData.startDate,
               endDate: studyData.endDate || "",
               maxParticipants: String(studyData.maxParticipants || ""),
@@ -107,7 +108,7 @@ export default function EditForm({ type, dataId }: EditFormProps) {
               content: projectData.description, // 프로젝트는 description을 content로 사용
               category: projectData.category,
               tags: projectData.customTags?.map((tag) => tag.name) || [],
-              attachments: projectData.attachedFiles || [],
+              attachedFiles: projectData.attachedFiles || [],
               startDate: projectData.startDate,
               endDate: projectData.endDate || "",
               maxParticipants: String(projectData.maxParticipants || ""),
@@ -125,7 +126,7 @@ export default function EditForm({ type, dataId }: EditFormProps) {
           setContent(initialData.content || "");
           setCategory(initialData.category || "");
           setTags(initialData.tags || []);
-          setAttachments(initialData.attachments || []);
+          setAttachments(initialData.attachedFiles || []);
           setStartDate(initialData.startDate || "");
           setEndDate(initialData.endDate || "");
           setMaxParticipants(initialData.maxParticipants || "");
@@ -486,7 +487,7 @@ export default function EditForm({ type, dataId }: EditFormProps) {
             첨부 파일
           </label>
           <FileUpload
-            attachments={attachments}
+            attachedFiles={attachments}
             onAttachmentsChange={setAttachments}
           />
         </div>

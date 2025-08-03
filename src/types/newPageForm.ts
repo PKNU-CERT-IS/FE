@@ -1,3 +1,5 @@
+import { AttachedFile } from "@/types/attachedFile";
+
 export const newPageCategories = ["board", "blog", "study", "project"] as const;
 
 export type NewPageCategoryType = (typeof newPageCategories)[number];
@@ -12,7 +14,7 @@ export interface NewPageFormData {
   endDate: string;
   content: string;
   files: File[];
-  attachments: string[];
+  attachedFiles?: AttachedFile[];
   maxParticipants?: number;
   isCategoryOpen: boolean;
   githubUrl?: string;

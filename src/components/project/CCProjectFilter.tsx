@@ -25,6 +25,8 @@ export default function CCProjectFilter({
 }: ProjectCategoryProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isPending, startTransition] = useTransition();
 
   const [showSemesterDropdown, setShowSemesterDropdown] = useState(false);
