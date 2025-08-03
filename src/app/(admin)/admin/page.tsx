@@ -2,13 +2,15 @@
 
 import SCActivityDashBoard from "@/components/admin/home/SCActivityDashBoard";
 import SCPenaltyDashBoard from "@/components/admin/home/SCPenaltyDashBoard";
+import CCSignUpList from "@/components/admin/home/CCSignUpList";
 import SCTotalDashBoard from "@/components/admin/home/SCTotalDashBoard";
 
 export default function AdminPage() {
   return (
     <div className="min-h-screen bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="space-y-6">
+        <div className="space-y-8">
+          {/* 제목 */}
           <div className="text-center space-y-4 mt-16">
             <h1 className="text-3xl font-semibold text-gray-900">
               동아리 관리 시스템
@@ -18,9 +20,19 @@ export default function AdminPage() {
             </p>
           </div>
 
+          {/* 통계 대시보드 */}
           <SCTotalDashBoard />
-          {/* 벌점 분포 */}
-          <SCPenaltyDashBoard />
+
+          {/* 벌점 분포 + 가입 승인 */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div className="lg:col-span-2">
+              <SCPenaltyDashBoard />
+            </div>
+            <div className="lg:col-span-1">
+              <CCSignUpList />
+            </div>
+          </div>
+
           {/* 활동 요약 */}
           <SCActivityDashBoard />
         </div>

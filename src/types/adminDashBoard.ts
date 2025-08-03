@@ -15,3 +15,9 @@ export interface ActivityDashboardData {
     overallProgress: number;
   };
 }
+
+export interface SignUpList {
+  name: string;
+  department: string;
+  studentId: number;
+}
