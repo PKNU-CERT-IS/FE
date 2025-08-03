@@ -1,6 +1,6 @@
 "server-only";
 import SCAuthTitle from "@/components/auth/SCAuthTitle";
-import CCLoginForm from "@/components/auth/login/CCLoginForm";
+import CCAdminLoginForm from "@/components/admin/login/CCAdminLoginForm";
 
 export default function SCAdminLogin() {
   return (
@@ -11,7 +11,7 @@ export default function SCAdminLogin() {
           description={"사이버 보안 동아리 관리자 전용 시스템"}
         />
         <div className="space-y-6 p-6 pt-0">
-          <CCLoginForm />
+          <CCAdminLoginForm />
         </div>
       </div>
     </div>

@@ -1,7 +1,6 @@
 "server-only";
 
 import Link from "next/link";
-import BugReport from "@/components/nav/bugReport";
 import NavBarItems from "@/components/nav/navBarItems";
 import LogoSVG from "/public/icons/logo-white.svg";
 import LoginButton from "@/components/nav/loginButton";
@@ -43,9 +42,8 @@ export default function AdminNavigationBar() {
           <div className="hidden md:flex flex-row items-center">
             <NavBarItems navBarList={navBarList} />
             <div className="pl-6 ml-2 border-l border-gray-300">
-              <BugReport className="text-sm" />
+              <LoginButton href="/admin/login" className="text-sm" />
             </div>
-            <LoginButton href="/admin/login" className="text-sm" />
           </div>
 
           {/* 모바일 메뉴 */}

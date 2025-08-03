@@ -1,4 +1,4 @@
-import SCAdminLogin from "@/components/admin/adminLogin";
+import SCAdminLogin from "@/components/admin/login/adminLogin";
 
 export default async function LoginPage() {
   return (
