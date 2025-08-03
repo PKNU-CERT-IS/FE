@@ -1,3 +1,5 @@
+"server-only";
+
 import Link from "next/link";
 import BugReport from "@/components/nav/bugReport";
 import NavBarItems from "@/components/nav/navBarItems";
