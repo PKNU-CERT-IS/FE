@@ -10,7 +10,6 @@ import {
   getTypeColor,
   getTypeLabel,
 } from "@/utils/scheduleUtils";
-import CCEditButton from "@/components/schedule/CCEditButton";
 
 interface SCScheduleInfoProps {
   selectedDate: string | null;
@@ -68,10 +67,6 @@ export default function SCScheduleInfo({ selectedDate }: SCScheduleInfoProps) {
                   )}`}
                 >
                   {getTypeLabel(schedule.type)}
-                </div>
-
-                <div className="absolute bottom-3 right-3">
-                  <CCEditButton schedule={schedule} />
                 </div>
               </div>
             </div>
