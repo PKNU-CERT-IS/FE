@@ -16,7 +16,7 @@ export default function CCAddScheduleCard() {
         <div className="mb-6 flex flex-row items-center">
           <AddSVG width={24} />
           <div className="ml-2 font-semibold tracking-tight text-gray-900 text-lg">
-            새 일정
+            동아리방 예약
           </div>
         </div>
         <button
@@ -25,7 +25,7 @@ export default function CCAddScheduleCard() {
           }}
           className="action-button w-full py-2.5"
         >
-          일정 추가
+          예약 신청
         </button>
       </div>
       {isOpenModal && (

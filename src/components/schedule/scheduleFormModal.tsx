@@ -58,9 +58,9 @@ const ScheduleFormModal = ({ closeModal, schedule, modalRef }: ModalProps) => {
             >
               <X />
             </button>
-            <p className="text-gray-900">새 일정</p>
+            <p className="text-gray-900">동아리방 예약</p>
             <p className="text-gray-500 text-sm">
-              새 일정 정보를 입력해주세요.
+              동아리방 예약 정보를 입력해주세요.
             </p>
           </div>
           <div className="space-y-4 text-left my-6">
@@ -69,6 +69,7 @@ const ScheduleFormModal = ({ closeModal, schedule, modalRef }: ModalProps) => {
               <input
                 defaultValue={schedule?.title ?? ""}
                 className="text-sm required flex h-10 w-full rounded-md border px-3 py-2 bg-white border-gray-300 text-gray-900"
+                placeholder="예: 해킹 스터디"
               />
             </div>
             <div>
@@ -76,6 +77,7 @@ const ScheduleFormModal = ({ closeModal, schedule, modalRef }: ModalProps) => {
               <input
                 defaultValue={schedule?.location ?? ""}
                 className="text-sm flex h-10 w-full rounded-md border px-3 py-2 bg-white border-gray-300 text-gray-900"
+                placeholder="동아리방"
               />
             </div>
             <div className="grid grid-cols-2 gap-4 z-10"></div>
