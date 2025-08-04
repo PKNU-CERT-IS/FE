@@ -9,7 +9,7 @@ import Link from "next/link";
 
 export default function SCTotalDashBoard() {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+    <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6">
       <Link href={"/admin/members"}>
         <div className="text-card-foreground card-list">
           <div className="p-6 flex flex-row items-center justify-between space-y-0 pb-2">

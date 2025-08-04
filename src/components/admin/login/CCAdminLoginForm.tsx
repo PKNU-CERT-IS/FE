@@ -3,7 +3,7 @@
 import DefaultButton from "@/components/ui/defaultButton";
 import LockSVG from "/public/icons/lock.svg";
 import ProfileSVG from "/public/icons/profile.svg";
-import { adminLoginAction } from "@/actions/admin/login/AdminLoginServerAction";
+import { adminLoginAction } from "@/actions/admin/auth/AdminLoginServerAction";
 import { useAuth } from "@/hooks/useAuth";
 import { Eye, EyeOff, LockOpen } from "lucide-react";
 

@@ -114,7 +114,7 @@ export default function CCAdminScheduleRequestList() {
 
                 <div className="flex gap-2">
                   <RequestActionButtons
-                    reservationId={reservation.id}
+                    id={reservation.id}
                     approveAction={approveReservation}
                     rejectAction={rejectReservation}
                   />

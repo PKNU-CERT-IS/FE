@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import ProgressBar from "@/components/ui/progressBar";
-import { ActivityDashboardData } from "@/types/adminDashBoard";
+import { ActivityDashboardData } from "@/types/admin/adminDashBoard";
 
 // 대시보드 데이터
 const activityDashboardData: ActivityDashboardData = {

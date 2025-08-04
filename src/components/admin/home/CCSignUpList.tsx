@@ -1,8 +1,12 @@
-"use client";
+"server-only";
 
-import DefaultButton from "@/components/ui/defaultButton";
+import {
+  approveSignUp,
+  rejectSignUp,
+} from "@/actions/admin/auth/AdminSignUpRequestServerAction";
+import RequestActionButtons from "@/components/ui/requestActionButtons";
 import { SignUpList } from "@/types/admin/adminDashBoard";
-import { CheckCircle, User, XCircle } from "lucide-react";
+import { User } from "lucide-react";
 
 const signUpList: SignUpList[] = [
   {
@@ -28,16 +32,8 @@ const signUpList: SignUpList[] = [
 ];
 
 export default function CCSignUpList() {
-  const handleApprove = () => {
-    console.log("승인");
-  };
-
-  const handleReject = () => {
-    console.log("거절");
-  };
-
   return (
-    <div className="text-card-foreground card-list h-full">
+    <div className="text-card-foreground card-list h-full cursor-auto">
       <div className="pb-4 flex flex-col space-y-1.5 p-6">
         <div className="text-lg font-medium flex text-gray-600 items-center gap-2 leading-none tracking-tight">
           <User className="h-5 w-5 text-cert-dark-red" />
@@ -59,7 +55,7 @@ export default function CCSignUpList() {
               key={index}
               className="p-4 border border-gray-200 rounded-lg transition-all duration-200 hover:border-cert-red/50"
             >
-              <div className="flex justify-between items-start gap-4">
+              <div className="flex justify-between items-start">
                 <div className="flex-1">
                   <div className="flex items-center gap-3 mb-2">
                     <span className="font-medium text-gray-900">
@@ -74,24 +70,12 @@ export default function CCSignUpList() {
                   </p>
                 </div>
 
-                <div className="flex gap-2 shrink-0 mt-1">
-                  <DefaultButton
-                    size="sm"
-                    className="bg-green-600 hover:bg-green-700 text-white text-xs h-7 cursor-pointer"
-                    onClick={handleApprove}
-                  >
-                    <CheckCircle className="w-3 h-3 mr-1" />
-                    승인
-                  </DefaultButton>
-                  <DefaultButton
-                    size="sm"
-                    variant="outline"
-                    className="border-red-500 text-cert-red hover:bg-red-50 hover:text-cert-red text-xs h-7 cursor-pointer"
-                    onClick={handleReject}
-                  >
-                    <XCircle className="w-3 h-3 mr-1" />
-                    거절
-                  </DefaultButton>
+                <div className="flex gap-2 shrink-0 w-40">
+                  <RequestActionButtons
+                    id={member.studentId}
+                    approveAction={approveSignUp}
+                    rejectAction={rejectSignUp}
+                  />
                 </div>
               </div>
             </div>
