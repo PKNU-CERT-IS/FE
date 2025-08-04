@@ -1,7 +1,7 @@
 "use client";
 
 import DefaultButton from "@/components/ui/defaultButton";
-import { SignUpList } from "@/types/adminDashBoard";
+import { SignUpList } from "@/types/admin/adminDashBoard";
 import { CheckCircle, User, XCircle } from "lucide-react";
 
 const signUpList: SignUpList[] = [

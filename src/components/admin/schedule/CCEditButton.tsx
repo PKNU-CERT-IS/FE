@@ -1,6 +1,6 @@
 "use client";
 
-import ScheduleFormModal from "@/components/schedule/scheduleFormModal";
+import CCScheduleFormModal from "@/components/schedule/CCScheduleFormModal";
 import { ScheduleInfo } from "@/types/schedule";
 import { useModal } from "@/hooks/useModal";
 import { useSchedule } from "@/hooks/useSchedule";
@@ -27,7 +27,7 @@ export default function CCEditButton({ schedule }: CCEditButtonProps) {
       </button>
 
       {selectedSchedule?.id === schedule.id && isOpenModal && (
-        <ScheduleFormModal
+        <CCScheduleFormModal
           schedule={selectedSchedule}
           closeModal={() => setIsOpenModal(false)}
           modalRef={modalOutsideRef}

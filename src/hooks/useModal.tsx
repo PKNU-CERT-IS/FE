@@ -49,10 +49,6 @@ export const useModal = () => {
     setIsEndTimeDropdownOpen(false);
   };
 
-  const addSchedule = () => {
-    console.log("예약 성공");
-  };
-
   const handleClickDropdownOutside = (e: MouseEvent) => {
     if (
       activityDropdownRef.current &&
@@ -123,7 +119,6 @@ export const useModal = () => {
     selectedEndTime,
     isEndTimeDropdownOpen,
     handleEndTime,
-    addSchedule,
     isOpenModal,
     setIsOpenModal,
     modalOutsideRef,
