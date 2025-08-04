@@ -2,7 +2,7 @@
 
 import SCActivityDashBoard from "@/components/admin/home/SCActivityDashBoard";
 import SCPenaltyDashBoard from "@/components/admin/home/SCPenaltyDashBoard";
-import CCSignUpList from "@/components/admin/home/CCSignUpList";
+import SCSignUpList from "@/components/admin/home/SCSignUpList";
 import SCTotalDashBoard from "@/components/admin/home/SCTotalDashBoard";
 
 export default function AdminPage() {
@@ -29,7 +29,7 @@ export default function AdminPage() {
               <SCPenaltyDashBoard />
             </div>
             <div className="lg:col-span-1">
-              <CCSignUpList />
+              <SCSignUpList />
             </div>
           </div>
 

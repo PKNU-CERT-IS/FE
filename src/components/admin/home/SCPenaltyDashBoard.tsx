@@ -2,12 +2,6 @@ import DefaultBadge from "@/components/ui/defaultBadge";
 import { AlertTriangle } from "lucide-react";
 import CCPenaltyBarCharts from "@/components/admin/home/CCPenaltyCharts";
 
-const penaltyData = [
-  { name: "3점", count: 5, fill: "#9E0101" },
-  { name: "2점", count: 12, fill: "#DC2626" },
-  { name: "1점", count: 28, fill: "#EF4444" },
-];
-
 const withdrawalList = [
   {
     name: "김철수",
