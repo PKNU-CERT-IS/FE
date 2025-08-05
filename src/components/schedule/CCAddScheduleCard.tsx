@@ -2,10 +2,16 @@
 
 import AddSVG from "/public/icons/add.svg";
 import { useModal } from "@/hooks/useModal";
-import ScheduleFormModal from "@/components/schedule/scheduleFormModal";
+import CCScheduleFormModal from "@/components/schedule/CCScheduleFormModal";
+import { usePathname } from "next/navigation";
 
 export default function CCAddScheduleCard() {
   const { isOpenModal, setIsOpenModal, modalOutsideRef } = useModal();
+  const pathname = usePathname();
+
+  const isAdmin = pathname.startsWith("/admin");
+  const title = isAdmin ? "새 일정 추가" : "동아리방 예약";
+  const buttonText = isAdmin ? "일정 추가" : "예약 신청";
 
   return (
     <div
@@ -16,7 +22,7 @@ export default function CCAddScheduleCard() {
         <div className="mb-6 flex flex-row items-center">
           <AddSVG width={24} />
           <div className="ml-2 font-semibold tracking-tight text-gray-900 text-lg">
-            새 일정
+            {title}
           </div>
         </div>
         <button
@@ -25,11 +31,11 @@ export default function CCAddScheduleCard() {
           }}
           className="action-button w-full py-2.5"
         >
-          일정 추가
+          {buttonText}
         </button>
       </div>
       {isOpenModal && (
-        <ScheduleFormModal
+        <CCScheduleFormModal
           closeModal={() => setIsOpenModal(false)}
           modalRef={modalOutsideRef}
         />

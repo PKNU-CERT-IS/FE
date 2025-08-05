@@ -1,0 +1,48 @@
+"use client";
+
+import { useModal } from "@/hooks/useModal";
+import { useSchedule } from "@/hooks/useSchedule";
+import { ScheduleInfo } from "@/types/schedule";
+import ConfirmModal from "@/components/ui/defaultConfirmModal";
+import { Trash2 } from "lucide-react";
+
+interface CCDeleteButtonProps {
+  schedule: ScheduleInfo;
+}
+
+export default function CCDeleteButton({ schedule }: CCDeleteButtonProps) {
+  const { selectedSchedule, setSelectedSchedule } = useSchedule();
+  const { isOpenModal, setIsOpenModal } = useModal();
+
+  const handleDelete = async () => {
+    setIsOpenModal(false);
+    // api 추가
+  };
+
+  const openModal = () => {
+    setSelectedSchedule(schedule);
+    setIsOpenModal(true);
+  };
+
+  const closeModal = () => {
+    setIsOpenModal(false);
+  };
+
+  return (
+    <div className="flex">
+      <button onClick={openModal} className="cursor-pointer">
+        <Trash2 className="w-4 h-4 stroke-gray-500 hover:stroke-gray-400 transition-all duration-200" />
+      </button>
+
+      <ConfirmModal
+        isOpen={selectedSchedule?.id === schedule.id && isOpenModal}
+        title="일정 삭제"
+        message="정말 이 일정을 삭제하시겠습니까?"
+        confirmText="삭제"
+        cancelText="취소"
+        onConfirm={handleDelete}
+        onCancel={closeModal}
+      />
+    </div>
+  );
+}

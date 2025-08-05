@@ -10,12 +10,16 @@ import {
   getTypeColor,
   getTypeLabel,
 } from "@/utils/scheduleUtils";
+import CCEditButton from "@/components/admin/schedule/CCEditButton";
+import CCDeleteButton from "@/components/admin/schedule/CCDeleteButton";
 
-interface SCScheduleInfoProps {
+interface SCAdminScheduleInfoProps {
   selectedDate: string | null;
 }
 
-export default function SCScheduleInfo({ selectedDate }: SCScheduleInfoProps) {
+export default function SCAdminScheduleInfo({
+  selectedDate,
+}: SCAdminScheduleInfoProps) {
   const allSchedules: ScheduleInfo[] = mockScheduleData();
   const selectedDateSchedules = selectedDate
     ? allSchedules.filter((sc) => sc.date === selectedDate)
@@ -30,7 +34,7 @@ export default function SCScheduleInfo({ selectedDate }: SCScheduleInfoProps) {
       <p className="text-lg font-semibold mb-4">
         {formattedSelectedDate ? `${formattedSelectedDate} 일정` : "일정"}
       </p>
-      <div className="space-y-4 max-h-[35rem] overflow-y-auto">
+      <div className="space-y-4 overflow-y-auto max-h-[18rem]">
         {selectedDateSchedules.length === 0 ? (
           <p className="text-gray-500 text-center p-3">
             선택한 날짜에 일정이 없습니다.
@@ -65,6 +69,11 @@ export default function SCScheduleInfo({ selectedDate }: SCScheduleInfoProps) {
                   )}`}
                 >
                   {getTypeLabel(schedule.type)}
+                </div>
+
+                <div className="absolute inset-y-0 right-2 bottom-0 flex items-end gap-2 pb-3">
+                  <CCEditButton schedule={schedule} />
+                  <CCDeleteButton schedule={schedule} />
                 </div>
               </div>
             </div>
