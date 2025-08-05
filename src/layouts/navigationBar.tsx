@@ -35,10 +35,6 @@ const NavigationBar = () => {
               <span className="text-xl font-bold text-gray-900 tracking-wider drop-shadow-lg">
                 CERT-IS
               </span>
-              <span className="text-xs text-gray-600 -mt-1 font-mono">
-                Computer Emergency Response Team <br />
-                Information Security
-              </span>
             </div>
           </Link>
 
