@@ -32,7 +32,7 @@ const NavigationBar = () => {
               <div className="absolute inset-0 rounded-full blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-cert-dark-red/20" />
             </div>
             <div className="flex flex-col min-w-[13.75rem] max-w-fit whitespace-nowrap">
-              <span className="text-xl font-bold text-gray-900 tracking-wider drop-shadow-lg">
+              <span className="text-2xl font-bold text-gray-900 tracking-wider drop-shadow-lg">
                 CERT-IS
               </span>
             </div>
