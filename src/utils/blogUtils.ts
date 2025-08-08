@@ -1,4 +1,4 @@
-import { BlogPost, BlogCategory } from "@/types/blog";
+import { BlogPost, BlogCategory, BLOG_CATEGORIES } from "@/types/blog";
 
 /**
  * 블로그 포스트를 검색어와 카테고리로 필터링하는 함수
@@ -180,4 +180,8 @@ export const generateExcerpt = (
   }
 
   return excerpt.trim() + (excerpt.length < plainText.length ? "..." : "");
+};
+
+export const isValidCategory = (category: string): category is BlogCategory => {
+  return BLOG_CATEGORIES.includes(category as BlogCategory);
 };

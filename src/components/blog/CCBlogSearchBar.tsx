@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import DefaultSearchBar from "@/components/ui/defaultSearchBar";
 import SearchSVG from "/public/icons/search.svg";
 
@@ -13,6 +13,7 @@ interface BlogSearchBarProps {
 export default function BlogSearchBar({ currentSearch }: BlogSearchBarProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const pathname = usePathname();
   const [searchInput, setSearchInput] = useState<string>(currentSearch);
   const prevSearchInput = useRef<string>(searchInput);
 
@@ -36,7 +37,8 @@ export default function BlogSearchBar({ currentSearch }: BlogSearchBarProps) {
       params.delete("page"); // 검색 시 첫 페이지로
 
       const queryString = params.toString();
-      const newUrl = queryString ? `/blog?${queryString}` : "/blog";
+      const newUrl = queryString ? `${pathname}?${queryString}` : pathname;
+
       router.push(newUrl);
     }, DEBOUNCE_DELAY);
 
