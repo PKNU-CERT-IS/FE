@@ -7,6 +7,7 @@ import { BlogCategory as BlogCategoryType, ITEMS_PER_PAGE } from "@/types/blog";
 import { filterBlogPosts, isValidCategory } from "@/utils/blogUtils";
 import Link from "next/link";
 import BlogSearchBar from "@/components/blog/CCBlogSearchBar";
+import { formatDate } from "@/utils/formatDateUtil";
 
 interface BlogPageProps {
   searchParams: Promise<{
@@ -119,14 +120,7 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
                       {post.category}
                     </span>
                     <span className="text-xs text-gray-500">
-                      {new Date(post.createdAt)
-                        .toLocaleDateString("ko-KR", {
-                          year: "numeric",
-                          month: "2-digit",
-                          day: "2-digit",
-                        })
-                        .replace(/\./g, "-")
-                        .replace(/-$/, "")}
+                      {formatDate(post.createdAt)}
                     </span>
                   </div>
 

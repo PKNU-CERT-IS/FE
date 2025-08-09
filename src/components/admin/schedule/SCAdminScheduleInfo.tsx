@@ -5,13 +5,10 @@ import LocationSVG from "/public/icons/location.svg";
 import TimeSVG from "/public/icons/time.svg";
 import { mockScheduleData } from "@/mocks/mockScheduleData";
 import { ScheduleInfo } from "@/types/schedule";
-import {
-  formatKoreanDate,
-  getTypeColor,
-  getTypeLabel,
-} from "@/utils/scheduleUtils";
+import { getTypeColor, getTypeLabel } from "@/utils/scheduleUtils";
 import CCEditButton from "@/components/admin/schedule/CCEditButton";
 import CCDeleteButton from "@/components/admin/schedule/CCDeleteButton";
+import { formatDate } from "@/utils/formatDateUtil";
 
 interface SCAdminScheduleInfoProps {
   selectedDate: string | null;
@@ -25,9 +22,7 @@ export default function SCAdminScheduleInfo({
     ? allSchedules.filter((sc) => sc.date === selectedDate)
     : [];
 
-  const formattedSelectedDate = selectedDate
-    ? formatKoreanDate(selectedDate)
-    : null;
+  const formattedSelectedDate = selectedDate ? formatDate(selectedDate) : null;
 
   return (
     <div className="mt-6 p-6 rounded-lg border bg-white border-gray-200 shadow-sm h-min">
@@ -50,7 +45,8 @@ export default function SCAdminScheduleInfo({
                   <div className="space-y-2 text-sm text-gray-600">
                     <div className="flex flex-row items-center">
                       <ScheduleSVG className="w-4 mr-2" stroke="#4B5563" />
-                      {new Date(schedule.date).toLocaleDateString("ko-KR")}
+
+                      {formatDate(schedule.date, "dot")}
                     </div>
                     <div className="flex flex-row items-center">
                       <TimeSVG className="mr-2" />

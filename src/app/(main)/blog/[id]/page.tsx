@@ -6,6 +6,7 @@ import { mockBlogPosts } from "@/mocks/blogData";
 import BackToListButton from "@/components/detail/SCBackToListButton";
 import KebabMenuButton from "@/components/detail/CCKebabMenu";
 import ShareButton from "@/components/detail/CCShareButton";
+import { formatDate } from "@/utils/formatDateUtil";
 
 interface BlogDetailPageProps {
   params: Promise<{
@@ -55,24 +56,6 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
   if (!post) {
     notFound();
   }
-
-  // 날짜 포맷팅 함수
-  const formatDate = (dateString: string) => {
-    try {
-      const date = new Date(dateString);
-      if (isNaN(date.getTime())) {
-        return dateString;
-      }
-      return date.toLocaleDateString("ko-KR", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-      });
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (error) {
-      return dateString;
-    }
-  };
 
   // 관련 게시글 추천 (같은 카테고리의 다른 글들)
   const relatedPosts = mockBlogPosts

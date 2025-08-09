@@ -1,4 +1,5 @@
 import { ScheduleInfo, SCHEDULE_TYPES, ScheduleType } from "@/types/schedule";
+import { formatDate } from "./formatDateUtil";
 
 export const getTypeLabel = (type: ScheduleType) => {
   switch (type) {
@@ -51,40 +52,6 @@ export const MONTH_NAMES = [
 export const DAY_NAMES = ["일", "월", "화", "수", "목", "금", "토"] as const;
 
 /**
- * 날짜를 YYYY-MM-DD 형태의 문자열로 변환
- */
-export const formatDateString = (date: Date | string): string => {
-  const d = typeof date === "string" ? new Date(date) : date;
-  const year = d.getFullYear();
-  const month = String(d.getMonth() + 1).padStart(2, "0");
-  const day = String(d.getDate()).padStart(2, "0");
-  return `${year}-${month}-${day}`;
-};
-
-/**
- * 날짜를 한국어 형태로 포맷팅
- * @param date - Date 객체 또는 날짜 문자열
- * @param includeYear - 연도 포함 여부 (기본값: false)
- * @returns 포맷팅된 한국어 날짜 문자열
- */
-export const formatKoreanDate = (
-  date: Date | string,
-  includeYear: boolean = false
-): string => {
-  const d = typeof date === "string" ? new Date(date) : date;
-  const year = d.getFullYear();
-  const month = d.getMonth() + 1;
-  const day = d.getDate();
-  const dayOfWeek = DAY_NAMES[d.getDay()];
-
-  if (includeYear) {
-    return `${year}년 ${MONTH_NAMES[d.getMonth()]} ${day}일 ${dayOfWeek}요일`;
-  }
-
-  return `${month}월 ${day}일 ${dayOfWeek}요일`;
-};
-
-/**
  * 캘린더에 표시할 날짜 배열 생성
  */
 export const generateCalendarDays = (currentDate: Date): Date[] => {
@@ -114,6 +81,6 @@ export const getScheduleByDate = (
   targetDate: Date | string,
   schedules: ScheduleInfo[]
 ): ScheduleInfo[] => {
-  const target = formatDateString(targetDate);
+  const target = formatDate(targetDate);
   return schedules.filter((s) => s.date === target);
 };
