@@ -1,6 +1,6 @@
-import { Member } from "@/types/admin/adminMembers";
+import { AdminMemberDetailInfoType } from "@/types/admin/adminMembers";
 
-export const members: Member[] = [
+export const members: AdminMemberDetailInfoType[] = [
   {
     id: 1,
     name: "김회장",
