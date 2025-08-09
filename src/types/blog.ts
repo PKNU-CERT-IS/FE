@@ -19,7 +19,7 @@ export interface BlogPost {
   views?: number;
   likes?: number;
   featured?: boolean;
-  published?: boolean;
+  published: boolean;
   slug?: string;
   coverImage?: string;
 }

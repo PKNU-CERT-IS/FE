@@ -5,11 +5,8 @@ import LocationSVG from "/public/icons/location.svg";
 import TimeSVG from "/public/icons/time.svg";
 import { mockScheduleData } from "@/mocks/mockScheduleData";
 import { ScheduleInfo } from "@/types/schedule";
-import {
-  formatKoreanDate,
-  getTypeColor,
-  getTypeLabel,
-} from "@/utils/scheduleUtils";
+import { getTypeColor, getTypeLabel } from "@/utils/scheduleUtils";
+import { formatDate } from "@/utils/formatDateUtil";
 
 interface SCScheduleInfoProps {
   selectedDate: string | null;
@@ -22,7 +19,7 @@ export default function SCScheduleInfo({ selectedDate }: SCScheduleInfoProps) {
     : [];
 
   const formattedSelectedDate = selectedDate
-    ? formatKoreanDate(selectedDate)
+    ? formatDate(selectedDate, "medium")
     : null;
 
   return (

@@ -1,5 +1,5 @@
 "use client";
-import { useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { BlogCategory } from "@/types/blog";
 
@@ -20,7 +20,7 @@ export default function BlogPagination({
 }: BlogPaginationProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
-
+  const pathname = usePathname();
   const totalPages = Math.ceil(totalItems / itemsPerPage);
 
   const handlePageChange = (page: number) => {
@@ -48,7 +48,8 @@ export default function BlogPagination({
     }
 
     const queryString = params.toString();
-    router.push(`/blog${queryString ? `?${queryString}` : ""}`);
+    const newUrl = queryString ? `${pathname}?${queryString}` : pathname;
+    router.push(newUrl);
   };
 
   // 표시할 페이지 번호들 계산

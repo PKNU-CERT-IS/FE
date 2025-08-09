@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import {
   BLOG_CATEGORIES,
   BlogCategory as BlogCategoryType,
@@ -18,6 +18,7 @@ export default function CCBlogCategoryFilter({
 }: CCBlogCategoryFilterProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const pathname = usePathname();
 
   const handleCategoryChange = (newCategory: BlogCategoryType) => {
     const params = new URLSearchParams(searchParams);
@@ -36,7 +37,7 @@ export default function CCBlogCategoryFilter({
     params.delete("page");
 
     const queryString = params.toString();
-    const newUrl = queryString ? `/blog?${queryString}` : "/blog";
+    const newUrl = queryString ? `${pathname}?${queryString}` : pathname;
 
     router.push(newUrl);
   };
