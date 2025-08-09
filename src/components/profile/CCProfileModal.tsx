@@ -69,7 +69,7 @@ export default function CCProfileModal({ closeModal, modalRef }: ModalProps) {
           <div className="flex flex-col space-y-1.5 text-center sm:text-left">
             <button
               onClick={closeModal}
-              className="absolute top-4 right-4 text-md hover:bg-gray-100 w-8 h-8 rounded-full flex items-center justify-center"
+              className="absolute top-4 right-4 text-md text-gray-400 hover:text-gray-600 flex items-center justify-center"
             >
               <X />
             </button>
