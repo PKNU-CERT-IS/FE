@@ -2,13 +2,13 @@
 
 import { AlertTriangle } from "lucide-react";
 import DefaultBadge from "@/components/ui/defaultBadge";
-import { MemberExtended } from "@/types/admin/adminMembers";
+import { AdminMemberDetailInfoType } from "@/types/admin/adminMembers";
 import { penaltyGracePeriod } from "@/utils/adminPenaltyGracePeriodUtils";
 
 interface MemberRowProps {
-  member: MemberExtended;
-  selectedMember: MemberExtended | null;
-  setSelectedMember: (member: MemberExtended | null) => void;
+  member: AdminMemberDetailInfoType;
+  selectedMember: AdminMemberDetailInfoType | null;
+  setSelectedMember: (member: AdminMemberDetailInfoType | null) => void;
 }
 
 export default function CCMebersRow({

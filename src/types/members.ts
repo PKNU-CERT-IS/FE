@@ -12,6 +12,7 @@ export type MembersRoleCategoryType = (typeof membersRoleCategories)[number];
 export const membersGradeCategories = ["1", "2", "3", "4"] as const;
 export type MembersGradeCategoryType = (typeof membersGradeCategories)[number];
 
+// Main members type
 export interface MembersDataType {
   id: number;
   name: string;

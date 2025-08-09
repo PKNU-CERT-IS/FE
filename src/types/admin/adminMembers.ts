@@ -1,10 +1,7 @@
-import {
-  MembersDataType,
-  MembersGradeCategoryType,
-  MembersRoleCategoryType,
-} from "@/types/members";
+import { MembersDataType } from "@/types/members";
 
-export interface MemberExtended extends MembersDataType {
+// Admin members type
+export interface AdminMemberDetailInfoType extends MembersDataType {
   penalty: number;
   gracePeriod: string;
   currentProjects: string[];
@@ -13,20 +10,4 @@ export interface MemberExtended extends MembersDataType {
   birth: string;
   phone: string;
   gender: string;
-}
-export interface Member {
-  id: number;
-  name: string;
-  studentId: string;
-  grade: MembersGradeCategoryType;
-  gender: "남" | "여";
-  birth: string;
-  phone: string;
-  email: string;
-  role: MembersRoleCategoryType;
-  major: string;
-  penalty: number;
-  gracePeriod: string;
-  currentStudies: string[];
-  currentProjects: string[];
 }

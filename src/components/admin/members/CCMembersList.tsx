@@ -3,7 +3,7 @@
 import { membersRoleCategories } from "@/types/members";
 import { useSearchParams } from "next/navigation";
 import React, { useState } from "react";
-import { MemberExtended } from "@/types/admin/adminMembers";
+import { AdminMemberDetailInfoType } from "@/types/admin/adminMembers";
 import { members } from "@/mocks/mockAdminMembersData";
 import CCMembersRow from "@/components/admin/members/CCMembersRow";
 import CCMemberDetailCard from "@/components/admin/members/CCMemberDetailCard";
@@ -14,19 +14,18 @@ export default function CCMembersList() {
   const searchParams = useSearchParams();
   const searchParam = searchParams.get("search") || "";
   const currentSearch = searchParam;
-  const [selectedMember, setSelectedMember] = useState<MemberExtended | null>(
-    null
-  );
+  const [selectedMember, setSelectedMember] =
+    useState<AdminMemberDetailInfoType | null>(null);
 
   // 역할별, 이름순 정렬
   const sortKorean = (a: string, b: string) => a.localeCompare(b, "ko-KR");
-  const sortedMembers = [...(members as MemberExtended[])].sort((a, b) =>
-    sortKorean(a.name, b.name)
+  const sortedMembers = [...(members as AdminMemberDetailInfoType[])].sort(
+    (a, b) => sortKorean(a.name, b.name)
   );
 
   const filteredMembers = () => {
     return sortedMembers.filter(
-      (member: MemberExtended) =>
+      (member: AdminMemberDetailInfoType) =>
         member.name.includes(currentSearch) ||
         member.major.includes(currentSearch) ||
         member.studentId.includes(currentSearch) ||
@@ -78,7 +77,7 @@ export default function CCMembersList() {
             <tbody className="divide-y divide-gray-200">
               {membersRoleCategories.map((role) => {
                 const sorted = filteredMembers().filter(
-                  (member: MemberExtended) => member.role === role
+                  (member: AdminMemberDetailInfoType) => member.role === role
                 );
                 if (sorted.length === 0) return null;
 
@@ -92,7 +91,7 @@ export default function CCMembersList() {
                         {role}
                       </td>
                     </tr>
-                    {sorted.map((member: MemberExtended) => (
+                    {sorted.map((member: AdminMemberDetailInfoType) => (
                       <CCMembersRow
                         key={member.id}
                         member={member}

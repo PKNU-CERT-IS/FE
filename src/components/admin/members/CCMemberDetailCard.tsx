@@ -5,12 +5,12 @@ import { useEffect, useState } from "react";
 import React from "react";
 import DefaultButton from "@/components/ui/defaultButton";
 import ConfirmModal from "@/components/ui/defaultConfirmModal";
-import { MemberExtended } from "@/types/admin/adminMembers";
+import { AdminMemberDetailInfoType } from "@/types/admin/adminMembers";
 import { penaltyGracePeriod } from "@/utils/adminPenaltyGracePeriodUtils";
 
 interface CCMemberDetailCardProps {
-  selectedMember: MemberExtended | null;
-  setSelectedMember: (member: MemberExtended | null) => void;
+  selectedMember: AdminMemberDetailInfoType | null;
+  setSelectedMember: (member: AdminMemberDetailInfoType | null) => void;
 }
 
 export default function CCMemberDetailCard({
