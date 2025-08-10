@@ -1,3 +1,4 @@
+"server-only";
 import DefaultBadge from "@/components/ui/defaultBadge";
 import { MembersDataType } from "@/types/members";
 import { getRoleBadgeStyle, getRoleBorderStyle } from "@/utils/membersUtils";
@@ -56,7 +57,7 @@ export default function MembersCard({ members }: MembersCardProps) {
         </div>
 
         <p className="text-center text-gray-600 mb-4 text-sm leading-relaxed">
-          {members.bio}
+          {members.description}
         </p>
 
         <div className="mb-6">
@@ -81,7 +82,7 @@ export default function MembersCard({ members }: MembersCardProps) {
         >
           <EmailSVG className="w-4 h-4" />
         </button>
-        {members.github && (
+        {members.githubUrl && (
           <button className="h-8 w-8 flex items-center justify-center text-gray-400 hover:text-cert-black  transition-colors duration-300 cursor-pointer">
             <GithubSVG className="w-4 h-4" />
           </button>

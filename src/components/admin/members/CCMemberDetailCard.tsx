@@ -6,7 +6,7 @@ import { User, Minus, Plus, X, Cake, Phone, Mail } from "lucide-react";
 import EditSVG from "/public/icons/edit.svg";
 import DefaultButton from "@/components/ui/defaultButton";
 import ConfirmModal from "@/components/ui/defaultConfirmModal";
-import CCMemberInfoEditModal from "@/components/admin/members/CCMemberInfoEditModal";
+import CCRoleEditModal from "@/components/admin/members/CCRoleEditModal";
 import { AdminMemberDetailInfoType } from "@/types/admin/adminMembers";
 import { penaltyGracePeriod } from "@/utils/adminPenaltyGracePeriodUtils";
 import { useModal } from "@/hooks/useModal";
@@ -84,12 +84,12 @@ export default function CCMemberDetailCard({
 
           <div className="text-xs flex flex-row items-center text-gray-600">
             <Cake className="w-3 h-3 mr-1" />
-            {selectedMember.birth}
+            {selectedMember.birthday}
           </div>
 
           <div className="text-xs flex flex-row items-center text-gray-600">
             <Phone className="w-3 h-3 mr-1" />
-            {selectedMember.phone}
+            {selectedMember.phoneNumber}
           </div>
 
           <div className="text-xs flex flex-row items-center text-gray-600">
@@ -206,7 +206,7 @@ export default function CCMemberDetailCard({
 
           {/* 회원 정보 수정 모달 */}
           {isOpenModal && (
-            <CCMemberInfoEditModal
+            <CCRoleEditModal
               member={selectedMember}
               isOpen={isOpenModal}
               closeModal={() => setIsOpenModal(false)}

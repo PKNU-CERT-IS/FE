@@ -23,7 +23,9 @@ export interface MembersDataType {
   major: string;
   profileImage?: string; // 프로필 이미지가 없을 수도 있으므로 선택적
   email?: string; // 이메일이 없을 수도 있으므로 선택적
-  github?: string; // GitHub 링크가 없을 수도 있으므로 선택적
+  githubUrl?: string; // GitHub 링크가 없을 수도 있으므로 선택적
+  linkedinUrl?: string;
   skills?: string[]; // 기술 스택이 없을 수도 있으므로 선택적
-  bio?: string; // 자기소개가 없을 수도 있으므로 선택적
+  description?: string; // 자기소개가 없을 수도 있으므로 선택적
+  studentId: string;
 }

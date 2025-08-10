@@ -1,12 +1,14 @@
 import BookSVG from "/public/icons/book.svg";
 import CommentSVG from "/public/icons/comment.svg";
-import { MembersDataType } from "./members";
+import { MembersDataType } from "@/types/members";
 
 export interface ProfileDataType extends MembersDataType {
   joinDate: string;
-  achievements: string[];
   penaltyPoint: number;
   penaltyPeriod: number;
+  birthday: string;
+  phoneNumber: string;
+  gender: string;
 }
 
 // tab category

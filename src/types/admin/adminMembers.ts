@@ -6,8 +6,7 @@ export interface AdminMemberDetailInfoType extends MembersDataType {
   gracePeriod: string;
   currentProjects: string[];
   currentStudies: string[];
-  studentId: string;
-  birth: string;
-  phone: string;
+  birthday: string;
+  phoneNumber: string;
   gender: string;
 }
