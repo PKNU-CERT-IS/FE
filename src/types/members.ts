@@ -3,7 +3,9 @@ export const membersRoleCategories = [
   "부회장",
   "임원진",
   "스터디장",
-  "회원",
+  "PLAYER",
+  "UPSOLVER",
+  "NONE",
 ] as const;
 
 export type MembersRoleCategoryType = (typeof membersRoleCategories)[number];

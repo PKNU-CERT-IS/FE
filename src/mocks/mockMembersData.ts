@@ -49,7 +49,7 @@ export const mockMembersData: MembersDataType[] = [
   {
     id: 5,
     name: "정회원",
-    role: "회원",
+    role: "PLAYER",
     grade: "1",
     major: "소프트웨어학과",
     email: "member@club.com",
@@ -59,7 +59,7 @@ export const mockMembersData: MembersDataType[] = [
   {
     id: 6,
     name: "한알고리즘",
-    role: "회원",
+    role: "UPSOLVER",
     grade: "2",
     major: "수학과",
     email: "algorithm@club.com",
@@ -70,7 +70,7 @@ export const mockMembersData: MembersDataType[] = [
   {
     id: 7,
     name: "송디자이너",
-    role: "회원",
+    role: "UPSOLVER",
     grade: "2",
     major: "시각디자인학과",
     email: "designer@club.com",

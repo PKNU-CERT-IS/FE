@@ -6,6 +6,10 @@ import { X, ChevronDown } from "lucide-react";
 import { AdminMemberDetailInfoType } from "@/types/admin/adminMembers";
 import { gradeOptions } from "@/utils/membersUtils";
 import { cn } from "@/lib/utils";
+import {
+  membersRoleCategories,
+  MembersRoleCategoryType,
+} from "@/types/members";
 
 interface CCMemberEditModalProps {
   member: AdminMemberDetailInfoType;
@@ -24,9 +28,12 @@ export default function CCMemberInfoEditModal({
 }: CCMemberEditModalProps) {
   const [editedMember, setEditedMember] =
     useState<AdminMemberDetailInfoType>(member);
-  const [showGradeDropdown, setShowGradeDropdown] = useState(false);
+
+  const [showGradeDropdown, setShowGradeDropdown] = useState<boolean>(false);
+  const [showRoleDropdown, setShowRoleDropdown] = useState<boolean>(false);
 
   const gradeRef = useRef<HTMLDivElement>(null);
+  const roleRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setEditedMember(member);
@@ -34,12 +41,14 @@ export default function CCMemberInfoEditModal({
 
   const closeAllDropdowns = useCallback(() => {
     setShowGradeDropdown(false);
+    setShowRoleDropdown(false);
   }, []);
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       const target = e.target as Node;
       if (gradeRef.current?.contains(target)) return;
+      if (roleRef.current?.contains(target)) return;
       closeAllDropdowns();
     };
 
@@ -69,6 +78,11 @@ export default function CCMemberInfoEditModal({
     closeModal();
   };
 
+  const roleOptions = membersRoleCategories.map((value) => ({
+    value,
+    label: value,
+  }));
+
   return (
     <div
       ref={modalRef}
@@ -90,6 +104,7 @@ export default function CCMemberInfoEditModal({
           </div>
 
           <div className="space-y-4 text-left my-6">
+            {/* 이름 */}
             <div>
               <p className="text-sm mb-1.5 font-medium text-gray-700">이름</p>
               <input
@@ -100,6 +115,7 @@ export default function CCMemberInfoEditModal({
               />
             </div>
 
+            {/* 전공 */}
             <div>
               <p className="text-sm mb-1.5 font-medium text-gray-700">전공</p>
               <input
@@ -111,7 +127,9 @@ export default function CCMemberInfoEditModal({
               />
             </div>
 
+            {/* 학년 / 직급 */}
             <div className="grid grid-cols-2 gap-4">
+              {/* 학년 드롭다운 */}
               <div>
                 <p className="text-sm mb-1.5 font-medium text-gray-700">학년</p>
                 <div className="relative" ref={gradeRef}>
@@ -165,40 +183,85 @@ export default function CCMemberInfoEditModal({
                 </div>
               </div>
 
+              {/* 직급(ROLE) 드롭다운 */}
               <div>
-                <p className="text-sm mb-1.5 font-medium text-gray-700">성별</p>
-                <div className="text-sm flex h-10 w-full rounded-md border px-3 py-2 bg-gray-50 border-gray-300 text-gray-500 items-center">
-                  {editedMember.gender}자
+                <p className="text-sm mb-1.5 font-medium text-gray-700">직급</p>
+                <div className="relative" ref={roleRef}>
+                  <DefaultButton
+                    variant="outline"
+                    size="default"
+                    className={cn(
+                      "w-full justify-between text-left font-normal transition-all duration-200 cursor-pointer h-10",
+                      "bg-white border-gray-300 hover:border-cert-red hover:bg-white hover:text-cert-black",
+                      "focus:border-cert-red focus:ring-2 focus:ring-cert-red/20"
+                    )}
+                    onClick={() => setShowRoleDropdown((p) => !p)}
+                  >
+                    <span className="text-gray-900 truncate pr-1 text-sm">
+                      {editedMember.role}
+                    </span>
+                    <ChevronDown
+                      className={`h-4 w-4 transition-transform duration-300 text-gray-400 ${
+                        showRoleDropdown ? "rotate-180" : ""
+                      }`}
+                    />
+                  </DefaultButton>
+
+                  {showRoleDropdown && (
+                    <div className="absolute top-full mt-1 w-full bg-white border border-gray-300 rounded-lg shadow-lg z-20 max-h-48 overflow-y-auto">
+                      {roleOptions.map((option) => (
+                        <button
+                          key={option.value}
+                          type="button"
+                          className="w-full px-4 py-2 text-left text-gray-900 first:rounded-t-lg last:rounded-b-lg text-sm hover:bg-cert-red hover:text-white duration-100 hover:first:rounded-md hover:rounded-md"
+                          onClick={() => {
+                            setEditedMember((prev) => ({
+                              ...prev,
+                              role: option.value as MembersRoleCategoryType,
+                            }));
+                            closeAllDropdowns();
+                          }}
+                        >
+                          {option.label}
+                        </button>
+                      ))}
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
 
-            <div>
-              <p className="text-sm mb-1.5 font-medium text-gray-700">
-                생년월일
-              </p>
-              <input
-                type="date"
-                name="birth"
-                value={editedMember.birth}
-                onChange={handleInputChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent"
-              />
+            {/* 생년월일 / 전화번호 */}
+            <div className="grid grid-cols-2 gap-4">
+              {/* 생년월일 */}
+              <div>
+                <p className="text-sm mb-1.5 font-medium text-gray-700">
+                  생년월일
+                </p>
+                <input
+                  type="date"
+                  name="birth"
+                  value={editedMember.birth}
+                  onChange={handleInputChange}
+                  className="text-sm w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent"
+                />
+              </div>
+              {/* 전화번호 */}
+              <div>
+                <p className="text-sm mb-1.5 font-medium text-gray-700">
+                  전화번호
+                </p>
+                <input
+                  name="phone"
+                  value={editedMember.phone}
+                  onChange={handleInputChange}
+                  className="text-sm flex h-10 w-full rounded-md border px-3 py-2 bg-white border-gray-300 text-gray-900 focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent"
+                  placeholder="010-0000-0000"
+                />
+              </div>
             </div>
 
-            <div>
-              <p className="text-sm mb-1.5 font-medium text-gray-700">
-                전화번호
-              </p>
-              <input
-                name="phone"
-                value={editedMember.phone}
-                onChange={handleInputChange}
-                className="text-sm flex h-10 w-full rounded-md border px-3 py-2 bg-white border-gray-300 text-gray-900 focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent"
-                placeholder="010-0000-0000"
-              />
-            </div>
-
+            {/* 이메일 */}
             <div>
               <p className="text-sm mb-1.5 font-medium text-gray-700">이메일</p>
               <input
