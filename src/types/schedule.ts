@@ -15,5 +15,6 @@ export interface ScheduleInfo {
   startTime: string;
   endTime: string;
   location: string;
+  description: string;
   type: ScheduleType;
 }

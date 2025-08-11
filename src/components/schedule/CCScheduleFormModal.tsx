@@ -45,13 +45,15 @@ export default function CCScheduleFormModal({
   const { timeOptions } = useSchedule();
   const ACTIVITY_LABELS = ["정기 모임", "회의", "스터디", "컨퍼런스"];
   const [title, setTitle] = useState("");
-  const [location, setLocation] = useState("");
+  const [location, setLocation] = useState("동아리방");
   const [date, setDate] = useState("");
+  const [description, setDescription] = useState("");
 
   const handleSubmit = async () => {
     const submitData = {
       title,
       location,
+      description,
       date,
       activity: selectedActivity,
       startTime: selectedStartTime,
@@ -90,14 +92,15 @@ export default function CCScheduleFormModal({
       handleStartTime(schedule.startTime);
       handleEndTime(schedule.endTime);
       setTitle(schedule.title);
-      setLocation(schedule.location);
+      setLocation(schedule.location ?? "동아리방");
       setDate(schedule.date);
+      setDescription(schedule.description);
     }
   }, [schedule]);
 
   const isValidForm =
     title &&
-    location &&
+    description &&
     date &&
     selectedActivity !== "선택" &&
     selectedStartTime !== "선택" &&
@@ -139,12 +142,30 @@ export default function CCScheduleFormModal({
               />
             </div>
 
+            {isAdmin ? (
+              <div>
+                <p className="text-sm mb-1.5">장소</p>
+                <input
+                  value={location}
+                  onChange={(e) => setLocation(e.target.value)}
+                  placeholder={"예: 장보고관"}
+                  className="text-sm flex h-10 w-full rounded-md border px-3 py-2 bg-white border-gray-300 text-gray-900"
+                  required
+                />
+              </div>
+            ) : (
+              ""
+            )}
             <div>
-              <p className="text-sm mb-1.5">장소</p>
+              <p className="text-sm mb-1.5">설명</p>
               <input
-                value={location}
-                onChange={(e) => setLocation(e.target.value)}
-                placeholder={isAdmin ? "예: 장보고관" : "동아리방"}
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                placeholder={
+                  isAdmin
+                    ? "예: 9월 정기모임을 위한 행사입니다."
+                    : "예: 해킹 스터디를 위한 동아리방 예약입니다."
+                }
                 className="text-sm flex h-10 w-full rounded-md border px-3 py-2 bg-white border-gray-300 text-gray-900"
                 required
               />

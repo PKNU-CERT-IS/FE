@@ -34,6 +34,15 @@ export default function CCMemberDetailCard({
     }
   }, [selectedMember]);
 
+  // 모달 오픈 시 스크롤 잠금
+  useEffect(() => {
+    if (isOpenModal) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+  }, [isOpenModal]);
+
   const handlePenaltyScoreIncrement = () => {
     setPenaltyCount((prev) => prev + 1);
   };
@@ -50,14 +59,6 @@ export default function CCMemberDetailCard({
   };
 
   if (!selectedMember) return null;
-  // 모달 오픈 시 스크롤 잠금
-  useEffect(() => {
-    if (isOpenModal) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto";
-    }
-  }, [isOpenModal]);
 
   return (
     <div className="w-72 space-y-4">

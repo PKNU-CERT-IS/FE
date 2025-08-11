@@ -6,7 +6,7 @@ export interface PendingReservationType {
   date: string;
   startTime: string;
   endTime: string;
-  location: string;
+  description: string;
   type: ScheduleType;
   applicant: string;
   status: string;
