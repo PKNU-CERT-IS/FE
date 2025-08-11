@@ -4,6 +4,7 @@ import AddSVG from "/public/icons/add.svg";
 import { useModal } from "@/hooks/useModal";
 import CCScheduleFormModal from "@/components/schedule/CCScheduleFormModal";
 import { usePathname } from "next/navigation";
+import { useEffect } from "react";
 
 export default function CCAddScheduleCard() {
   const { isOpenModal, setIsOpenModal, modalOutsideRef } = useModal();
@@ -12,6 +13,15 @@ export default function CCAddScheduleCard() {
   const isAdmin = pathname.startsWith("/admin");
   const title = isAdmin ? "새 일정 추가" : "동아리방 예약";
   const buttonText = isAdmin ? "일정 추가" : "예약 신청";
+
+  // 모달 오픈 시 스크롤 잠금
+  useEffect(() => {
+    if (isOpenModal) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+  }, [isOpenModal]);
 
   return (
     <div
@@ -34,6 +44,7 @@ export default function CCAddScheduleCard() {
           {buttonText}
         </button>
       </div>
+
       {isOpenModal && (
         <CCScheduleFormModal
           closeModal={() => setIsOpenModal(false)}
