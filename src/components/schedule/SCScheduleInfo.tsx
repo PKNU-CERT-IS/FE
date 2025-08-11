@@ -5,11 +5,9 @@ import LocationSVG from "/public/icons/location.svg";
 import TimeSVG from "/public/icons/time.svg";
 import { mockScheduleData } from "@/mocks/mockScheduleData";
 import { ScheduleInfo } from "@/types/schedule";
-import {
-  formatKoreanDate,
-  getTypeColor,
-  getTypeLabel,
-} from "@/utils/scheduleUtils";
+import { getTypeColor, getTypeLabel } from "@/utils/scheduleUtils";
+import { formatDate } from "@/utils/formatDateUtil";
+import { MessageSquareText } from "lucide-react";
 
 interface SCScheduleInfoProps {
   selectedDate: string | null;
@@ -22,7 +20,7 @@ export default function SCScheduleInfo({ selectedDate }: SCScheduleInfoProps) {
     : [];
 
   const formattedSelectedDate = selectedDate
-    ? formatKoreanDate(selectedDate)
+    ? formatDate(selectedDate, "medium")
     : null;
 
   return (
@@ -38,14 +36,14 @@ export default function SCScheduleInfo({ selectedDate }: SCScheduleInfoProps) {
         ) : (
           selectedDateSchedules.map((schedule) => (
             <div key={schedule.id} className="text-sm text-gray-700">
-              <div className="relative flex items-start justify-between border p-3 rounded-lg border-gray-200 bg-gray-50">
-                <div className="flex-1">
+              <div className="relative flex items-start border p-3 rounded-lg border-gray-200 bg-gray-50 gap-3">
+                <div className="flex-1 min-w-0">
                   <p className="text-md font-semibold text-gray-700 mb-3">
                     {schedule.title}
                   </p>
                   <div className="space-y-2 text-sm text-gray-600">
                     <div className="flex flex-row items-center">
-                      <ScheduleSVG className="w-4 mr-2" stroke="#4B5563" />
+                      <ScheduleSVG className="w-4 mr-2 stroke-gray-700" />
                       {new Date(schedule.date).toLocaleDateString("ko-KR")}
                     </div>
                     <div className="flex flex-row items-center">
@@ -56,11 +54,17 @@ export default function SCScheduleInfo({ selectedDate }: SCScheduleInfoProps) {
                       <LocationSVG className="mr-2" />
                       {schedule.location}
                     </div>
+                    <div className="flex items-start">
+                      <MessageSquareText className="mr-2 w-4 h-4 mt-[2px]" />
+                      <span className="min-w-0 break-words">
+                        {schedule.description}
+                      </span>
+                    </div>
                   </div>
                 </div>
 
                 <div
-                  className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors ${getTypeColor(
+                  className={`absolute right-3 top-3 inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors shrink-0 whitespace-nowrap ${getTypeColor(
                     schedule.type
                   )}`}
                 >

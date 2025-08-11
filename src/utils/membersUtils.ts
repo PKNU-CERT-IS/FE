@@ -6,7 +6,9 @@ import {
   MembersDataType,
 } from "@/types/members";
 
-export const getRoleBadgeStyle = (role: MembersRoleCategoryType | "전체") => {
+export const getRoleBadgeStyle = (
+  role: MembersRoleCategoryType | "전체" | "NONE"
+) => {
   switch (role) {
     case "회장":
       return "bg-cert-red/20 text-cert-dark-red border-cert-red";
@@ -16,12 +18,19 @@ export const getRoleBadgeStyle = (role: MembersRoleCategoryType | "전체") => {
       return "bg-blue-100 text-blue-800 border-blue-600";
     case "스터디장":
       return "bg-purple-100 text-purple-800 border-purple-600";
-    default:
+    case "PLAYER":
+      return "bg-green-100 text-green-800 border-green-600";
+    case "UPSOLVER":
       return "bg-gray-100 text-gray-800 border-gray-600";
+    case "NONE":
+    case "전체":
+      return "bg-slate-100 text-slate-800 border-slate-400";
   }
 };
 
-export const getRoleBorderStyle = (role: MembersRoleCategoryType | "전체") => {
+export const getRoleBorderStyle = (
+  role: MembersRoleCategoryType | "전체" | "NONE"
+) => {
   switch (role) {
     case "회장":
       return "hover:border-cert-red group-hover:border-cert-red";
@@ -31,8 +40,13 @@ export const getRoleBorderStyle = (role: MembersRoleCategoryType | "전체") => 
       return "hover:border-blue-600 group-hover:border-blue-600";
     case "스터디장":
       return "hover:border-purple-600 group-hover:border-purple-600";
-    default:
+    case "PLAYER":
+      return "hover:border-green-600 group-hover:border-green-600";
+    case "UPSOLVER":
       return "hover:border-gray-600 group-hover:border-gray-600";
+    case "NONE":
+    case "전체":
+      return "hover:border-slate-400 group-hover:border-slate-400";
   }
 };
 
@@ -78,7 +92,7 @@ const filterBySearch = (member: MembersDataType, search: string) => {
 // 역할 필터
 const filterByRole = (
   member: MembersDataType,
-  role: MembersRoleCategoryType | "전체"
+  role: MembersRoleCategoryType | "전체" | "NONE"
 ) => {
   switch (role) {
     case "회장":
@@ -89,13 +103,17 @@ const filterByRole = (
       return ["회장", "부회장", "임원진"].includes(member.role);
     case "스터디장":
       return member.role === "스터디장";
-    case "회원":
-      return member.role === "회원";
+    case "PLAYER":
+      return member.role === "PLAYER";
+    case "UPSOLVER":
+      return member.role === "UPSOLVER";
+    case "NONE":
+    case "전체":
+      return true; // 전체 보기 or 역할 없음 → 모든 멤버 포함
     default:
       return true;
   }
 };
-
 // 학년 필터
 const filterByGrade = (
   member: MembersDataType,

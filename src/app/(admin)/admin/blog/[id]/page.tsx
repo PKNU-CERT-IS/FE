@@ -1,11 +1,11 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import Link from "next/link";
-import { Calendar, User, Tag, Eye } from "lucide-react";
+import { Calendar, User, Tag, Eye, ExternalLink } from "lucide-react";
 import { mockBlogPosts } from "@/mocks/blogData";
 import BackToListButton from "@/components/detail/SCBackToListButton";
 import KebabMenuButton from "@/components/detail/CCKebabMenu";
 import ShareButton from "@/components/detail/CCShareButton";
+import DefaultBadge from "@/components/ui/defaultBadge";
 import { formatDate } from "@/utils/formatDateUtil";
 
 interface BlogDetailPageProps {
@@ -48,7 +48,9 @@ export async function generateMetadata({
   };
 }
 
-export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
+export default async function AdminBlogDetailPage({
+  params,
+}: BlogDetailPageProps) {
   const resolvedParams = await params;
   const blogId = parseInt(resolvedParams.id, 10);
   const post = mockBlogPosts.find((p) => p.id === blogId);
@@ -57,25 +59,20 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
     notFound();
   }
 
-  // 관련 게시글 추천 (같은 카테고리의 다른 글들)
-  const relatedPosts = mockBlogPosts
-    .filter((p) => p.id !== post.id && p.category === post.category)
-    .slice(0, 3);
-
   return (
     <div className="space-y-6">
       {/* 뒤로가기 버튼 */}
-      <BackToListButton currentUrl={"blog"} />
+      <BackToListButton currentUrl={"admin/blog"} />
 
       {/* 메인 콘텐츠 */}
       <article className="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-lg p-4  mt-6">
         {/* 헤더 */}
         <header className="p-8 border-b border-gray-200">
           {/* 카테고리와 케밥 메뉴 */}
-          <div className="flex items-start justify-between mb-4 ">
+          <div className="flex items-start justify-between mb-4">
             <div>
               <span
-                className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
+                className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium mr-2 ${
                   post.category === "개발"
                     ? "bg-blue-50 text-blue-600 border border-blue-200"
                     : post.category === "학습"
@@ -85,6 +82,16 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
               >
                 {post.category}
               </span>
+
+              {post.published && (
+                <DefaultBadge
+                  variant="outline"
+                  className="bg-gray-200 text-gray-700 border-gray-300 px-3 py-1 text-sm font-medium"
+                >
+                  <ExternalLink className="w-3 h-3 mr-1" />
+                  외부 공개
+                </DefaultBadge>
+              )}
             </div>
             <KebabMenuButton currentUrl={"blog"} currentId={blogId} />
           </div>
@@ -182,52 +189,10 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
           </div>
 
           <div className="pt-6 border-t border-gray-200 flex justify-end">
-            {" "}
             <ShareButton></ShareButton>
           </div>
         </div>
       </article>
-
-      {/* 관련 게시글 */}
-      {relatedPosts.length > 0 && (
-        <div className="mt-12">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">관련 게시글</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {relatedPosts.map((relatedPost) => (
-              <Link
-                key={relatedPost.id}
-                href={`/blog/${relatedPost.id}`}
-                className="block bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow"
-              >
-                <div className="mb-3">
-                  <span
-                    className={`inline-flex items-center px-2 py-1 rounded text-xs font-medium ${
-                      relatedPost.category === "개발"
-                        ? "bg-blue-50 text-blue-600 border border-blue-200"
-                        : relatedPost.category === "학습"
-                        ? "bg-green-50 text-green-600 border border-green-200"
-                        : "bg-purple-50 text-purple-600 border border-purple-200"
-                    }`}
-                  >
-                    {relatedPost.category}
-                  </span>
-                </div>
-                <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2">
-                  {relatedPost.title}
-                </h3>
-                <p className="text-gray-600 text-sm line-clamp-3 mb-3">
-                  {relatedPost.excerpt}
-                </p>
-                <div className="flex items-center gap-2 text-xs text-gray-500">
-                  <span>{relatedPost.author}</span>
-                  <span>•</span>
-                  <span>{formatDate(relatedPost.createdAt)}</span>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </div>
-      )}
     </div>
   );
 }

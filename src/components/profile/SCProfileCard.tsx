@@ -52,7 +52,7 @@ export default function SCProfileCard() {
 
         <div className="space-y-4 p-6 pt-0">
           <p className="text-sm text-gray-600  text-center transition-colors duration-300">
-            {user.bio}
+            {user.description}
           </p>
           <div className="space-y-2">
             <div className="flex items-center gap-2 text-sm">

@@ -7,16 +7,22 @@ import {
 import RequestActionButtons from "@/components/ui/requestActionButtons";
 import { PendingReservationType } from "@/types/admin/adminScheduleReservation";
 import { SCHEDULE_TYPES } from "@/types/schedule";
-import { CheckCircle, Clock, User, Calendar, MapPin } from "lucide-react";
+import {
+  CheckCircle,
+  Clock,
+  User,
+  Calendar,
+  MessageSquareText,
+} from "lucide-react";
 
 const pendingReservations: PendingReservationType[] = [
   {
     id: 1,
     title: "웹 해킹 스터디",
-    date: "2025-07-25",
+    date: "2025. 07. 25.",
     startTime: "14:00",
     endTime: "17:00",
-    location: "동아리방",
+    description: "웹 해킹 스터디를 위한 동아리방 예약입니다.",
     type: SCHEDULE_TYPES.STUDY,
     applicant: "김철수",
     status: "승인중",
@@ -24,10 +30,10 @@ const pendingReservations: PendingReservationType[] = [
   {
     id: 2,
     title: "암호학 스터디",
-    date: "2025-07-28",
+    date: "2025. 07. 28.",
     startTime: "18:00",
     endTime: "20:00",
-    location: "동아리방",
+    description: "암호학 스터디를 위한 동아리방 예약입니다.",
     type: SCHEDULE_TYPES.STUDY,
     applicant: "이영희",
     status: "승인중",
@@ -35,10 +41,10 @@ const pendingReservations: PendingReservationType[] = [
   {
     id: 3,
     title: "네트워크 보안 프로젝트 회의",
-    date: "2025-07-30",
+    date: "2025. 07. 30.",
     startTime: "13:00",
     endTime: "16:00",
-    location: "동아리방",
+    description: "네트워크 보안 프로젝트 회의를 위한 동아리방 예약입니다.",
     type: SCHEDULE_TYPES.MEETING,
     applicant: "박민수",
     status: "승인중",
@@ -46,10 +52,10 @@ const pendingReservations: PendingReservationType[] = [
   {
     id: 4,
     title: "정보보안 회의",
-    date: "2025-07-31",
+    date: "2025. 07. 31.",
     startTime: "10:00",
     endTime: "12:00",
-    location: "대강의실",
+    description: "정보보안 회의를 위한 동아리방 예약입니다.",
     type: SCHEDULE_TYPES.MEETING,
     applicant: "박민수",
     status: "승인중",
@@ -102,12 +108,12 @@ export default function CCAdminScheduleRequestList() {
                     <div className="flex items-center gap-1">
                       <Clock className="w-3 h-3" />
                       <span>
-                        {reservation.startTime} ~ {reservation.endTime}
+                        {reservation.startTime} - {reservation.endTime}
                       </span>
                     </div>
                     <div className="flex items-center gap-1">
-                      <MapPin className="w-3 h-3" />
-                      <span>{reservation.location}</span>
+                      <MessageSquareText className="w-3 h-3" />
+                      <span>{reservation.description}</span>
                     </div>
                   </div>
                 </div>

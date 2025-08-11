@@ -3,10 +3,20 @@
 import { useModal } from "@/hooks/useModal";
 import DefaultButton from "@/components/ui/defaultButton";
 import EditSVG from "/public/icons/edit.svg";
-import CCProfileModal from "@/components/profile/CCProfileModal";
+import CCProfileEditModal from "@/components/profile/CCProfileEditModal";
+import { useEffect } from "react";
 
 export default function CCEditProfileCard() {
   const { setIsOpenModal, isOpenModal, modalOutsideRef } = useModal();
+  // 모달 오픈 시 스크롤 잠금
+  useEffect(() => {
+    if (isOpenModal) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+  }, [isOpenModal]);
+
   return (
     <div>
       <DefaultButton
@@ -17,7 +27,7 @@ export default function CCEditProfileCard() {
         프로필 수정
       </DefaultButton>
       {isOpenModal && (
-        <CCProfileModal
+        <CCProfileEditModal
           closeModal={() => setIsOpenModal(false)}
           modalRef={modalOutsideRef}
         />

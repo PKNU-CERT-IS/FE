@@ -13,13 +13,18 @@ export const mockProfileData: ProfileDataType[] = [
     major: "컴퓨터공학과",
     profileImage: "/placeholder.svg?height=80&width=80",
     email: "president@club.com",
-    github: "github.com/president",
+    githubUrl: "github.com/president",
+    linkedinUrl: "linkedin.com/president",
     joinDate: "2021-03",
     skills: ["React", "Node.js", "Python", "AWS"],
-    bio: "풀스택 개발자를 꿈꾸며 다양한 프로젝트를 진행하고 있습니다. 팀워크와 소통을 중시합니다.",
-    achievements: ["해커톤 1위", "프로그래밍 대회 입상", "오픈소스 기여"],
+    description:
+      "풀스택 개발자를 꿈꾸며 다양한 프로젝트를 진행하고 있습니다. 팀워크와 소통을 중시합니다.",
     penaltyPoint: 1,
     penaltyPeriod: 5,
+    birthday: "2000-01-15",
+    studentId: "20201111",
+    phoneNumber: "010-1111-1111",
+    gender: "남",
   },
 ];
 

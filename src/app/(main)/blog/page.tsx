@@ -3,23 +3,19 @@ import { mockBlogPosts } from "@/mocks/blogData";
 import CCBlogPagination from "@/components/blog/CCBlogPagination";
 import CCBlogCategoryFilter from "@/components/blog/CCBlogCategoryFilter";
 import { Plus } from "lucide-react";
-import {
-  BLOG_CATEGORIES,
-  BlogCategory as BlogCategoryType,
-  ITEMS_PER_PAGE,
-} from "@/types/blog";
-import { filterBlogPosts } from "@/utils/blogUtils";
+import { BlogCategory as BlogCategoryType, ITEMS_PER_PAGE } from "@/types/blog";
+import { filterBlogPosts, isValidCategory } from "@/utils/blogUtils";
 import Link from "next/link";
 import BlogSearchBar from "@/components/blog/CCBlogSearchBar";
+import { formatDate } from "@/utils/formatDateUtil";
 
-// children prop 제거
-// interface BlogPageProps {
-//   searchParams: Promise<{
-//     page?: string;
-//     search?: string;
-//     category?: string;
-//   }>;
-// }
+interface BlogPageProps {
+  searchParams: Promise<{
+    page?: string;
+    search?: string;
+    category?: string;
+  }>;
+}
 
 interface GenerateMetadataProps {
   searchParams: Promise<{
@@ -27,10 +23,6 @@ interface GenerateMetadataProps {
     category?: string;
   }>;
 }
-
-const isValidCategory = (category: string): category is BlogCategoryType => {
-  return BLOG_CATEGORIES.includes(category as BlogCategoryType);
-};
 
 export async function generateMetadata({
   searchParams,
@@ -58,15 +50,7 @@ export async function generateMetadata({
 }
 
 // children 매개변수 제거
-export default async function BlogPage({
-  searchParams,
-}: {
-  searchParams: Promise<{
-    page?: string;
-    search?: string;
-    category?: string;
-  }>;
-}) {
+export default async function BlogPage({ searchParams }: BlogPageProps) {
   const { page, search, category } = await searchParams;
 
   const currentPage = Math.max(1, parseInt(page || "1", 10));
@@ -136,14 +120,7 @@ export default async function BlogPage({
                       {post.category}
                     </span>
                     <span className="text-xs text-gray-500">
-                      {new Date(post.createdAt)
-                        .toLocaleDateString("ko-KR", {
-                          year: "numeric",
-                          month: "2-digit",
-                          day: "2-digit",
-                        })
-                        .replace(/\./g, "-")
-                        .replace(/-$/, "")}
+                      {formatDate(post.createdAt)}
                     </span>
                   </div>
 

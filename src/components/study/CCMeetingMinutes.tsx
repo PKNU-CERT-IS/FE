@@ -5,6 +5,7 @@ import { Plus, Users, Edit, Trash2, Calendar, X } from "lucide-react";
 import DefaultButton from "@/components/ui/defaultButton";
 import ConfirmModal from "@/components/ui/defaultConfirmModal";
 import { LinkItem, MeetingMinute } from "@/types/study";
+import { formatDate } from "@/utils/formatDateUtil";
 
 // Mock data for meeting minutes
 const mockMeetingMinutes: MeetingMinute[] = [
@@ -147,7 +148,7 @@ export default function MeetingMinutes({
       id: Date.now(),
       week: meetingMinutes.length + 1,
       title: newMinute.title,
-      date: new Date().toLocaleDateString("ko-KR"),
+      date: formatDate(new Date(), "dot"),
       content: newMinute.content,
       links: validLinks,
       attendees: ["현재 사용자"],

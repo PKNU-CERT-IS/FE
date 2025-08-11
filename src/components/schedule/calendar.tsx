@@ -5,13 +5,12 @@ import AngleSVG from "/public/icons/angle.svg";
 import { mockScheduleData } from "@/mocks/mockScheduleData";
 import {
   DAY_NAMES,
-  formatDateString,
-  formatKoreanDate,
   generateCalendarDays,
   getScheduleByDate,
   getTypeColor,
 } from "@/utils/scheduleUtils";
 import { useSearchParams, useRouter } from "next/navigation";
+import { formatDate } from "@/utils/formatDateUtil";
 
 export default function Calendar() {
   const router = useRouter();
@@ -21,7 +20,7 @@ export default function Calendar() {
     (newDate: Date) => {
       const params = new URLSearchParams(currentParams);
 
-      params.set("date", formatDateString(newDate));
+      params.set("date", formatDate(newDate));
       router.replace(`?${params.toString()}`);
       setCurrentDate(newDate);
     },
@@ -30,7 +29,7 @@ export default function Calendar() {
 
   const handleDateClick = useCallback(
     (date: Date) => {
-      const selected = formatDateString(date);
+      const selected = formatDate(date);
       const params = new URLSearchParams(currentParams);
 
       if (params.get("date") !== selected) {
@@ -66,7 +65,7 @@ export default function Calendar() {
     <div className="bg-white border border-gray-300 rounded-lg p-4 shadow-lg">
       <div className="flex items-center justify-between mb-4 p-2">
         <h3 className="text-xl font-semibold text-gray-900">
-          {formatKoreanDate(currentDate, true)}
+          {formatDate(currentDate, "long")}
         </h3>
         <div>
           <button

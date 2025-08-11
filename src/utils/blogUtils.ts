@@ -1,4 +1,5 @@
-import { BlogPost, BlogCategory } from "@/types/blog";
+import { BlogPost, BlogCategory, BLOG_CATEGORIES } from "@/types/blog";
+import { formatDate } from "@/utils/formatDateUtil";
 
 /**
  * 블로그 포스트를 검색어와 카테고리로 필터링하는 함수
@@ -21,44 +22,6 @@ export const filterBlogPosts = (
       (a, b) =>
         new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
     );
-};
-
-/**
- * 날짜 문자열을 안전하게 포맷팅하는 함수
- */
-export const formatDate = (
-  dateString: string,
-  format: "short" | "long" = "short"
-): string => {
-  try {
-    const date = new Date(dateString);
-
-    // Invalid Date 체크
-    if (isNaN(date.getTime())) {
-      return dateString; // 원본 문자열 반환
-    }
-
-    if (format === "long") {
-      return date.toLocaleDateString("ko-KR", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-        weekday: "long",
-      });
-    }
-
-    return date
-      .toLocaleDateString("ko-KR", {
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit",
-      })
-      .replace(/\./g, "-")
-      .replace(/-$/, "");
-  } catch (error) {
-    console.warn("Date formatting error:", error);
-    return dateString;
-  }
 };
 
 /**
@@ -180,4 +143,8 @@ export const generateExcerpt = (
   }
 
   return excerpt.trim() + (excerpt.length < plainText.length ? "..." : "");
+};
+
+export const isValidCategory = (category: string): category is BlogCategory => {
+  return BLOG_CATEGORIES.includes(category as BlogCategory);
 };
