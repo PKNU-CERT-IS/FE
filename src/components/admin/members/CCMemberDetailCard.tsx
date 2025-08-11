@@ -6,7 +6,7 @@ import { User, Minus, Plus, X, Cake, Phone, Mail } from "lucide-react";
 import EditSVG from "/public/icons/edit.svg";
 import DefaultButton from "@/components/ui/defaultButton";
 import ConfirmModal from "@/components/ui/defaultConfirmModal";
-import CCRoleEditModal from "@/components/admin/members/CCRoleEditModal";
+import CCMemberEditModal from "@/components/admin/members/CCMemberEditModal";
 import { AdminMemberDetailInfoType } from "@/types/admin/adminMembers";
 import { penaltyGracePeriod } from "@/utils/adminPenaltyGracePeriodUtils";
 import { useModal } from "@/hooks/useModal";
@@ -206,7 +206,7 @@ export default function CCMemberDetailCard({
 
           {/* 회원 정보 수정 모달 */}
           {isOpenModal && (
-            <CCRoleEditModal
+            <CCMemberEditModal
               member={selectedMember}
               isOpen={isOpenModal}
               closeModal={() => setIsOpenModal(false)}
