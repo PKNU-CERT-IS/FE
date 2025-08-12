@@ -1,6 +1,10 @@
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
-import { ProjectMaterial } from "@/types/project";
+import {
+  AUTHOR_STATUS_LABELS,
+  ProjectMaterial,
+  STATUS_LABELS,
+} from "@/types/project";
 import AttachedFilesDownload from "@/components/project/SCAttachedFilesDownload";
 import { Globe, BookText } from "lucide-react";
 import Image from "next/image";
@@ -9,10 +13,9 @@ import BackToListButton from "@/components/detail/SCBackToListButton";
 import KebabMenu from "@/components/detail/CCKebabMenu";
 import ShareButton from "@/components/detail/CCShareButton";
 import { getStatusColor } from "@/utils/projectUtils";
-import { STATUS_LABELS, AUTHOR_STATUS_LABELS } from "@/types/project";
 
 interface ProjectDetailPageProps {
-  params: Promise<{ id: string }>;
+  params: { id: string };
 }
 
 const getProjectById = (id: string): ProjectMaterial | undefined => {
@@ -87,7 +90,7 @@ export default async function ProjectDetailPage({
   return (
     <div className="mx-auto max-w-full bg-white">
       {/* 뒤로가기 버튼 */}
-      <BackToListButton currentUrl="project" />
+      <BackToListButton currentUrl={"admin/study"} />
       <article>
         {/* 프로젝트 이미지 */}
         <div className="relative h-96 mb-8 bg-gradient-to-br from-purple-400 to-indigo-600 overflow-hidden mt-6 rounded-lg">
@@ -229,10 +232,6 @@ export default async function ProjectDetailPage({
               데모 사이트
             </a>
           )}
-
-          <button className="action-button inline-flex items-center gap-2 px-6 py-2">
-            프로젝트 참가하기
-          </button>
         </div>
 
         {/* 첨부파일 섹션 */}

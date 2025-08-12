@@ -16,6 +16,9 @@ import { formatFileSize } from "@/utils/attachedFileUtils";
 import { getFileIcon } from "@/utils/attachedFileUtils";
 import { calculateDDay, getStatusColor } from "@/utils/studyHelper";
 
+interface StudyDetailPageProps {
+  params: { id: string };
+}
 function getStudyDataById(id: string): StudyDetailData | null {
   const parsedId = parseInt(id, 10);
   return mockStudyDetailData.find((data) => data.id === parsedId) || null;
@@ -49,11 +52,9 @@ export async function generateMetadata({
   };
 }
 
-export default async function StudyMaterialDetailPage({
+export default async function StudyDetailPage({
   params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
+}: StudyDetailPageProps) {
   const { id } = await params;
   const studyData = getStudyDataById(id);
 
@@ -66,15 +67,12 @@ export default async function StudyMaterialDetailPage({
 
   return (
     <div>
-      {/* Header */}
       <div className="space-y-6">
-        <BackToListButton currentUrl={"study"} />
+        <BackToListButton currentUrl={"admin/study"} />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8  mt-6">
-        {/* Main Content */}
         <div className="lg:col-span-2  space-y-6">
-          {/* Study Material Info Card */}
           <div className="bg-white dark:bg-gray-800 p-1 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
             <div className="p-6 pb-0 ">
               <div className="flex items-start  justify-between mb-4">
@@ -101,9 +99,6 @@ export default async function StudyMaterialDetailPage({
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
-                  <button className="px-4 py-2 action-button">
-                    스터디 참가하기
-                  </button>
                   <KebabMenu
                     currentId={studyData.id}
                     currentUrl={"study"}
@@ -113,7 +108,6 @@ export default async function StudyMaterialDetailPage({
             </div>
 
             <div className="p-6 space-y-6">
-              {/* Basic Description + Detail Content */}
               <div className="space-y-4">
                 <p className="text-black dark:text-gray-300 leading-relaxed border-b border-gray-200 pb-6">
                   {studyData.description}
@@ -123,7 +117,6 @@ export default async function StudyMaterialDetailPage({
 
               <div className="w-full h-px bg-gray-200 dark:bg-gray-700"></div>
 
-              {/* Study Details */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="flex items-center gap-3">
                   <Users className="w-5 h-5 text-cert-red" />

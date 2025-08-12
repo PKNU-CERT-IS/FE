@@ -24,6 +24,7 @@ async function getStudyMaterials(): Promise<StudyMaterial[]> {
   const studyMaterials: StudyMaterial[] = [
     {
       id: "1",
+      isPending: false,
       title: "OWASP Top 10 2023 취약점 분석",
       description: "최신 OWASP Top 10 취약점에 대한 상세 분석 자료입니다.",
       customTags: [
@@ -56,6 +57,7 @@ async function getStudyMaterials(): Promise<StudyMaterial[]> {
     },
     {
       id: "2",
+      isPending: false,
       title: "Metasploit Framework 완전 정복",
       description:
         "Metasploit을 활용한 침투 테스트 기법과 실습 자료를 종합적으로 다룹니다.",
@@ -89,6 +91,7 @@ async function getStudyMaterials(): Promise<StudyMaterial[]> {
     },
     {
       id: "3",
+      isPending: false,
       title: "암호화 기초의 RSA 구현",
       description:
         "암호학의 기초 이론부터 RSA 공개키암호시스템의 Python 구현까지 다룹니다.",
@@ -121,6 +124,7 @@ async function getStudyMaterials(): Promise<StudyMaterial[]> {
     },
     {
       id: "4",
+      isPending: false,
       title: "디지털 포렌식의 실무 가이드",
       description:
         "Autopsy와 Volatility를 활용한 디지털 증거 수집 및 수집한 분석방법을 설명합니다.",
@@ -154,6 +158,7 @@ async function getStudyMaterials(): Promise<StudyMaterial[]> {
     },
     {
       id: "5",
+      isPending: false,
       title: "네트워크 보안 모니터링",
       description:
         "Wireshark와 Snort를 활용한 네트워크 트래픽 분석 및 침입 시스템 구축 방법을 다룹니다.",
@@ -187,6 +192,7 @@ async function getStudyMaterials(): Promise<StudyMaterial[]> {
     },
     {
       id: "6",
+      isPending: false,
       title: "SQL Injection 심화 분석",
       description:
         "다양한 SQL Injection 공격 기법과 방어 전략을 실습과 함께 학습합니다.",
@@ -219,6 +225,7 @@ async function getStudyMaterials(): Promise<StudyMaterial[]> {
     },
     {
       id: "7",
+      isPending: false,
       title: "모바일 앱 보안 테스팅",
       description:
         "Android 및 iOS 앱의 보안 취약점 분석과 테스팅 방법론을 다룹니다.",

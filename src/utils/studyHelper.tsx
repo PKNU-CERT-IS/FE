@@ -214,3 +214,12 @@ export function createPageUrl(
   const queryString = params.toString();
   return queryString ? `?${queryString}` : "";
 }
+
+// study D-Day 계산을 위한 함수
+export function calculateDDay(endDate: string): number {
+  const today = new Date();
+  const end = new Date(endDate);
+  const diffTime = end.getTime() - today.getTime();
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  return diffDays;
+}

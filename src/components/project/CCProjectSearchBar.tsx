@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import DefaultSearchBar from "@/components/ui/defaultSearchBar";
 import SearchSVG from "/public/icons/search.svg";
 
@@ -16,8 +16,14 @@ export default function ProjectSearchBar({
 }: ProjectSearchBarProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const pathname = usePathname();
   const [searchInput, setSearchInput] = useState<string>(currentSearch);
   const prevSearchInput = useRef<string>(searchInput);
+
+  const isAdmin = pathname.startsWith("/admin");
+  const placeholder = isAdmin
+    ? "스터디/프로젝트 제목, 설명, 작성자로 검색하세요..."
+    : "프로젝트 제목, 설명, 작성자로 검색하세요...";
 
   useEffect(() => {
     setSearchInput(currentSearch);
@@ -39,18 +45,18 @@ export default function ProjectSearchBar({
       params.delete("page"); // 검색 시 첫 페이지로
 
       const queryString = params.toString();
-      const newUrl = queryString ? `/project?${queryString}` : "/project";
+      const newUrl = queryString ? `${pathname}?${queryString}` : pathname;
       router.push(newUrl, { scroll: false });
     }, DEBOUNCE_DELAY);
 
     return () => clearTimeout(debounceTimer);
-  }, [searchInput, router, searchParams]);
+  }, [searchInput, router, pathname, searchParams]);
 
   return (
     <div className="relative flex-1">
       <SearchSVG className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
       <DefaultSearchBar
-        placeholder="프로젝트 제목, 설명, 작성자로 검색하세요..."
+        placeholder={`${placeholder}`}
         value={searchInput}
         onChange={(e) => setSearchInput(e.target.value)}
         className="pl-10"
