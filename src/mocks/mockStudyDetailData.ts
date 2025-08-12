@@ -1,4 +1,5 @@
 import { AttachedFile } from "@/types/attachedFile";
+import { StatusType } from "@/types/study";
 
 // 타입 정의
 export interface StudyDetailData {
@@ -19,7 +20,7 @@ export interface StudyDetailData {
   maxParticipants: number;
   currentParticipants: number;
   tags: string[];
-  status: "모집중" | "진행중" | "완료";
+  status: StatusType;
   customTags: { name: string; color: string }[];
   author: string;
   authorStatus: "student" | "graduate";
@@ -77,7 +78,7 @@ export const mockStudyDetailData: StudyDetailData[] = [
     maxParticipants: 10,
     currentParticipants: 7,
     tags: ["웹해킹", "보안", "실습", "OWASP"],
-    status: "진행중",
+    status: "in_progress",
     customTags: [
       { name: "OWASP", color: "bg-blue-100 text-blue-800" },
       { name: "Web Security", color: "bg-purple-100 text-purple-800" },
@@ -178,7 +179,7 @@ export const mockStudyDetailData: StudyDetailData[] = [
     maxParticipants: 10,
     currentParticipants: 10,
     tags: ["침투테스트", "메타스플로잇", "해킹"],
-    status: "완료",
+    status: "completed",
     customTags: [
       { name: "Metasploit", color: "bg-purple-100 text-purple-800" },
       { name: "Penetration Testing", color: "bg-pink-100 text-pink-800" },
@@ -259,7 +260,7 @@ Metasploit Framework는 침투 테스팅과 보안 연구를 위한 강력한 �
     maxParticipants: 10,
     currentParticipants: 1,
     tags: ["암호학", "RSA", "파이썬"],
-    status: "모집중",
+    status: "not_started",
     customTags: [
       { name: "Cryptography", color: "bg-purple-100 text-purple-800" },
       { name: "RSA", color: "bg-green-100 text-green-800" },

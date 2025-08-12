@@ -9,8 +9,7 @@ import HamburgerMenu from "@/components/nav/hamburgerMenu";
 const navBarList = [
   { name: "Home", href: "/admin" },
   { name: "Schedule", href: "/admin/schedule" },
-  { name: "Study", href: "/admin/study" },
-  { name: "Project", href: "/admin/project" },
+  { name: "Study / Project", href: "/admin/study" },
   { name: "Blog", href: "/admin/blog" },
   { name: "Members", href: "/admin/members" },
 ];

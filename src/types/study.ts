@@ -44,6 +44,7 @@ export interface CurrentFilters {
 // Study Material 타입 정의
 export interface StudyMaterial {
   id: string;
+  isPending: boolean;
   title: string;
   description: string;
   customTags: { name: string; color: string }[];
