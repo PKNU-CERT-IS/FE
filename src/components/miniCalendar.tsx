@@ -1,10 +1,10 @@
 "use client";
 
-import AngleSVG from "/public/icons/angle.svg";
 import { memo, useMemo, useState } from "react";
 import { DAY_NAMES, MONTH_NAMES } from "@/utils/scheduleUtils";
 
 const MiniCalendar = () => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [currentDate, setCurrentDate] = useState(new Date());
 
   const today = useMemo(() => new Date(), []);
@@ -34,32 +34,12 @@ const MiniCalendar = () => {
     [new Date(year, month, 12).toDateString()]: "CTF 대회",
   };
 
-  const prevMonth = () => {
-    setCurrentDate(new Date(year, month - 1, 1));
-  };
-
-  const nextMonth = () => {
-    setCurrentDate(new Date(year, month + 1, 1));
-  };
-
   return (
     <div className="bg-white border border-gray-300 rounded-lg p-4 shadow-lg">
-      <div className="flex items-center justify-between mb-4">
-        <button
-          onClick={prevMonth}
-          className="text-gray-600 p-2 rounded-md hover:text-gray-900 hover:bg-gray-100 duration-200"
-        >
-          <AngleSVG className="rotate-90" width={13} />
-        </button>
-        <h3 className="text-lg font-semibold text-gray-900">
+      <div className="flex items-center justify-center mb-4">
+        <p className="text-xl font-semibold text-gray-900">
           {year}년 {MONTH_NAMES[month]}
-        </h3>
-        <button
-          onClick={nextMonth}
-          className="text-gray-600 p-2 rounded-md hover:text-gray-900 hover:bg-gray-100 duration-200"
-        >
-          <AngleSVG className="rotate-270" width={13} />
-        </button>
+        </p>
       </div>
 
       <div className="grid grid-cols-7 gap-1 mb-2">
@@ -83,19 +63,25 @@ const MiniCalendar = () => {
             <div
               key={index}
               className={`
-                relative p-2 text-center text-sm rounded cursor-pointer duration-200
+                relative p-2 text-center text-sm rounded duration-200
                 ${isCurrentMonth ? "text-gray-900" : "text-gray-400"}
-                ${isToday ? "text-white font-bold bg-cert-dark-red" : ""}
                 ${!isToday && !hasEvent ? "hover:bg-gray-100" : ""}
                 ${
                   hasEvent
                     ? "border bg-cert-dark-red/5 border-cert-dark-red/20"
                     : ""
                 }
-                `}
+              `}
               title={hasEvent}
             >
-              {day.getDate()}
+              {isToday && (
+                <div className="absolute top-1/2 left-1/2 w-7 h-7 bg-cert-red/85 rounded-full -translate-x-1/2 -translate-y-1/2 z-0"></div>
+              )}
+
+              <span className={isToday ? "text-white relative z-10" : ""}>
+                {day.getDate()}
+              </span>
+
               {hasEvent && (
                 <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1 h-1 rounded-full bg-cert-dark-red"></div>
               )}
