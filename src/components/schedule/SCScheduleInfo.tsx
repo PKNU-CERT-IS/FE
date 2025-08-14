@@ -6,7 +6,7 @@ import TimeSVG from "/public/icons/time.svg";
 import { mockScheduleData } from "@/mocks/mockScheduleData";
 import { ScheduleInfo } from "@/types/schedule";
 import { getTypeColor, getTypeLabel } from "@/utils/scheduleUtils";
-import { formatDate } from "@/utils/formatDateUtil";
+import { formatDate, formatTime } from "@/utils/formatDateUtil";
 import { MessageSquareText } from "lucide-react";
 
 interface SCScheduleInfoProps {
@@ -16,7 +16,9 @@ interface SCScheduleInfoProps {
 export default function SCScheduleInfo({ selectedDate }: SCScheduleInfoProps) {
   const allSchedules: ScheduleInfo[] = mockScheduleData();
   const selectedDateSchedules = selectedDate
-    ? allSchedules.filter((sc) => sc.date === selectedDate)
+    ? allSchedules.filter(
+        (sc) => formatDate(sc.started_at, "short") === selectedDate
+      )
     : [];
 
   const formattedSelectedDate = selectedDate
@@ -28,7 +30,7 @@ export default function SCScheduleInfo({ selectedDate }: SCScheduleInfoProps) {
       <p className="text-lg font-semibold mb-4">
         {formattedSelectedDate ? `${formattedSelectedDate} 일정` : "일정"}
       </p>
-      <div className="space-y-4 max-h-[35rem] overflow-y-auto">
+      <div className="space-y-4 max-h-[24rem] overflow-y-auto">
         {selectedDateSchedules.length === 0 ? (
           <p className="text-gray-500 text-center p-3">
             선택한 날짜에 일정이 없습니다.
@@ -44,15 +46,17 @@ export default function SCScheduleInfo({ selectedDate }: SCScheduleInfoProps) {
                   <div className="space-y-2 text-sm text-gray-600">
                     <div className="flex flex-row items-center">
                       <ScheduleSVG className="w-4 mr-2 stroke-gray-700" />
-                      {new Date(schedule.date).toLocaleDateString("ko-KR")}
+                      {formatDate(schedule.started_at, "dot")}
                     </div>
                     <div className="flex flex-row items-center">
                       <TimeSVG className="mr-2" />
-                      {schedule.startTime} - {schedule.endTime}
+                      {`${formatTime(schedule.started_at)} - ${formatTime(
+                        schedule.ended_at
+                      )}`}
                     </div>
                     <div className="flex flex-row items-center">
                       <LocationSVG className="mr-2" />
-                      {schedule.location}
+                      {schedule.place}
                     </div>
                     <div className="flex items-start">
                       <MessageSquareText className="mr-2 w-4 h-4 mt-[2px]" />

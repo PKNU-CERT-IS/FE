@@ -8,9 +8,10 @@ import EditSVG from "/public/icons/edit.svg";
 
 interface CCEditButtonProps {
   schedule: ScheduleInfo;
+  onEdit: (reservation: ScheduleInfo) => void;
 }
 
-export default function CCEditButton({ schedule }: CCEditButtonProps) {
+export default function CCEditButton({ schedule, onEdit }: CCEditButtonProps) {
   const { selectedSchedule, setSelectedSchedule } = useSchedule();
   const { isOpenModal, setIsOpenModal, modalOutsideRef } = useModal();
 
@@ -31,6 +32,7 @@ export default function CCEditButton({ schedule }: CCEditButtonProps) {
           schedule={selectedSchedule}
           closeModal={() => setIsOpenModal(false)}
           modalRef={modalOutsideRef}
+          onAdd={onEdit}
         />
       )}
     </div>

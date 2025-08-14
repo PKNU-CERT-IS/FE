@@ -1,5 +1,4 @@
-import { ScheduleInfo, SCHEDULE_TYPES, ScheduleType } from "@/types/schedule";
-import { formatDate } from "./formatDateUtil";
+import { SCHEDULE_TYPES, ScheduleType } from "@/types/schedule";
 
 export const getTypeLabel = (type: ScheduleType) => {
   switch (type) {
@@ -13,6 +12,20 @@ export const getTypeLabel = (type: ScheduleType) => {
       return "컨퍼런스";
     default:
       return "기타";
+  }
+};
+export const labelToType = (label: string): ScheduleType | null => {
+  switch (label) {
+    case "회의":
+      return SCHEDULE_TYPES.MEETING;
+    case "정기 모임":
+      return SCHEDULE_TYPES.WORKSHOP;
+    case "스터디":
+      return SCHEDULE_TYPES.STUDY;
+    case "컨퍼런스":
+      return SCHEDULE_TYPES.CONFERENCE;
+    default:
+      return null;
   }
 };
 
@@ -72,15 +85,4 @@ export const generateCalendarDays = (currentDate: Date): Date[] => {
   }
 
   return days;
-};
-
-/**
- * 특정 날짜의 예약 정보를 찾는 함수
- */
-export const getScheduleByDate = (
-  targetDate: Date | string,
-  schedules: ScheduleInfo[]
-): ScheduleInfo[] => {
-  const target = formatDate(targetDate);
-  return schedules.filter((s) => s.date === target);
 };

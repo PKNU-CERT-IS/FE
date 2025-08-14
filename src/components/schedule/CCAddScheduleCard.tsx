@@ -5,11 +5,15 @@ import { useModal } from "@/hooks/useModal";
 import CCScheduleFormModal from "@/components/schedule/CCScheduleFormModal";
 import { usePathname } from "next/navigation";
 import { useEffect } from "react";
+import { ScheduleInfo } from "@/types/schedule";
 
-export default function CCAddScheduleCard() {
+interface CCAddScheduleCardProps {
+  onAdd?: (reservation: ScheduleInfo) => void;
+}
+
+export default function CCAddScheduleCard({ onAdd }: CCAddScheduleCardProps) {
   const { isOpenModal, setIsOpenModal, modalOutsideRef } = useModal();
   const pathname = usePathname();
-
   const isAdmin = pathname.startsWith("/admin");
   const title = isAdmin ? "새 일정 추가" : "동아리방 예약";
   const buttonText = isAdmin ? "일정 추가" : "예약 신청";
@@ -30,7 +34,7 @@ export default function CCAddScheduleCard() {
     >
       <div className="flex flex-col space-y-1.5 p-6 text-center pb-6">
         <div className="mb-6 flex flex-row items-center">
-          <AddSVG width={24} />
+          <AddSVG className="w-6" />
           <div className="ml-2 font-semibold tracking-tight text-gray-900 text-lg">
             {title}
           </div>
@@ -49,6 +53,8 @@ export default function CCAddScheduleCard() {
         <CCScheduleFormModal
           closeModal={() => setIsOpenModal(false)}
           modalRef={modalOutsideRef}
+          onAdd={onAdd}
+          isAdmin={isAdmin}
         />
       )}
     </div>

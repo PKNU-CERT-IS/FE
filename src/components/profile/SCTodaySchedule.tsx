@@ -5,13 +5,12 @@ import { Clock, MapPin } from "lucide-react";
 import DefaultBadge from "@/components/ui/defaultBadge";
 import { mockScheduleData } from "@/mocks/mockScheduleData";
 import { getTypeColor, getTypeLabel } from "@/utils/scheduleUtils";
+import { formatDate, formatTime } from "@/utils/formatDateUtil";
 
-// 오늘 날짜 YYYY-MM-DD 포맷 생성
 const todayStr = new Date().toISOString().split("T")[0];
 
-// 오늘 일정만 필터링
 const todaySchedule = mockScheduleData().filter(
-  (schedule) => schedule.date === todayStr
+  (schedule) => formatDate(schedule.started_at, "short") === todayStr
 );
 
 export default function SCTodaySchedule() {
@@ -36,11 +35,13 @@ export default function SCTodaySchedule() {
                     </div>
                     <div className="text-xs text-gray-600 dark:text-gray-400 flex items-center gap-1 transition-colors duration-300">
                       <Clock className="w-3 h-3" />
-                      {schedule.startTime} - {schedule.endTime}
+                      {`${formatTime(schedule.started_at)} - ${formatTime(
+                        schedule.ended_at
+                      )}`}
                     </div>
                     <div className="text-xs text-gray-600 dark:text-gray-400 flex items-center gap-1 transition-colors duration-300">
                       <MapPin className="w-3 h-3" />
-                      {schedule.location}
+                      {schedule.place}
                     </div>
                   </div>
                   <DefaultBadge className={getTypeColor(schedule.type)}>

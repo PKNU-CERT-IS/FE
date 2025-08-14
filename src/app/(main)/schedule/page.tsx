@@ -1,4 +1,4 @@
-import CCAddScheduleCard from "@/components/schedule/CCAddScheduleCard";
+import CCScheduleRequestWrapper from "@/components/schedule/CCScheduleRequestWrapper";
 import SCScheduleInfo from "@/components/schedule/SCScheduleInfo";
 import SCScheduleList from "@/components/schedule/SCScheduleList";
 import Calendar from "@/components/schedule/calendar";
@@ -19,11 +19,14 @@ export default async function SchedulePage({ searchParams }: SearchPageProps) {
             <Calendar />
           </div>
           <div>
-            <CCAddScheduleCard />
+            <CCScheduleRequestWrapper />
             <SCScheduleInfo selectedDate={selectedDate} />
           </div>
         </div>
-        <SCScheduleList date={(await searchParams).date} />
+        <SCScheduleList
+          id="all-schedule-list"
+          date={(await searchParams).date}
+        />
       </div>
     </div>
   );
