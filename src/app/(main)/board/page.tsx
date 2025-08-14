@@ -5,10 +5,15 @@ import BoardCategory from "@/components/board/CCBoardCategory";
 import BoardCardList from "@/components/board/SCBoardCardList";
 import BoardPagination from "@/components/board/SCBoardPagination";
 import PlusSVG from "/public/icons/plus.svg";
-import { boardCategories, BoardCategoryType } from "@/types/board";
+import {
+  boardCategories,
+  BoardCategoryType,
+  BoardDataType,
+} from "@/types/board";
 import { filterBoardData } from "@/utils/boardUtils";
 import Link from "next/link";
-const ITEMS_PER_PAGE = 4;
+
+const ITEMS_PER_PAGE = 8;
 
 interface BoardPageProps {
   searchParams: Promise<{

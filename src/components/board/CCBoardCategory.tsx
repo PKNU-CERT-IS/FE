@@ -37,11 +37,11 @@ export default function BoardCategory({
           variant={selectedCategory === category ? "default" : "outline"}
           size="sm"
           onClick={() => handleCategoryChange(category)}
-          className={
+          className={`cursor-pointer ${
             selectedCategory === category
               ? "category-filter-active"
               : "category-filter"
-          }
+          }`}
         >
           {category}
         </DefaultButton>

@@ -185,7 +185,6 @@ export default async function DetailPage({
           <div className="flex items-center justify-between pt-6 border-t border-gray-300">
             <div className="flex gap-4">
               <LikeButton currentLikes={data.likes} />
-              <BookmarkButton />
             </div>
             <ShareButton />
           </div>

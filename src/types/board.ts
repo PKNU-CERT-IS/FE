@@ -1,10 +1,10 @@
 export const boardCategories = [
   "전체",
   "공지사항",
+  "활동내용",
   "보안이슈",
   "기술자료",
-  "스터디",
-  "프로젝트",
+  "질문",
 ] as const;
 
 export type BoardCategoryType = (typeof boardCategories)[number];

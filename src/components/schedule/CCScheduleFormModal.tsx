@@ -99,7 +99,7 @@ export default function CCScheduleFormModal({
 
     try {
       if (isAdmin) {
-        createSchedule;
+        await createSchedule(submitData);
         closeModal();
         router.refresh();
       } else {

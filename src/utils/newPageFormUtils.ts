@@ -4,7 +4,7 @@ import { NewPageCategoryType } from "@/types/newPageForm";
 export const getCategories = (type: NewPageCategoryType) => {
   switch (type) {
     case "board":
-      return ["공지사항", "보안이슈", "기술자료", "스터디", "프로젝트"];
+      return ["공지사항", "보안이슈", "활동내용", "기술자료", "질문"];
     case "blog":
       return ["개발", "학습", "활동"];
     case "study":
