@@ -6,7 +6,7 @@ export const getCategories = (type: NewPageCategoryType) => {
     case "board":
       return ["공지사항", "보안이슈", "활동내용", "기술자료", "질문"];
     case "blog":
-      return ["개발", "학습", "활동"];
+      return ["CTF", "CS", "RED", "BLUE", "GRC", "MISC", "기타"];
     case "study":
       return [
         "웹 보안",

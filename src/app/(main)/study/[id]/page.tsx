@@ -15,6 +15,7 @@ import DownloadButton from "@/components/detail/SCDownloadButton";
 import { formatFileSize } from "@/utils/attachedFileUtils";
 import { getFileIcon } from "@/utils/attachedFileUtils";
 import { calculateDDay, getStatusColor } from "@/utils/studyHelper";
+import { STATUS_LABELS } from "@/types/study";
 
 function getStudyDataById(id: string): StudyDetailData | null {
   const parsedId = parseInt(id, 10);
@@ -84,7 +85,7 @@ export default async function StudyMaterialDetailPage({
                   </h1>
                   <div className="flex items-center gap-2">
                     <DefaultBadge className={getStatusColor(studyData.status)}>
-                      {studyData.status}
+                      {STATUS_LABELS[studyData.status]}
                     </DefaultBadge>
                     {dDay !== null && (
                       <DefaultBadge

@@ -1,7 +1,6 @@
 import BoardCard from "@/components/board/SCBoardCard";
-import DefaultNoneResultUi from "@/components/ui/defaultNoneResultUi";
-import ShieldSVG from "/public/icons/shield.svg";
 import { BoardDataType } from "@/types/board";
+import SCSearchResultNotFound from "@/components/ui/SCSearchResultNotFound";
 
 export default function BoardCardList({
   contents,
@@ -10,11 +9,9 @@ export default function BoardCardList({
 }) {
   if (contents.length === 0) {
     return (
-      <DefaultNoneResultUi
-        icon={<ShieldSVG className="stroke-cert-dark-red" />}
-        title="검색 결과가 없습니다."
-        description="검색어를 확인하거나 다른 카테고리를 선택해보세요."
-      />
+      <div className="mb-8">
+        <SCSearchResultNotFound mode="board" />
+      </div>
     );
   }
 

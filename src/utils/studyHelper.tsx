@@ -66,14 +66,6 @@ export const PARTICIPATION_THRESHOLDS = {
   ORANGE_ZONE: 66,
 } as const;
 
-// 상태별 색상 매핑
-export const STATUS_COLORS: Record<StatusType, string> = {
-  not_started: "bg-gray-100 text-gray-800",
-  in_progress: "bg-blue-100 text-blue-800",
-  completed: "bg-green-100 text-green-800",
-  all: "bg-gray-100 text-gray-800",
-} as const;
-
 // Progress 바 색상 상수
 export const PROGRESS_COLORS = {
   LOW: "#C7D3CC", // 33% 이하 - 연한 회색
@@ -86,10 +78,18 @@ export const PROGRESS_COLORS = {
  * @param status - 스터디 상태
  * @returns CSS 클래스 문자열
  */
-export const getStatusColor = (status: StatusType): string => {
-  return STATUS_COLORS[status] || STATUS_COLORS.all;
-};
-
+export function getStatusColor(status: StatusType): string {
+  switch (status) {
+    case "not_started":
+      return "bg-gray-50 text-gray-600 border-gray-200";
+    case "in_progress":
+      return "bg-blue-50 text-blue-600 border-blue-200";
+    case "completed":
+      return "bg-green-50 text-green-600 border-green-200";
+    default:
+      return "bg-gray-50 text-gray-600 border-gray-200";
+  }
+}
 /**
  * 참여율에 따른 Progress 바 색상을 반환합니다.
  * @param percentage - 참여율 (0-100)

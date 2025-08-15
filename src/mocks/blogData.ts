@@ -31,13 +31,13 @@ setTimeout(() => {
       </code></pre>
     `,
     author: "김개발",
-    category: "개발",
+    category: "CTF",
     tags: ["React", "JavaScript", "성능최적화", "프론트엔드"],
     createdAt: "2024-01-15",
     views: 1250,
     likes: 45,
     featured: true,
-    published: false,
+    published: true,
   },
   {
     id: 2,
@@ -69,7 +69,7 @@ setTimeout(() => {
       </ul>
     `,
     author: "박보안",
-    category: "학습",
+    category: "CS",
     tags: ["보안", "XSS", "CSRF", "웹개발"],
     createdAt: "2024-01-12",
     views: 890,
@@ -113,7 +113,7 @@ type UserWithoutId = Omit<User, 'id'>;
       </code></pre>
     `,
     author: "이타입",
-    category: "개발",
+    category: "RED",
     tags: ["TypeScript", "고급패턴", "유틸리티타입"],
     createdAt: "2024-01-10",
     views: 2100,
@@ -160,7 +160,7 @@ def fibonacci(n):
       </code></pre>
     `,
     author: "최알고",
-    category: "학습",
+    category: "BLUE",
     tags: ["알고리즘", "동적계획법", "문제해결", "코딩테스트"],
     createdAt: "2024-01-08",
     views: 1680,
@@ -213,7 +213,7 @@ spec:
       </code></pre>
     `,
     author: "정데브옵스",
-    category: "개발",
+    category: "GRC",
     tags: ["Docker", "Kubernetes", "마이크로서비스", "DevOps"],
     createdAt: "2024-01-05",
     views: 1420,
@@ -248,7 +248,7 @@ spec:
       <p>이번 컨퍼런스를 통해 현재 개발 트렌드를 파악하고, 앞으로의 학습 방향을 설정할 수 있었습니다.</p>
     `,
     author: "김후기",
-    category: "활동",
+    category: "MISC",
     tags: ["컨퍼런스", "NHN", "개발", "네트워킹"],
     createdAt: "2024-01-03",
     views: 980,
@@ -283,7 +283,7 @@ spec:
       <p>이번 컨퍼런스를 통해 현재 개발 트렌드를 파악하고, 앞으로의 학습 방향을 설정할 수 있었습니다.</p>
     `,
     author: "김후기",
-    category: "활동",
+    category: "기타",
     tags: ["컨퍼런스", "NHN", "개발", "네트워킹"],
     createdAt: "2024-01-03",
     views: 980,

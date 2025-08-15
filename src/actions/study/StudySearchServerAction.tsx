@@ -32,13 +32,6 @@ export async function applyFilters(formData: FormData) {
 }
 
 /**
- * 필터 초기화 서버 액션
- */
-export async function resetStudyFilters() {
-  redirect("/study");
-}
-
-/**
  * 페이지 변경 서버 액션
  */
 export async function changePage(page: number, currentParams: URLSearchParams) {

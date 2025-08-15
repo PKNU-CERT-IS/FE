@@ -3,7 +3,7 @@
 import { parseSearchParams } from "@/utils/projectUtils";
 import { getProjectMaterials } from "@/mocks/mockProjectData";
 import type { CurrentFilters } from "@/types/project";
-import SCStudySearchResultNotFound from "@/components/study/SCStudySearchResultNotFound";
+import SCSearchResultNotFound from "@/components/ui/SCSearchResultNotFound";
 import SCProjectContent from "@/components/project/SCProjectContent";
 import CCProjectPagination from "@/components/project/CCProjectPagination";
 
@@ -74,11 +74,7 @@ export default async function SCProjectList({
     if (currentMaterials.length === 0) {
       return (
         <div className="mb-8">
-          <SCStudySearchResultNotFound
-            title="프로젝트가 없습니다"
-            description="검색 조건을 변경하거나 새로운 프로젝트를 생성해보세요."
-            mode="project"
-          />
+          <SCSearchResultNotFound mode="project" />
         </div>
       );
     }
@@ -105,15 +101,18 @@ export default async function SCProjectList({
     console.error("Error in SCProjectContent:", error);
 
     return (
-      <>
-        <div className="mb-8">
-          <SCStudySearchResultNotFound
-            title="데이터를 불러올 수 없습니다"
-            description="페이지를 새로고침하거나 잠시 후 다시 시도해주세요."
-            mode="project"
-          />
+      <div className="mb-8">
+        <div className="mb-6">
+          <p className="text-sm text-gray-600">
+            데이터를 불러오는 중 오류가 발생했습니다.
+          </p>
         </div>
-      </>
+        <SCSearchResultNotFound
+          title="데이터를 불러올 수 없습니다"
+          description="페이지를 새로고침하거나 잠시 후 다시 시도해주세요."
+          mode="project"
+        />
+      </div>
     );
   }
 }

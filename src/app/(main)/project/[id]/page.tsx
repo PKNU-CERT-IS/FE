@@ -10,6 +10,7 @@ import KebabMenu from "@/components/detail/CCKebabMenu";
 import ShareButton from "@/components/detail/CCShareButton";
 import { getStatusColor } from "@/utils/projectUtils";
 import { STATUS_LABELS, AUTHOR_STATUS_LABELS } from "@/types/project";
+import DefaultBadge from "@/components/ui/defaultBadge";
 
 interface ProjectDetailPageProps {
   params: Promise<{ id: string }>;
@@ -108,13 +109,12 @@ export default async function ProjectDetailPage({
 
           {/* 상태 배지 */}
           <div className="absolute top-4 left-4">
-            <span
-              className={`px-3 py-1 rounded-full text-xs font-medium backdrop-blur-sm ${getStatusColor(
-                project.status
-              )}`}
+            <DefaultBadge
+              variant="outline"
+              className={getStatusColor(project.status)}
             >
               {STATUS_LABELS[project.status as keyof typeof STATUS_LABELS]}
-            </span>
+            </DefaultBadge>
           </div>
         </div>
 

@@ -32,13 +32,6 @@ export async function applyProjectFilters(formData: FormData) {
 }
 
 /**
- * 필터 초기화 서버 액션
- */
-export async function resetProjectFilters() {
-  redirect("/project");
-}
-
-/**
  * 페이지 변경 서버 액션
  */
 export async function changeProjectPage(

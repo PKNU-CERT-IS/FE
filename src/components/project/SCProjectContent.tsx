@@ -8,6 +8,7 @@ import { getStatusColor } from "@/utils/projectUtils";
 import GithubSVG from "/public/icons/github.svg";
 import ChainSVG from "/public/icons/chain.svg";
 import type { ProjectMaterial } from "@/types/project";
+import DefaultBadge from "@/components/ui/defaultBadge";
 
 interface SCProjectContentProps {
   materials: ProjectMaterial[];
@@ -46,13 +47,12 @@ export default function SCProjectContent({ materials }: SCProjectContentProps) {
 
                 {/* 상태 배지 */}
                 <div className="absolute top-4 left-4">
-                  <span
-                    className={`px-3 py-1 rounded-full text-xs font-medium backdrop-blur-sm ${getStatusColor(
-                      project.status
-                    )}`}
+                  <DefaultBadge
+                    variant="outline"
+                    className={getStatusColor(project.status)}
                   >
                     {STATUS_LABELS[project.status]}
-                  </span>
+                  </DefaultBadge>
                 </div>
               </div>
 

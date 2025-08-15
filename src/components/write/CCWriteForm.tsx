@@ -115,7 +115,7 @@ export default function WriteForm({ type }: WriteFormProps) {
       {/* 제목 */}
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">
-          제목 *
+          제목 * (25자 이내)
         </label>
         <input
           type="text"
@@ -123,6 +123,7 @@ export default function WriteForm({ type }: WriteFormProps) {
           onChange={(e) => setTitle(e.target.value)}
           className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent"
           placeholder="제목을 입력하세요..."
+          maxLength={25}
           required
         />
       </div>
@@ -191,7 +192,7 @@ export default function WriteForm({ type }: WriteFormProps) {
         {(type === "study" || type === "project") && (
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              최대 참가자 수
+              최대 참가자 수 *
             </label>
             <input
               type="number"
@@ -201,6 +202,7 @@ export default function WriteForm({ type }: WriteFormProps) {
               placeholder="최대 참가자 수"
               min="1"
               max={type === "study" ? "20" : "10"}
+              required
             />
           </div>
         )}
@@ -313,7 +315,7 @@ export default function WriteForm({ type }: WriteFormProps) {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                시작일 *
+                시작주 *
               </label>
               <input
                 type="date"
@@ -325,7 +327,7 @@ export default function WriteForm({ type }: WriteFormProps) {
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                종료일 *
+                종료주 *
               </label>
               <input
                 type="date"

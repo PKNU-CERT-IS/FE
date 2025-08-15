@@ -4,10 +4,15 @@ import CCBlogPagination from "@/components/blog/CCBlogPagination";
 import CCBlogCategoryFilter from "@/components/blog/CCBlogCategoryFilter";
 import { Plus } from "lucide-react";
 import { BlogCategory as BlogCategoryType, ITEMS_PER_PAGE } from "@/types/blog";
-import { filterBlogPosts, isValidCategory } from "@/utils/blogUtils";
+import {
+  filterBlogPosts,
+  getCategoryColor,
+  isValidCategory,
+} from "@/utils/blogUtils";
 import Link from "next/link";
 import BlogSearchBar from "@/components/blog/CCBlogSearchBar";
 import { formatDate } from "@/utils/formatDateUtil";
+import SCSearchResultNotFound from "@/components/ui/SCSearchResultNotFound";
 
 interface BlogPageProps {
   searchParams: Promise<{
@@ -58,7 +63,13 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
   const currentCategory: BlogCategoryType =
     category && isValidCategory(category) ? category : "전체";
 
-  const filteredContents = filterBlogPosts(mockBlogPosts, currentCategory);
+  // const filteredContents = filterBlogPosts(mockBlogPosts, currentCategory);
+  // ✅ BoardPage와 동일하게 검색어를 포함해 필터링
+  const filteredContents = filterBlogPosts(
+    mockBlogPosts,
+    currentSearch,
+    currentCategory
+  );
 
   const totalItems = filteredContents.length;
   const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
@@ -109,13 +120,8 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
                   {/* 카테고리 및 날짜 */}
                   <div className="flex items-center justify-between mb-3">
                     <span
-                      className={`inline-flex items-center px-2 py-1 rounded text-xs font-medium ${
-                        post.category === "개발"
-                          ? "bg-blue-50 text-blue-600 border border-blue-200"
-                          : post.category === "학습"
-                          ? "bg-green-50 text-green-600 border border-green-200"
-                          : "bg-purple-50 text-purple-600 border border-purple-200"
-                      }`}
+                      className={`inline-flex items-center px-2 py-1 rounded text-xs font-medium 
+                        ${getCategoryColor(post.category)}`}
                     >
                       {post.category}
                     </span>
@@ -169,25 +175,7 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
             ))}
           </div>
         ) : (
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-12 text-center">
-            <div className="text-gray-400 text-6xl mb-4">📝</div>
-            <h3 className="text-lg font-medium text-gray-900 mb-2">
-              게시글이 없습니다
-            </h3>
-            <p className="text-gray-600 mb-4">
-              {currentSearch || currentCategory !== "전체"
-                ? "검색 조건에 맞는 게시글을 찾을 수 없습니다."
-                : "아직 작성된 게시글이 없습니다."}
-            </p>
-            {(currentSearch || currentCategory !== "전체") && (
-              <Link
-                href="/blog"
-                className="inline-flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition-colors"
-              >
-                전체 게시글 보기
-              </Link>
-            )}
-          </div>
+          <SCSearchResultNotFound mode="blog" />
         )}
 
         {/* 페이지네이션 */}
@@ -206,4 +194,3 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
     </div>
   );
 }
-// test

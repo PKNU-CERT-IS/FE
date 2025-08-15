@@ -8,10 +8,8 @@ import { getCategoryColor } from "@/utils/boardUtils";
 import DownloadButton from "@/components/detail/SCDownloadButton";
 import { Calendar, Eye, Heart, Pin, Tag, Download } from "lucide-react";
 import DefaultBadge from "@/components/ui/defaultBadge";
-
 import KebabMenuButton from "@/components/detail/CCKebabMenu";
 import LikeButton from "@/components/detail/CCLikeButton";
-import BookmarkButton from "@/components/detail/CCBookmarkButton";
 import ShareButton from "@/components/detail/CCShareButton";
 import { formatFileSize } from "@/utils/attachedFileUtils";
 import { getFileIcon } from "@/utils/attachedFileUtils";

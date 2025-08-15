@@ -7,6 +7,7 @@ import KebabMenuButton from "@/components/detail/CCKebabMenu";
 import ShareButton from "@/components/detail/CCShareButton";
 import DefaultBadge from "@/components/ui/defaultBadge";
 import { formatDate } from "@/utils/formatDateUtil";
+import { getCategoryColor } from "@/utils/blogUtils";
 
 interface BlogDetailPageProps {
   params: Promise<{
@@ -71,17 +72,12 @@ export default async function AdminBlogDetailPage({
           {/* 카테고리와 케밥 메뉴 */}
           <div className="flex items-start justify-between mb-4">
             <div>
-              <span
-                className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium mr-2 ${
-                  post.category === "개발"
-                    ? "bg-blue-50 text-blue-600 border border-blue-200"
-                    : post.category === "학습"
-                    ? "bg-green-50 text-green-600 border border-green-200"
-                    : "bg-purple-50 text-purple-600 border border-purple-200"
-                }`}
+              <DefaultBadge
+                variant="outline"
+                className={getCategoryColor(post.category)}
               >
                 {post.category}
-              </span>
+              </DefaultBadge>
 
               {post.published && (
                 <DefaultBadge

@@ -1,5 +1,14 @@
 // 블로그 카테고리 타입
-export const BLOG_CATEGORIES = ["전체", "개발", "학습", "활동"] as const;
+export const BLOG_CATEGORIES = [
+  "전체",
+  "CTF",
+  "CS",
+  "RED",
+  "BLUE",
+  "GRC",
+  "MISC",
+  "기타",
+] as const;
 export type BlogCategory = (typeof BLOG_CATEGORIES)[number];
 
 // 페이지네이션 설정

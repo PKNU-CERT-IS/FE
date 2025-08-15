@@ -1,23 +1,46 @@
-import { BlogPost, BlogCategory, BLOG_CATEGORIES } from "@/types/blog";
+import {
+  BlogPost,
+  BlogCategory,
+  BlogCategory as BlogCategoryType,
+  BLOG_CATEGORIES,
+} from "@/types/blog";
 import { formatDate } from "@/utils/formatDateUtil";
+
+const filterByBlogSearch = (post: BlogPost, search: string) => {
+  if (search === "") return true;
+
+  const searchLower = search.toLowerCase();
+  return (
+    post.title.toLowerCase().includes(searchLower) ||
+    (post.author ?? "").toLowerCase().includes(searchLower) ||
+    (post.content ?? "").toLowerCase().includes(searchLower) ||
+    (post.excerpt ?? "").toLowerCase().includes(searchLower) ||
+    (post.tags ?? []).some((tag) => tag.toLowerCase().includes(searchLower))
+  );
+};
+
+/**
+ * 카테고리 필터
+ */
+const filterByBlogCategory = (post: BlogPost, category: BlogCategory) => {
+  return category === "전체" || post.category === category;
+};
 
 /**
  * 블로그 포스트를 검색어와 카테고리로 필터링하는 함수
  */
 export const filterBlogPosts = (
   posts: BlogPost[],
-  category: BlogCategory = "전체"
+  search: string,
+  category: BlogCategory
 ): BlogPost[] => {
-  let filteredPosts = [...posts];
-
-  // 카테고리 필터링
-  if (category !== "전체") {
-    filteredPosts = filteredPosts.filter((post) => post.category === category);
-  }
-
-  // 최신순으로 정렬 (게시된 포스트만)
-  return filteredPosts
-    .filter((post) => post.published !== false)
+  return posts
+    .filter(
+      (post) =>
+        post.published !== false &&
+        filterByBlogSearch(post, search) &&
+        filterByBlogCategory(post, category)
+    )
     .sort(
       (a, b) =>
         new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
@@ -93,15 +116,23 @@ export const generateBlogPostUrl = (post: BlogPost): string => {
 /**
  * 카테고리별 색상 클래스를 반환하는 함수
  */
-export const getCategoryColor = (category: BlogCategory): string => {
-  const colorMap: Record<BlogCategory, string> = {
-    전체: "bg-gray-50 text-gray-600 border border-gray-200",
-    개발: "bg-blue-50 text-blue-600 border border-blue-200",
-    학습: "bg-green-50 text-green-600 border border-green-200",
-    활동: "bg-purple-50 text-purple-600 border border-purple-200",
-  };
-
-  return colorMap[category] || colorMap["전체"];
+export const getCategoryColor = (category: BlogCategoryType) => {
+  switch (category) {
+    case "CTF":
+      return "bg-purple-50 text-purple-600 border-purple-200";
+    case "RED":
+      return "bg-red-50 text-red-600 border-red-200";
+    case "CS":
+      return "bg-orange-50 text-orange-600 border-orange-200";
+    case "BLUE":
+      return "bg-blue-50 text-blue-600 border-blue-200";
+    case "GRC":
+      return "bg-green-50 text-green-600 border-green-200";
+    case "MISC":
+      return "bg-sky-50 text-sky-600 border-sky-200";
+    default:
+      return "bg-gray-50 text-gray-600 border-gray-200";
+  }
 };
 
 /**

@@ -98,29 +98,13 @@ export function paginateProjects(
 export function getStatusColor(status: StatusType): string {
   switch (status) {
     case "not_started":
-      return "bg-gray-100/80 text-gray-800";
+      return "bg-gray-50 text-gray-600 border-gray-200";
     case "in_progress":
-      return "bg-blue-100/80 text-blue-800";
+      return "bg-blue-50 text-blue-600 border-blue-200";
     case "completed":
-      return "bg-green-100/80 text-green-800";
+      return "bg-green-50 text-green-600 border-green-200";
     default:
-      return "bg-gray-100/80 text-gray-800";
-  }
-}
-
-/**
- * 프로젝트 상태에 따른 배지 색상을 반환하는 함수 (기존 함수명 호환성)
- */
-export function getStatusBadgeColor(status: string): string {
-  switch (status) {
-    case "not_started":
-      return "bg-gray-100 text-gray-800";
-    case "in_progress":
-      return "bg-blue-100 text-blue-800";
-    case "completed":
-      return "bg-green-100 text-green-800";
-    default:
-      return "bg-gray-100 text-gray-800";
+      return "bg-gray-50 text-gray-600 border-gray-200";
   }
 }
 
