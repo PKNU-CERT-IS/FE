@@ -16,6 +16,7 @@ import { formatFileSize } from "@/utils/attachedFileUtils";
 import { getFileIcon } from "@/utils/attachedFileUtils";
 import { calculateDDay, getStatusColor } from "@/utils/studyHelper";
 import { STATUS_LABELS } from "@/types/study";
+import EndRequestButton from "@/components/ui/endRequestButton";
 
 function getStudyDataById(id: string): StudyDetailData | null {
   const parsedId = parseInt(id, 10);
@@ -282,6 +283,8 @@ export default async function StudyMaterialDetailPage({
               </div>
             </div>
           </div>
+          {/* 종료 모달 */}
+          <EndRequestButton id={studyData.id} />
         </div>
       </div>
     </div>

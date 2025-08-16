@@ -1,17 +1,20 @@
-// components/ui/ConfirmModal.tsx
 "use client";
-import { useEffect } from "react";
-import { AlertTriangle, X } from "lucide-react";
+
+import { useEffect, useState } from "react";
+import { AlertTriangle, CheckCircle2, X } from "lucide-react";
 import DefaultButton from "@/components/ui/defaultButton";
+import FileUpload from "@/components/write/CCFileUpload";
+import { AttachedFile } from "@/types/attachedFile";
 
 interface ConfirmModalProps {
   isOpen: boolean;
   title?: string;
   message: string;
-  onConfirm: () => void;
+  onConfirm: (attachments: AttachedFile[], link: string) => void;
   onCancel: () => void;
   confirmText: string;
   cancelText: string;
+  type?: "confirm" | "endConfirm";
 }
 
 export default function ConfirmModal({
@@ -22,7 +25,11 @@ export default function ConfirmModal({
   onCancel,
   confirmText = "예",
   cancelText = "아니오",
+  type = "confirm",
 }: ConfirmModalProps) {
+  const [attachments, setAttachments] = useState<AttachedFile[]>([]);
+  const [link, setLink] = useState<string>("");
+
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
@@ -32,8 +39,7 @@ export default function ConfirmModal({
 
     if (isOpen) {
       document.addEventListener("keydown", handleEsc);
-      // 모달 열릴 때 스크롤 방지
-      document.body.style.overflow = "hidden";
+      document.body.style.overflow = "hidden"; // 모달 열릴 때 스크롤 방지
     }
 
     return () => {
@@ -43,6 +49,8 @@ export default function ConfirmModal({
   }, [isOpen, onCancel]);
 
   if (!isOpen) return null;
+
+  const isEnd = type === "endConfirm";
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
@@ -58,13 +66,46 @@ export default function ConfirmModal({
         >
           <X className="w-5 h-5" />
         </button>
-        <div className="flex items-center justify-center w-12 h-12 mx-auto mb-4 bg-cert-dark-red/20 rounded-full">
-          <AlertTriangle className="w-6 h-6 text-cert-red" />
+
+        {/* 아이콘 */}
+        <div
+          className={`flex items-center justify-center w-12 h-12 mx-auto mb-4 rounded-full ${
+            isEnd ? "bg-emerald-100" : "bg-cert-dark-red/20"
+          }`}
+        >
+          {isEnd ? (
+            <CheckCircle2 className="w-6 h-6 text-emerald-600" />
+          ) : (
+            <AlertTriangle className="w-6 h-6 text-cert-red" />
+          )}
         </div>
+
         <h3 className="text-lg font-semibold text-gray-900 text-center mb-2">
           {title}
         </h3>
         <p className="text-sm text-gray-600 text-center mb-6">{message}</p>
+
+        {/* 종료 시 제출 폼 */}
+        {isEnd && (
+          <div className="space-y-4 pb-6">
+            <FileUpload
+              attachedFiles={attachments}
+              onAttachmentsChange={setAttachments}
+              className="py-3"
+            />
+            <input
+              type="url"
+              value={link}
+              onChange={(e) => setLink(e.target.value)}
+              className="text-sm w-full px-3 py-2 border border-gray-300 rounded-md 
+                         focus:outline-none focus:ring-2 focus:ring-cert-red 
+                         focus:border-transparent"
+              placeholder="구글폼 또는 결과물 링크 (https://...)"
+            />
+          </div>
+        )}
+
+        {/* 버튼 */}
         <div className="flex items-center justify-center gap-3">
           <DefaultButton
             variant="outline"
@@ -74,8 +115,8 @@ export default function ConfirmModal({
             {cancelText}
           </DefaultButton>
           <DefaultButton
-            variant={"default"}
-            onClick={onConfirm}
+            variant="default"
+            onClick={() => onConfirm(attachments, link)}
             className="px-4 py-2 min-w-[80px]"
           >
             {confirmText}

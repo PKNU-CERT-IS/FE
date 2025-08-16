@@ -2,7 +2,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import DefaultButton from "@/components/ui/defaultButton";
-import { ChevronDown, Info } from "lucide-react";
+import { ChevronDown, Download, FileText, Info } from "lucide-react";
 import TagInput from "@/components/write/CCTagInput";
 import FileUpload from "@/components/write/CCFileUpload";
 import MarkdownEditor from "@/components/write/CCMarkdownEditor";
@@ -18,6 +18,12 @@ import { AttachedFile } from "@/types/attachedFile";
 interface WriteFormProps {
   type: NewPageCategoryType;
 }
+
+// 파일 맨 위 근처에 추가
+const PLAN_SAMPLE = {
+  label: "계획서 샘플 (DOCX)",
+  href: "/samples/plan-sample.docx", // public/samples/plan-sample.docx 에 파일 두기
+};
 
 export default function WriteForm({ type }: WriteFormProps) {
   const router = useRouter();
@@ -112,6 +118,32 @@ export default function WriteForm({ type }: WriteFormProps) {
 
   return (
     <div className="space-y-6">
+      {(type === "study" || type === "project") && (
+        <section className="rounded-lg border border-gray-200 bg-gray-50 px-4 py-3">
+          <div className="flex flex-row items-center justify-between gap-4">
+            <div className="flex flex-row items-center gap-2">
+              <FileText className="w-5 h-5 text-gray-600" />
+              <h3 className="text-sm font-semibold text-gray-900 whitespace-nowrap">
+                계획서 샘플 다운로드
+              </h3>
+              <p className="text-xs text-gray-500 whitespace-nowrap">
+                (계획서 작성 후, 반드시 첨부파일에 첨부해주세요)
+              </p>
+            </div>
+
+            {/* 다운로드 버튼 */}
+            <a
+              href={PLAN_SAMPLE.href}
+              download
+              className="inline-flex items-center gap-2 rounded-md border border-gray-300 bg-white px-3 py-1.5 text-xs text-gray-700 hover:bg-gray-100 whitespace-nowrap"
+            >
+              <Download className="w-4 h-4" />
+              {PLAN_SAMPLE.label}
+            </a>
+          </div>
+        </section>
+      )}
+
       {/* 제목 */}
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">

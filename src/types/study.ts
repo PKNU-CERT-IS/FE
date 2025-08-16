@@ -188,14 +188,15 @@ export interface FilterParams extends Omit<CurrentFilters, "page"> {
   page: number;
 }
 
-// Meeting minute 타입 정의
+// Meeting minute 타입 정의 -> DB와 맞춤
 export interface MeetingMinute {
   id: number;
-  week: number;
   title: string;
-  date: string;
+  created_at: string;
+  updated_at: string;
+  delete_at?: string;
   content: string;
-  attendees: string[];
+  participants: number;
   author: string;
   links: LinkItem[];
 }
