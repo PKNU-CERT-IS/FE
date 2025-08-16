@@ -1,4 +1,5 @@
 import { AttachedFile } from "@/types/attachedFile";
+import { CategoryType, SubCategoryType } from "@/types/category";
 import { StatusType } from "@/types/study";
 
 // 타입 정의
@@ -26,7 +27,8 @@ export interface StudyDetailData {
   authorStatus: "student" | "graduate";
   semester: string;
   attachedFiles?: AttachedFile[];
-  category: string;
+  category: CategoryType;
+  subCategory: SubCategoryType;
   hackingTechnique: string;
   startDate: string;
   endDate?: string;
@@ -109,8 +111,9 @@ export const mockStudyDetailData: StudyDetailData[] = [
         description: "해커톤 전체 기획서 및 일정표",
       },
     ],
-    category: "Web Security",
-    hackingTechnique: "web_security",
+    category: "CTF",
+    subCategory: "리버싱",
+    hackingTechnique: "CTF",
     startDate: "2025-07-01",
     endDate: "2025-07-15",
     authorInfo: {
@@ -210,8 +213,9 @@ export const mockStudyDetailData: StudyDetailData[] = [
         description: "해커톤 전체 기획서 및 일정표",
       },
     ],
-    category: "Penetration Testing",
-    hackingTechnique: "penetration_testing",
+    category: "CTF",
+    subCategory: "리버싱",
+    hackingTechnique: "CTF",
     startDate: "2025-03-01",
     endDate: "2025-05-31",
     authorInfo: {
@@ -291,8 +295,9 @@ Metasploit Framework는 침투 테스팅과 보안 연구를 위한 강력한 �
         description: "해커톤 전체 기획서 및 일정표",
       },
     ],
-    category: "Cryptography",
-    hackingTechnique: "cryptography",
+    category: "CTF",
+    subCategory: "디지털 포렌식",
+    hackingTechnique: "CTF",
     startDate: "2025-07-20",
     endDate: "2025-09-20",
     authorInfo: {

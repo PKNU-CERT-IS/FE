@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import DefaultButton from "@/components/ui/defaultButton";
 import { Info, ChevronDown } from "lucide-react";
@@ -17,6 +17,7 @@ import {
   getPeriodPolicyInfo,
   getDescriptionPlaceholder,
   isFormValid,
+  getSubCategories,
 } from "@/utils/newPageFormUtils";
 import { AttachedFile } from "@/types/attachedFile";
 
@@ -30,16 +31,18 @@ export default function EditForm({ type, dataId }: EditFormProps) {
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [content, setContent] = useState<string>("");
-  const [category, setCategory] = useState<string>("");
+  const [category, setCategory] = useState("");
+  const [subCategory, setSubCategory] = useState("");
   const [tags, setTags] = useState<string[]>([]);
   const [attachments, setAttachments] = useState<AttachedFile[]>([]);
   const [startDate, setStartDate] = useState<string>("");
   const [endDate, setEndDate] = useState<string>("");
   const [maxParticipants, setMaxParticipants] = useState("");
-  const [isCategoryOpen, setIsCategoryOpen] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isCategoryOpen, setIsCategoryOpen] = useState<boolean>(false);
+  const [isSubCategoryOpen, setIsSubCategoryOpen] = useState<boolean>(false);
   const categoryRef = useRef<HTMLDivElement>(null);
-
+  const subCategoryRef = useRef<HTMLDivElement>(null);
   // 프로젝트 전용 필드들
   const [githubUrl, setGithubUrl] = useState<string>("");
   const [demoUrl, setDemoUrl] = useState<string>("");
@@ -47,7 +50,10 @@ export default function EditForm({ type, dataId }: EditFormProps) {
     { label: string; url: string }[]
   >([]);
   const [projectImage, setProjectImage] = useState<File | null>(null);
-
+  const closeAllDropdowns = useCallback(() => {
+    setIsCategoryOpen(false);
+    setIsSubCategoryOpen(false);
+  }, []);
   // 초기 데이터 로드
   useEffect(() => {
     const loadInitialData = async () => {
@@ -107,6 +113,7 @@ export default function EditForm({ type, dataId }: EditFormProps) {
               description: projectData.description,
               content: projectData.description, // 프로젝트는 description을 content로 사용
               category: projectData.category,
+              subCategory: projectData.subCategory,
               tags: projectData.customTags?.map((tag) => tag.name) || [],
               attachedFiles: projectData.attachedFiles || [],
               startDate: projectData.startDate,
@@ -125,6 +132,7 @@ export default function EditForm({ type, dataId }: EditFormProps) {
           setDescription(initialData.description || "");
           setContent(initialData.content || "");
           setCategory(initialData.category || "");
+          setSubCategory(initialData.subCategory || "");
           setTags(initialData.tags || []);
           setAttachments(initialData.attachedFiles || []);
           setStartDate(initialData.startDate || "");
@@ -147,18 +155,19 @@ export default function EditForm({ type, dataId }: EditFormProps) {
   }, [dataId, type]);
 
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
+    const handleClickOutside = (e: MouseEvent) => {
+      const target = e.target as Node;
       if (
-        categoryRef.current &&
-        !categoryRef.current.contains(event.target as Node)
+        categoryRef.current?.contains(target) ||
+        subCategoryRef.current?.contains(target)
       ) {
-        setIsCategoryOpen(false);
+        return;
       }
+      closeAllDropdowns();
     };
-
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+  }, [closeAllDropdowns]);
 
   const addExternalLink = () => {
     setExternalLinks([...externalLinks, { label: "", url: "" }]);
@@ -184,6 +193,7 @@ export default function EditForm({ type, dataId }: EditFormProps) {
         ...(type === "project" && { description }),
         content,
         category,
+        subCategory,
         tags,
         ...((type === "study" || type === "project") && {
           startDate,
@@ -257,15 +267,18 @@ export default function EditForm({ type, dataId }: EditFormProps) {
       </div>
 
       {/* 카테고리 및 최대 참가자 수 */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div className="relative" ref={categoryRef}>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            카테고리 *
+            상위 카테고리 *
           </label>
           <div className="relative">
             <button
               type="button"
-              onClick={() => setIsCategoryOpen(!isCategoryOpen)}
+              onClick={() => {
+                setIsCategoryOpen(!isCategoryOpen);
+                setIsSubCategoryOpen(false);
+              }}
               className="flex h-10 w-full items-center justify-between rounded-md border border-gray-300 bg-white px-3 py-2 text-sm transition-colors focus:outline-none focus:ring-1 focus:ring-cert-red"
             >
               <span className={category ? "text-gray-900" : "text-gray-500"}>
@@ -300,10 +313,56 @@ export default function EditForm({ type, dataId }: EditFormProps) {
           </div>
         </div>
 
+        <div className="relative" ref={subCategoryRef}>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            하위 카테고리 *
+          </label>
+          <div className="relative">
+            <button
+              type="button"
+              onClick={() => {
+                setIsSubCategoryOpen(!isSubCategoryOpen);
+                setIsCategoryOpen(false);
+              }}
+              disabled={!category || category === "기타"} // 상위 선택 전 비활성화
+              className="flex h-10 w-full items-center justify-between rounded-md border border-gray-300 bg-white px-3 py-2 text-sm transition-colors focus:outline-none focus:ring-1 focus:ring-cert-red disabled:opacity-50"
+            >
+              <span className={subCategory ? "text-gray-900" : "text-gray-500"}>
+                {subCategory ||
+                  (category ? "하위 카테고리 선택" : "상위 카테고리 먼저 선택")}
+              </span>
+              <ChevronDown
+                className={`h-4 w-4 transition-transform duration-200 ${
+                  isSubCategoryOpen ? "rotate-180" : ""
+                }`}
+              />
+            </button>
+
+            {isSubCategoryOpen && (
+              <div className="absolute z-50 mt-1 w-full rounded-md border border-gray-200 bg-white shadow-lg animate-in fade-in-0">
+                <div className="max-h-60 overflow-auto p-1">
+                  {getSubCategories(category).map((subCategoryItem) => (
+                    <button
+                      key={subCategoryItem}
+                      type="button"
+                      onClick={() => {
+                        setSubCategory(subCategoryItem);
+                        setIsSubCategoryOpen(false);
+                      }}
+                      className="relative flex w-full cursor-pointer select-none items-center rounded-sm py-2 px-2 text-sm outline-none transition-colors hover:bg-cert-red hover:text-white focus:bg-cert-red focus:text-white"
+                    >
+                      <span className="truncate">{subCategoryItem}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
         {(type === "study" || type === "project") && (
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              최대 참가자 수
+              최대 참가자 수 *
             </label>
             <input
               type="number"
@@ -313,6 +372,7 @@ export default function EditForm({ type, dataId }: EditFormProps) {
               placeholder="최대 참가자 수"
               min="1"
               max={type === "study" ? "20" : "10"}
+              required
             />
           </div>
         )}

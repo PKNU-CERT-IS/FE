@@ -11,7 +11,8 @@ interface SCProjectListProps {
   searchParams: Promise<{
     search?: string;
     semester?: string;
-    technique?: string;
+    category?: string;
+    subCategory?: string;
     status?: string;
     page?: string;
   }>;
@@ -47,16 +48,24 @@ export default async function SCProjectList({
         currentFilters.semester === "all" ||
         material.semester === currentFilters.semester;
 
-      const matchesTechnique =
-        currentFilters.technique === "all" ||
-        material.hackingTechnique === currentFilters.technique;
+      const matchesCategory =
+        currentFilters.category === "all" ||
+        material.category === currentFilters.category;
+
+      const matchesSubCategory =
+        currentFilters.subCategory === "all" ||
+        material.subCategory === currentFilters.subCategory;
 
       const matchesStatus =
         currentFilters.status === "all" ||
         material.status === currentFilters.status;
 
       return (
-        matchesSearch && matchesSemester && matchesTechnique && matchesStatus
+        matchesSearch &&
+        matchesSemester &&
+        matchesCategory &&
+        matchesSubCategory &&
+        matchesStatus
       );
     });
 
@@ -91,7 +100,8 @@ export default async function SCProjectList({
             totalPages={totalPages}
             currentSearch={currentFilters.search}
             currentSemester={currentFilters.semester}
-            currentTechnique={currentFilters.technique}
+            currentCategory={currentFilters.category}
+            currentSubCategory={currentFilters.subCategory}
             currentStatus={currentFilters.status}
           />
         )}

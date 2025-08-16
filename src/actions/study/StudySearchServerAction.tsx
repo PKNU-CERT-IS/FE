@@ -1,12 +1,8 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import type {
-  SemesterType,
-  CategoryType,
-  SubCategoryType,
-  StatusType,
-} from "@/types/study";
+import type { SemesterType, StatusType } from "@/types/study";
+import { CategoryType, SubCategoryType } from "@/types/category";
 
 /**
  * 필터 적용 서버 액션
@@ -30,7 +26,7 @@ export async function applyFilters(formData: FormData) {
     params.set("category", category);
   }
   if (subCategory && subCategory !== "all") {
-    params.set("subCategory", subCategory);
+    params.set("categosubCategoryry", subCategory);
   }
   if (status && status !== "all") {
     params.set("status", status);

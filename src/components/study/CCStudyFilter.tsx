@@ -5,20 +5,21 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { ChevronDown, X } from "lucide-react";
 import DefaultSearchBar from "@/components/ui/defaultSearchBar";
 import SearchSVG from "/public/icons/search.svg";
-
 import type { StudyFilterProps, FilterKey } from "@/types/study";
 import {
   SEMESTER_OPTIONS,
-  CATEGORY_OPTIONS,
-  SUBCATEGORY_OPTIONS,
   STATUS_OPTIONS,
   SEMESTER_LABELS,
   STATUS_LABELS,
-  SUBCATEGORY_LABELS,
-  CATEGORY_LABELS,
 } from "@/types/study";
 import DefaultButton from "@/components/ui/defaultButton";
 import { cn } from "@/lib/utils";
+import {
+  CATEGORY_LABELS,
+  CATEGORY_OPTIONS,
+  SUBCATEGORY_LABELS,
+  SUBCATEGORY_OPTIONS,
+} from "@/types/category";
 
 export default function CCStudyFilter({ currentFilters }: StudyFilterProps) {
   const router = useRouter();

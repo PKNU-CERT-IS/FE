@@ -222,9 +222,9 @@ async function getStudyMaterials(): Promise<StudyMaterial[]> {
           description: "해커톤 전체 기획서 및 일정표",
         },
       ],
-      category: "CTF",
-      subCategory: "리버싱",
-      hackingTechnique: "CTF",
+      category: "BLUE",
+      subCategory: "침입 탐지 및 방어(관제)",
+      hackingTechnique: "BLUE",
       status: "not_started",
       startDate: "2025-07-10",
       currentParticipants: 3,
@@ -317,11 +317,11 @@ export default async function SCStudyContent({
 
       const matchesCategory =
         currentFilters.category === "all" ||
-        material.hackingTechnique === currentFilters.category;
+        material.category === currentFilters.category;
 
       const matchesSubCategory =
-        currentFilters.category === "all" ||
-        material.hackingTechnique === currentFilters.subCategory;
+        currentFilters.subCategory === "all" ||
+        material.subCategory === currentFilters.subCategory;
 
       const matchesStatus =
         currentFilters.status === "all" ||

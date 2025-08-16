@@ -1,12 +1,14 @@
 // utils/projectUtils.ts
 import {
+  CATEGORY_OPTIONS,
+  CategoryType,
+  SubCategoryType,
+} from "@/types/category";
+import {
   ProjectMaterial,
-  ProjectCategoryType,
   CurrentFilters,
   SemesterType,
-  TechniqueType,
   StatusType,
-  PROJECT_CATEGORIES,
 } from "@/types/project";
 
 /**
@@ -14,27 +16,18 @@ import {
  */
 export function parseSearchParams(searchParams: {
   search?: string;
-  category?: string;
+
   semester?: string;
-  technique?: string;
+  category?: string;
+  subCategory?: string;
   status?: string;
   page?: string;
 }): CurrentFilters {
-  // 카테고리 유효성 검증
-  const isValidCategory = (
-    category: string
-  ): category is ProjectCategoryType => {
-    return PROJECT_CATEGORIES.includes(category as ProjectCategoryType);
-  };
-
   return {
     search: searchParams.search || "",
-    category:
-      searchParams.category && isValidCategory(searchParams.category)
-        ? searchParams.category
-        : "전체",
     semester: (searchParams.semester as SemesterType) || "all",
-    technique: (searchParams.technique as TechniqueType) || "all",
+    category: (searchParams.category as CategoryType) || "all",
+    subCategory: (searchParams.subCategory as SubCategoryType) || "all",
     status: (searchParams.status as StatusType) || "all",
     page: parseInt(searchParams.page || "1", 10),
   };
@@ -46,11 +39,11 @@ export function parseSearchParams(searchParams: {
 export function filterProjectData(
   projects: ProjectMaterial[],
   searchTerm: string,
-  category: ProjectCategoryType
+  category: CategoryType
 ): ProjectMaterial[] {
   return projects.filter((project) => {
     // 카테고리 필터링
-    const categoryMatch = category === "전체" || project.category === category;
+    const categoryMatch = category === "all" || project.category === category;
 
     // 검색어 필터링 (제목, 설명, 작성자, 태그에서 검색)
     const searchMatch =

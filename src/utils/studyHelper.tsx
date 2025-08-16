@@ -1,11 +1,10 @@
+import { CategoryType, SubCategoryType } from "@/types/category";
 import type {
   StudyMaterial,
   CurrentFilters,
   SemesterType,
-  CategoryType,
   StatusType,
   StudySearchParams,
-  SubCategoryType,
 } from "@/types/study";
 
 export function isCategoryType(value: string): value is CategoryType {

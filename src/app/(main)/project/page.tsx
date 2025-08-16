@@ -1,28 +1,25 @@
 import { Metadata } from "next";
-import {
-  PROJECT_CATEGORIES,
-  ProjectCategoryType,
-  CurrentFilters,
-} from "@/types/project";
+import { CurrentFilters } from "@/types/project";
 import SCProjectList from "@/components/project/SCProjectList";
 import { parseSearchParams } from "@/utils/projectUtils";
 import CCProjectFilter from "@/components/project/CCProjectFilter";
 import Link from "next/link";
 import { Plus } from "lucide-react";
+import { CategoryType, CATEGORY_OPTIONS } from "@/types/category";
 
 interface ProjectPageProps {
   searchParams: Promise<{
     search?: string;
-    category?: string;
     semester?: string;
-    technique?: string;
+    category?: string;
+    subCategory?: string;
     status?: string;
     page?: string;
   }>;
 }
 
-const isValidCategory = (category: string): category is ProjectCategoryType => {
-  return PROJECT_CATEGORIES.includes(category as ProjectCategoryType);
+const isValidCategory = (category: string): category is CategoryType => {
+  return CATEGORY_OPTIONS.includes(category as CategoryType);
 };
 
 export async function generateMetadata({

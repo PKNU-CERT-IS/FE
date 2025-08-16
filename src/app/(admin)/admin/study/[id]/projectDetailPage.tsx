@@ -159,6 +159,9 @@ export default async function ProjectDetailPage({
             <span>
               <strong>카테고리:</strong> {project.category}
             </span>
+            <span>
+              <strong>하위 카테고리:</strong> {project.subCategory}
+            </span>
           </div>
 
           {/* 프로젝트 기간 및 참가 정보 */}
