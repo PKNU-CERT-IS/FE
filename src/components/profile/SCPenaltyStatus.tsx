@@ -4,6 +4,8 @@ import { mockProfileData } from "@/mocks/mockProfileData";
 import WarningSVG from "/public/icons/warning.svg";
 
 export default function SCPenaltyStatus() {
+  const profile = mockProfileData[0];
+
   return (
     <div className="mt-7">
       <div className="card-list text-card-foreground text-center group p-6 cursor-auto">
@@ -15,12 +17,15 @@ export default function SCPenaltyStatus() {
           {[
             {
               title: "현재 벌점",
-              value: mockProfileData[0].penaltyPoint,
+              value: profile.penaltyPoint,
               color: "red-600",
             },
             {
               title: "벌점 유예 기간",
-              value: "D - " + mockProfileData[0].penaltyPeriod,
+              value:
+                profile.role === "PLAYER"
+                  ? "-"
+                  : "D - " + profile.penaltyPeriod,
               color: "red-600",
             },
           ].map((stat, index) => (

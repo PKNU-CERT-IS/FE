@@ -62,14 +62,6 @@ export default async function SCBlogList({
                         </DefaultBadge>
                       </div>
                     </div>
-                    <DefaultButton
-                      size="sm"
-                      variant="outline"
-                      className="border-gray-300 text-gray-600 hover:bg-gray-100 hover:text-gray-600"
-                    >
-                      <EditSVG className="w-4 h-4 mr-1 stroke-gray-600" />
-                      수정
-                    </DefaultButton>
                   </div>
                 </div>
                 <div className="p-6 pt-0">

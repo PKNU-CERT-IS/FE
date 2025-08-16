@@ -8,7 +8,7 @@ export const mockProfileData: ProfileDataType[] = [
   {
     id: 1,
     name: "김동아리",
-    role: "회장",
+    role: "PLAYER",
     grade: "4",
     major: "컴퓨터공학과",
     profileImage: "/placeholder.svg?height=80&width=80",
