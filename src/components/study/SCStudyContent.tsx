@@ -48,8 +48,9 @@ async function getStudyMaterials(): Promise<StudyMaterial[]> {
           description: "해커톤 전체 기획서 및 일정표",
         },
       ],
-      category: "Web Security",
-      hackingTechnique: "web_security",
+      category: "CTF",
+      subCategory: "리버싱",
+      hackingTechnique: "CTF",
       status: "in_progress",
       startDate: "2025-07-01",
       endDate: "2025-07-15",
@@ -82,8 +83,9 @@ async function getStudyMaterials(): Promise<StudyMaterial[]> {
           description: "해커톤 전체 기획서 및 일정표",
         },
       ],
-      category: "Penetration Testing",
-      hackingTechnique: "penetration_testing",
+      category: "CTF",
+      subCategory: "리버싱",
+      hackingTechnique: "CTF",
       status: "completed",
       startDate: "2025-03-01",
       endDate: "2025-05-31",
@@ -116,8 +118,9 @@ async function getStudyMaterials(): Promise<StudyMaterial[]> {
           description: "해커톤 전체 기획서 및 일정표",
         },
       ],
-      category: "Cryptography",
-      hackingTechnique: "cryptography",
+      category: "CTF",
+      subCategory: "디지털 포렌식",
+      hackingTechnique: "CTF",
       status: "not_started",
       startDate: "2025-07-20",
       currentParticipants: 1,
@@ -149,8 +152,9 @@ async function getStudyMaterials(): Promise<StudyMaterial[]> {
           description: "해커톤 전체 기획서 및 일정표",
         },
       ],
-      category: "Digital Forensics",
-      hackingTechnique: "digital_forensics",
+      category: "CTF",
+      subCategory: "리버싱",
+      hackingTechnique: "CTF",
       status: "in_progress",
       startDate: "2025-06-15",
       endDate: "2025-08-15",
@@ -183,8 +187,9 @@ async function getStudyMaterials(): Promise<StudyMaterial[]> {
           description: "해커톤 전체 기획서 및 일정표",
         },
       ],
-      category: "Network Security",
-      hackingTechnique: "network_security",
+      category: "CTF",
+      subCategory: "리버싱",
+      hackingTechnique: "CTF",
       status: "completed",
       startDate: "2024-09-01",
       endDate: "2024-12-31",
@@ -217,8 +222,9 @@ async function getStudyMaterials(): Promise<StudyMaterial[]> {
           description: "해커톤 전체 기획서 및 일정표",
         },
       ],
-      category: "Web Security",
-      hackingTechnique: "web_security",
+      category: "CTF",
+      subCategory: "리버싱",
+      hackingTechnique: "CTF",
       status: "not_started",
       startDate: "2025-07-10",
       currentParticipants: 3,
@@ -250,8 +256,9 @@ async function getStudyMaterials(): Promise<StudyMaterial[]> {
           description: "해커톤 전체 기획서 및 일정표",
         },
       ],
-      category: "Mobile Security",
-      hackingTechnique: "mobile_security",
+      category: "CTF",
+      subCategory: "리버싱",
+      hackingTechnique: "CTF",
       status: "in_progress",
       startDate: "2025-07-05",
       endDate: "2025-08-05",
@@ -267,7 +274,8 @@ interface SCStudyContentProps {
   searchParams: Promise<{
     search?: string;
     semester?: string;
-    technique?: string;
+    category?: string;
+    subCategory?: string;
     status?: string;
     page?: string;
   }>;
@@ -307,16 +315,24 @@ export default async function SCStudyContent({
         currentFilters.semester === "all" ||
         material.semester === currentFilters.semester;
 
-      const matchesTechnique =
-        currentFilters.technique === "all" ||
-        material.hackingTechnique === currentFilters.technique;
+      const matchesCategory =
+        currentFilters.category === "all" ||
+        material.hackingTechnique === currentFilters.category;
+
+      const matchesSubCategory =
+        currentFilters.category === "all" ||
+        material.hackingTechnique === currentFilters.subCategory;
 
       const matchesStatus =
         currentFilters.status === "all" ||
         material.status === currentFilters.status;
 
       return (
-        matchesSearch && matchesSemester && matchesTechnique && matchesStatus
+        matchesSearch &&
+        matchesSemester &&
+        matchesCategory &&
+        matchesSubCategory &&
+        matchesStatus
       );
     });
 
