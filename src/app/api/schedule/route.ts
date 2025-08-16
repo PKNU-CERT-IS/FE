@@ -1,8 +1,9 @@
 // app/api/schedule/route.ts
 import { NextResponse } from "next/server";
-import supabase from "@/lib/supabaseClient";
+import { getSupabaseClient } from "@/lib/supabaseClient";
 
 export async function GET() {
+  const supabase = getSupabaseClient();
   const { data, error } = await supabase.from("schedule").select("*");
 
   if (error) {
