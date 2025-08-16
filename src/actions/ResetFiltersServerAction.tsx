@@ -8,5 +8,6 @@ import { redirect } from "next/navigation";
  * - form에서 전달되는 FormData는 두 번째 인자로 자동 주입될 수 있으므로 선택 파라미터로 둡니다.
  */
 export async function resetFilters(pathname: string, _formData?: FormData) {
+  void _formData; // eslint-disable-line @typescript-eslint/no-unused-vars
   redirect(pathname || "/");
 }

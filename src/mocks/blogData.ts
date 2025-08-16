@@ -31,7 +31,7 @@ setTimeout(() => {
       </code></pre>
     `,
     author: "김개발",
-    category: "CTF",
+    category: "CS",
     tags: ["React", "JavaScript", "성능최적화", "프론트엔드"],
     createdAt: "2024-01-15",
     views: 1250,

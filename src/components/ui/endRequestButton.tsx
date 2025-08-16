@@ -26,7 +26,7 @@ export default function EndRequestButton({ id }: { id: number | string }) {
   ) => {
     if (submitting) return;
     setSubmitting(true);
-    console.log(attachments, link);
+    console.log(id, attachments, link);
     try {
       //   const fd = new FormData();
 

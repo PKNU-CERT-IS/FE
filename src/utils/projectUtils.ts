@@ -1,9 +1,5 @@
 // utils/projectUtils.ts
-import {
-  CATEGORY_OPTIONS,
-  CategoryType,
-  SubCategoryType,
-} from "@/types/category";
+import { CategoryType, SubCategoryType } from "@/types/category";
 import {
   ProjectMaterial,
   CurrentFilters,

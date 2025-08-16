@@ -36,7 +36,7 @@ export const mockBoardData: BoardDataType[] = [
       "Kali Linux와 Metasploit을 활용한 모의해킹 실습 환경 구축 방법을 단계별로 설명합니다...",
     author: "이해커",
     date: "2024-01-13",
-    category: "기술자료",
+    category: "질문",
     views: 334,
     likes: 42,
     comments: 15,

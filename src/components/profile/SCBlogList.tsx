@@ -2,7 +2,6 @@
 
 import DefaultButton from "@/components/ui/defaultButton";
 import DefaultBadge from "@/components/ui/defaultBadge";
-import EditSVG from "/public/icons/edit.svg";
 import EyeSVG from "/public/icons/eye.svg";
 import ThumbsUpSVG from "/public/icons/thumbs-up.svg";
 import CommentSVG from "/public/icons/comment.svg";
