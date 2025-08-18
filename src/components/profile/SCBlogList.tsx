@@ -4,7 +4,6 @@ import DefaultButton from "@/components/ui/defaultButton";
 import DefaultBadge from "@/components/ui/defaultBadge";
 import EyeSVG from "/public/icons/eye.svg";
 import ThumbsUpSVG from "/public/icons/thumbs-up.svg";
-import CommentSVG from "/public/icons/comment.svg";
 import { BlogCategoryType, ProfileBlogDataType } from "@/types/profile";
 import { getBlogCategoryColor } from "@/utils/profileUtils";
 import Link from "next/link";
@@ -72,10 +71,6 @@ export default async function SCBlogList({
                     <div className="flex items-center gap-1">
                       <ThumbsUpSVG />
                       {blog.likes}
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <CommentSVG className="stroke-gray-600" />
-                      {blog.comments}
                     </div>
                   </div>
                 </div>

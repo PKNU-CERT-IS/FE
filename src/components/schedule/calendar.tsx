@@ -79,7 +79,7 @@ export default function Calendar() {
           </h3>
         </div>
         <div className="flex items-center">
-          <div className="mr-2 sm:mr-4">
+          <div className="mr-2 sm:mr-4 hidden sm:block">
             <CCScrollScheduleList />
           </div>
           <button

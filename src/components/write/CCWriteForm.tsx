@@ -164,7 +164,7 @@ export default function WriteForm({ type }: WriteFormProps) {
           type="text"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent"
+          className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent"
           placeholder="제목을 입력하세요..."
           maxLength={25}
           required
@@ -179,7 +179,7 @@ export default function WriteForm({ type }: WriteFormProps) {
         <textarea
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent resize-none"
+          className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent resize-none"
           placeholder={getDescriptionPlaceholder(type)}
         />
         <p className="text-xs text-gray-500 mt-1">
@@ -201,7 +201,7 @@ export default function WriteForm({ type }: WriteFormProps) {
                 setIsCategoryOpen(!isCategoryOpen);
                 setIsSubCategoryOpen(false);
               }}
-              className="flex h-10 w-full items-center justify-between rounded-md border border-gray-300 bg-white px-3 py-2 text-sm transition-colors focus:outline-none focus:ring-1 focus:ring-cert-red"
+              className="flex h-10 w-full items-center justify-between rounded-md border border-gray-300 bg-white px-3 py-2 text-sm transition-colors focus:outline-none focus:ring-1 focus:ring-cert-red cursor-pointer"
             >
               <span className={category ? "text-gray-900" : "text-gray-500"}>
                 {category || "카테고리 선택"}
@@ -234,53 +234,58 @@ export default function WriteForm({ type }: WriteFormProps) {
             )}
           </div>
         </div>
+        {(type === "study" || type === "project") && (
+          <div className="relative" ref={subCategoryRef}>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              하위 카테고리 *
+            </label>
+            <div className="relative">
+              <button
+                type="button"
+                onClick={() => {
+                  setIsSubCategoryOpen(!isSubCategoryOpen);
+                  setIsCategoryOpen(false);
+                }}
+                disabled={!category || category === "기타"} // 상위 선택 전 비활성화
+                className="flex h-10 w-full items-center justify-between rounded-md border border-gray-300 bg-white px-3 py-2 text-sm transition-colors focus:outline-none focus:ring-1 focus:ring-cert-red disabled:opacity-50 cursor-pointer"
+              >
+                <span
+                  className={subCategory ? "text-gray-900" : "text-gray-500"}
+                >
+                  {subCategory ||
+                    (category
+                      ? "하위 카테고리 선택"
+                      : "상위 카테고리 선택 필수")}
+                </span>
+                <ChevronDown
+                  className={`h-4 w-4 transition-transform duration-200 ${
+                    isSubCategoryOpen ? "rotate-180" : ""
+                  }`}
+                />
+              </button>
 
-        <div className="relative" ref={subCategoryRef}>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            하위 카테고리 *
-          </label>
-          <div className="relative">
-            <button
-              type="button"
-              onClick={() => {
-                setIsSubCategoryOpen(!isSubCategoryOpen);
-                setIsCategoryOpen(false);
-              }}
-              disabled={!category || category === "기타"} // 상위 선택 전 비활성화
-              className="flex h-10 w-full items-center justify-between rounded-md border border-gray-300 bg-white px-3 py-2 text-sm transition-colors focus:outline-none focus:ring-1 focus:ring-cert-red disabled:opacity-50"
-            >
-              <span className={subCategory ? "text-gray-900" : "text-gray-500"}>
-                {subCategory ||
-                  (category ? "하위 카테고리 선택" : "상위 카테고리 먼저 선택")}
-              </span>
-              <ChevronDown
-                className={`h-4 w-4 transition-transform duration-200 ${
-                  isSubCategoryOpen ? "rotate-180" : ""
-                }`}
-              />
-            </button>
-
-            {isSubCategoryOpen && (
-              <div className="absolute z-50 mt-1 w-full rounded-md border border-gray-200 bg-white shadow-lg animate-in fade-in-0">
-                <div className="max-h-60 overflow-auto p-1">
-                  {getSubCategories(category).map((subCategoryItem) => (
-                    <button
-                      key={subCategoryItem}
-                      type="button"
-                      onClick={() => {
-                        setSubCategory(subCategoryItem);
-                        setIsSubCategoryOpen(false);
-                      }}
-                      className="relative flex w-full cursor-pointer select-none items-center rounded-sm py-2 px-2 text-sm outline-none transition-colors hover:bg-cert-red hover:text-white focus:bg-cert-red focus:text-white"
-                    >
-                      <span className="truncate">{subCategoryItem}</span>
-                    </button>
-                  ))}
+              {isSubCategoryOpen && (
+                <div className="absolute z-50 mt-1 w-full rounded-md border border-gray-200 bg-white shadow-lg animate-in fade-in-0">
+                  <div className="max-h-60 overflow-auto p-1">
+                    {getSubCategories(category).map((subCategoryItem) => (
+                      <button
+                        key={subCategoryItem}
+                        type="button"
+                        onClick={() => {
+                          setSubCategory(subCategoryItem);
+                          setIsSubCategoryOpen(false);
+                        }}
+                        className="relative flex w-full cursor-pointer select-none items-center rounded-sm py-2 px-2 text-sm outline-none transition-colors hover:bg-cert-red hover:text-white focus:bg-cert-red focus:text-white"
+                      >
+                        <span className="truncate">{subCategoryItem}</span>
+                      </button>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
+            </div>
           </div>
-        </div>
+        )}
         {(type === "study" || type === "project") && (
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
