@@ -197,9 +197,9 @@ export const getDescriptionPlaceholder = (type: NewPageCategoryType) => {
     case "blog":
       return "블로그 포스트에 대한 간단한 설명을 입력하세요...";
     case "study":
-      return "스터디 목표, 진행 방식등에 대한 설명을 입력하세요...";
+      return "스터디 목표, 진행 방식 등에 대한 설명을 입력하세요...";
     case "project":
-      return "프로젝트 목표, 필요 기술등에 대한 설명을 입력하세요...";
+      return "프로젝트 목표, 필요 기술 등에 대한 설명을 입력하세요...";
     default:
       return "간단한 설명을 입력하세요...";
   }

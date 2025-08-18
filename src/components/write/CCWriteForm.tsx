@@ -190,7 +190,12 @@ export default function WriteForm({ type }: WriteFormProps) {
 
       {/* 카테고리 및 최대 참가자 수 */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="relative" ref={categoryRef}>
+        <div
+          className={`relative ${
+            type === "blog" || type === "board" ? "md:col-span-3" : ""
+          }`}
+          ref={categoryRef}
+        >
           <label className="block text-sm font-medium text-gray-700 mb-2">
             상위 카테고리 *
           </label>
@@ -201,7 +206,7 @@ export default function WriteForm({ type }: WriteFormProps) {
                 setIsCategoryOpen(!isCategoryOpen);
                 setIsSubCategoryOpen(false);
               }}
-              className="flex h-10 w-full items-center justify-between rounded-md border border-gray-300 bg-white px-3 py-2 text-sm transition-colors focus:outline-none focus:ring-1 focus:ring-cert-red cursor-pointer"
+              className="flex w-full items-center justify-between rounded-md border border-gray-300 bg-white px-3 py-2 text-sm transition-colors focus:outline-none focus:ring-1 focus:ring-cert-red cursor-pointer"
             >
               <span className={category ? "text-gray-900" : "text-gray-500"}>
                 {category || "카테고리 선택"}
@@ -234,6 +239,7 @@ export default function WriteForm({ type }: WriteFormProps) {
             )}
           </div>
         </div>
+
         {(type === "study" || type === "project") && (
           <div className="relative" ref={subCategoryRef}>
             <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -247,7 +253,7 @@ export default function WriteForm({ type }: WriteFormProps) {
                   setIsCategoryOpen(false);
                 }}
                 disabled={!category || category === "기타"} // 상위 선택 전 비활성화
-                className="flex h-10 w-full items-center justify-between rounded-md border border-gray-300 bg-white px-3 py-2 text-sm transition-colors focus:outline-none focus:ring-1 focus:ring-cert-red disabled:opacity-50 cursor-pointer"
+                className="flex text-sm w-full items-center justify-between rounded-md border border-gray-300 bg-white px-3 py-2 transition-colors focus:outline-none focus:ring-1 focus:ring-cert-red disabled:opacity-50 cursor-pointer"
               >
                 <span
                   className={subCategory ? "text-gray-900" : "text-gray-500"}
@@ -295,7 +301,7 @@ export default function WriteForm({ type }: WriteFormProps) {
               type="number"
               value={maxParticipants}
               onChange={(e) => setMaxParticipants(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent"
+              className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent"
               placeholder="최대 참가자 수"
               min="1"
               max={type === "study" ? "20" : "10"}
@@ -315,7 +321,7 @@ export default function WriteForm({ type }: WriteFormProps) {
             type="file"
             accept="image/*"
             onChange={(e) => setProjectImage(e.target.files?.[0] || null)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent"
+            className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent"
           />
           <p className="text-xs text-gray-500 mt-1">
             선택하지 않으면 제목의 첫 글자로 기본 이미지가 생성됩니다.
@@ -334,7 +340,7 @@ export default function WriteForm({ type }: WriteFormProps) {
               type="url"
               value={githubUrl}
               onChange={(e) => setGithubUrl(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent"
+              className="w-ful text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent"
               placeholder="https://github.com/username/repository"
             />
           </div>
@@ -346,7 +352,7 @@ export default function WriteForm({ type }: WriteFormProps) {
               type="url"
               value={demoUrl}
               onChange={(e) => setDemoUrl(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent"
+              className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent"
               placeholder="https://your-demo-site.com"
             />
           </div>
@@ -374,7 +380,7 @@ export default function WriteForm({ type }: WriteFormProps) {
                     onChange={(e) =>
                       updateExternalLink(index, "label", e.target.value)
                     }
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent"
+                    className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent"
                     placeholder="링크 제목"
                   />
                 </div>
@@ -385,7 +391,7 @@ export default function WriteForm({ type }: WriteFormProps) {
                     onChange={(e) =>
                       updateExternalLink(index, "url", e.target.value)
                     }
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent"
+                    className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent"
                     placeholder="https://..."
                   />
                 </div>
@@ -418,7 +424,7 @@ export default function WriteForm({ type }: WriteFormProps) {
                 type="date"
                 value={startDate}
                 onChange={(e) => setStartDate(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent"
+                className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent"
                 required
               />
             </div>
@@ -430,7 +436,7 @@ export default function WriteForm({ type }: WriteFormProps) {
                 type="date"
                 value={endDate}
                 onChange={(e) => setEndDate(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent"
+                className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent"
                 required
               />
             </div>
