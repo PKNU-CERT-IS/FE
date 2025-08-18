@@ -18,7 +18,9 @@ export default function CCScrollScheduleList() {
                    hover:bg-gray-400/15 text-gray-400 border border-gray-300 
                    rounded-lg transition-colors duration-200 shadow-sm"
       >
-        <span className="hidden sm:inline text-sm">전체 일정 확인</span>
+        <span className="hidden sm:inline text-sm cursor-pointer">
+          전체 일정 확인
+        </span>
         <ArrowDown className="w-3 h-3 sm:w-4 sm:h-4 ml-0 sm:ml-1" />
       </button>
     </div>

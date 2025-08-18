@@ -84,13 +84,13 @@ export default function Calendar() {
           </div>
           <button
             onClick={prevMonth}
-            className="text-gray-600 p-1 sm:p-3 rounded-md hover:text-gray-900 hover:bg-gray-100 mr-3 duration-200"
+            className="text-gray-600 p-1 sm:p-3 rounded-md hover:text-gray-900 hover:bg-gray-100 mr-3 duration-200 cursor-pointer"
           >
             <AngleSVG className="rotate-90 w-2.5 sm:w-3.5" />
           </button>
           <button
             onClick={nextMonth}
-            className="text-gray-600 p-1 sm:p-3 rounded-md hover:text-gray-900 hover:bg-gray-100 duration-200"
+            className="text-gray-600 p-1 sm:p-3 rounded-md hover:text-gray-900 hover:bg-gray-100 duration-200 cursor-pointer"
           >
             <AngleSVG className="rotate-270 w-2.5 sm:w-3.5" />
           </button>

@@ -165,7 +165,7 @@ export default function CCMemberDetailCard({
             </div>
             <div>
               <DefaultButton
-                className="w-full h-8 text-xs action-button cursor-pointer"
+                className="w-full h-8 text-xs action-button"
                 onClick={() => setIsOpenPenaltyModal(true)}
               >
                 벌점 부여
@@ -195,7 +195,7 @@ export default function CCMemberDetailCard({
 
           <div>
             <DefaultButton
-              className="action-button w-full h-8 text-xs cursor-pointer"
+              className="action-button w-full h-8 text-xs"
               onClick={() => setIsOpenKickModal(true)}
             >
               탈퇴 처리

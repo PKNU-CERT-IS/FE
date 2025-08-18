@@ -141,7 +141,7 @@ export default function SCProjectContent({ materials }: SCProjectContentProps) {
 
                 <button
                   type="button"
-                  className="px-4 py-2 action-button text-sm"
+                  className="px-4 py-2 action-button text-sm relative z-10"
                 >
                   참가하기
                 </button>

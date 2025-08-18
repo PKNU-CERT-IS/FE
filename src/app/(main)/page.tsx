@@ -297,7 +297,7 @@ export default function HomePage() {
                   </div>
                 </div>
                 {/* 지원서 폼 추후 추가 */}
-                <button className="w-full rounded-md py-2.5 action-button text-white cursor-pointer duration-300">
+                <button className="w-full rounded-md py-2.5 action-button text-white duration-300">
                   지원하기
                 </button>
               </div>

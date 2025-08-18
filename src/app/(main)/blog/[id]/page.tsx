@@ -8,6 +8,7 @@ import ShareButton from "@/components/detail/CCShareButton";
 import { formatDate } from "@/utils/formatDateUtil";
 import { getCategoryColor } from "@/utils/blogUtils";
 import DefaultBadge from "@/components/ui/defaultBadge";
+import CCPublishedCheckbox from "@/components/admin/blog/CCPublishedCheckbox";
 
 interface BlogDetailPageProps {
   params: Promise<{
@@ -79,19 +80,16 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
             </div>
             <KebabMenuButton currentUrl={"blog"} currentId={blogId} />
           </div>
-
           {/* 제목 */}
           <h1 className="text-3xl font-bold text-gray-900 mb-4 leading-tight">
             {post.title}
           </h1>
-
           {/* 요약 */}
           {post.excerpt && (
             <p className="text-lg text-gray-600 mb-6 leading-relaxed">
               {post.excerpt}
             </p>
           )}
-
           {/* 메타 정보 */}
           <div className="flex flex-wrap items-center gap-6 text-sm text-gray-600">
             <div className="flex items-center gap-2">
@@ -109,26 +107,30 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
               </div>
             )}
           </div>
-
           {/* 태그 */}
-          {post.tags && post.tags.length > 0 && (
-            <div className="mt-6">
-              <div className="flex items-center gap-2 mb-2">
-                <Tag className="w-4 h-4 text-gray-500" />
-                <span className="text-sm font-medium text-gray-700">태그</span>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {post.tags.map((tag, index) => (
-                  <span
-                    key={index}
-                    className="inline-block px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-md font-medium hover:bg-gray-200 transition-colors cursor-pointer"
-                  >
-                    #{tag}
+          <div className="flex justify-between items-end">
+            {post.tags && post.tags.length > 0 && (
+              <div className="mt-6">
+                <div className="flex items-center gap-2 mb-2">
+                  <Tag className="w-4 h-4 text-gray-500" />
+                  <span className="text-sm font-medium text-gray-700">
+                    태그
                   </span>
-                ))}
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {post.tags.map((tag, index) => (
+                    <span
+                      key={index}
+                      className="inline-block px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-md font-medium hover:bg-gray-200 transition-colors cursor-pointer"
+                    >
+                      #{tag}
+                    </span>
+                  ))}
+                </div>
               </div>
-            </div>
-          )}
+            )}
+            <CCPublishedCheckbox postId={post.id} published={post.published} />
+          </div>
         </header>
 
         {/* 본문 */}
