@@ -46,7 +46,7 @@ const upcomingEvents = generateUpcomingEvents();
 export default function HomePage() {
   return (
     <>
-      <div className="mx-auto px-4">
+      <div className="mx-auto">
         {/* 1p */}
         <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden bg-white">
           <>
@@ -134,7 +134,7 @@ export default function HomePage() {
               <MiniCalendar />
             </div>
             <div className="bg-white border border-gray-200 rounded-2xl p-3 shadow-sm">
-              <div className="flex flex-col space-y-1.5 p-6 w-[28rem] text-center pb-6">
+              <div className="flex flex-col space-y-1.5 p-6 w-[16rem] sm:w-[24rem] md:w-[28rem] text-center pb-6">
                 <div className="flex flex-row">
                   <div className="mb-6">
                     <ScheduleSVG className="w-6 h-6 stroke-cert-dark-red" />
