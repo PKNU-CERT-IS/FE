@@ -1,9 +1,4 @@
-import {
-  BlogPost,
-  BlogCategory,
-  BlogCategory as BlogCategoryType,
-  BLOG_CATEGORIES,
-} from "@/types/blog";
+import { BlogPost, BlogCategory, BLOG_CATEGORIES } from "@/types/blog";
 import { formatDate } from "@/utils/formatDateUtil";
 
 const filterByBlogSearch = (post: BlogPost, search: string) => {
@@ -14,8 +9,7 @@ const filterByBlogSearch = (post: BlogPost, search: string) => {
     post.title.toLowerCase().includes(searchLower) ||
     (post.author ?? "").toLowerCase().includes(searchLower) ||
     (post.content ?? "").toLowerCase().includes(searchLower) ||
-    (post.excerpt ?? "").toLowerCase().includes(searchLower) ||
-    (post.tags ?? []).some((tag) => tag.toLowerCase().includes(searchLower))
+    (post.excerpt ?? "").toLowerCase().includes(searchLower)
   );
 };
 
@@ -100,39 +94,10 @@ export const calculateReadingTime = (content: string): number => {
 };
 
 /**
- * 태그 배열을 문자열로 변환하는 함수
- */
-export const formatTags = (tags: string[]): string => {
-  return tags.map((tag) => `#${tag}`).join(" ");
-};
-
-/**
  * 블로그 포스트 URL 생성 함수
  */
 export const generateBlogPostUrl = (post: BlogPost): string => {
   return `/blog/${post.slug || post.id}`;
-};
-
-/**
- * 카테고리별 색상 클래스를 반환하는 함수
- */
-export const getCategoryColor = (category: BlogCategoryType) => {
-  switch (category) {
-    case "CTF":
-      return "bg-purple-50 text-purple-600 border-purple-200";
-    case "RED":
-      return "bg-red-50 text-red-600 border-red-200";
-    case "CS":
-      return "bg-orange-50 text-orange-600 border-orange-200";
-    case "BLUE":
-      return "bg-blue-50 text-blue-600 border-blue-200";
-    case "GRC":
-      return "bg-green-50 text-green-600 border-green-200";
-    case "MISC":
-      return "bg-sky-50 text-sky-600 border-sky-200";
-    default:
-      return "bg-gray-50 text-gray-600 border-gray-200";
-  }
 };
 
 /**

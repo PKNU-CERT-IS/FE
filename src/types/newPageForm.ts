@@ -9,7 +9,6 @@ export interface NewPageFormData {
   title: string;
   description: string;
   category: string;
-  tags: string[];
   startDate: string;
   endDate: string;
   content: string;

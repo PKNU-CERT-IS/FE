@@ -123,17 +123,6 @@ export default async function ProjectDetailPage({
 
         {/* 헤더 */}
         <header className=" border-b pb-6">
-          <div className="flex flex-wrap gap-2 mb-4">
-            {project.customTags.map((tag, index) => (
-              <span
-                key={index}
-                className={`px-2 py-1 rounded text-xs font-medium ${tag.color}`}
-              >
-                {tag.name}
-              </span>
-            ))}
-          </div>
-
           <h1 className="text-4xl font-extrabold tracking-tight text-gray-900 sm:text-5xl mb-4">
             {project.title}
           </h1>

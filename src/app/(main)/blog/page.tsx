@@ -3,16 +3,13 @@ import { mockBlogPosts } from "@/mocks/blogData";
 import CCBlogPagination from "@/components/blog/CCBlogPagination";
 import CCBlogCategoryFilter from "@/components/blog/CCBlogCategoryFilter";
 import { Plus } from "lucide-react";
-import { BlogCategory as BlogCategoryType, ITEMS_PER_PAGE } from "@/types/blog";
-import {
-  filterBlogPosts,
-  getCategoryColor,
-  isValidCategory,
-} from "@/utils/blogUtils";
+import { BlogCategory, ITEMS_PER_PAGE } from "@/types/blog";
+import { filterBlogPosts, isValidCategory } from "@/utils/blogUtils";
 import Link from "next/link";
 import BlogSearchBar from "@/components/blog/CCBlogSearchBar";
 import { formatDate } from "@/utils/formatDateUtil";
 import SCSearchResultNotFound from "@/components/ui/SCSearchResultNotFound";
+import { getCategoryColor } from "@/utils/categoryColorUtils";
 
 interface BlogPageProps {
   searchParams: Promise<{
@@ -60,7 +57,7 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
 
   const currentPage = Math.max(1, parseInt(page || "1", 10));
   const currentSearch = search?.trim() || "";
-  const currentCategory: BlogCategoryType =
+  const currentCategory: BlogCategory =
     category && isValidCategory(category) ? category : "전체";
 
   // const filteredContents = filterBlogPosts(mockBlogPosts, currentCategory);
@@ -139,25 +136,6 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
                   <p className="text-gray-600 text-sm mb-4 line-clamp-3 leading-relaxed">
                     {post.excerpt}
                   </p>
-
-                  {/* 기술 스택 태그 */}
-                  {post.tags && post.tags.length > 0 && (
-                    <div className="flex flex-wrap gap-1.5 mb-4">
-                      {post.tags.slice(0, 4).map((tag, index) => (
-                        <span
-                          key={index}
-                          className="inline-block px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-md font-medium"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                      {post.tags.length > 4 && (
-                        <span className="inline-block px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-md font-medium">
-                          +{post.tags.length - 4}
-                        </span>
-                      )}
-                    </div>
-                  )}
 
                   {/* 작성자 */}
                   <div className="flex items-center gap-2 pt-2 border-t border-gray-100">

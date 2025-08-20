@@ -46,11 +46,7 @@ export function filterProjectData(
       searchTerm === "" ||
       project.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       project.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      project.author.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      project.customTags.some((tag) =>
-        tag.name.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-
+      project.author.toLowerCase().includes(searchTerm.toLowerCase());
     return categoryMatch && searchMatch;
   });
 }

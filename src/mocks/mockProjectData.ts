@@ -8,11 +8,6 @@ export function getProjectMaterials(): ProjectMaterial[] {
       description:
         "의미 있는 것 만들고 싶지 않아? 사회적 가치를 창출하는 해커톤 프로젝트입니다.",
       image: "/images/projects/hackathon-2025.jpg",
-      customTags: [
-        { name: "Hackathon", color: "bg-purple-100 text-purple-800" },
-        { name: "Social Impact", color: "bg-green-100 text-green-800" },
-        { name: "Innovation", color: "bg-blue-100 text-blue-800" },
-      ],
       author: "NEXT42",
       authorStatus: "organization",
       semester: "2025-2",
@@ -103,11 +98,6 @@ export function getProjectMaterials(): ProjectMaterial[] {
       description:
         "최신 OWASP Top 10 취약점에 대한 상세 분석과 실습 환경을 제공합니다.",
       image: "/images/projects/owasp-analysis.jpg",
-      customTags: [
-        { name: "OWASP", color: "bg-blue-100 text-blue-800" },
-        { name: "Web Security", color: "bg-red-100 text-red-800" },
-        { name: "Vulnerability", color: "bg-orange-100 text-orange-800" },
-      ],
       author: "김보안",
       authorStatus: "student",
       semester: "2025-2",
@@ -171,11 +161,6 @@ export function getProjectMaterials(): ProjectMaterial[] {
       description:
         "머신러닝과 딥러닝을 활용한 실시간 악성코드 탐지 및 분류 시스템입니다.",
       image: "/images/projects/ai-malware-detection.jpg",
-      customTags: [
-        { name: "AI/ML", color: "bg-purple-100 text-purple-800" },
-        { name: "Malware Detection", color: "bg-red-100 text-red-800" },
-        { name: "Deep Learning", color: "bg-indigo-100 text-indigo-800" },
-      ],
       author: "이머신러닝",
       authorStatus: "graduate",
       semester: "2025-2",
@@ -248,11 +233,6 @@ export function getProjectMaterials(): ProjectMaterial[] {
       description:
         "블록체인 기술을 활용한 탈중앙화 디지털 신원 인증 시스템 개발 프로젝트입니다.",
       image: "/images/projects/blockchain-identity.jpg",
-      customTags: [
-        { name: "Blockchain", color: "bg-yellow-100 text-yellow-800" },
-        { name: "Identity", color: "bg-green-100 text-green-800" },
-        { name: "Decentralized", color: "bg-blue-100 text-blue-800" },
-      ],
       author: "박블록체인",
       authorStatus: "student",
       semester: "2025-2",
@@ -272,11 +252,6 @@ export function getProjectMaterials(): ProjectMaterial[] {
       description:
         "IoT 환경에서의 보안 취약점 분석과 안전한 통신 프로토콜 구현 프로젝트입니다.",
       image: "/images/projects/iot-security.jpg",
-      customTags: [
-        { name: "IoT", color: "bg-cyan-100 text-cyan-800" },
-        { name: "Security Framework", color: "bg-purple-100 text-purple-800" },
-        { name: "Protocol", color: "bg-gray-100 text-gray-800" },
-      ],
       author: "최IoT보안",
       authorStatus: "graduate",
       semester: "2025-2",
@@ -298,11 +273,6 @@ export function getProjectMaterials(): ProjectMaterial[] {
       description:
         "IoT 환경에서의 보안 취약점 분석과 안전한 통신 프로토콜 구현 프로젝트입니다.",
       image: "/images/projects/iot-security.jpg",
-      customTags: [
-        { name: "IoT", color: "bg-cyan-100 text-cyan-800" },
-        { name: "Security Framework", color: "bg-purple-100 text-purple-800" },
-        { name: "Protocol", color: "bg-gray-100 text-gray-800" },
-      ],
       author: "최IoT보안",
       authorStatus: "graduate",
       semester: "2025-2",
@@ -324,11 +294,6 @@ export function getProjectMaterials(): ProjectMaterial[] {
       description:
         "IoT 환경에서의 보안 취약점 분석과 안전한 통신 프로토콜 구현 프로젝트입니다.",
       image: "/images/projects/iot-security.jpg",
-      customTags: [
-        { name: "IoT", color: "bg-cyan-100 text-cyan-800" },
-        { name: "Security Framework", color: "bg-purple-100 text-purple-800" },
-        { name: "Protocol", color: "bg-gray-100 text-gray-800" },
-      ],
       author: "최IoT보안",
       authorStatus: "graduate",
       semester: "2025-2",

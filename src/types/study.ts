@@ -45,7 +45,6 @@ export interface StudyMaterial {
   isPending: boolean;
   title: string;
   description: string;
-  customTags: { name: string; color: string }[];
   author: string;
   authorStatus: AuthorStatusType;
   semester: SemesterType;

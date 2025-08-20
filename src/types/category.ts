@@ -562,3 +562,12 @@ export const SUBCATEGORY_LABELS = {
   OSINT: "OSINT",
   HUMINT: "HUMINT",
 } as const;
+
+// 소카테고리를 대카테고리로 매핑하는 객체 생성 -> badge color 맵핑을 위해 생성
+export const SUBCATEGORY_TO_CATEGORY: Record<SubCategoryType, CategoryType> =
+  Object.entries(SUBCATEGORY_MAP).reduce((acc, [category, subcategories]) => {
+    subcategories.forEach((sub) => {
+      acc[sub] = category as CategoryType;
+    });
+    return acc;
+  }, {} as Record<SubCategoryType, CategoryType>);

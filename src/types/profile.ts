@@ -39,7 +39,6 @@ export interface ProfileStudyDataType {
   title: string;
   date: string;
   category: StudyCategoryType;
-  tags: string[];
   status: string; // "진행중", "완료"
 }
 

@@ -33,7 +33,6 @@ export const projects: Project[] = [
 ## 기술 스택
 - Next.js, TypeScript, TailwindCSS, Supabase`,
     category: "프론트엔드",
-    tags: ["Next.js", "Tailwind", "Supabase", "SSR"],
     attachments: [
       {
         id: "file_p1_1",
@@ -71,7 +70,6 @@ export const projects: Project[] = [
 - 크롤러 → 검사기 → 리포터
 - 모듈형 규칙 엔진 설계`,
     category: "보안",
-    tags: ["OWASP", "Scanner", "PoC", "Node"],
     attachments: [
       {
         id: "file_1_1",
@@ -108,7 +106,6 @@ export const projects: Project[] = [
 - 크롤러 → 검사기 → 리포터
 - 모듈형 규칙 엔진 설계`,
     category: "보안",
-    tags: ["OWASP", "Scanner", "PoC", "Node"],
     attachments: [
       {
         id: "file_1_1",
@@ -145,7 +142,6 @@ export const projects: Project[] = [
 - 크롤러 → 검사기 → 리포터
 - 모듈형 규칙 엔진 설계`,
     category: "보안",
-    tags: ["OWASP", "Scanner", "PoC", "Node"],
     attachments: [
       {
         id: "file_1_1",

@@ -1,12 +1,12 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { Calendar, User, Tag, Eye } from "lucide-react";
+import { Calendar, User, Eye } from "lucide-react";
 import { mockBlogPosts } from "@/mocks/blogData";
 import BackToListButton from "@/components/detail/SCBackToListButton";
 import KebabMenuButton from "@/components/detail/CCKebabMenu";
 import ShareButton from "@/components/detail/CCShareButton";
 import { formatDate } from "@/utils/formatDateUtil";
-import { getCategoryColor } from "@/utils/blogUtils";
+import { getCategoryColor } from "@/utils/categoryColorUtils";
 import DefaultBadge from "@/components/ui/defaultBadge";
 import CCPublishedCheckbox from "@/components/admin/blog/CCPublishedCheckbox";
 
@@ -45,7 +45,6 @@ export async function generateMetadata({
       type: "article",
       publishedTime: post.createdAt,
       authors: [post.author],
-      tags: post.tags,
     },
   };
 }
@@ -91,46 +90,27 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
             </p>
           )}
           {/* 메타 정보 */}
-          <div className="flex flex-wrap items-center gap-6 text-sm text-gray-600">
-            <div className="flex items-center gap-2">
-              <User className="w-4 h-4" />
-              <span>{post.author}</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Calendar className="w-4 h-4" />
-              <span>{formatDate(post.createdAt)}</span>
-            </div>
-            {post.views && (
+          <div className="flex flex-wrap items-center text-sm text-gray-600 justify-between">
+            <div className="flex flex-row gap-6">
               <div className="flex items-center gap-2">
-                <Eye className="w-4 h-4" />
-                <span>{post.views.toLocaleString()}회</span>
+                <User className="w-4 h-4" />
+                <span>{post.author}</span>
               </div>
-            )}
-          </div>
-          {/* 태그 */}
-          <div className="flex justify-between items-end">
-            {post.tags && post.tags.length > 0 && (
-              <div className="mt-6">
-                <div className="flex items-center gap-2 mb-2">
-                  <Tag className="w-4 h-4 text-gray-500" />
-                  <span className="text-sm font-medium text-gray-700">
-                    태그
-                  </span>
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  {post.tags.map((tag, index) => (
-                    <span
-                      key={index}
-                      className="inline-block px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-md font-medium hover:bg-gray-200 transition-colors cursor-pointer"
-                    >
-                      #{tag}
-                    </span>
-                  ))}
-                </div>
+              <div className="flex items-center gap-2">
+                <Calendar className="w-4 h-4" />
+                <span>{formatDate(post.createdAt)}</span>
               </div>
-            )}
+              {post.views && (
+                <div className="flex items-center gap-2">
+                  <Eye className="w-4 h-4" />
+                  <span>{post.views.toLocaleString()}회</span>
+                </div>
+              )}
+            </div>
             <CCPublishedCheckbox postId={post.id} published={post.published} />
           </div>
+          {/* 태그 */}
+          <div className="flex justify-between items-end"></div>
         </header>
 
         {/* 본문 */}

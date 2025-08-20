@@ -181,18 +181,15 @@ export default async function StudyMaterialDetailPage({
                     </div>
                   </div>
                 )}
-              {/* Tags */}
+              {/* 공유하기 버튼 */}
               <div className="flex justify-between p-1  pt-6 border-t border-gray-300">
-                <div className="flex flex-wrap gap-2">
-                  {studyData.tags.map((tag) => (
-                    <DefaultBadge
-                      key={tag}
-                      className="text-xs h-6 bg-gray-100 text-gray-600 hover:bg-gray-200 "
-                    >
-                      <Tag className="w-3 h-3 mr-1" />
-                      {tag}
-                    </DefaultBadge>
-                  ))}
+                <div className="flex flex-wrap gap-2 justify-center items-center">
+                  <DefaultBadge className="bg-gray-100 h-6 border border-gray-200 text-gray-700">
+                    {studyData.category}
+                  </DefaultBadge>
+                  <DefaultBadge className="h-6 bg-gray-100 border border-gray-200 text-gray-700">
+                    {studyData.subCategory}
+                  </DefaultBadge>
                 </div>
                 <CCShareButton />
               </div>

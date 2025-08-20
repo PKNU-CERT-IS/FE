@@ -7,7 +7,7 @@ import KebabMenuButton from "@/components/detail/CCKebabMenu";
 import ShareButton from "@/components/detail/CCShareButton";
 import DefaultBadge from "@/components/ui/defaultBadge";
 import { formatDate } from "@/utils/formatDateUtil";
-import { getCategoryColor } from "@/utils/blogUtils";
+import { getCategoryColor } from "@/utils/categoryColorUtils";
 
 interface BlogDetailPageProps {
   params: Promise<{
@@ -44,7 +44,6 @@ export async function generateMetadata({
       type: "article",
       publishedTime: post.createdAt,
       authors: [post.author],
-      tags: post.tags,
     },
   };
 }
@@ -121,26 +120,6 @@ export default async function AdminBlogDetailPage({
               </div>
             )}
           </div>
-
-          {/* 태그 */}
-          {post.tags && post.tags.length > 0 && (
-            <div className="mt-6">
-              <div className="flex items-center gap-2 mb-2">
-                <Tag className="w-4 h-4 text-gray-500" />
-                <span className="text-sm font-medium text-gray-700">태그</span>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {post.tags.map((tag, index) => (
-                  <span
-                    key={index}
-                    className="inline-block px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-md font-medium hover:bg-gray-200 transition-colors cursor-pointer"
-                  >
-                    #{tag}
-                  </span>
-                ))}
-              </div>
-            </div>
-          )}
         </header>
 
         {/* 본문 */}

@@ -9,6 +9,7 @@ import GithubSVG from "/public/icons/github.svg";
 import ChainSVG from "/public/icons/chain.svg";
 import type { ProjectMaterial } from "@/types/project";
 import DefaultBadge from "@/components/ui/defaultBadge";
+import { getCategoryColor } from "@/utils/categoryColorUtils";
 
 interface SCProjectContentProps {
   materials: ProjectMaterial[];
@@ -76,14 +77,20 @@ export default function SCProjectContent({ materials }: SCProjectContentProps) {
                 </p>
 
                 <div className="flex flex-wrap gap-2 mb-4">
-                  {project.customTags.map((tag, index) => (
-                    <span
-                      key={index}
-                      className={`px-2 py-1 rounded text-xs font-medium ${tag.color}`}
-                    >
-                      {tag.name}
-                    </span>
-                  ))}
+                  <DefaultBadge
+                    variant="outline"
+                    className={`inline-flex items-center px-2 py-1 rounded text-xs font-medium border-none
+                        ${getCategoryColor(project.category)}`}
+                  >
+                    {project.category}
+                  </DefaultBadge>
+                  <DefaultBadge
+                    variant="outline"
+                    className={`inline-flex items-center px-2 py-1 rounded text-xs font-medium border-none
+                        ${getCategoryColor(project.subCategory)}`}
+                  >
+                    {project.subCategory}
+                  </DefaultBadge>
                 </div>
               </div>
             </Link>

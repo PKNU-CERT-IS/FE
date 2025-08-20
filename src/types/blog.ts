@@ -22,7 +22,6 @@ export interface BlogPost {
   excerpt: string;
   author: string;
   category: BlogCategory;
-  tags?: string[];
   createdAt: string;
   updatedAt?: string;
   views?: number;
@@ -38,7 +37,6 @@ export interface BlogFilter {
   search?: string;
   category?: BlogCategory;
   author?: string;
-  tags?: string[];
   dateFrom?: string;
   dateTo?: string;
 }

@@ -3,7 +3,6 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import DefaultButton from "@/components/ui/defaultButton";
 import { ChevronDown, Download, FileText, Info } from "lucide-react";
-import TagInput from "@/components/write/CCTagInput";
 import FileUpload from "@/components/write/CCFileUpload";
 import MarkdownEditor from "@/components/write/CCMarkdownEditor";
 import { NewPageCategoryType } from "@/types/newPageForm";
@@ -33,7 +32,6 @@ export default function WriteForm({ type }: WriteFormProps) {
   const [content, setContent] = useState<string>("");
   const [category, setCategory] = useState("");
   const [subCategory, setSubCategory] = useState("");
-  const [tags, setTags] = useState<string[]>([]);
   const [attachments, setAttachments] = useState<AttachedFile[]>([]);
   const [startDate, setStartDate] = useState<string>("");
   const [endDate, setEndDate] = useState<string>("");
@@ -99,7 +97,6 @@ export default function WriteForm({ type }: WriteFormProps) {
       description,
       content,
       category,
-      tags,
       attachments,
       ...(type === "study" || type === "project" ? { startDate, endDate } : {}),
       ...(type === "study" || type === "project" ? { maxParticipants } : {}),
@@ -460,14 +457,6 @@ export default function WriteForm({ type }: WriteFormProps) {
           </div>
         </>
       )}
-
-      {/* 태그 */}
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
-          태그
-        </label>
-        <TagInput tags={tags} setTags={setTags} />
-      </div>
 
       {/* 파일 업로드 */}
       {(type === "study" || type === "board" || type === "project") && (

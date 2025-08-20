@@ -26,10 +26,6 @@ export interface ProjectMaterial {
   title: string;
   description: string;
   image?: string; // 프로젝트 대표 이미지
-  customTags: Array<{
-    name: string;
-    color: string;
-  }>;
   author: string;
   authorStatus: "student" | "graduate" | "organization";
   semester: string;

@@ -172,21 +172,6 @@ export default async function StudyDetailPage({
                     </div>
                   </div>
                 )}
-              {/* Tags */}
-              <div className="flex justify-between p-1  pt-6 border-t border-gray-300">
-                <div className="flex flex-wrap gap-2">
-                  {studyData.tags.map((tag) => (
-                    <DefaultBadge
-                      key={tag}
-                      className="text-xs h-6 bg-gray-100 text-gray-600 hover:bg-gray-200 "
-                    >
-                      <Tag className="w-3 h-3 mr-1" />
-                      {tag}
-                    </DefaultBadge>
-                  ))}
-                </div>
-                <CCShareButton />
-              </div>
             </div>
           </div>
           <MeetingMinutes

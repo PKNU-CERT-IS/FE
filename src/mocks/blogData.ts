@@ -32,7 +32,6 @@ setTimeout(() => {
     `,
     author: "김개발",
     category: "CS",
-    tags: ["React", "JavaScript", "성능최적화", "프론트엔드"],
     createdAt: "2024-01-15",
     views: 1250,
     likes: 45,
@@ -70,7 +69,6 @@ setTimeout(() => {
     `,
     author: "박보안",
     category: "CS",
-    tags: ["보안", "XSS", "CSRF", "웹개발"],
     createdAt: "2024-01-12",
     views: 890,
     likes: 32,
@@ -114,7 +112,6 @@ type UserWithoutId = Omit<User, 'id'>;
     `,
     author: "이타입",
     category: "RED",
-    tags: ["TypeScript", "고급패턴", "유틸리티타입"],
     createdAt: "2024-01-10",
     views: 2100,
     likes: 78,
@@ -161,7 +158,6 @@ def fibonacci(n):
     `,
     author: "최알고",
     category: "BLUE",
-    tags: ["알고리즘", "동적계획법", "문제해결", "코딩테스트"],
     createdAt: "2024-01-08",
     views: 1680,
     likes: 56,
@@ -214,7 +210,6 @@ spec:
     `,
     author: "정데브옵스",
     category: "GRC",
-    tags: ["Docker", "Kubernetes", "마이크로서비스", "DevOps"],
     createdAt: "2024-01-05",
     views: 1420,
     likes: 67,
@@ -249,7 +244,6 @@ spec:
     `,
     author: "김후기",
     category: "MISC",
-    tags: ["컨퍼런스", "NHN", "개발", "네트워킹"],
     createdAt: "2024-01-03",
     views: 980,
     likes: 42,
@@ -284,7 +278,6 @@ spec:
     `,
     author: "김후기",
     category: "기타",
-    tags: ["컨퍼런스", "NHN", "개발", "네트워킹"],
     createdAt: "2024-01-03",
     views: 980,
     likes: 42,
@@ -310,7 +303,6 @@ export const searchBlogPosts = (query: string): BlogPost[] => {
     (post) =>
       post.title.toLowerCase().includes(lowercaseQuery) ||
       post.excerpt.toLowerCase().includes(lowercaseQuery) ||
-      post.author.toLowerCase().includes(lowercaseQuery) ||
-      post.tags?.some((tag) => tag.toLowerCase().includes(lowercaseQuery))
+      post.author.toLowerCase().includes(lowercaseQuery)
   );
 };

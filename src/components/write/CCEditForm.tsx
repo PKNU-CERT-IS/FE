@@ -3,7 +3,6 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import DefaultButton from "@/components/ui/defaultButton";
 import { Info, ChevronDown } from "lucide-react";
-import TagInput from "@/components/write/CCTagInput";
 import FileUpload from "@/components/write/CCFileUpload";
 import MarkdownEditor from "@/components/write/CCMarkdownEditor";
 import { mockBoardData } from "@/mocks/mockBoardData";
@@ -33,7 +32,6 @@ export default function EditForm({ type, dataId }: EditFormProps) {
   const [content, setContent] = useState<string>("");
   const [category, setCategory] = useState("");
   const [subCategory, setSubCategory] = useState("");
-  const [tags, setTags] = useState<string[]>([]);
   const [attachments, setAttachments] = useState<AttachedFile[]>([]);
   const [startDate, setStartDate] = useState<string>("");
   const [endDate, setEndDate] = useState<string>("");
@@ -73,7 +71,6 @@ export default function EditForm({ type, dataId }: EditFormProps) {
               title: boardData.title,
               content: boardDetailData.detailContent,
               category: boardData.category,
-              tags: boardDetailData.tags || [],
               attachedFiles: boardDetailData.attachedFiles || [],
             };
           }
@@ -84,7 +81,6 @@ export default function EditForm({ type, dataId }: EditFormProps) {
               title: blogData.title,
               content: blogData.content,
               category: blogData.category,
-              tags: blogData.tags || [],
             };
           }
         } else if (type === "study") {
@@ -96,7 +92,6 @@ export default function EditForm({ type, dataId }: EditFormProps) {
               title: studyData.title,
               content: studyData.detailContent,
               category: studyData.category,
-              tags: studyData.tags || [],
               attachedFiles: studyData.attachedFiles || [],
               startDate: studyData.startDate,
               endDate: studyData.endDate || "",
@@ -114,7 +109,6 @@ export default function EditForm({ type, dataId }: EditFormProps) {
               content: projectData.description, // 프로젝트는 description을 content로 사용
               category: projectData.category,
               subCategory: projectData.subCategory,
-              tags: projectData.customTags?.map((tag) => tag.name) || [],
               attachedFiles: projectData.attachedFiles || [],
               startDate: projectData.startDate,
               endDate: projectData.endDate || "",
@@ -133,7 +127,6 @@ export default function EditForm({ type, dataId }: EditFormProps) {
           setContent(initialData.content || "");
           setCategory(initialData.category || "");
           setSubCategory(initialData.subCategory || "");
-          setTags(initialData.tags || []);
           setAttachments(initialData.attachedFiles || []);
           setStartDate(initialData.startDate || "");
           setEndDate(initialData.endDate || "");
@@ -194,7 +187,6 @@ export default function EditForm({ type, dataId }: EditFormProps) {
         content,
         category,
         subCategory,
-        tags,
         ...((type === "study" || type === "project") && {
           startDate,
           endDate,
@@ -538,14 +530,6 @@ export default function EditForm({ type, dataId }: EditFormProps) {
           </div>
         </>
       )}
-
-      {/* 태그 */}
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
-          태그
-        </label>
-        <TagInput tags={tags} setTags={setTags} />
-      </div>
 
       {/* 파일 업로드 */}
       {(type === "study" || type === "board" || type === "project") && (
