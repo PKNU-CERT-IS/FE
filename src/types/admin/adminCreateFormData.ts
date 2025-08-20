@@ -1,5 +1,6 @@
 import { AttachedFile } from "@/types/attachedFile";
 import { CategoryType, SubCategoryType } from "@/types/category";
+import { StatusType } from "@/types/study";
 
 /**
  * 스터디 생성 폼에서 사용하는 데이터 타입
@@ -12,6 +13,8 @@ export interface StudyCreateFormData {
   title: string;
   description: string;
   content: string;
+  semester: string;
+  status: StatusType;
   category: CategoryType;
   subCategory: SubCategoryType;
   attachments: AttachedFile[];
@@ -36,6 +39,8 @@ export interface ProjectCreateFormData {
   title: string;
   description: string;
   content: string;
+  semester: string;
+  status: StatusType;
   category: CategoryType;
   subCategory: SubCategoryType;
   attachments: AttachedFile[];

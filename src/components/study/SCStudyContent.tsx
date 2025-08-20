@@ -19,6 +19,7 @@ import PdfSVG from "/public/icons/pdf.svg";
 import Link from "next/link";
 import DefaultBadge from "@/components/ui/defaultBadge";
 import { getCategoryColor } from "@/utils/categoryColorUtils";
+import { formatFileSize } from "@/utils/attachedFileUtils";
 
 // 학습 자료 데이터를 가져오는 함수 (실제로는 DB에서 가져올 것)
 async function getStudyMaterials(): Promise<StudyMaterial[]> {
@@ -417,7 +418,9 @@ export default async function SCStudyContent({
                             <p className="text-sm font-medium text-gray-900">
                               {file.name}
                             </p>
-                            <p className="text-xs text-gray-500">{file.size}</p>
+                            <p className="text-xs text-gray-500">
+                              {formatFileSize(file.size)}
+                            </p>
                           </div>
                         </div>
                         <form action={downloadFile}>

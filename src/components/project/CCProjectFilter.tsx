@@ -10,6 +10,7 @@ import {
   STATUS_OPTIONS,
   SEMESTER_LABELS,
   STATUS_LABELS,
+  FilterKey,
 } from "@/types/project";
 import DefaultButton from "@/components/ui/defaultButton";
 import { cn } from "@/lib/utils";
@@ -46,7 +47,7 @@ export default function CCProjectFilter({
   const statusRef = useRef<HTMLDivElement>(null);
 
   const updateFilter = useCallback(
-    (key: string, value: string) => {
+    (key: FilterKey, value: string) => {
       const params = new URLSearchParams(searchParams.toString());
 
       if (value === "all" || value === "") {

@@ -15,6 +15,7 @@ import DownloadGraySVG from "/public/icons/download-gray.svg";
 import { downloadFile } from "@/actions/study/StudyDownloadFileServerAction";
 import CCAdminStudyPagination from "@/components/admin/study/CCAdminStudyPagination";
 import SCSearchResultNotFound from "@/components/ui/SCSearchResultNotFound";
+import { formatFileSize } from "@/utils/attachedFileUtils";
 import { CurrentFilters } from "@/types/study";
 
 export const studies: Study[] = [
@@ -24,6 +25,7 @@ export const studies: Study[] = [
     title: "OWASP Top 10 스터디",
     description: "최신 OWASP Top 10을 주차별로 읽고 실습합니다.",
     content: "상세 소개...",
+    semester: "2025-2",
     category: "CTF",
     subCategory: "AI",
     attachments: [
@@ -42,6 +44,7 @@ export const studies: Study[] = [
     endDate: "2025-11-30",
     maxParticipants: "12",
     author: "김보안",
+    status: "not_started",
   },
   {
     id: 2,
@@ -49,6 +52,7 @@ export const studies: Study[] = [
     title: "프론트엔드 성능 최적화 스터디",
     description: "렌더링 최적화/번들 분석 등 실무 중심",
     content: "상세 소개...",
+    semester: "2025-2",
     category: "CS",
     subCategory: "정수론",
     attachments: [
@@ -69,6 +73,7 @@ export const studies: Study[] = [
     author: "강찬희",
     currentParticipants: 5,
     progress: 70,
+    status: "in_progress",
   },
   {
     id: 3,
@@ -76,8 +81,9 @@ export const studies: Study[] = [
     title: "웹 최적화 스터디",
     description: "렌더링 최적화/번들 분석 등 실무 중심",
     content: "상세 소개...",
+    semester: "2025-2",
     category: "CS",
-    subCategory: "정수론",
+    subCategory: "선형대수학",
     attachments: [
       {
         id: "file_1_1",
@@ -96,6 +102,7 @@ export const studies: Study[] = [
     author: "강찬희",
     currentParticipants: 5,
     progress: 70,
+    status: "in_progress",
   },
 ];
 
@@ -121,24 +128,45 @@ export default async function SCStudyContentList({
       ? studies.filter((s) => !s.isPending)
       : studies;
 
-  const searchFiltered = currentSearch
-    ? viewFiltered.filter(
-        (item) =>
-          item.title?.toLowerCase().includes(currentSearch.toLowerCase()) ||
-          item.description
-            ?.toLowerCase()
-            .includes(currentSearch.toLowerCase()) ||
-          item.author?.toLowerCase().includes(currentSearch.toLowerCase())
-      )
-    : viewFiltered;
+  const filteredStudyMaterials = viewFiltered.filter((item) => {
+    const matchesSearch =
+      !currentSearch ||
+      item.title?.toLowerCase().includes(currentSearch.toLowerCase()) ||
+      item.description?.toLowerCase().includes(currentSearch.toLowerCase()) ||
+      item.author?.toLowerCase().includes(currentSearch.toLowerCase());
 
+    const matchesSemester =
+      currentFilters.semester === "all" ||
+      item.semester === currentFilters.semester;
+
+    const matchesCategory =
+      currentFilters.category === "all" ||
+      item.category === currentFilters.category;
+
+    const matchesSubCategory =
+      currentFilters.subCategory === "all" ||
+      item.subCategory === currentFilters.subCategory;
+
+    const matchesStatus =
+      currentFilters.status === "all" || item.status === currentFilters.status;
+
+    return (
+      matchesSearch &&
+      matchesSemester &&
+      matchesCategory &&
+      matchesSubCategory &&
+      matchesStatus
+    );
+  });
+
+  // 🔹 페이지네이션
   const ITEMS_PER_PAGE = 3;
-  const totalItems = searchFiltered.length;
+  const totalItems = filteredStudyMaterials.length;
   const totalPages = Math.max(1, Math.ceil(totalItems / ITEMS_PER_PAGE));
   const validPage = Math.min(currentPage, totalPages);
   const startIndex = (validPage - 1) * ITEMS_PER_PAGE;
   const endIndex = startIndex + ITEMS_PER_PAGE;
-  const paginatedContents = searchFiltered.slice(startIndex, endIndex);
+  const paginatedContents = filteredStudyMaterials.slice(startIndex, endIndex);
 
   const totalPending = studies.filter((s) => s.isPending).length;
   const totalProgress = studies.filter((s) => !s.isPending).length;
@@ -240,7 +268,9 @@ export default async function SCStudyContentList({
                             <p className="text-sm font-medium text-gray-900">
                               {file.name}
                             </p>
-                            <p className="text-xs text-gray-500">{file.size}</p>
+                            <p className="text-xs text-gray-500">
+                              {formatFileSize(file.size)}
+                            </p>
                           </div>
                         </div>
                         <form action={downloadFile}>

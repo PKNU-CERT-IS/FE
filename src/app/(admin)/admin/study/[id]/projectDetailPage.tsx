@@ -16,7 +16,7 @@ import MeetingMinutes from "@/components/study/CCMeetingMinutes";
 import EndRequestButton from "@/components/ui/endRequestButton";
 
 interface ProjectDetailPageProps {
-  params: Promise<{ id: string }>;
+  params: { id: string };
 }
 
 const getProjectById = (id: string): ProjectMaterial | undefined => {

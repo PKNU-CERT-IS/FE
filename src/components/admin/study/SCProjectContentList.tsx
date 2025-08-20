@@ -15,6 +15,8 @@ import DownloadGraySVG from "/public/icons/download-gray.svg";
 import { downloadFile } from "@/actions/study/StudyDownloadFileServerAction";
 import CCAdminStudyPagination from "@/components/admin/study/CCAdminStudyPagination";
 import SCSearchResultNotFound from "@/components/ui/SCSearchResultNotFound";
+import { formatFileSize } from "@/utils/attachedFileUtils";
+import { CurrentFilters } from "@/types/project";
 
 export const projects: Project[] = [
   // 승인 대기: 폼에서 제출된 필드만 존재
@@ -31,6 +33,8 @@ export const projects: Project[] = [
 
 ## 기술 스택
 - Next.js, TypeScript, TailwindCSS, Supabase`,
+    semester: "2025-2",
+    status: "not_started",
     category: "CS",
     subCategory: "논리회로",
     attachments: [
@@ -69,6 +73,8 @@ export const projects: Project[] = [
     content: `### 구성
 - 크롤러 → 검사기 → 리포터
 - 모듈형 규칙 엔진 설계`,
+    semester: "2025-2",
+    status: "in_progress",
     category: "CTF",
     subCategory: "포너블",
     attachments: [
@@ -106,6 +112,8 @@ export const projects: Project[] = [
     content: `### 구성
 - 크롤러 → 검사기 → 리포터
 - 모듈형 규칙 엔진 설계`,
+    semester: "2025-2",
+    status: "in_progress",
     category: "RED",
     subCategory: "모의해킹",
     attachments: [
@@ -143,6 +151,8 @@ export const projects: Project[] = [
     content: `### 구성
 - 크롤러 → 검사기 → 리포터
 - 모듈형 규칙 엔진 설계`,
+    semester: "2025-2",
+    status: "in_progress",
     category: "RED",
     subCategory: "취약점 연구",
     attachments: [
@@ -178,6 +188,7 @@ interface SCProjectContentListProps {
   currentView: SubTab;
   currentSearch?: string;
   currentPage?: number;
+  currentFilters: CurrentFilters;
 }
 
 export default function SCProjectContentList({
@@ -185,6 +196,7 @@ export default function SCProjectContentList({
   currentView,
   currentSearch = "",
   currentPage = 1,
+  currentFilters,
 }: SCProjectContentListProps) {
   const viewFiltered =
     currentView === "pending"
@@ -193,24 +205,47 @@ export default function SCProjectContentList({
       ? projects.filter((p) => !p.isPending)
       : projects;
 
-  const searchFiltered = currentSearch
-    ? viewFiltered.filter(
-        (item) =>
-          item.title?.toLowerCase().includes(currentSearch.toLowerCase()) ||
-          item.description
-            ?.toLowerCase()
-            .includes(currentSearch.toLowerCase()) ||
-          item.author?.toLowerCase().includes(currentSearch.toLowerCase())
-      )
-    : viewFiltered;
+  const filteredProjectMaterials = viewFiltered.filter((item) => {
+    const matchesSearch =
+      !currentSearch ||
+      item.title?.toLowerCase().includes(currentSearch.toLowerCase()) ||
+      item.description?.toLowerCase().includes(currentSearch.toLowerCase()) ||
+      item.author?.toLowerCase().includes(currentSearch.toLowerCase());
+
+    const matchesSemester =
+      currentFilters.semester === "all" ||
+      item.semester === currentFilters.semester;
+
+    const matchesCategory =
+      currentFilters.category === "all" ||
+      item.category === currentFilters.category;
+
+    const matchesSubCategory =
+      currentFilters.subCategory === "all" ||
+      item.subCategory === currentFilters.subCategory;
+
+    const matchesStatus =
+      currentFilters.status === "all" || item.status === currentFilters.status;
+
+    return (
+      matchesSearch &&
+      matchesSemester &&
+      matchesCategory &&
+      matchesSubCategory &&
+      matchesStatus
+    );
+  });
 
   const ITEMS_PER_PAGE = 2;
-  const totalItems = searchFiltered.length;
+  const totalItems = filteredProjectMaterials.length;
   const totalPages = Math.max(1, Math.ceil(totalItems / ITEMS_PER_PAGE));
   const validPage = Math.min(currentPage, totalPages);
   const startIndex = (validPage - 1) * ITEMS_PER_PAGE;
   const endIndex = startIndex + ITEMS_PER_PAGE;
-  const paginatedContents = searchFiltered.slice(startIndex, endIndex);
+  const paginatedContents = filteredProjectMaterials.slice(
+    startIndex,
+    endIndex
+  );
 
   const totalPending = projects.filter((p) => p.isPending).length;
   const totalProgress = projects.filter((p) => !p.isPending).length;
@@ -318,7 +353,9 @@ export default function SCProjectContentList({
                             <p className="text-sm font-medium text-gray-900">
                               {file.name}
                             </p>
-                            <p className="text-xs text-gray-500">{file.size}</p>
+                            <p className="text-xs text-gray-500">
+                              {formatFileSize(file.size)}
+                            </p>
                           </div>
                         </div>
                         <form action={downloadFile}>
@@ -453,7 +490,9 @@ export default function SCProjectContentList({
                             <p className="text-sm font-medium text-gray-900">
                               {file.name}
                             </p>
-                            <p className="text-xs text-gray-500">{file.size}</p>
+                            <p className="text-xs text-gray-500">
+                              {formatFileSize(file.size)}
+                            </p>
                           </div>
                         </div>
                         <form action={downloadFile}>

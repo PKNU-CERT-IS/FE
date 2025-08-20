@@ -12,8 +12,6 @@ interface SCMembersContentWrapperProps {
 export default async function SCMembersContentWrapper({
   currentSearch,
 }: SCMembersContentWrapperProps) {
-  const query = (currentSearch ?? "").trim();
-
   const sortKorean = (a: string, b: string) => a.localeCompare(b, "ko-KR");
   const sortedMembers = [...(members as AdminMemberDetailInfoType[])].sort(
     (a, b) => sortKorean(a.name, b.name)

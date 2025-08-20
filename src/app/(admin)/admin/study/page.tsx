@@ -1,6 +1,5 @@
 "server-only";
 
-import CCProjectSearchBar from "@/components/project/CCProjectSearchBar";
 import SCStudyContentList from "@/components/admin/study/SCStudyContentList";
 import SCProjectContentList from "@/components/admin/study/SCProjectContentList";
 import CCStudyTabBar from "@/components/admin/study/CCStudyTabBar";
@@ -10,6 +9,9 @@ import {
   MainTab,
   SubTab,
 } from "@/types/admin/adminStudyTab";
+import CCStudyFilter from "@/components/study/CCStudyFilter";
+import { parseSearchParams } from "@/utils/studyHelper";
+import { CurrentFilters } from "@/types/study";
 
 interface AdminStudyProps {
   searchParams: Promise<{
@@ -36,10 +38,11 @@ export default async function AdminStudyPage({
   const currentView: SubTab =
     viewParam && isValidSubTab(viewParam) ? viewParam : "pending";
 
+  const filters: CurrentFilters = parseSearchParams(resolvedSearchParams);
+
   return (
     <div>
-      {/* 서치바는 컴포넌트 하나로 만든 뒤 호출해서 사용하는 게 좋을 것 같아서 따로 브랜치 파서 통일시킬게요 */}
-      <CCProjectSearchBar currentSearch={currentSearch} />
+      <CCStudyFilter currentFilters={filters} isAdmin />
       <CCStudyTabBar currentTab={currentTab} currentView={currentView} />
 
       {currentTab === "study" && (
@@ -48,6 +51,7 @@ export default async function AdminStudyPage({
           currentView={currentView}
           currentSearch={currentSearch}
           currentPage={currentPage}
+          currentFilters={filters}
         />
       )}
 
@@ -57,6 +61,7 @@ export default async function AdminStudyPage({
           currentView={currentView}
           currentSearch={currentSearch}
           currentPage={currentPage}
+          currentFilters={filters}
         />
       )}
     </div>

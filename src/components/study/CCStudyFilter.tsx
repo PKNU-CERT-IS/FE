@@ -21,13 +21,21 @@ import {
   SUBCATEGORY_OPTIONS,
 } from "@/types/category";
 
-export default function CCStudyFilter({ currentFilters }: StudyFilterProps) {
+interface CCStudyFilterProps extends StudyFilterProps {
+  isAdmin?: boolean;
+}
+
+export default function CCStudyFilter({
+  currentFilters,
+  isAdmin = false,
+}: CCStudyFilterProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [isPending, startTransition] = useTransition();
 
   // 검색 디바운스를 위한 ref
   const searchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const searchInputRef = useRef<HTMLInputElement>(null);
 
   // 로컬 상태
   const [showSemesterDropdown, setShowSemesterDropdown] =
@@ -37,6 +45,15 @@ export default function CCStudyFilter({ currentFilters }: StudyFilterProps) {
   const [showSubCategoryDropdown, setShowSubCategoryDropdown] =
     useState<boolean>(false);
   const [showStatusDropdown, setShowStatusDropdown] = useState<boolean>(false);
+
+  // 검색어 로컬 상태 추가
+  const [searchValue, setSearchValue] = useState<string>(
+    currentFilters.search || ""
+  );
+  // currentFilters.search가 변경될 때 로컬 상태 동기화
+  useEffect(() => {
+    setSearchValue(currentFilters.search || "");
+  }, [currentFilters.search]);
 
   const semesterRef = useRef<HTMLDivElement>(null);
   const categoryRef = useRef<HTMLDivElement>(null);
@@ -57,17 +74,23 @@ export default function CCStudyFilter({ currentFilters }: StudyFilterProps) {
       params.delete("page");
 
       startTransition(() => {
-        router.push(`/study?${params.toString()}`);
+        if (isAdmin) {
+          const tab = params.get("tab") || "study";
+          params.set("tab", tab);
+          router.push(`/admin/study?${params.toString()}`);
+        } else {
+          router.push(`/study?${params.toString()}`);
+        }
       });
     },
-    [searchParams, router]
+    [searchParams, router, isAdmin]
   );
 
   // 검색 디바운스 처리 (개선된 버전)
   const handleSearchChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>): void => {
       const searchTerm: string = e.target.value;
-
+      setSearchValue(searchTerm); // 로컬 상태 업데이트
       // 이전 타이머 클리어
       if (searchTimeoutRef.current) {
         clearTimeout(searchTimeoutRef.current);
@@ -80,6 +103,14 @@ export default function CCStudyFilter({ currentFilters }: StudyFilterProps) {
     },
     [updateFilter]
   );
+  // 검색어 초기화 함수
+  const handleClearSearch = useCallback(() => {
+    setSearchValue(""); // 로컬 상태 초기화
+    if (searchInputRef.current) {
+      searchInputRef.current.value = ""; // input value 직접 초기화
+    }
+    updateFilter("search", "");
+  }, [updateFilter]);
 
   // 드롭다운 닫기 함수
   const closeAllDropdowns = useCallback(() => {
@@ -115,8 +146,13 @@ export default function CCStudyFilter({ currentFilters }: StudyFilterProps) {
         <div className="flex-1 relative">
           <SearchSVG className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
           <DefaultSearchBar
-            placeholder="스터디 제목, 설명, 작성자로 검색하세요..."
-            defaultValue={currentFilters.search}
+            ref={searchInputRef}
+            placeholder={
+              isAdmin
+                ? "스터디/프로젝트 제목, 설명, 작성자로 검색하세요..."
+                : "스터디 제목, 설명, 작성자로 검색하세요..."
+            }
+            value={searchValue}
             onChange={handleSearchChange}
             className="pl-10 w-full"
           />
@@ -320,7 +356,7 @@ export default function CCStudyFilter({ currentFilters }: StudyFilterProps) {
             검색: {currentFilters.search}
             <button
               type="button"
-              onClick={() => updateFilter("search", "")}
+              onClick={handleClearSearch}
               className="ml-2 inline-flex items-center justify-center w-4 h-4 rounded-full hover:bg-purple-200"
             >
               <X className="w-3" />
