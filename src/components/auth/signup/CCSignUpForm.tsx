@@ -51,7 +51,7 @@ export default function CCSignUpForm() {
   const selectedGenderLabel = signupFormData.gender || "성별을 선택해주세요";
 
   return (
-    <form action={signupAction} className="space-y-4">
+    <form action={signupAction} className="space-y-4 flex flex-col gap-2">
       {/* hidden inputs for server action */}
       <input type="hidden" name="grade" value={signupFormData.grade} />
       <input type="hidden" name="gender" value={signupFormData.gender} />
@@ -60,7 +60,7 @@ export default function CCSignUpForm() {
         <label htmlFor="name" className="font-medium text-gray-700">
           이름
         </label>
-        <div className="relative">
+        <div className="relative mt-1">
           <ProfileSVG className="absolute left-3 top-3 h-4 w-4 stroke-gray-400" />
           <input
             id="name"
@@ -68,7 +68,7 @@ export default function CCSignUpForm() {
             type="text"
             value={signupFormData.name}
             onChange={handleInputChange}
-            className={`h-10 pl-10 w-full rounded-md border border-gray-300 text-gray-900 bg-white px-3 py-2 text-sm placeholder:text-gray-400 focus:border-cert-red focus:outline-none ${
+            className={`input-default pl-10 pl-10 ${
               errors.name ? "border-red-500" : ""
             }`}
             placeholder="홍길동"
@@ -83,7 +83,7 @@ export default function CCSignUpForm() {
         <label htmlFor="id" className="font-medium text-gray-700">
           아이디
         </label>
-        <div className="relative">
+        <div className="relative mt-1">
           <ProfileSVG className="absolute left-3 top-3 h-4 w-4 stroke-gray-400" />
           <input
             id="id"
@@ -91,7 +91,7 @@ export default function CCSignUpForm() {
             type="text"
             value={signupFormData.id}
             onChange={handleInputChange}
-            className={`h-10 pl-10 w-full rounded-md border border-gray-300 text-gray-900 bg-white px-3 py-2 text-sm placeholder:text-gray-400 focus:border-cert-red focus:outline-none ${
+            className={`input-default pl-10 ${
               errors.id ? "border-red-500" : ""
             }`}
             placeholder="example"
@@ -106,7 +106,7 @@ export default function CCSignUpForm() {
         <label htmlFor="password" className="font-medium text-gray-700">
           비밀번호
         </label>
-        <div className="relative">
+        <div className="relative mt-1">
           <LockSVG className="absolute left-3 top-3 h-4 w-4 stroke-gray-400" />
           <input
             id="password"
@@ -114,7 +114,7 @@ export default function CCSignUpForm() {
             type={showPassword ? "text" : "password"}
             value={signupFormData.password}
             onChange={handleInputChange}
-            className={`h-10 pl-10 pr-10 w-full rounded-md border border-gray-300 text-gray-900 bg-white px-3 py-2 text-sm placeholder:text-gray-400 focus:border-cert-red focus:outline-none ${
+            className={`input-default pl-10 ${
               errors.password ? "border-red-500" : ""
             }`}
             placeholder="최소 8자 이상"
@@ -142,7 +142,7 @@ export default function CCSignUpForm() {
         <label htmlFor="confirmPassword" className="font-medium text-gray-700">
           비밀번호 확인
         </label>
-        <div className="relative">
+        <div className="relative mt-1">
           <LockSVG className="absolute left-3 top-3 h-4 w-4 stroke-gray-400" />
           <input
             id="confirmPassword"
@@ -150,7 +150,7 @@ export default function CCSignUpForm() {
             type={showConfirmPassword ? "text" : "password"}
             value={signupFormData.confirmPassword}
             onChange={handleInputChange}
-            className={`h-10 pl-10 pr-10 w-full rounded-md border border-gray-300 text-gray-900 bg-white px-3 py-2 text-sm placeholder:text-gray-400 focus:border-cert-red focus:outline-none ${
+            className={`input-default pl-10 ${
               errors.confirmPassword || !isSamePassword ? "border-red-500" : ""
             }`}
             placeholder="비밀번호를 다시 입력하세요"
@@ -181,7 +181,7 @@ export default function CCSignUpForm() {
         <label htmlFor="studentId" className="font-medium text-gray-700">
           학번
         </label>
-        <div className="relative">
+        <div className="relative mt-1">
           <IdCard className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
           <input
             id="studentId"
@@ -189,7 +189,7 @@ export default function CCSignUpForm() {
             type="text"
             value={signupFormData.studentId}
             onChange={handleInputChange}
-            className={`h-10 pl-10 w-full rounded-md border border-gray-300 text-gray-900 bg-white px-3 py-2 text-sm placeholder:text-gray-400 focus:border-cert-red focus:outline-none ${
+            className={`input-default pl-10 ${
               errors.studentId ? "border-red-500" : ""
             }`}
             placeholder="2024123456"
@@ -202,15 +202,15 @@ export default function CCSignUpForm() {
       </div>
 
       {/* 학년, 성별 (한 줄에 나란히) */}
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-2 gap-4 ">
         {/* 학년 */}
         <div className="space-y-2">
           <label className="font-medium text-gray-700">학년</label>
-          <div className="relative" ref={gradeDropdownRef}>
+          <div className="relative mt-1" ref={gradeDropdownRef}>
             <button
               type="button"
               onClick={() => setGradeDropdownOpen(!gradeDropdownOpen)}
-              className={`h-10 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-left flex items-center justify-between focus:border-cert-red focus:outline-none ${
+              className={`input-default  px-3 py-2 text-sm text-left flex items-center justify-between ${
                 errors.grade ? "border-red-500" : ""
               }`}
             >
@@ -253,11 +253,11 @@ export default function CCSignUpForm() {
         {/* 성별 */}
         <div className="space-y-2">
           <label className="font-medium text-gray-700">성별</label>
-          <div className="relative" ref={genderDropdownRef}>
+          <div className="relative mt-1" ref={genderDropdownRef}>
             <button
               type="button"
               onClick={() => setGenderDropdownOpen(!genderDropdownOpen)}
-              className={`h-10 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-left flex items-center justify-between focus:border-cert-red focus:outline-none ${
+              className={`input-default px-3 py-2 text-sm text-left flex items-center justify-between ${
                 errors.gender ? "border-red-500" : ""
               }`}
             >
@@ -303,7 +303,7 @@ export default function CCSignUpForm() {
         <label htmlFor="birthDate" className="font-medium text-gray-700">
           생년월일
         </label>
-        <div className="relative">
+        <div className="relative mt-1">
           <Calendar className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
           <input
             id="birthDate"
@@ -311,7 +311,7 @@ export default function CCSignUpForm() {
             type="date"
             value={signupFormData.birthDate}
             onChange={handleInputChange}
-            className={`h-10 pl-10 w-full rounded-md border border-gray-300 text-gray-900 bg-white px-3 py-2 text-sm focus:border-cert-red focus:outline-none ${
+            className={`h-10 pl-10  w-full rounded-md border border-gray-300 text-gray-900 bg-white px-3 py-2 text-sm focus:border-cert-red focus:outline-none ${
               errors.birthDate ? "border-red-500" : ""
             }`}
             required
@@ -327,7 +327,7 @@ export default function CCSignUpForm() {
         <label htmlFor="phone" className="font-medium text-gray-700">
           전화번호
         </label>
-        <div className="relative">
+        <div className="relative mt-1">
           <Phone className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
           <input
             id="phone"
@@ -335,7 +335,7 @@ export default function CCSignUpForm() {
             type="tel"
             value={signupFormData.phone}
             onChange={handleInputChange}
-            className={`h-10 pl-10 w-full rounded-md border border-gray-300 text-gray-900 bg-white px-3 py-2 text-sm placeholder:text-gray-400 focus:border-cert-red focus:outline-none ${
+            className={`input-default pl-10 ${
               errors.phone ? "border-red-500" : ""
             }`}
             placeholder="010-1234-5678"
@@ -350,7 +350,7 @@ export default function CCSignUpForm() {
         <label htmlFor="email" className="font-medium text-gray-700">
           이메일
         </label>
-        <div className="relative">
+        <div className="relative mt-1">
           <Mail className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
           <input
             id="email"
@@ -358,7 +358,7 @@ export default function CCSignUpForm() {
             type="email"
             value={signupFormData.email}
             onChange={handleInputChange}
-            className={`h-10 pl-10 w-full rounded-md border border-gray-300 text-gray-900 bg-white px-3 py-2 text-sm placeholder:text-gray-400 focus:border-cert-red focus:outline-none ${
+            className={`input-default pl-10 ${
               errors.email ? "border-red-500" : ""
             }`}
             placeholder="example@gmail.com"
@@ -373,7 +373,7 @@ export default function CCSignUpForm() {
         <label htmlFor="major" className="font-medium text-gray-700">
           전공
         </label>
-        <div className="relative">
+        <div className="relative mt-1">
           <GraduationCap className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
           <input
             id="major"
@@ -381,7 +381,7 @@ export default function CCSignUpForm() {
             type="text"
             value={signupFormData.major}
             onChange={handleInputChange}
-            className={`h-10 pl-10 w-full rounded-md border border-gray-300 text-gray-900 bg-white px-3 py-2 text-sm placeholder:text-gray-400 focus:border-cert-red focus:outline-none ${
+            className={`input-default pl-10 ${
               errors.major ? "border-red-500" : ""
             }`}
             placeholder="예: 컴퓨터공학과"
