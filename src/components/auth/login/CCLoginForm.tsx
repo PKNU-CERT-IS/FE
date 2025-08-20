@@ -31,7 +31,7 @@ export default function CCLoginInput() {
             setLoginFormData({ ...loginFormData, id: e.target.value })
           }
           required
-          className="text-sm text-gray-700 h-11 border-gray-300 w-full rounded-md border bg-background px-3 py-2"
+          className="h-11 w-full rounded-md border  border-gray-300 text-gray-900 bg-white px-3 py-2 text-sm placeholder:text-gray-400  focus:border-cert-red focus:outline-none"
         />
       </div>
 
@@ -53,7 +53,7 @@ export default function CCLoginInput() {
               setLoginFormData({ ...loginFormData, password: e.target.value })
             }
             placeholder="비밀번호를 입력하세요"
-            className="text-sm text-gray-700 h-11 pr-10 border-gray-300 flex w-full rounded-md border bg-background px-3 py-2 placeholder:text-muted-foreground"
+            className="h-11 w-full rounded-md border  border-gray-300 text-gray-900 bg-white px-3 py-2 text-sm placeholder:text-gray-400  focus:border-cert-red focus:outline-none"
             required
           />
           <button

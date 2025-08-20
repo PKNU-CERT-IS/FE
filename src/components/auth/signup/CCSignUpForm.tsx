@@ -44,7 +44,7 @@ export default function CCSignUpForm() {
             type="text"
             value={signupFormData.name}
             onChange={handleInputChange}
-            className={`text-sm text-gray-700 pl-10 flex h-10 w-full rounded-md border border-gray-300 bg-background px-3 py-2 ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 ${
+            className={`h-10 pl-10 w-full rounded-md border  border-gray-300 text-gray-900 bg-white px-3 py-2 text-sm placeholder:text-gray-400  focus:border-cert-red focus:outline-none ${
               errors.name ? "border-red-500 " : ""
             }`}
             placeholder="홍길동"
@@ -66,7 +66,7 @@ export default function CCSignUpForm() {
             type="number"
             value={signupFormData.studentId}
             onChange={handleInputChange}
-            className={`text-sm text-gray-700 pl-10 flex h-10 w-full rounded-md border border-gray-300 bg-background px-3 py-2 ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 ${
+            className={`h-10 pl-10 w-full rounded-md border  border-gray-300 text-gray-900 bg-white px-3 py-2 text-sm placeholder:text-gray-400  focus:border-cert-red focus:outline-none ${
               errors.studentId ? "border-red-500" : ""
             }`}
             placeholder="2024123456"
@@ -89,7 +89,7 @@ export default function CCSignUpForm() {
             name="id"
             value={signupFormData.id}
             onChange={handleInputChange}
-            className={`text-sm text-gray-700 pl-10 flex h-10 w-full rounded-md border border-gray-300 bg-background px-3 py-2 ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 ${
+            className={`h-10 pl-10 w-full rounded-md border  border-gray-300 text-gray-900 bg-white px-3 py-2 text-sm placeholder:text-gray-400  focus:border-cert-red focus:outline-none ${
               errors.email ? "border-red-500" : ""
             }`}
             placeholder="example"
@@ -111,7 +111,7 @@ export default function CCSignUpForm() {
             type={showPassword ? "text" : "password"}
             value={signupFormData.password}
             onChange={handleInputChange}
-            className={`text-sm text-gray-700 pl-10 flex h-10 w-full rounded-md border border-gray-300 bg-background px-3 py-2 ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 ${
+            className={`h-10 pl-10 w-full rounded-md border  border-gray-300 text-gray-900 bg-white px-3 py-2 text-sm placeholder:text-gray-400  focus:border-cert-red focus:outline-none ${
               errors.password ? "border-red-500" : ""
             }`}
             placeholder="최소 8자 이상"
@@ -146,7 +146,7 @@ export default function CCSignUpForm() {
             type={showConfirmPassword ? "text" : "password"}
             value={signupFormData.confirmPassword}
             onChange={handleInputChange}
-            className={`text-sm text-gray-700 pl-10 flex h-10 w-full rounded-md border border-gray-300 bg-background px-3 py-2 ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 ${
+            className={`h-10 pl-10 w-full rounded-md border  border-gray-300 text-gray-900 bg-white px-3 py-2 text-sm placeholder:text-gray-400  focus:border-cert-red focus:outline-none ${
               errors.confirmPassword || !isSamePassword ? "border-red-500" : ""
             }`}
             placeholder="비밀번호를 다시 입력하세요"
