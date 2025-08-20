@@ -290,7 +290,7 @@ export default async function SCStudyContentList({
                         </form>
                       </div>
                     ))}
-                    <div className="flex flex-row gap-2 w-full sm:w-[20rem] h-full justify-end items-end self-end justify-self-end">
+                    <div className="flex flex-row gap-2 w-full sm:w-[20rem] h-full justify-end items-end self-end justify-self-en">
                       <RequestActionButtons
                         id={study.id}
                         approveAction={approveRequest}

@@ -36,7 +36,7 @@ setTimeout(() => {
     views: 1250,
     likes: 45,
     featured: true,
-    published: true,
+    published: false,
   },
   {
     id: 2,
