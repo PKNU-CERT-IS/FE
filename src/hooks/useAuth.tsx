@@ -1,6 +1,6 @@
 import { LoginFormData, SignupFormData, GenderType } from "@/types/login";
 import { MembersGradeCategoryType } from "@/types/members";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 
 export const useAuth = () => {
   const [loginFormData, setLoginFormData] = useState<LoginFormData>({
@@ -52,6 +52,31 @@ export const useAuth = () => {
     setGenderDropdownOpen(false);
   };
 
+  // 드롭 다운 ref
+  const gradeDropdownRef = useRef<HTMLDivElement>(null);
+  const genderDropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        gradeDropdownRef.current &&
+        !gradeDropdownRef.current.contains(event.target as Node)
+      ) {
+        setGradeDropdownOpen(false);
+      }
+      if (
+        genderDropdownRef.current &&
+        !genderDropdownRef.current.contains(event.target as Node)
+      ) {
+        setGenderDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return {
     loginFormData,
     setLoginFormData,
@@ -69,5 +94,7 @@ export const useAuth = () => {
     updateSignupField,
     selectGrade,
     selectGender,
+    gradeDropdownRef,
+    genderDropdownRef,
   };
 };

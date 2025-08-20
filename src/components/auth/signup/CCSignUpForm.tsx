@@ -35,6 +35,8 @@ export default function CCSignUpForm() {
     updateSignupField,
     selectGrade,
     selectGender,
+    gradeDropdownRef,
+    genderDropdownRef,
   } = useAuth();
 
   const isSamePassword =
@@ -204,7 +206,7 @@ export default function CCSignUpForm() {
         {/* 학년 */}
         <div className="space-y-2">
           <label className="font-medium text-gray-700">학년</label>
-          <div className="relative">
+          <div className="relative" ref={gradeDropdownRef}>
             <button
               type="button"
               onClick={() => setGradeDropdownOpen(!gradeDropdownOpen)}
@@ -251,7 +253,7 @@ export default function CCSignUpForm() {
         {/* 성별 */}
         <div className="space-y-2">
           <label className="font-medium text-gray-700">성별</label>
-          <div className="relative">
+          <div className="relative" ref={genderDropdownRef}>
             <button
               type="button"
               onClick={() => setGenderDropdownOpen(!genderDropdownOpen)}
