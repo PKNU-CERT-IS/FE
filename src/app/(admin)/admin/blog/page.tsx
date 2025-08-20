@@ -10,6 +10,7 @@ import { blogTabCategoryType } from "@/types/admin/adminBlog";
 import { mockBlogPosts } from "@/mocks/blogData";
 import { isValidCategory } from "@/utils/blogUtils";
 import { isValidTab } from "@/utils/adminBlogUtils";
+import SCSearchResultNotFound from "@/components/ui/SCSearchResultNotFound";
 
 interface AdminBlogProps {
   searchParams: Promise<{
@@ -82,8 +83,13 @@ export default async function AdminBlogPage({ searchParams }: AdminBlogProps) {
           <CCBlogTabBar />
         </div>
 
-        {/* 포스트 리스트 */}
-        <SCBlogContentList paginatedContents={paginatedContents} />
+        {paginatedContents.length === 0 ? (
+          <div className="flex items-center justify-center max-h-screen w-full">
+            <SCSearchResultNotFound mode="adminBlog" />
+          </div>
+        ) : (
+          <SCBlogContentList paginatedContents={paginatedContents} />
+        )}
 
         {/* 페이지네이션 */}
         {totalItems > 0 && (

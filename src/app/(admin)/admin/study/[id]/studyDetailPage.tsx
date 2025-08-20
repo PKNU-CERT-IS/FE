@@ -9,12 +9,13 @@ import {
 } from "@/mocks/mockStudyDetailData";
 import BackToListButton from "@/components/detail/SCBackToListButton";
 import KebabMenu from "@/components/detail/CCKebabMenu";
-// import CCShareButton from "@/components/detail/CCShareButton";
 import MeetingMinutes from "@/components/study/CCMeetingMinutes";
 import DownloadButton from "@/components/detail/SCDownloadButton";
 import { formatFileSize } from "@/utils/attachedFileUtils";
 import { getFileIcon } from "@/utils/attachedFileUtils";
 import { calculateDDay, getStatusColor } from "@/utils/studyHelper";
+import { STATUS_LABELS } from "@/types/study";
+import EndRequestButton from "@/components/ui/endRequestButton";
 
 interface StudyDetailPageProps {
   params: { id: string };
@@ -82,7 +83,7 @@ export default async function StudyDetailPage({
                   </h1>
                   <div className="flex items-center gap-2">
                     <DefaultBadge className={getStatusColor(studyData.status)}>
-                      {studyData.status}
+                      {STATUS_LABELS[studyData.status]}
                     </DefaultBadge>
                     {dDay !== null && (
                       <DefaultBadge
@@ -172,6 +173,17 @@ export default async function StudyDetailPage({
                     </div>
                   </div>
                 )}
+
+              <div className="flex justify-between p-1  pt-6 border-t border-gray-300">
+                <div className="flex flex-wrap gap-2 justify-center items-center">
+                  <DefaultBadge className="bg-gray-100 h-6 border border-gray-200 text-gray-700">
+                    {studyData.category}
+                  </DefaultBadge>
+                  <DefaultBadge className="h-6 bg-gray-100 border border-gray-200 text-gray-700">
+                    {studyData.subCategory}
+                  </DefaultBadge>
+                </div>
+              </div>
             </div>
           </div>
           <MeetingMinutes
@@ -259,6 +271,8 @@ export default async function StudyDetailPage({
               </div>
             </div>
           </div>
+          {/* 종료 모달 */}
+          <EndRequestButton id={studyData.id} />
         </div>
       </div>
     </div>

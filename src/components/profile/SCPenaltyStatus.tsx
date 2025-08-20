@@ -8,7 +8,7 @@ export default function SCPenaltyStatus() {
 
   return (
     <div className="mt-7">
-      <div className="card-list text-card-foreground text-center group p-6 cursor-auto">
+      <div className="card-list text-card-foreground text-center group p-6 cursor-default">
         <h3 className="text-xl font-semibold mb-6 text-gray-900 flex items-center gap-2 ">
           <WarningSVG className="w-5 h-5 text-cert-red" />
           벌점
@@ -31,7 +31,7 @@ export default function SCPenaltyStatus() {
           ].map((stat, index) => (
             <div
               key={index}
-              className="card-list text-card-foreground text-center group cursor-auto"
+              className="card-list text-card-foreground text-center group cursor-default"
             >
               <div className="flex flex-col space-y-1.5 p-4">
                 <div className="leading-none tracking-tight text-2xl font-bold text-cert-red transition-transform duration-300">

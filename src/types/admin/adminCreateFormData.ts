@@ -1,4 +1,5 @@
 import { AttachedFile } from "@/types/attachedFile";
+import { CategoryType, SubCategoryType } from "@/types/category";
 
 /**
  * 스터디 생성 폼에서 사용하는 데이터 타입
@@ -11,7 +12,8 @@ export interface StudyCreateFormData {
   title: string;
   description: string;
   content: string;
-  category: string;
+  category: CategoryType;
+  subCategory: SubCategoryType;
   attachments: AttachedFile[];
   startDate: string; // YYYY-MM-DD
   endDate: string; // YYYY-MM-DD
@@ -34,7 +36,8 @@ export interface ProjectCreateFormData {
   title: string;
   description: string;
   content: string;
-  category: string;
+  category: CategoryType;
+  subCategory: SubCategoryType;
   attachments: AttachedFile[];
   startDate: string;
   endDate: string;

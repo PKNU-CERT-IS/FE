@@ -34,7 +34,7 @@ export default function CCPublishedCheckbox({
         type="checkbox"
         checked={isPublished}
         onChange={handleTogglePublic}
-        className="rounded z-20"
+        className="rounded z-10"
       />
       <span className="text-sm">외부 공개</span>
     </label>

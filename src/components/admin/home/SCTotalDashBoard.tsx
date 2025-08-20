@@ -30,7 +30,12 @@ export default function SCTotalDashBoard() {
         </div>
       </Link>
 
-      <Link href={"/admin/study"}>
+      <Link
+        href={{
+          pathname: "/admin/study",
+          query: { tab: "study", view: "list" },
+        }}
+      >
         <div className="text-card-foreground card-list">
           <div className="p-6 flex flex-row items-center justify-between space-y-0 pb-2">
             <div className="text-sm font-medium text-gray-600 leading-none tracking-tight">
@@ -50,7 +55,12 @@ export default function SCTotalDashBoard() {
         </div>
       </Link>
 
-      <Link href={"/admin/project"}>
+      <Link
+        href={{
+          pathname: "/admin/study",
+          query: { tab: "project", view: "list" },
+        }}
+      >
         <div className="text-card-foreground card-list">
           <div className="p-6 flex flex-row items-center justify-between space-y-0 pb-2">
             <div className="text-sm font-medium text-gray-600 leading-none tracking-tight">
@@ -82,7 +92,7 @@ export default function SCTotalDashBoard() {
           </div>
           <div className="p-6 pt-0">
             <div className="text-2xl font-semibold text-cert-dark-red">3명</div>
-            <p className="text-sm text-gray-600 mt-2">벌점 2점 이상 회원</p>
+            <p className="text-sm text-gray-600 mt-2">벌점 4점 이상 회원</p>
           </div>
         </div>
       </Link>

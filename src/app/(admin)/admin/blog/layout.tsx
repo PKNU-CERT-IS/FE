@@ -17,7 +17,7 @@ export default function AdminBlogLayout({
       <PageLayout
         title={"Blog"}
         description={"스터디와 프로젝트 결과물을 관리하세요."}
-        icon={<ChatLargeSVG className="stroke-cert-dark-red w-8 h-8" />}
+        icon={<ChatLargeSVG className="stroke-cert-dark-red" />}
       >
         {children}
       </PageLayout>

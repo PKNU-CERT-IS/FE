@@ -83,7 +83,7 @@ export default async function SCStudyList({ searchParams }: SCStudyListProps) {
                       <div className="flex items-center gap-4 mt-2 text-sm text-gray-600 transition-colors duration-300">
                         <span>{material.startDate}</span>
                         <DefaultBadge
-                          className={`border-gray-200 text-gray-600 cursor-default
+                          className={`border-gray-200 text-gray-600 cursor-auto
                           ${getStudyCategoryColor(
                             material.tab as StudyTabType
                           )}`}

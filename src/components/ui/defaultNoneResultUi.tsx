@@ -1,3 +1,4 @@
+"server-only";
 interface DefaultNoneResultUiProps {
   icon: React.ReactNode;
   title: string;

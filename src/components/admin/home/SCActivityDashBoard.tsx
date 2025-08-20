@@ -28,7 +28,12 @@ const activityDashboardData: ActivityDashboardData = {
 export default function SCActivityDashBoard() {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-      <Link href={"/admin/study"}>
+      <Link
+        href={{
+          pathname: "/admin/study",
+          query: { tab: "study", view: "list" },
+        }}
+      >
         <div className="card-list text-card-foreground">
           <div className="pb-4 flex flex-col space-y-1.5 p-6">
             <div className="text-lg font-medium leading-none tracking-tight text-gray-600">
@@ -64,7 +69,12 @@ export default function SCActivityDashBoard() {
         </div>
       </Link>
 
-      <Link href={"/admin/project"}>
+      <Link
+        href={{
+          pathname: "/admin/study",
+          query: { tab: "project", view: "list" },
+        }}
+      >
         <div className="card-list text-card-foreground">
           <div className="pb-4 flex flex-col space-y-1.5 p-6">
             <div className="text-lg font-medium leading-none tracking-tight text-gray-600">

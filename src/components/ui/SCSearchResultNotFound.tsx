@@ -7,7 +7,17 @@ interface SCSearchResultNotFoundProps {
   description?: string;
   icon?: React.ReactNode;
   showResetButton?: boolean;
-  mode?: "study" | "project" | "blog" | "board";
+  mode?:
+    | "board"
+    | "study"
+    | "project"
+    | "blog"
+    | "members"
+    | "adminBoard"
+    | "adminStudy"
+    | "adminProject"
+    | "adminBlog"
+    | "adminMembers";
 }
 
 export default async function SCSearchResultNotFound({
@@ -36,10 +46,16 @@ export default async function SCSearchResultNotFound({
 
   // mode -> pathname 매핑
   const pathByMode = {
+    board: "/board",
     study: "/study",
     project: "/project",
     blog: "/blog",
-    board: "/board",
+    members: "/members",
+    adminBoard: "/admin/board",
+    adminStudy: "/admin/study?tab=study",
+    adminProject: "/admin/study?tab=project",
+    adminBlog: "/admin/blog",
+    adminMembers: "/admin/members",
   } as const;
 
   // ✅ bind로 pathname을 고정한 서버 액션 생성

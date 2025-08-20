@@ -163,7 +163,7 @@ export default function CCProjectFilter({
               </span>
               <ChevronDown
                 className={`h-4 w-4 transition-transform duration-300 text-gray-400 ${
-                  showSemesterDropdown ? "rotate-180" : ""
+                  showCategoryDropdown ? "rotate-180" : ""
                 }`}
               />
             </DefaultButton>
