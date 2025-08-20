@@ -1,12 +1,10 @@
 // utils/projectUtils.ts
+import { CategoryType, SubCategoryType } from "@/types/category";
 import {
   ProjectMaterial,
-  ProjectCategoryType,
   CurrentFilters,
   SemesterType,
-  TechniqueType,
   StatusType,
-  PROJECT_CATEGORIES,
 } from "@/types/project";
 
 /**
@@ -14,27 +12,18 @@ import {
  */
 export function parseSearchParams(searchParams: {
   search?: string;
-  category?: string;
+
   semester?: string;
-  technique?: string;
+  category?: string;
+  subCategory?: string;
   status?: string;
   page?: string;
 }): CurrentFilters {
-  // 카테고리 유효성 검증
-  const isValidCategory = (
-    category: string
-  ): category is ProjectCategoryType => {
-    return PROJECT_CATEGORIES.includes(category as ProjectCategoryType);
-  };
-
   return {
     search: searchParams.search || "",
-    category:
-      searchParams.category && isValidCategory(searchParams.category)
-        ? searchParams.category
-        : "전체",
     semester: (searchParams.semester as SemesterType) || "all",
-    technique: (searchParams.technique as TechniqueType) || "all",
+    category: (searchParams.category as CategoryType) || "all",
+    subCategory: (searchParams.subCategory as SubCategoryType) || "all",
     status: (searchParams.status as StatusType) || "all",
     page: parseInt(searchParams.page || "1", 10),
   };
@@ -46,22 +35,18 @@ export function parseSearchParams(searchParams: {
 export function filterProjectData(
   projects: ProjectMaterial[],
   searchTerm: string,
-  category: ProjectCategoryType
+  category: CategoryType
 ): ProjectMaterial[] {
   return projects.filter((project) => {
     // 카테고리 필터링
-    const categoryMatch = category === "전체" || project.category === category;
+    const categoryMatch = category === "all" || project.category === category;
 
     // 검색어 필터링 (제목, 설명, 작성자, 태그에서 검색)
     const searchMatch =
       searchTerm === "" ||
       project.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       project.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      project.author.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      project.customTags.some((tag) =>
-        tag.name.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-
+      project.author.toLowerCase().includes(searchTerm.toLowerCase());
     return categoryMatch && searchMatch;
   });
 }
@@ -98,29 +83,13 @@ export function paginateProjects(
 export function getStatusColor(status: StatusType): string {
   switch (status) {
     case "not_started":
-      return "bg-gray-100/80 text-gray-800";
+      return "bg-gray-50 text-gray-600 border-gray-200";
     case "in_progress":
-      return "bg-blue-100/80 text-blue-800";
+      return "bg-blue-50 text-blue-600 border-blue-200";
     case "completed":
-      return "bg-green-100/80 text-green-800";
+      return "bg-green-50 text-green-600 border-green-200";
     default:
-      return "bg-gray-100/80 text-gray-800";
-  }
-}
-
-/**
- * 프로젝트 상태에 따른 배지 색상을 반환하는 함수 (기존 함수명 호환성)
- */
-export function getStatusBadgeColor(status: string): string {
-  switch (status) {
-    case "not_started":
-      return "bg-gray-100 text-gray-800";
-    case "in_progress":
-      return "bg-blue-100 text-blue-800";
-    case "completed":
-      return "bg-green-100 text-green-800";
-    default:
-      return "bg-gray-100 text-gray-800";
+      return "bg-gray-50 text-gray-600 border-gray-200";
   }
 }
 

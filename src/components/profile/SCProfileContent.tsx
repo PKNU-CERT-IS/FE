@@ -50,6 +50,7 @@ export default async function SCProfileContent({
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const endIndex = startIndex + ITEMS_PER_PAGE;
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const paginatedStudyContents =
     selectedStatus === "진행중"
       ? filteredStudyData // 스터디+프로젝트 최대 2개
@@ -61,12 +62,7 @@ export default async function SCProfileContent({
     <div className="lg:col-span-2">
       <CCTabBar currentTab={currentTab} />
 
-      {isStudyTab && (
-        <SCStudyList
-          searchParams={searchParams}
-          studies={paginatedStudyContents}
-        />
-      )}
+      {isStudyTab && <SCStudyList searchParams={searchParams} />}
 
       {!isStudyTab && (
         <>

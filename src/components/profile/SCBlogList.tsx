@@ -2,14 +2,13 @@
 
 import DefaultButton from "@/components/ui/defaultButton";
 import DefaultBadge from "@/components/ui/defaultBadge";
-import EditSVG from "/public/icons/edit.svg";
 import EyeSVG from "/public/icons/eye.svg";
 import ThumbsUpSVG from "/public/icons/thumbs-up.svg";
-import CommentSVG from "/public/icons/comment.svg";
-import { BlogCategoryType, ProfileBlogDataType } from "@/types/profile";
-import { getBlogCategoryColor } from "@/utils/profileUtils";
+import { ProfileBlogDataType } from "@/types/profile";
 import Link from "next/link";
 import { Plus } from "lucide-react";
+import { BlogCategory } from "@/types/blog";
+import { getCategoryColor } from "@/utils/categoryColorUtils";
 
 interface SCBlogListProps {
   searchParams: Promise<{
@@ -43,51 +42,41 @@ export default async function SCBlogList({
           </div>
 
           {blogs.map((blog) => (
-            <div key={blog.id} className="card-list text-card-foreground group">
-              <div className="flex flex-col space-y-1.5 p-6">
-                <div className="flex items-start justify-between">
-                  <div>
-                    <div className="font-semibold leading-none tracking-tight text-lg text-gray-900 group-hover:text-red-600 transition-colors cursor-pointer">
-                      {blog.title}
-                    </div>
-                    <div className="flex items-center gap-4 mt-2 text-sm text-gray-600 transition-colors duration-300">
-                      <span>{blog.date}</span>
-                      <DefaultBadge
-                        className={`border-gray-200 text-gray-600 ${getBlogCategoryColor(
-                          blog.category as BlogCategoryType
-                        )}`}
-                      >
-                        {blog.category}
-                      </DefaultBadge>
+            <Link href={`/blog/${blog.id}`} key={blog.id}>
+              <div className="card-list text-card-foreground group mb-4">
+                <div className="flex flex-col space-y-1.5 p-6">
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <div className="font-semibold leading-none tracking-tight text-lg text-gray-900 group-hover:text-red-600 transition-colors cursor-pointer">
+                        {blog.title}
+                      </div>
+                      <div className="flex items-center gap-4 mt-2 text-sm text-gray-600 transition-colors duration-300">
+                        <span>{blog.createdAt}</span>
+                        <DefaultBadge
+                          className={`border-gray-200 text-gray-600 ${getCategoryColor(
+                            blog.category as BlogCategory
+                          )}`}
+                        >
+                          {blog.category}
+                        </DefaultBadge>
+                      </div>
                     </div>
                   </div>
-                  <DefaultButton
-                    size="sm"
-                    variant="outline"
-                    className="border-gray-300 text-gray-600 hover:bg-gray-100 hover:text-gray-600"
-                  >
-                    <EditSVG className="w-4 h-4 mr-1 stroke-gray-600" />
-                    수정
-                  </DefaultButton>
                 </div>
-              </div>
-              <div className="p-6 pt-0">
-                <div className="flex items-center gap-4 text-sm text-gray-600 dark:text-gray-400 transition-colors duration-300">
-                  <div className="flex items-center gap-1">
-                    <EyeSVG className="w-4 h-4" />
-                    {blog.views}
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <ThumbsUpSVG />
-                    {blog.likes}
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <CommentSVG className="stroke-gray-600" />
-                    {blog.comments}
+                <div className="p-6 pt-0">
+                  <div className="flex items-center gap-4 text-sm text-gray-600 dark:text-gray-400 transition-colors duration-300">
+                    <div className="flex items-center gap-1">
+                      <EyeSVG className="w-4 h-4" />
+                      {blog.views}
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <ThumbsUpSVG />
+                      {blog.likes}
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       )}

@@ -31,13 +31,12 @@ setTimeout(() => {
       </code></pre>
     `,
     author: "김개발",
-    category: "개발",
-    tags: ["React", "JavaScript", "성능최적화", "프론트엔드"],
+    category: "CS",
     createdAt: "2024-01-15",
     views: 1250,
     likes: 45,
     featured: true,
-    published: false,
+    published: true,
   },
   {
     id: 2,
@@ -69,8 +68,7 @@ setTimeout(() => {
       </ul>
     `,
     author: "박보안",
-    category: "학습",
-    tags: ["보안", "XSS", "CSRF", "웹개발"],
+    category: "CS",
     createdAt: "2024-01-12",
     views: 890,
     likes: 32,
@@ -113,8 +111,7 @@ type UserWithoutId = Omit<User, 'id'>;
       </code></pre>
     `,
     author: "이타입",
-    category: "개발",
-    tags: ["TypeScript", "고급패턴", "유틸리티타입"],
+    category: "RED",
     createdAt: "2024-01-10",
     views: 2100,
     likes: 78,
@@ -160,8 +157,7 @@ def fibonacci(n):
       </code></pre>
     `,
     author: "최알고",
-    category: "학습",
-    tags: ["알고리즘", "동적계획법", "문제해결", "코딩테스트"],
+    category: "BLUE",
     createdAt: "2024-01-08",
     views: 1680,
     likes: 56,
@@ -213,8 +209,7 @@ spec:
       </code></pre>
     `,
     author: "정데브옵스",
-    category: "개발",
-    tags: ["Docker", "Kubernetes", "마이크로서비스", "DevOps"],
+    category: "GRC",
     createdAt: "2024-01-05",
     views: 1420,
     likes: 67,
@@ -248,8 +243,7 @@ spec:
       <p>이번 컨퍼런스를 통해 현재 개발 트렌드를 파악하고, 앞으로의 학습 방향을 설정할 수 있었습니다.</p>
     `,
     author: "김후기",
-    category: "활동",
-    tags: ["컨퍼런스", "NHN", "개발", "네트워킹"],
+    category: "MISC",
     createdAt: "2024-01-03",
     views: 980,
     likes: 42,
@@ -283,8 +277,7 @@ spec:
       <p>이번 컨퍼런스를 통해 현재 개발 트렌드를 파악하고, 앞으로의 학습 방향을 설정할 수 있었습니다.</p>
     `,
     author: "김후기",
-    category: "활동",
-    tags: ["컨퍼런스", "NHN", "개발", "네트워킹"],
+    category: "기타",
     createdAt: "2024-01-03",
     views: 980,
     likes: 42,
@@ -310,7 +303,6 @@ export const searchBlogPosts = (query: string): BlogPost[] => {
     (post) =>
       post.title.toLowerCase().includes(lowercaseQuery) ||
       post.excerpt.toLowerCase().includes(lowercaseQuery) ||
-      post.author.toLowerCase().includes(lowercaseQuery) ||
-      post.tags?.some((tag) => tag.toLowerCase().includes(lowercaseQuery))
+      post.author.toLowerCase().includes(lowercaseQuery)
   );
 };

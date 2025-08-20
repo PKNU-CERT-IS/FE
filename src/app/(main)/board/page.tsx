@@ -8,7 +8,8 @@ import PlusSVG from "/public/icons/plus.svg";
 import { boardCategories, BoardCategoryType } from "@/types/board";
 import { filterBoardData } from "@/utils/boardUtils";
 import Link from "next/link";
-const ITEMS_PER_PAGE = 4;
+
+const ITEMS_PER_PAGE = 8;
 
 interface BoardPageProps {
   searchParams: Promise<{

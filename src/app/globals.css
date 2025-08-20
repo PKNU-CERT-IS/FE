@@ -248,7 +248,7 @@ body {
 @layer components {
   /* 액션 버튼 스타일 */
   .action-button {
-    @apply bg-cert-red hover:bg-red-700 text-white rounded-md items-center duration-300;
+    @apply bg-cert-red hover:bg-red-700 text-white rounded-md items-center duration-300  cursor-pointer;
   }
   /* 카드 리스트 스타일 */
   .card-list {

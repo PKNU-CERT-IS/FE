@@ -1,10 +1,10 @@
 "server-only";
 
-import CCAddScheduleCard from "@/components/schedule/CCAddScheduleCard";
 import SCScheduleList from "@/components/schedule/SCScheduleList";
 import Calendar from "@/components/schedule/calendar";
 import SCAdminScheduleInfo from "@/components/admin/schedule/SCAdminScheduleInfo";
 import SCAdminScheduleRequestList from "@/components/admin/schedule/SCAdminScheduleRequestList";
+import CCScheduleRequestWrapper from "@/components/schedule/CCScheduleRequestWrapper";
 
 interface SearchPageProps {
   searchParams: Promise<{ date?: string }>;
@@ -24,7 +24,7 @@ export default async function AdminSchedulePage({
             <Calendar />
           </div>
           <div>
-            <CCAddScheduleCard />
+            <CCScheduleRequestWrapper />
             <SCAdminScheduleInfo selectedDate={selectedDate} />
             <SCAdminScheduleRequestList />
           </div>

@@ -1,22 +1,34 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
-import { Plus, Users, Edit, Trash2, Calendar, X } from "lucide-react";
+import {
+  Plus,
+  Users,
+  Edit,
+  Trash2,
+  Calendar,
+  X,
+  ChevronDown,
+  ChevronUp,
+  User,
+} from "lucide-react";
 import DefaultButton from "@/components/ui/defaultButton";
 import ConfirmModal from "@/components/ui/defaultConfirmModal";
-import { LinkItem, MeetingMinute } from "@/types/study";
+import type { LinkItem, MeetingMinute } from "@/types/study";
 import { formatDate } from "@/utils/formatDateUtil";
+import { usePathname } from "next/navigation";
 
 // Mock data for meeting minutes
 const mockMeetingMinutes: MeetingMinute[] = [
   {
     id: 1,
-    week: 1,
+    // week: 1,
     title: "웹 기초 및 HTTP 프로토콜",
-    date: "2024.03.06",
+    created_at: "2024-10-24 10:37:29+00",
+    updated_at: "2025-07-26 05:52:55+00",
     content:
       "HTTP 프로토콜의 기본 구조와 요청/응답 메커니즘에 대해 학습했습니다. Burp Suite를 이용한 HTTP 트래픽 분석 실습을 진행했습니다.",
-    attendees: ["김보안", "이해커", "박펜테", "최시큐"],
+    participants: 4,
     author: "김보안",
     links: [
       { title: "HTTP 기본 자료", url: "https://example.com/web-basics" },
@@ -25,16 +37,17 @@ const mockMeetingMinutes: MeetingMinute[] = [
   },
   {
     id: 2,
-    week: 2,
+    // week: 2,
     title: "SQL Injection 이론 및 실습",
-    date: "2024.03.13",
+    created_at: "2024-10-24 10:37:29+00",
+    updated_at: "2025-07-26 05:52:55+00",
     content:
       "SQL Injection의 원리와 다양한 공격 기법에 대해 학습했습니다. DVWA를 이용한 실습을 통해 Union-based, Boolean-based, Time-based SQL Injection을 실습했습니다.",
-    attendees: ["김보안", "이해커", "박펜테", "최시큐", "정웹해"],
+    participants: 7,
     author: "김보안",
     links: [
       {
-        title: "SQL Injection 실습 자료",
+        title: "회의록 링크",
         url: "https://example.com/sql-injection",
       },
     ],
@@ -53,6 +66,8 @@ export default function MeetingMinutes({
   currentUserId,
   studyLeaderId,
 }: MeetingMinutesProps) {
+  const pathname = usePathname();
+  const pageType = pathname.startsWith("/study") ? "스터디" : "프로젝트";
   const [meetingMinutes, setMeetingMinutes] =
     useState<MeetingMinute[]>(mockMeetingMinutes);
   const [showAddModal, setShowAddModal] = useState<boolean>(false);
@@ -67,6 +82,8 @@ export default function MeetingMinutes({
   const [deleteMinuteId, setDeleteMinuteId] = useState<number | null>(null);
   const [isModalMounted, setIsModalMounted] = useState<boolean>(false);
   const modalRef = useRef<HTMLDivElement>(null);
+
+  const [expandedIds, setExpandedIds] = useState<Set<number>>(new Set());
 
   // 스터디 장인지 확인
   const isStudyLeader = currentUserId === studyLeaderId;
@@ -146,13 +163,13 @@ export default function MeetingMinutes({
 
     const minute: MeetingMinute = {
       id: Date.now(),
-      week: meetingMinutes.length + 1,
       title: newMinute.title,
-      date: formatDate(new Date(), "dot"),
       content: newMinute.content,
       links: validLinks,
-      attendees: ["현재 사용자"],
       author: "현재 사용자",
+      created_at: formatDate(new Date(), "dot"),
+      updated_at: formatDate(new Date(), "dot"),
+      participants: 0,
     };
 
     setMeetingMinutes([...meetingMinutes, minute]);
@@ -212,20 +229,33 @@ export default function MeetingMinutes({
     setDeleteMinuteId(null);
   };
 
+  const toggleExpand = (id: number) => {
+    setExpandedIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  };
+
+  const getPreview = (text: string, limit = 20) =>
+    text.length > limit ? `${text.slice(0, limit)}…` : text;
+
   return (
     <div className="bg-white rounded-lg border border-gray-200 shadow-lg mt-6">
       {/* 헤더 */}
       <div className="p-6 border-b border-gray-200">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-xl font-bold text-cert-black">스터디 회의록</h2>
+            <h2 className="text-xl font-bold text-cert-black">
+              {pageType} 회의록
+            </h2>
             <div className="mt-1 space-y-1  rounded-lg">
               <p className="text-sm text-gray-500">
-                스터디 회의록을 작성하고 관리합니다.
-                <br /> 스터디 장만 회의록을 추가할 수 있습니다.
-                <br />
-                회의록은 회차별로 관리되며 주에 한 번이상 결과물을 작성해주시기
-                바랍니다.
+                • {pageType} 회의록을 작성하고 관리합니다.
+                <br /> • {pageType} 장만 회의록을 추가할 수 있습니다.
+                <br />• 회의록은 회차별로 관리되며 주에 1회 이상 결과물을
+                작성해주시기 바랍니다.
               </p>
             </div>
           </div>
@@ -248,75 +278,104 @@ export default function MeetingMinutes({
               아직 작성된 회의록이 없습니다.
             </div>
           ) : (
-            meetingMinutes.map((minute) => (
-              <div
-                key={minute.id}
-                className="bg-gray-50 rounded-lg border border-gray-200 p-4"
-              >
-                <div className="flex items-start justify-between mb-3">
-                  <div>
-                    <h4 className="font-semibold text-gray-900">
-                      {minute.week}회차: {minute.title}
+            meetingMinutes.map((minute) => {
+              const isLong = (minute.content || "").length > 30;
+              const expanded = expandedIds.has(minute.id);
+              const textToShow =
+                isLong && !expanded
+                  ? getPreview(minute.content)
+                  : minute.content;
+
+              return (
+                <div
+                  key={minute.id}
+                  className="bg-gray-50 rounded-lg border border-gray-200 p-3"
+                >
+                  {/* 상단: 제목 + 액션 */}
+                  <div className="flex items-start justify-between gap-3">
+                    <h4 className="font-medium text-gray-900 leading-tight">
+                      {minute.title}
                     </h4>
-                    <div className="flex items-center gap-2 mt-1">
-                      <Calendar className="w-4 h-4 text-gray-400" />
-                      <p className="text-sm text-gray-500">{minute.date}</p>
-                    </div>
+                    {isStudyLeader && (
+                      <div className="flex gap-0 shrink-0">
+                        <DefaultButton
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleEditMinute(minute)}
+                        >
+                          <Edit className="w-4 h-4" />
+                        </DefaultButton>
+                        <DefaultButton
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => setDeleteMinuteId(minute.id)}
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </DefaultButton>
+                      </div>
+                    )}
                   </div>
-                  {isStudyLeader && (
-                    <div className="flex gap-2">
-                      <DefaultButton
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => handleEditMinute(minute)}
+
+                  {/* 메타: 날짜 · 참석 · 작성자 (한 줄 배치) */}
+                  <div className="mt-1 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-gray-600">
+                    <span className="inline-flex items-center gap-1">
+                      <Calendar className="w-3.5 h-3.5 text-gray-400" />
+                      {formatDate(minute.created_at)}
+                    </span>
+                    <span className="inline-flex items-center gap-1">
+                      <Users className="w-3.5 h-3.5 text-gray-400" />
+                      참석: {minute.participants}명
+                    </span>
+                    <span className="inline-flex items-center gap-1">
+                      <User className="w-3.5 h-3.5 text-gray-400" />
+                      작성자: {minute.author}
+                    </span>
+                  </div>
+
+                  {/* content: 더보기/접기 대상 영역 */}
+                  <div className="mt-2 flex flex-row gap-2">
+                    <p className="text-sm text-gray-800 leading-relaxed">
+                      {textToShow}
+                    </p>
+                    {isLong && (
+                      <button
+                        type="button"
+                        onClick={() => toggleExpand(minute.id)}
+                        className="inline-flex items-center whitespace-nowrap text-xs text-gray-500 hover:underline"
                       >
-                        <Edit className="w-4 h-4" />
-                      </DefaultButton>
-                      <DefaultButton
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => setDeleteMinuteId(minute.id)}
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </DefaultButton>
+                        {expanded ? (
+                          <>
+                            접기 <ChevronUp className="w-3.5 h-3.5 ml-0.5" />
+                          </>
+                        ) : (
+                          <>
+                            더보기{" "}
+                            <ChevronDown className="w-3.5 h-3.5 ml-0.5" />
+                          </>
+                        )}
+                      </button>
+                    )}
+                  </div>
+
+                  {/* 링크: 인라인 배치 */}
+                  {minute.links && minute.links.length > 0 && (
+                    <div className="mt-2 flex flex-wrap items-center gap-2">
+                      {minute.links.map((link, index) => (
+                        <a
+                          key={index}
+                          href={link.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center text-xs text-blue-600 hover:underline"
+                        >
+                          🔗 {link.title}
+                        </a>
+                      ))}
                     </div>
                   )}
                 </div>
-
-                <p className="text-gray-700 mb-3 leading-relaxed">
-                  {minute.content}
-                </p>
-
-                <div className="flex items-center justify-between text-sm mb-3">
-                  <div className="flex items-center gap-4">
-                    <div className="flex items-center gap-2">
-                      <Users className="w-4 h-4 text-gray-400" />
-                      <span className="text-gray-600">
-                        참석: {minute.attendees.length}명
-                      </span>
-                    </div>
-                  </div>
-                  <span className="text-gray-500">작성자: {minute.author}</span>
-                </div>
-
-                {/* 다중 링크 표시 */}
-                {minute.links && minute.links.length > 0 && (
-                  <div className="space-y-1">
-                    {minute.links.map((link, index) => (
-                      <a
-                        key={index}
-                        href={link.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center text-sm text-blue-600 hover:underline mr-4"
-                      >
-                        🔗 {link.title}
-                      </a>
-                    ))}
-                  </div>
-                )}
-              </div>
-            ))
+              );
+            })
           )}
         </div>
       </div>
@@ -358,13 +417,12 @@ export default function MeetingMinutes({
                     setNewMinute({ ...newMinute, title: e.target.value })
                   }
                   placeholder="회의록 제목을 입력하세요"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent"
+                  className="text-sm w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent"
                 />
               </div>
-
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  내용
+                  회의록 링크
                 </label>
                 <p className="text-xs text-gray-500 mb-2">
                   해당 회의록은 회의내용을 간추려 5줄이내로 적어주시기 바랍니다.
@@ -377,7 +435,7 @@ export default function MeetingMinutes({
                   }
                   placeholder="회의 내용을 간략하게 입력하세요 (5줄 이내)"
                   rows={5}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent resize-none"
+                  className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent resize-none"
                 />
               </div>
 

@@ -1,35 +1,40 @@
 "use client";
 
 import { RefObject, useEffect, useState } from "react";
-import { useModal } from "@/hooks/useModal";
-import { ScheduleInfo } from "@/types/schedule";
-import { useSchedule } from "@/hooks/useSchedule";
-import { getTypeLabel } from "@/utils/scheduleUtils";
-import { ChevronDown, X } from "lucide-react";
-import DefaultButton from "@/components/ui/defaultButton";
+import { useRouter } from "next/navigation";
+import { X, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { usePathname } from "next/navigation";
+import DefaultButton from "@/components/ui/defaultButton";
+import { ScheduleCreateRequest, ScheduleInfo } from "@/types/schedule";
+import { formatDate, formatTime } from "@/utils/formatDateUtil";
+import { useModal } from "@/hooks/useModal";
+import { useSchedule } from "@/hooks/useSchedule";
+import { getTypeLabel, labelToType } from "@/utils/scheduleUtils";
+import { createSchedule } from "@/actions/admin/schedule/CreateScheduleServerAction";
 
 interface ScheduleFormModalProps {
   closeModal: () => void;
   schedule?: ScheduleInfo;
   modalRef?: RefObject<HTMLDivElement | null>;
+  onAdd?: (data: ScheduleCreateRequest) => void;
+  isAdmin?: boolean;
 }
 
 export default function CCScheduleFormModal({
   closeModal,
   schedule,
   modalRef,
+  onAdd,
+  isAdmin,
 }: ScheduleFormModalProps) {
-  const pathname = usePathname();
-  const isAdmin = pathname.startsWith("/admin");
+  const router = useRouter();
 
   const {
-    activityDropdownRef,
+    typeDropdownRef,
     toggleDropdown,
-    selectedActivity,
-    isActivityDropdownOpen,
-    handleActivity,
+    selectedType,
+    isTypeDropdownOpen,
+    handleType,
     startTimeDropdownRef,
     toggleStartTimeDropdown,
     selectedStartTime,
@@ -43,58 +48,22 @@ export default function CCScheduleFormModal({
   } = useModal();
 
   const { timeOptions } = useSchedule();
-  const ACTIVITY_LABELS = ["정기 모임", "회의", "스터디", "컨퍼런스"];
+  const TYPE_LABELS = ["정기 모임", "회의", "스터디", "컨퍼런스"];
   const [title, setTitle] = useState("");
-  const [location, setLocation] = useState("동아리방");
+  const [place, setPlace] = useState("동아리방");
   const [date, setDate] = useState("");
   const [description, setDescription] = useState("");
 
-  const handleSubmit = async () => {
-    const submitData = {
-      title,
-      location,
-      description,
-      date,
-      activity: selectedActivity,
-      startTime: selectedStartTime,
-      endTime: selectedEndTime,
-    };
-    console.log("Submit data:", submitData);
-
-    // 추후 api 요청 시 admin, main에 따라 다르게 보내게끔 수정할 예정
-    // const endpoint = isAdmin
-    //   ? "/api/admin/schedule" // 관리자용 API
-    //   : "/api/clubroom/reservation"; // 일반 사용자용 API
-
-    // try {
-    //   const res = await fetch(endpoint, {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify(submitData),
-    //   });
-
-    //   if (!res.ok) {
-    //     throw new Error("서버 오류 발생");
-    //   }
-
-    //   const result = await res.json();
-    //   console.log("✅ 제출 성공:", result);
-    // } catch (error) {
-    //   console.error("❌ 제출 실패:", error);
-    // }
-  };
-
   useEffect(() => {
+    if (!schedule) return;
     if (schedule) {
-      handleActivity(getTypeLabel(schedule.type));
-      handleStartTime(schedule.startTime);
-      handleEndTime(schedule.endTime);
       setTitle(schedule.title);
-      setLocation(schedule.location ?? "동아리방");
-      setDate(schedule.date);
-      setDescription(schedule.description);
+      setPlace(schedule.place ?? "동아리방");
+      setDate(formatDate(schedule.started_at, "short"));
+      setDescription(schedule.description ?? "");
+      handleType(getTypeLabel(schedule.type));
+      handleStartTime(formatTime(schedule.started_at, "hm"));
+      handleEndTime(formatTime(schedule.ended_at, "hm"));
     }
   }, [schedule]);
 
@@ -102,10 +71,39 @@ export default function CCScheduleFormModal({
     title &&
     description &&
     date &&
-    selectedActivity !== "선택" &&
+    selectedType !== "선택" &&
     selectedStartTime !== "선택" &&
     selectedEndTime !== "선택";
 
+  const handleSubmit = async () => {
+    const typeValue = labelToType(selectedType);
+    if (!typeValue || !isValidForm) return;
+
+    const started_at = `${date} ${selectedStartTime}:00+00`;
+    const ended_at = `${date} ${selectedEndTime}:00+00`;
+
+    const submitData: ScheduleCreateRequest = {
+      title,
+      description,
+      type: typeValue,
+      place,
+      started_at,
+      ended_at,
+    };
+
+    try {
+      if (isAdmin) {
+        await createSchedule(submitData);
+        closeModal();
+        router.refresh();
+      } else {
+        onAdd?.(submitData);
+        closeModal();
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
   return (
     <div
       ref={modalRef}
@@ -146,8 +144,8 @@ export default function CCScheduleFormModal({
               <div>
                 <p className="text-sm mb-1.5">장소</p>
                 <input
-                  value={location}
-                  onChange={(e) => setLocation(e.target.value)}
+                  value={place}
+                  onChange={(e) => setPlace(e.target.value)}
                   placeholder={"예: 장보고관"}
                   className="text-sm flex h-10 w-full rounded-md border px-3 py-2 bg-white border-gray-300 text-gray-900"
                   required
@@ -178,12 +176,12 @@ export default function CCScheduleFormModal({
                   type="date"
                   value={date}
                   onChange={(e) => setDate(e.target.value)}
-                  className="text-sm flex h-10 w-full rounded-md border px-3 py-2 bg-white border-gray-300 text-gray-900 cursor-pointer"
+                  className="text-sm h-10 w-full rounded-md border px-3 py-2 bg-white border-gray-300 text-gray-900 cursor-pointer justify-between"
                   required
                 />
               </div>
 
-              <div className="relative z-10" ref={activityDropdownRef}>
+              <div className="relative z-10" ref={typeDropdownRef}>
                 <p className="text-sm mb-1.5">활동 유형</p>
                 <DefaultButton
                   variant="outline"
@@ -195,21 +193,19 @@ export default function CCScheduleFormModal({
                   )}
                   onClick={toggleDropdown}
                 >
-                  <span className="text-gray-700 truncate">
-                    {selectedActivity}
-                  </span>
+                  <span className="text-gray-700 truncate">{selectedType}</span>
                   <ChevronDown
                     className={`h-4 w-4 transition-transform duration-300 text-gray-400 ${
-                      isActivityDropdownOpen ? "rotate-180" : ""
+                      isTypeDropdownOpen ? "rotate-180" : ""
                     }`}
                   />
                 </DefaultButton>
-                {isActivityDropdownOpen && (
+                {isTypeDropdownOpen && (
                   <div className="absolute border border-gray-300 bg-white w-full rounded-md">
-                    {ACTIVITY_LABELS.map((label) => (
+                    {TYPE_LABELS.map((label) => (
                       <button
                         key={label}
-                        onClick={() => handleActivity(label)}
+                        onClick={() => handleType(label)}
                         className="text-sm items-center flex h-10 w-full rounded-md px-3 py-2 text-gray-900 hover:bg-cert-red hover:text-white duration-100"
                       >
                         {label}
@@ -299,10 +295,7 @@ export default function CCScheduleFormModal({
             type="submit"
             className="w-full mt-4"
             disabled={!isValidForm}
-            onClick={() => {
-              closeModal();
-              handleSubmit();
-            }}
+            onClick={handleSubmit}
           >
             {isAdmin ? "추가" : "신청"}
           </DefaultButton>

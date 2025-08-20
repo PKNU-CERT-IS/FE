@@ -2,16 +2,26 @@
 
 import useTyping from "@/hooks/useTyping";
 
-const TypingAnimation = () => {
-  const typingText = "Computer Emergency Response Team";
-  const { text } = useTyping(typingText);
+export default function TypingAnimation() {
+  const { firstText, secondText, cursorLine } = useTyping(
+    "Computer Emergency Response Team",
+    "Information Security"
+  );
+
   return (
-    <div>
-      <span className="animate-pulse text-gray-600 mr-1 text-2xl">
-        {text}
-        <span className={"animate-typing text-red-600"}>|</span>
-      </span>
+    <div className="h-12 text-lg sm:text-xl text-gray-600 whitespace-pre-line text-center font-mono">
+      <div className="animate-pulse">
+        {firstText}
+        {cursorLine === "firstCursorLine" && (
+          <span className="animate-typing text-red-600">|</span>
+        )}
+      </div>
+      <div className="animate-pulse text-center">
+        {secondText}
+        {cursorLine === "secondCursorLine" && (
+          <span className="animate-typing text-red-600">|</span>
+        )}
+      </div>
     </div>
   );
-};
-export default TypingAnimation;
+}

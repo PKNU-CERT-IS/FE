@@ -1,12 +1,13 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { Calendar, User, Tag, Eye, ExternalLink } from "lucide-react";
+import { Calendar, User, Eye, ExternalLink } from "lucide-react";
 import { mockBlogPosts } from "@/mocks/blogData";
 import BackToListButton from "@/components/detail/SCBackToListButton";
 import KebabMenuButton from "@/components/detail/CCKebabMenu";
 import ShareButton from "@/components/detail/CCShareButton";
 import DefaultBadge from "@/components/ui/defaultBadge";
 import { formatDate } from "@/utils/formatDateUtil";
+import { getCategoryColor } from "@/utils/categoryColorUtils";
 
 interface BlogDetailPageProps {
   params: Promise<{
@@ -43,7 +44,6 @@ export async function generateMetadata({
       type: "article",
       publishedTime: post.createdAt,
       authors: [post.author],
-      tags: post.tags,
     },
   };
 }
@@ -71,17 +71,12 @@ export default async function AdminBlogDetailPage({
           {/* 카테고리와 케밥 메뉴 */}
           <div className="flex items-start justify-between mb-4">
             <div>
-              <span
-                className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium mr-2 ${
-                  post.category === "개발"
-                    ? "bg-blue-50 text-blue-600 border border-blue-200"
-                    : post.category === "학습"
-                    ? "bg-green-50 text-green-600 border border-green-200"
-                    : "bg-purple-50 text-purple-600 border border-purple-200"
-                }`}
+              <DefaultBadge
+                variant="outline"
+                className={getCategoryColor(post.category)}
               >
                 {post.category}
-              </span>
+              </DefaultBadge>
 
               {post.published && (
                 <DefaultBadge
@@ -125,26 +120,6 @@ export default async function AdminBlogDetailPage({
               </div>
             )}
           </div>
-
-          {/* 태그 */}
-          {post.tags && post.tags.length > 0 && (
-            <div className="mt-6">
-              <div className="flex items-center gap-2 mb-2">
-                <Tag className="w-4 h-4 text-gray-500" />
-                <span className="text-sm font-medium text-gray-700">태그</span>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {post.tags.map((tag, index) => (
-                  <span
-                    key={index}
-                    className="inline-block px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-md font-medium hover:bg-gray-200 transition-colors cursor-pointer"
-                  >
-                    #{tag}
-                  </span>
-                ))}
-              </div>
-            </div>
-          )}
         </header>
 
         {/* 본문 */}

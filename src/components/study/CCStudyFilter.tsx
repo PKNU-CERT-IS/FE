@@ -1,23 +1,25 @@
 "use client";
 
-import { useState, useTransition, useRef, useCallback } from "react";
+import { useState, useTransition, useRef, useCallback, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ChevronDown, X } from "lucide-react";
 import DefaultSearchBar from "@/components/ui/defaultSearchBar";
 import SearchSVG from "/public/icons/search.svg";
-import { useEffect } from "react";
-
 import type { StudyFilterProps, FilterKey } from "@/types/study";
 import {
   SEMESTER_OPTIONS,
-  TECHNIQUE_OPTIONS,
   STATUS_OPTIONS,
   SEMESTER_LABELS,
-  TECHNIQUE_LABELS,
   STATUS_LABELS,
 } from "@/types/study";
 import DefaultButton from "@/components/ui/defaultButton";
 import { cn } from "@/lib/utils";
+import {
+  CATEGORY_LABELS,
+  CATEGORY_OPTIONS,
+  SUBCATEGORY_LABELS,
+  SUBCATEGORY_OPTIONS,
+} from "@/types/category";
 
 export default function CCStudyFilter({ currentFilters }: StudyFilterProps) {
   const router = useRouter();
@@ -30,15 +32,17 @@ export default function CCStudyFilter({ currentFilters }: StudyFilterProps) {
   // 로컬 상태
   const [showSemesterDropdown, setShowSemesterDropdown] =
     useState<boolean>(false);
-  const [showTechniqueDropdown, setShowTechniqueDropdown] =
+  const [showCategoryDropdown, setShowCategoryDropdown] =
+    useState<boolean>(false);
+  const [showSubCategoryDropdown, setShowSubCategoryDropdown] =
     useState<boolean>(false);
   const [showStatusDropdown, setShowStatusDropdown] = useState<boolean>(false);
 
   const semesterRef = useRef<HTMLDivElement>(null);
-  const techniqueRef = useRef<HTMLDivElement>(null);
+  const categoryRef = useRef<HTMLDivElement>(null);
+  const subCategoryRef = useRef<HTMLDivElement>(null);
   const statusRef = useRef<HTMLDivElement>(null);
 
-  // URL 파라미터 업데이트 함수 (영어 값으로 저장)
   const updateFilter = useCallback(
     (key: FilterKey, value: string): void => {
       const params = new URLSearchParams(searchParams);
@@ -80,7 +84,8 @@ export default function CCStudyFilter({ currentFilters }: StudyFilterProps) {
   // 드롭다운 닫기 함수
   const closeAllDropdowns = useCallback(() => {
     setShowSemesterDropdown(false);
-    setShowTechniqueDropdown(false);
+    setShowCategoryDropdown(false);
+    setShowSubCategoryDropdown(false);
     setShowStatusDropdown(false);
   }, []);
 
@@ -90,7 +95,8 @@ export default function CCStudyFilter({ currentFilters }: StudyFilterProps) {
       const target = e.target as Node;
       if (
         semesterRef.current?.contains(target) ||
-        techniqueRef.current?.contains(target) ||
+        categoryRef.current?.contains(target) ||
+        subCategoryRef.current?.contains(target) ||
         statusRef.current?.contains(target)
       ) {
         return;
@@ -135,7 +141,8 @@ export default function CCStudyFilter({ currentFilters }: StudyFilterProps) {
               )}
               onClick={() => {
                 setShowSemesterDropdown(!showSemesterDropdown);
-                setShowTechniqueDropdown(false);
+                setShowCategoryDropdown(false);
+                setShowSubCategoryDropdown(false);
                 setShowStatusDropdown(false);
               }}
             >
@@ -168,45 +175,92 @@ export default function CCStudyFilter({ currentFilters }: StudyFilterProps) {
             )}
           </div>
 
-          {/* 기법 필터 */}
-          <div className="relative sm:min-w-36 min-w-30" ref={techniqueRef}>
+          {/* 메인 카테고리 */}
+          <div className="relative sm:min-w-36 min-w-30" ref={categoryRef}>
             <DefaultButton
               variant="outline"
               size="default"
               className={cn(
-                "w-full justify-between text-left font-normal transition-all duration-200 cursor-pointer ",
+                "w-full justify-between text-left font-normal transition-all duration-200 cursor-pointer",
                 "bg-white border-gray-300 hover:border-cert-red hover:bg-white hover:text-cert-black",
                 "focus:border-cert-red focus:ring-2 focus:ring-cert-red/20"
               )}
               onClick={() => {
-                setShowTechniqueDropdown(!showTechniqueDropdown);
+                setShowCategoryDropdown(!showCategoryDropdown);
                 setShowSemesterDropdown(false);
+                setShowSubCategoryDropdown(false);
                 setShowStatusDropdown(false);
               }}
             >
               <span className="text-gray-700 truncate pr-1">
-                {TECHNIQUE_LABELS[currentFilters.technique]}
+                {CATEGORY_LABELS[currentFilters.category]}
               </span>
               <ChevronDown
                 className={`h-4 w-4 transition-transform duration-300 text-gray-400 ${
-                  showTechniqueDropdown ? "rotate-180" : ""
+                  showSemesterDropdown ? "rotate-180" : ""
                 }`}
               />
             </DefaultButton>
 
-            {showTechniqueDropdown && (
+            {showCategoryDropdown && (
               <div className="absolute top-full mt-1 w-full bg-white border border-gray-300 rounded-lg shadow-lg z-20 max-h-48 overflow-y-auto">
-                {TECHNIQUE_OPTIONS.map((option) => (
+                {CATEGORY_OPTIONS.map((option) => (
                   <button
                     key={option}
                     type="button"
                     className="w-full px-4 py-2 text-left text-gray-900 first:rounded-t-lg last:rounded-b-lg text-sm hover:bg-cert-red hover:text-white duration-100 hover:first:rounded-md hover:rounded-md"
                     onClick={() => {
-                      updateFilter("technique", option);
+                      updateFilter("category", option);
                       closeAllDropdowns();
                     }}
                   >
-                    {TECHNIQUE_LABELS[option]}
+                    {CATEGORY_LABELS[option]}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* 서브 카테고리 */}
+          <div className="relative sm:min-w-36 min-w-30" ref={subCategoryRef}>
+            <DefaultButton
+              variant="outline"
+              size="default"
+              className={cn(
+                "w-full max-w-36 justify-between text-left font-normal transition-all duration-200 cursor-pointer",
+                "bg-white border-gray-300 hover:border-cert-red hover:bg-white hover:text-cert-black",
+                "focus:border-cert-red focus:ring-2 focus:ring-cert-red/20"
+              )}
+              onClick={() => {
+                setShowSubCategoryDropdown(!showSubCategoryDropdown);
+                setShowSemesterDropdown(false);
+                setShowCategoryDropdown(false);
+                setShowStatusDropdown(false);
+              }}
+            >
+              <span className="text-gray-700 truncate pr-1">
+                {SUBCATEGORY_LABELS[currentFilters.subCategory]}
+              </span>
+              <ChevronDown
+                className={`h-4 w-4 transition-transform duration-300 text-gray-400 ${
+                  showSubCategoryDropdown ? "rotate-180" : ""
+                }`}
+              />
+            </DefaultButton>
+
+            {showSubCategoryDropdown && (
+              <div className="absolute top-full mt-1 w-full bg-white border border-gray-300 rounded-lg shadow-lg z-20 max-h-48 overflow-y-auto">
+                {SUBCATEGORY_OPTIONS.map((option) => (
+                  <button
+                    key={option}
+                    type="button"
+                    className="w-full px-4 py-2 text-left text-gray-900 first:rounded-t-lg last:rounded-b-lg text-sm hover:bg-cert-red hover:text-white duration-100 hover:first:rounded-md hover:rounded-md"
+                    onClick={() => {
+                      updateFilter("subCategory", option);
+                      closeAllDropdowns();
+                    }}
+                  >
+                    {SUBCATEGORY_LABELS[option]}
                   </button>
                 ))}
               </div>
@@ -226,7 +280,8 @@ export default function CCStudyFilter({ currentFilters }: StudyFilterProps) {
               onClick={() => {
                 setShowStatusDropdown(!showStatusDropdown);
                 setShowSemesterDropdown(false);
-                setShowTechniqueDropdown(false);
+                setShowCategoryDropdown(false);
+                setShowSubCategoryDropdown(false);
               }}
             >
               <span className="text-gray-700 truncate pr-1">
@@ -284,12 +339,26 @@ export default function CCStudyFilter({ currentFilters }: StudyFilterProps) {
             </button>
           </span>
         )}
-        {currentFilters.technique !== "all" && (
+
+        {currentFilters.category !== "all" && (
           <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 mb-3 sm:mb-0">
-            {TECHNIQUE_LABELS[currentFilters.technique]}
+            {currentFilters.category}
             <button
               type="button"
-              onClick={() => updateFilter("technique", "all")}
+              onClick={() => updateFilter("category", "all")}
+              className="ml-2 inline-flex items-center justify-center w-4 h-4 rounded-full hover:bg-blue-200"
+            >
+              <X className="w-3" />
+            </button>
+          </span>
+        )}
+
+        {currentFilters.subCategory !== "all" && (
+          <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 mb-3 sm:mb-0">
+            {currentFilters.subCategory}
+            <button
+              type="button"
+              onClick={() => updateFilter("subCategory", "all")}
               className="ml-2 inline-flex items-center justify-center w-4 h-4 rounded-full hover:bg-blue-200"
             >
               <X className="w-3" />

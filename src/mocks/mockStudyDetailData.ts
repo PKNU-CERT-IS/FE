@@ -1,4 +1,5 @@
 import { AttachedFile } from "@/types/attachedFile";
+import { CategoryType, SubCategoryType } from "@/types/category";
 import { StatusType } from "@/types/study";
 
 // 타입 정의
@@ -19,14 +20,13 @@ export interface StudyDetailData {
   period: string;
   maxParticipants: number;
   currentParticipants: number;
-  tags: string[];
   status: StatusType;
-  customTags: { name: string; color: string }[];
   author: string;
   authorStatus: "student" | "graduate";
   semester: string;
   attachedFiles?: AttachedFile[];
-  category: string;
+  category: CategoryType;
+  subCategory: SubCategoryType;
   hackingTechnique: string;
   startDate: string;
   endDate?: string;
@@ -77,13 +77,7 @@ export const mockStudyDetailData: StudyDetailData[] = [
     period: "2025.07.01 ~ 2025.07.15",
     maxParticipants: 10,
     currentParticipants: 7,
-    tags: ["웹해킹", "보안", "실습", "OWASP"],
     status: "in_progress",
-    customTags: [
-      { name: "OWASP", color: "bg-blue-100 text-blue-800" },
-      { name: "Web Security", color: "bg-purple-100 text-purple-800" },
-      { name: "Vulnerability", color: "bg-red-100 text-red-800" },
-    ],
     author: "김보안",
     authorStatus: "student",
     semester: "2025-2",
@@ -109,8 +103,9 @@ export const mockStudyDetailData: StudyDetailData[] = [
         description: "해커톤 전체 기획서 및 일정표",
       },
     ],
-    category: "Web Security",
-    hackingTechnique: "web_security",
+    category: "CTF",
+    subCategory: "리버싱",
+    hackingTechnique: "CTF",
     startDate: "2025-07-01",
     endDate: "2025-07-15",
     authorInfo: {
@@ -178,13 +173,7 @@ export const mockStudyDetailData: StudyDetailData[] = [
     period: "2025.03.01 ~ 2025.05.31",
     maxParticipants: 10,
     currentParticipants: 10,
-    tags: ["침투테스트", "메타스플로잇", "해킹"],
     status: "completed",
-    customTags: [
-      { name: "Metasploit", color: "bg-purple-100 text-purple-800" },
-      { name: "Penetration Testing", color: "bg-pink-100 text-pink-800" },
-      { name: "Exploitation", color: "bg-red-100 text-red-800" },
-    ],
     author: "이해커",
     authorStatus: "graduate",
     semester: "2025-2",
@@ -210,8 +199,9 @@ export const mockStudyDetailData: StudyDetailData[] = [
         description: "해커톤 전체 기획서 및 일정표",
       },
     ],
-    category: "Penetration Testing",
-    hackingTechnique: "penetration_testing",
+    category: "CTF",
+    subCategory: "리버싱",
+    hackingTechnique: "CTF",
     startDate: "2025-03-01",
     endDate: "2025-05-31",
     authorInfo: {
@@ -259,13 +249,7 @@ Metasploit Framework는 침투 테스팅과 보안 연구를 위한 강력한 �
     period: "2025.07.20 ~ 2025.09.20",
     maxParticipants: 10,
     currentParticipants: 1,
-    tags: ["암호학", "RSA", "파이썬"],
     status: "not_started",
-    customTags: [
-      { name: "Cryptography", color: "bg-purple-100 text-purple-800" },
-      { name: "RSA", color: "bg-green-100 text-green-800" },
-      { name: "Python", color: "bg-blue-100 text-blue-800" },
-    ],
     author: "박암호",
     authorStatus: "student",
     semester: "2025-2",
@@ -291,8 +275,9 @@ Metasploit Framework는 침투 테스팅과 보안 연구를 위한 강력한 �
         description: "해커톤 전체 기획서 및 일정표",
       },
     ],
-    category: "Cryptography",
-    hackingTechnique: "cryptography",
+    category: "CTF",
+    subCategory: "디지털 포렌식",
+    hackingTechnique: "CTF",
     startDate: "2025-07-20",
     endDate: "2025-09-20",
     authorInfo: {

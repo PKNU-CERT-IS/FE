@@ -1,5 +1,7 @@
 "use client";
 
+import { useState } from "react";
+
 interface CCPublishedCheckboxProps {
   postId: number;
   published: boolean;
@@ -9,9 +11,18 @@ export default function CCPublishedCheckbox({
   postId,
   published,
 }: CCPublishedCheckboxProps) {
-  const handleTogglePublic = (e: React.ChangeEvent<HTMLInputElement>) => {
-    e.stopPropagation();
-    console.log(postId, published);
+  const [isPublished, setIsPublished] = useState(published);
+
+  const handleTogglePublic = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const nextValue = e.target.checked;
+    setIsPublished(nextValue);
+
+    try {
+      console.log("API 요청 보내기:", postId, nextValue);
+    } catch (err) {
+      console.error("업데이트 실패:", err);
+      setIsPublished(!nextValue);
+    }
   };
 
   return (
@@ -21,7 +32,7 @@ export default function CCPublishedCheckbox({
     >
       <input
         type="checkbox"
-        checked={published}
+        checked={isPublished}
         onChange={handleTogglePublic}
         className="rounded z-20"
       />

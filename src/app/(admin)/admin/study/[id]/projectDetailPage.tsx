@@ -13,6 +13,7 @@ import BackToListButton from "@/components/detail/SCBackToListButton";
 import KebabMenu from "@/components/detail/CCKebabMenu";
 import ShareButton from "@/components/detail/CCShareButton";
 import { getStatusColor } from "@/utils/projectUtils";
+import DefaultBadge from "@/components/ui/defaultBadge";
 
 interface ProjectDetailPageProps {
   params: { id: string };
@@ -124,14 +125,12 @@ export default async function ProjectDetailPage({
         {/* 헤더 */}
         <header className=" border-b pb-6">
           <div className="flex flex-wrap gap-2 mb-4">
-            {project.customTags.map((tag, index) => (
-              <span
-                key={index}
-                className={`px-2 py-1 rounded text-xs font-medium ${tag.color}`}
-              >
-                {tag.name}
-              </span>
-            ))}
+            <DefaultBadge className="bg-gray-100 border border-gray-200 text-gray-700">
+              {project.category}
+            </DefaultBadge>
+            <DefaultBadge className="bg-gray-100 border border-gray-200 text-gray-700">
+              {project.subCategory}
+            </DefaultBadge>
           </div>
 
           <h1 className="text-4xl font-extrabold tracking-tight text-gray-900 sm:text-5xl mb-4">
@@ -158,6 +157,9 @@ export default async function ProjectDetailPage({
             </span>
             <span>
               <strong>카테고리:</strong> {project.category}
+            </span>
+            <span>
+              <strong>하위 카테고리:</strong> {project.subCategory}
             </span>
           </div>
 

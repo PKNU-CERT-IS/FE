@@ -6,12 +6,10 @@ import { mockBoardData } from "@/mocks/mockBoardData";
 import { mockBoardDetailData } from "@/mocks/mockBoardDetailData";
 import { getCategoryColor } from "@/utils/boardUtils";
 import DownloadButton from "@/components/detail/SCDownloadButton";
-import { Calendar, Eye, Heart, Pin, Tag, Download } from "lucide-react";
+import { Calendar, Eye, Heart, Pin, Download } from "lucide-react";
 import DefaultBadge from "@/components/ui/defaultBadge";
-
 import KebabMenuButton from "@/components/detail/CCKebabMenu";
 import LikeButton from "@/components/detail/CCLikeButton";
-import BookmarkButton from "@/components/detail/CCBookmarkButton";
 import ShareButton from "@/components/detail/CCShareButton";
 import { formatFileSize } from "@/utils/attachedFileUtils";
 import { getFileIcon } from "@/utils/attachedFileUtils";
@@ -56,7 +54,6 @@ export async function generateMetadata({
       description: data.content.substring(0, 160) + "...",
       type: "article",
       authors: [data.author],
-      tags: data.tags,
     },
   };
 }
@@ -136,21 +133,8 @@ export default async function DetailPage({
 
         {/* 게시글 본문 */}
         <div className="p-6">
-          {/* 태그 */}
-          <div className="flex gap-2 mb-8 pt-6 border-t border-gray-300">
-            {data.tags.map((tag) => (
-              <DefaultBadge
-                key={tag}
-                className="text-xs bg-gray-100 text-gray-600 hover:bg-gray-200 cursor-pointer"
-              >
-                <Tag className="w-3 h-3 mr-1" />
-                {tag}
-              </DefaultBadge>
-            ))}
-          </div>
-
           {/* React-Markdown으로 렌더링 - Tailwind Typography 사용 */}
-          <div className="max-w-none mb-8">
+          <div className="max-w-none mb-8 pt-6 border-t border-gray-300">
             <MarkdownRenderer content={data.detailContent} />
           </div>
 
@@ -185,7 +169,6 @@ export default async function DetailPage({
           <div className="flex items-center justify-between pt-6 border-t border-gray-300">
             <div className="flex gap-4">
               <LikeButton currentLikes={data.likes} />
-              <BookmarkButton />
             </div>
             <ShareButton />
           </div>

@@ -2,7 +2,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import DefaultButton from "@/components/ui/defaultButton";
-import { MoreVertical, Edit, Flag, Trash2 } from "lucide-react";
+import { MoreVertical, Edit, Trash2 } from "lucide-react";
 import ConfirmModal from "@/components/ui/defaultConfirmModal";
 
 interface KebabMenuProps {
@@ -41,11 +41,6 @@ export default function KebabMenu({ currentId, currentUrl }: KebabMenuProps) {
     setIsDeleteModalOpen(false);
   };
 
-  const handleReport = () => {
-    alert("신고");
-    setIsKebabOpen(false);
-  };
-
   const handleEdit = () => {
     router.push(`/${currentUrl}/${currentId}/edit`);
   };
@@ -63,26 +58,19 @@ export default function KebabMenu({ currentId, currentUrl }: KebabMenuProps) {
         </DefaultButton>
 
         {isKebabOpen && (
-          <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-10">
+          <div className="absolute right-0 mt-2 w-36 bg-white border border-gray-200 rounded-lg shadow-lg z-10">
             <div className="p-1">
               <button
                 onClick={handleEdit}
-                className="w-full text-left px-3 py-2 text-sm hover:bg-gray-100 rounded flex items-center gap-2 no-underline text-gray-700 duration-200"
+                className="w-full text-left px-3 py-2 text-sm hover:bg-gray-100 rounded flex items-center gap-2 no-underline text-gray-700 duration-200 cursor-pointer"
               >
                 <Edit className="w-4 h-4" />
                 수정
               </button>
-              <button
-                onClick={handleReport}
-                className="w-full text-left px-3 py-2 text-sm hover:bg-gray-100 rounded flex items-center gap-2 duration-200"
-              >
-                <Flag className="w-4 h-4" />
-                신고
-              </button>
               <hr className="my-1 text-gray-300 " />
               <button
                 onClick={handleDeleteClick}
-                className="w-full text-left px-3 py-2 text-sm hover:bg-gray-100 rounded flex items-center gap-2 text-red-600 duration-200"
+                className="w-full text-left px-3 py-2 text-sm hover:bg-gray-100 rounded flex items-center gap-2 text-red-600 duration-200 cursor-pointer"
               >
                 <Trash2 className="w-4 h-4" />
                 삭제

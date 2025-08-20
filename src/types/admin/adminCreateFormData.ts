@@ -12,7 +12,6 @@ export interface StudyCreateFormData {
   description: string;
   content: string;
   category: string;
-  tags?: string[];
   attachments: AttachedFile[];
   startDate: string; // YYYY-MM-DD
   endDate: string; // YYYY-MM-DD
@@ -36,7 +35,6 @@ export interface ProjectCreateFormData {
   description: string;
   content: string;
   category: string;
-  tags: string[];
   attachments: AttachedFile[];
   startDate: string;
   endDate: string;

@@ -43,14 +43,14 @@ const generateUpcomingEvents = () => {
 };
 const upcomingEvents = generateUpcomingEvents();
 
-const Home = () => {
+export default function HomePage() {
   return (
     <>
-      <div className="mx-auto px-4">
+      <div className="mx-auto">
         {/* 1p */}
         <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden bg-white">
           <>
-            <div className="text-6xl md:text-8xl font-bold mb-8 animate-fade-in">
+            <div className="text-7xl md:text-8xl font-bold mb-8 animate-fade-in">
               <span className="text-gray-900 drop-shadow-lg">CERT-IS</span>
             </div>
             <TypingAnimation />
@@ -60,7 +60,7 @@ const Home = () => {
               <LockSVG className="w-6 h-6 stroke-cert-dark-red" />
             </div>
             <div className="absolute bottom-20 right-10 animate-bounce opacity-20">
-              <ShieldSVG className="w-9 h-9 stroke-cert-dark-red" />
+              <ShieldSVG className="w-9 h-9 text-cert-dark-red" />
             </div>
             <div className="absolute top-1/3 right-20 animate-bounce opacity-20">
               <EyeSVG className="w-8 h-8 text-cert-dark-red" />
@@ -91,7 +91,7 @@ const Home = () => {
                 "실제 시스템 취약점 분석과 모의해킹을 통한 보안 강화 기법을 학습합니다"
               }
               svgComponent={
-                <ShieldSVG className="w-16 h-16 stroke-cert-dark-red" />
+                <ShieldSVG className="w-16 h-16 text-cert-dark-red" />
               }
             />
             <DefaultCard
@@ -134,37 +134,44 @@ const Home = () => {
               <MiniCalendar />
             </div>
             <div className="bg-white border border-gray-200 rounded-2xl p-3 shadow-sm">
-              <div className="flex flex-col space-y-1.5 p-6 w-[28rem] text-center pb-6">
+              <div className="flex flex-col space-y-1.5 p-6 w-[16rem] sm:w-[24rem] md:w-[28rem] text-center pb-6">
                 <div className="flex flex-row">
                   <div className="mb-6">
-                    <ScheduleSVG width={24} className="stroke-cert-dark-red" />
+                    <ScheduleSVG className="w-6 h-6 stroke-cert-dark-red" />
                   </div>
                   <div className="text-xl ml-3 font-bold tracking-tight text-gray-900">
                     다가오는 일정
                   </div>
                 </div>
                 <div className="space-y-4">
-                  {upcomingEvents.map((event, index) => (
-                    <div
-                      key={index}
-                      className="flex items-start p-3 bg-gray-50 rounded-lg border-l-4 border-cert-dark-red"
-                    >
-                      <div className="flex-shrink-0 mr-3">
-                        <div className="w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-bold bg-cert-dark-red">
-                          {event.date}
+                  {upcomingEvents.length === 0 ? (
+                    <p className="text-gray-500 text-sm text-center">
+                      다가오는 일정이 없습니다
+                    </p>
+                  ) : (
+                    upcomingEvents.map((event, index) => (
+                      <div
+                        key={index}
+                        className="flex items-start p-3 bg-gray-50 rounded-lg border-l-4 border-cert-dark-red"
+                      >
+                        <div className="flex-shrink-0 mr-3">
+                          <div className="w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-bold bg-cert-dark-red">
+                            {event.date}
+                          </div>
+                        </div>
+                        <div>
+                          <h4 className="text-gray-900 font-medium text-left">
+                            {event.title}
+                          </h4>
+                          <p className="text-gray-500 text-sm">
+                            {event.description}
+                          </p>
                         </div>
                       </div>
-                      <div>
-                        <h4 className="text-gray-900 font-medium text-left">
-                          {event.title}
-                        </h4>
-                        <p className="text-gray-500 text-sm">
-                          {event.description}
-                        </p>
-                      </div>
-                    </div>
-                  ))}
+                    ))
+                  )}
                 </div>
+
                 <div className="mt-6 pt-3 border-t border-gray-200">
                   <Link href={"/schedule"}>
                     <DefaultButton
@@ -252,7 +259,7 @@ const Home = () => {
                   </span>
                 </div>
                 <div className="flex flex-row items-center">
-                  <ShieldSVG className="w-6 h-6 stroke-cert-dark-red" />
+                  <ShieldSVG className="w-6 h-6 text-cert-dark-red" />
                   <span className="my-2 mx-3">
                     보안 자격증 취득 지원 프로그램
                   </span>
@@ -289,7 +296,8 @@ const Home = () => {
                     </span>
                   </div>
                 </div>
-                <button className="w-full rounded-md py-2.5 action-button text-white cursor-pointer duration-300">
+                {/* 지원서 폼 추후 추가 */}
+                <button className="w-full rounded-md py-2.5 action-button text-white duration-300">
                   지원하기
                 </button>
               </div>
@@ -299,6 +307,4 @@ const Home = () => {
       </div>
     </>
   );
-};
-
-export default Home;
+}

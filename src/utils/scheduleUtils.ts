@@ -1,6 +1,10 @@
-import { ScheduleInfo, SCHEDULE_TYPES, ScheduleType } from "@/types/schedule";
-import { formatDate } from "./formatDateUtil";
+import {
+  SCHEDULE_TYPES,
+  ScheduleStatusType,
+  ScheduleType,
+} from "@/types/schedule";
 
+// schedule type
 export const getTypeLabel = (type: ScheduleType) => {
   switch (type) {
     case SCHEDULE_TYPES.MEETING:
@@ -13,6 +17,20 @@ export const getTypeLabel = (type: ScheduleType) => {
       return "컨퍼런스";
     default:
       return "기타";
+  }
+};
+export const labelToType = (label: string): ScheduleType | null => {
+  switch (label) {
+    case "회의":
+      return SCHEDULE_TYPES.MEETING;
+    case "정기 모임":
+      return SCHEDULE_TYPES.WORKSHOP;
+    case "스터디":
+      return SCHEDULE_TYPES.STUDY;
+    case "컨퍼런스":
+      return SCHEDULE_TYPES.CONFERENCE;
+    default:
+      return null;
   }
 };
 
@@ -30,6 +48,33 @@ export const getTypeColor = (type: ScheduleType) => {
       return "bg-gray-50 text-gray-600 border-gray-200";
   }
 };
+
+// schedule status
+export function getStatusColor(status: string): ScheduleStatusType {
+  switch (status) {
+    case "PENDING":
+      return "bg-yellow-100 text-yellow-800 border-yellow-200";
+    case "APPROVED":
+      return "bg-green-100 text-green-800 border-green-200";
+    case "REJECTED":
+      return "bg-red-100 text-red-800 border-red-200";
+    default:
+      return "bg-gray-100 text-gray-800 border-gray-200";
+  }
+}
+
+export function getStatusLabel(status: string): ScheduleStatusType {
+  switch (status) {
+    case "PENDING":
+      return "승인 대기";
+    case "APPROVED":
+      return "승인 완료";
+    case "REJECTED":
+      return "승인 거절";
+    default:
+      return "Undefined";
+  }
+}
 
 /**
  * 날짜 상수들
@@ -72,15 +117,4 @@ export const generateCalendarDays = (currentDate: Date): Date[] => {
   }
 
   return days;
-};
-
-/**
- * 특정 날짜의 예약 정보를 찾는 함수
- */
-export const getScheduleByDate = (
-  targetDate: Date | string,
-  schedules: ScheduleInfo[]
-): ScheduleInfo[] => {
-  const target = formatDate(targetDate);
-  return schedules.filter((s) => s.date === target);
 };

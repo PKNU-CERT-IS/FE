@@ -6,20 +6,27 @@ import { mockScheduleData } from "@/mocks/mockScheduleData";
 import {
   DAY_NAMES,
   generateCalendarDays,
-  getScheduleByDate,
   getTypeColor,
 } from "@/utils/scheduleUtils";
 import { useSearchParams, useRouter } from "next/navigation";
 import { formatDate } from "@/utils/formatDateUtil";
+import CCScrollScheduleList from "@/components/schedule/CCScrollScheduleList";
+import { ScheduleInfo } from "@/types/schedule";
 
 export default function Calendar() {
   const router = useRouter();
   const currentParams = useSearchParams();
 
+  const [currentDate, setCurrentDate] = useState(new Date());
+  const today = useMemo(() => new Date(), []);
+
+  const schedules = useMemo<ScheduleInfo[]>(() => mockScheduleData, []);
+
+  const days = useMemo(() => generateCalendarDays(currentDate), [currentDate]);
+
   const handleMonthChange = useCallback(
     (newDate: Date) => {
       const params = new URLSearchParams(currentParams);
-
       params.set("date", formatDate(newDate));
       router.replace(`?${params.toString()}`);
       setCurrentDate(newDate);
@@ -31,7 +38,6 @@ export default function Calendar() {
     (date: Date) => {
       const selected = formatDate(date);
       const params = new URLSearchParams(currentParams);
-
       if (params.get("date") !== selected) {
         params.set("date", selected);
       }
@@ -40,45 +46,53 @@ export default function Calendar() {
     [currentParams, router]
   );
 
-  const [currentDate, setCurrentDate] = useState(new Date());
-  const today = useMemo(() => new Date(), []);
-  const schedules = useMemo(() => mockScheduleData(), []);
-  const days = useMemo(() => generateCalendarDays(currentDate), [currentDate]);
-
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
   const date = currentDate.getDate();
 
   const prevMonth = () => {
-    setCurrentDate(new Date(year, month - 1, date));
     const newDate = new Date(year, month - 1, date);
     handleMonthChange(newDate);
   };
 
   const nextMonth = () => {
-    setCurrentDate(new Date(year, month + 1, date));
     const newDate = new Date(year, month + 1, date);
     handleMonthChange(newDate);
   };
 
+  const getSchedulesForDay = useCallback(
+    (day: Date) => {
+      const dayKey = formatDate(day, "short");
+      return schedules.filter(
+        (s) => formatDate(s.started_at, "short") === dayKey
+      );
+    },
+    [schedules]
+  );
+
   return (
     <div className="bg-white border border-gray-300 rounded-lg p-4 shadow-lg">
       <div className="flex items-center justify-between mb-4 p-2">
-        <h3 className="text-xl font-semibold text-gray-900">
-          {formatDate(currentDate, "long")}
-        </h3>
-        <div>
+        <div className="flex flex-row">
+          <h3 className="text-xl font-semibold text-gray-900">
+            {formatDate(currentDate, "long")}
+          </h3>
+        </div>
+        <div className="flex items-center">
+          <div className="mr-2 sm:mr-4 hidden sm:block">
+            <CCScrollScheduleList />
+          </div>
           <button
             onClick={prevMonth}
-            className="text-gray-600 p-3 rounded-md hover:text-gray-900 hover:bg-gray-100 mr-3 duration-200"
+            className="text-gray-600 p-1 sm:p-3 rounded-md hover:text-gray-900 hover:bg-gray-100 mr-3 duration-200 cursor-pointer"
           >
-            <AngleSVG className="rotate-90" width={13} />
+            <AngleSVG className="rotate-90 w-2.5 sm:w-3.5" />
           </button>
           <button
             onClick={nextMonth}
-            className="text-gray-600 p-3 rounded-md hover:text-gray-900 hover:bg-gray-100 duration-200"
+            className="text-gray-600 p-1 sm:p-3 rounded-md hover:text-gray-900 hover:bg-gray-100 duration-200 cursor-pointer"
           >
-            <AngleSVG className="rotate-270" width={13} />
+            <AngleSVG className="rotate-270 w-2.5 sm:w-3.5" />
           </button>
         </div>
       </div>
@@ -98,7 +112,8 @@ export default function Calendar() {
         {days.map((day, index) => {
           const isToday = day.toDateString() === today.toDateString();
           const isCurrentMonth = day.getMonth() === month;
-          const schedule = getScheduleByDate(day, schedules);
+
+          const daySchedules = getSchedulesForDay(day);
 
           return (
             <div
@@ -111,13 +126,13 @@ export default function Calendar() {
                     : "text-gray-400 text-xs"
                 }
                 ${
-                  schedule.length > 0
+                  daySchedules.length > 0
                     ? "border bg-gray-300/10 border-cert-dark-red-20"
                     : "hover:bg-gray-100"
                 }
-                  ${isToday ? "text-white" : ""}
+                ${isToday ? "text-white" : ""}
               `}
-              title={schedule[0]?.title}
+              title={daySchedules[0]?.title}
             >
               <div className="flex justify-center items-center">
                 {isToday && (
@@ -127,9 +142,10 @@ export default function Calendar() {
                   {day.getDate()}
                 </span>
               </div>
-              {schedule.length > 0 && (
+
+              {daySchedules.length > 0 && (
                 <div className="mt-1 space-y-1">
-                  {schedule.slice(0, 3).map((s, idx) => (
+                  {daySchedules.slice(0, 3).map((s, idx) => (
                     <div
                       key={idx}
                       className={`text-xs text-center rounded-sm p-1 ${getTypeColor(
@@ -139,9 +155,9 @@ export default function Calendar() {
                       {s.title}
                     </div>
                   ))}
-                  {schedule.length > 3 && (
+                  {daySchedules.length > 3 && (
                     <div className="text-xs text-center text-gray-500 p-0.5">
-                      + {schedule.length - 3}개 더보기
+                      + {daySchedules.length - 3}개 더보기
                     </div>
                   )}
                 </div>

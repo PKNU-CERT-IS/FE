@@ -2,46 +2,71 @@
 
 import { useEffect, useState, useRef } from "react";
 
-const useTyping = (content: string) => {
-  const [text, setText] = useState("");
+export default function useTyping(firstLine: string, secondLine: string) {
+  const [firstText, setFirstText] = useState("");
+  const [secondText, setSecondText] = useState("");
+  const [step, setStep] = useState<"firstStep" | "secondStep" | "isDeleting">(
+    "firstStep"
+  );
   const [count, setCount] = useState(0);
-  const [isDeleting, setIsDeleting] = useState(false);
+  const [cursorLine, setCursorLine] = useState<
+    "firstCursorLine" | "secondCursorLine"
+  >("firstCursorLine");
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     const typingSpeed = 100;
     const deletingSpeed = 50;
-    const pauseDuration = 3000; // 타이핑 후 대기 시간 (3초)
+    const pauseDuration = 3000;
 
-    if (!isDeleting && count === content.length) {
-      // 타이핑 완료 후 pauseDuration 대기 후 삭제 시작
-      timeoutRef.current = setTimeout(() => {
-        setIsDeleting(true);
-      }, pauseDuration);
-      return () => clearTimeout(timeoutRef.current!);
+    if (step === "firstStep") {
+      setCursorLine("firstCursorLine");
+      if (count < firstLine.length) {
+        timeoutRef.current = setTimeout(() => {
+          setFirstText((prev) => prev + firstLine[count]);
+          setCount((prev) => prev + 1);
+        }, typingSpeed);
+      } else {
+        setStep("secondStep");
+        setCount(0);
+      }
     }
 
-    timeoutRef.current = setTimeout(
-      () => {
-        if (!isDeleting) {
-          setText((prev) => prev + content[count]);
+    if (step === "secondStep") {
+      setCursorLine("secondCursorLine");
+      if (count < secondLine.length) {
+        timeoutRef.current = setTimeout(() => {
+          setSecondText((prev) => prev + secondLine[count]);
           setCount((prev) => prev + 1);
-        } else {
-          if (count > 0) {
-            setText((prev) => prev.slice(0, -1));
-            setCount((prev) => prev - 1);
-          } else {
-            setIsDeleting(false); // 다시 타이핑 시작
-          }
-        }
-      },
-      isDeleting ? deletingSpeed : typingSpeed
-    );
+        }, typingSpeed);
+      } else {
+        timeoutRef.current = setTimeout(() => {
+          setStep("isDeleting");
+          setCount(0);
+        }, pauseDuration);
+      }
+    }
+
+    if (step === "isDeleting") {
+      // 삭제 (아래 → 위 순서)
+      setCursorLine("secondCursorLine"); // 삭제 중엔 아래 줄 커서
+      if (secondText.length > 0) {
+        timeoutRef.current = setTimeout(() => {
+          setSecondText((prev) => prev.slice(0, -1));
+        }, deletingSpeed);
+      } else if (firstText.length > 0) {
+        setCursorLine("firstCursorLine");
+        timeoutRef.current = setTimeout(() => {
+          setFirstText((prev) => prev.slice(0, -1));
+        }, deletingSpeed);
+      } else {
+        setStep("firstStep");
+        setCount(0);
+      }
+    }
 
     return () => clearTimeout(timeoutRef.current!);
-  }, [count, isDeleting, content]);
+  }, [count, step, firstText, secondText, firstLine, secondLine]);
 
-  return { text, isDeleting };
-};
-
-export default useTyping;
+  return { firstText, secondText, cursorLine };
+}

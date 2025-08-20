@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { Calendar, Users, Tag, Download } from "lucide-react";
+import { Calendar, Users, Download } from "lucide-react";
 import DefaultBadge from "@/components/ui/defaultBadge";
 import MarkdownRenderer from "@/components/ui/defaultMarkdownRenderer";
 import {
@@ -9,7 +9,7 @@ import {
 } from "@/mocks/mockStudyDetailData";
 import BackToListButton from "@/components/detail/SCBackToListButton";
 import KebabMenu from "@/components/detail/CCKebabMenu";
-import CCShareButton from "@/components/detail/CCShareButton";
+// import CCShareButton from "@/components/detail/CCShareButton";
 import MeetingMinutes from "@/components/study/CCMeetingMinutes";
 import DownloadButton from "@/components/detail/SCDownloadButton";
 import { formatFileSize } from "@/utils/attachedFileUtils";
@@ -172,21 +172,6 @@ export default async function StudyDetailPage({
                     </div>
                   </div>
                 )}
-              {/* Tags */}
-              <div className="flex justify-between p-1  pt-6 border-t border-gray-300">
-                <div className="flex flex-wrap gap-2">
-                  {studyData.tags.map((tag) => (
-                    <DefaultBadge
-                      key={tag}
-                      className="text-xs h-6 bg-gray-100 text-gray-600 hover:bg-gray-200 "
-                    >
-                      <Tag className="w-3 h-3 mr-1" />
-                      {tag}
-                    </DefaultBadge>
-                  ))}
-                </div>
-                <CCShareButton />
-              </div>
             </div>
           </div>
           <MeetingMinutes

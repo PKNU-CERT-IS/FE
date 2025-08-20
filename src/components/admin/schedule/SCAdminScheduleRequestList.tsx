@@ -25,7 +25,7 @@ const pendingReservations: PendingReservationType[] = [
     description: "웹 해킹 스터디를 위한 동아리방 예약입니다.",
     type: SCHEDULE_TYPES.STUDY,
     applicant: "김철수",
-    status: "승인중",
+    status: "PENDING",
   },
   {
     id: 2,
@@ -36,7 +36,7 @@ const pendingReservations: PendingReservationType[] = [
     description: "암호학 스터디를 위한 동아리방 예약입니다.",
     type: SCHEDULE_TYPES.STUDY,
     applicant: "이영희",
-    status: "승인중",
+    status: "PENDING",
   },
   {
     id: 3,
@@ -47,7 +47,7 @@ const pendingReservations: PendingReservationType[] = [
     description: "네트워크 보안 프로젝트 회의를 위한 동아리방 예약입니다.",
     type: SCHEDULE_TYPES.MEETING,
     applicant: "박민수",
-    status: "승인중",
+    status: "PENDING",
   },
   {
     id: 4,
@@ -58,7 +58,7 @@ const pendingReservations: PendingReservationType[] = [
     description: "정보보안 회의를 위한 동아리방 예약입니다.",
     type: SCHEDULE_TYPES.MEETING,
     applicant: "박민수",
-    status: "승인중",
+    status: "PENDING",
   },
 ];
 

@@ -1,34 +1,46 @@
 "server-only";
-import { mockScheduleData } from "@/mocks/mockScheduleData";
-import { getTypeColor, getTypeLabel } from "@/utils/scheduleUtils";
+
 import ScheduleSVG from "/public/icons/schedule.svg";
 import LocationSVG from "/public/icons/location.svg";
 import TimeSVG from "/public/icons/time.svg";
+import { getTypeColor, getTypeLabel } from "@/utils/scheduleUtils";
+import { ScheduleInfo } from "@/types/schedule";
+import { formatDate, formatTime } from "@/utils/formatDateUtil";
+import { MessageSquareText } from "lucide-react";
+import { mockScheduleData } from "@/mocks/mockScheduleData";
 
 interface SCScheduleListProps {
   date?: string;
+  id?: string;
 }
 
-export default async function CCScheduleList({ date }: SCScheduleListProps) {
-  const schedules = await mockScheduleData();
+export default async function SCScheduleList({
+  date,
+  id = "all-schedule-list",
+}: SCScheduleListProps) {
+  // API 호출 코드 -> 나중에 주석 해제
+  // const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/schedule`, {
+  //   next: { revalidate: 60 },
+  // });
+  // const schedules: ScheduleInfo[] = await res.json();
+
+  const schedules: ScheduleInfo[] = await mockScheduleData;
 
   const baseDate = date ? new Date(date) : new Date();
   const year = baseDate.getFullYear();
   const month = baseDate.getMonth() + 1;
 
   const filteredSchedules = schedules.filter((s) => {
-    const d = new Date(s.date);
+    const d = new Date(s.started_at);
     return d.getFullYear() === year && d.getMonth() + 1 === month;
   });
 
   return (
-    <div className="my-12">
-      <h2 className="text-2xl font-bold text-gray-900 mb-6">
-        {`${month}월 전체 일정`}
-      </h2>
+    <div id={id} className="my-12">
+      <h2 className="text-2xl font-bold text-gray-900 mb-6">{`${month}월 전체 일정`}</h2>
 
       {filteredSchedules.length === 0 ? (
-        <div className="text-center text-gray-500 text-lg py-5 ">
+        <div className="text-center text-gray-500 text-lg py-5">
           {`${month}월 일정이 없습니다.`}
         </div>
       ) : (
@@ -36,7 +48,7 @@ export default async function CCScheduleList({ date }: SCScheduleListProps) {
           {filteredSchedules.map((schedule) => (
             <div
               key={schedule.id}
-              className="card-list text-card-foreground bg-white"
+              className="card-list text-card-foreground bg-white rounded-xl border shadow-sm"
             >
               <div className="flex flex-col space-y-1.5 p-6">
                 <div className="flex items-start justify-between">
@@ -46,19 +58,27 @@ export default async function CCScheduleList({ date }: SCScheduleListProps) {
                     </p>
                     <div className="space-y-2 text-sm text-gray-600">
                       <div className="flex items-center">
-                        <ScheduleSVG className="w-4 mr-2" stroke="#4B5563" />
-                        {new Date(schedule.date).toLocaleDateString("ko-KR")}
+                        <ScheduleSVG className="w-4 mr-2 stroke-gray-600" />
+                        {formatDate(schedule.started_at, "dot")}
                       </div>
                       <div className="flex items-center">
                         <TimeSVG className="mr-2" />
-                        {schedule.startTime} - {schedule.endTime}
+                        {`${formatTime(
+                          schedule.started_at,
+                          "hm"
+                        )} - ${formatTime(schedule.ended_at, "hm")}`}
                       </div>
                       <div className="flex items-center">
                         <LocationSVG className="mr-2" />
-                        {schedule.location}
+                        {schedule.place ?? ""}
+                      </div>
+                      <div className="flex items-center">
+                        <MessageSquareText className="w-4 mr-2" />
+                        {schedule.description && <p>{schedule.description}</p>}
                       </div>
                     </div>
                   </div>
+
                   <div className="grid grid-rows-2">
                     <div className="flex items-center gap-2">
                       <div

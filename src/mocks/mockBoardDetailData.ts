@@ -5,7 +5,6 @@ import { AttachedFile } from "@/types/attachedFile";
 interface BoardDetailData {
   id: number;
   detailContent: string;
-  tags: string[];
   authorInfo: {
     initials: string;
     role: string;
@@ -64,7 +63,6 @@ export const mockBoardDetailData: BoardDetailData[] = [
 ---
 
 문의사항은 \`\`\`admin@security-club.com\`\`\`으로 연락주세요!`,
-    tags: ["CTF", "대회", "웹해킹", "포렌식"],
     authorInfo: { initials: "관리", role: "운영진" },
     attachedFiles: [
       {
@@ -168,7 +166,6 @@ def exploit_server(target_url):
 | 개인 사이트 | 🟡 낮음 | ❌ 미완료 |
 
 **업데이트**: 이 보고서는 새로운 정보 확인 시 지속적으로 업데이트됩니다.`,
-    tags: ["CVE", "Apache", "취약점분석", "보안패치"],
     authorInfo: { initials: "김보", role: "보안연구원" },
     attachedFiles: [
       {
@@ -313,7 +310,6 @@ nmap --script vuln target-ip
 ---
 
 **다음 단계**: [고급 침투 테스트 가이드](./advanced-pentest-guide.md)`,
-    tags: ["Kali Linux", "모의해킹", "실습환경", "DVWA", "Metasploit"],
     authorInfo: { initials: "이해", role: "기술팀장" },
     attachedFiles: [
       {
@@ -437,7 +433,6 @@ nmap --script vuln target-ip
 
 **문의사항**: 동아리 운영진 (security-admin@club.com)  
 **긴급 연락**: 010-1234-5678`,
-    tags: ["랩실규칙", "보안정책", "공지사항", "출입통제"],
     authorInfo: { initials: "관리", role: "운영진" },
     attachedFiles: [
       {
@@ -585,7 +580,6 @@ nmap --script vuln target-ip
 **문의**: 박자격증 (cissp-study@club.com)
 
 > **💡 한 번의 기회**: 이번 기수를 놓치면 다음 기수는 **1년 후**입니다!`,
-    tags: ["CISSP", "자격증", "스터디", "보안전문가"],
     authorInfo: { initials: "박자", role: "스터디리더" },
     attachedFiles: [
       {

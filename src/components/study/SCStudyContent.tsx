@@ -4,7 +4,7 @@ import type { StudyMaterial, CurrentFilters } from "@/types/study";
 import { STATUS_LABELS, AUTHOR_STATUS_LABELS } from "@/types/study";
 import CCStudyPagination from "@/components/study/CCStudyPagination";
 import CCStudyDateInfo from "@/components/study/CCStudyDateInfo"; // 새로 생성한 클라이언트 컴포넌트
-import SCStudySearchResultNotFound from "@/components/study/SCStudySearchResultNotFound";
+import SCSearchResultNotFound from "@/components/ui/SCSearchResultNotFound";
 import {
   getStatusColor,
   getProgressColor,
@@ -17,6 +17,8 @@ import DownloadGraySVG from "/public/icons/download-gray.svg";
 import PdfSVG from "/public/icons/pdf.svg";
 
 import Link from "next/link";
+import DefaultBadge from "@/components/ui/defaultBadge";
+import { getCategoryColor } from "@/utils/categoryColorUtils";
 
 // 학습 자료 데이터를 가져오는 함수 (실제로는 DB에서 가져올 것)
 async function getStudyMaterials(): Promise<StudyMaterial[]> {
@@ -27,11 +29,6 @@ async function getStudyMaterials(): Promise<StudyMaterial[]> {
       isPending: false,
       title: "OWASP Top 10 2023 취약점 분석",
       description: "최신 OWASP Top 10 취약점에 대한 상세 분석 자료입니다.",
-      customTags: [
-        { name: "OWASP", color: "bg-blue-100 text-blue-800" },
-        { name: "Web Security", color: "bg-purple-100 text-purple-800" },
-        { name: "Vulnerability", color: "bg-red-100 text-red-800" },
-      ],
       author: "김보안",
       authorStatus: "student",
       semester: "2025-2",
@@ -47,8 +44,9 @@ async function getStudyMaterials(): Promise<StudyMaterial[]> {
           description: "해커톤 전체 기획서 및 일정표",
         },
       ],
-      category: "Web Security",
-      hackingTechnique: "web_security",
+      category: "CTF",
+      subCategory: "리버싱",
+      hackingTechnique: "CTF",
       status: "in_progress",
       startDate: "2025-07-01",
       endDate: "2025-07-15",
@@ -61,11 +59,6 @@ async function getStudyMaterials(): Promise<StudyMaterial[]> {
       title: "Metasploit Framework 완전 정복",
       description:
         "Metasploit을 활용한 침투 테스트 기법과 실습 자료를 종합적으로 다룹니다.",
-      customTags: [
-        { name: "Metasploit", color: "bg-purple-100 text-purple-800" },
-        { name: "Penetration Testing", color: "bg-pink-100 text-pink-800" },
-        { name: "Exploitation", color: "bg-red-100 text-red-800" },
-      ],
       author: "이해커",
       authorStatus: "graduate",
       semester: "2025-2",
@@ -81,8 +74,9 @@ async function getStudyMaterials(): Promise<StudyMaterial[]> {
           description: "해커톤 전체 기획서 및 일정표",
         },
       ],
-      category: "Penetration Testing",
-      hackingTechnique: "penetration_testing",
+      category: "CTF",
+      subCategory: "리버싱",
+      hackingTechnique: "CTF",
       status: "completed",
       startDate: "2025-03-01",
       endDate: "2025-05-31",
@@ -95,11 +89,6 @@ async function getStudyMaterials(): Promise<StudyMaterial[]> {
       title: "암호화 기초의 RSA 구현",
       description:
         "암호학의 기초 이론부터 RSA 공개키암호시스템의 Python 구현까지 다룹니다.",
-      customTags: [
-        { name: "Cryptography", color: "bg-purple-100 text-purple-800" },
-        { name: "RSA", color: "bg-green-100 text-green-800" },
-        { name: "Python", color: "bg-blue-100 text-blue-800" },
-      ],
       author: "박암호",
       authorStatus: "student",
       semester: "2025-2",
@@ -115,8 +104,9 @@ async function getStudyMaterials(): Promise<StudyMaterial[]> {
           description: "해커톤 전체 기획서 및 일정표",
         },
       ],
-      category: "Cryptography",
-      hackingTechnique: "cryptography",
+      category: "CTF",
+      subCategory: "디지털 포렌식",
+      hackingTechnique: "CTF",
       status: "not_started",
       startDate: "2025-07-20",
       currentParticipants: 1,
@@ -128,11 +118,6 @@ async function getStudyMaterials(): Promise<StudyMaterial[]> {
       title: "디지털 포렌식의 실무 가이드",
       description:
         "Autopsy와 Volatility를 활용한 디지털 증거 수집 및 수집한 분석방법을 설명합니다.",
-      customTags: [
-        { name: "Digital Forensics", color: "bg-purple-100 text-purple-800" },
-        { name: "Autopsy", color: "bg-blue-100 text-blue-800" },
-        { name: "Volatility", color: "bg-cyan-100 text-cyan-800" },
-      ],
       author: "최포렌식",
       authorStatus: "graduate",
       semester: "2025-2",
@@ -148,8 +133,9 @@ async function getStudyMaterials(): Promise<StudyMaterial[]> {
           description: "해커톤 전체 기획서 및 일정표",
         },
       ],
-      category: "Digital Forensics",
-      hackingTechnique: "digital_forensics",
+      category: "CTF",
+      subCategory: "리버싱",
+      hackingTechnique: "CTF",
       status: "in_progress",
       startDate: "2025-06-15",
       endDate: "2025-08-15",
@@ -162,11 +148,6 @@ async function getStudyMaterials(): Promise<StudyMaterial[]> {
       title: "네트워크 보안 모니터링",
       description:
         "Wireshark와 Snort를 활용한 네트워크 트래픽 분석 및 침입 시스템 구축 방법을 다룹니다.",
-      customTags: [
-        { name: "Network Security", color: "bg-green-100 text-green-800" },
-        { name: "Wireshark", color: "bg-purple-100 text-purple-800" },
-        { name: "IDS", color: "bg-orange-100 text-orange-800" },
-      ],
       author: "정네트워크",
       authorStatus: "student",
       semester: "2025-2",
@@ -182,8 +163,9 @@ async function getStudyMaterials(): Promise<StudyMaterial[]> {
           description: "해커톤 전체 기획서 및 일정표",
         },
       ],
-      category: "Network Security",
-      hackingTechnique: "network_security",
+      category: "CTF",
+      subCategory: "리버싱",
+      hackingTechnique: "CTF",
       status: "completed",
       startDate: "2024-09-01",
       endDate: "2024-12-31",
@@ -196,11 +178,6 @@ async function getStudyMaterials(): Promise<StudyMaterial[]> {
       title: "SQL Injection 심화 분석",
       description:
         "다양한 SQL Injection 공격 기법과 방어 전략을 실습과 함께 학습합니다.",
-      customTags: [
-        { name: "SQL Injection", color: "bg-red-100 text-red-800" },
-        { name: "Web Security", color: "bg-purple-100 text-purple-800" },
-        { name: "Database", color: "bg-blue-100 text-blue-800" },
-      ],
       author: "김웹해킹",
       authorStatus: "graduate",
       semester: "2025-2",
@@ -216,8 +193,9 @@ async function getStudyMaterials(): Promise<StudyMaterial[]> {
           description: "해커톤 전체 기획서 및 일정표",
         },
       ],
-      category: "Web Security",
-      hackingTechnique: "web_security",
+      category: "BLUE",
+      subCategory: "침입 탐지 및 방어(관제)",
+      hackingTechnique: "BLUE",
       status: "not_started",
       startDate: "2025-07-10",
       currentParticipants: 3,
@@ -229,11 +207,6 @@ async function getStudyMaterials(): Promise<StudyMaterial[]> {
       title: "모바일 앱 보안 테스팅",
       description:
         "Android 및 iOS 앱의 보안 취약점 분석과 테스팅 방법론을 다룹니다.",
-      customTags: [
-        { name: "Mobile Security", color: "bg-green-100 text-green-800" },
-        { name: "Android", color: "bg-blue-100 text-blue-800" },
-        { name: "iOS", color: "bg-gray-100 text-gray-800" },
-      ],
       author: "이모바일",
       authorStatus: "student",
       semester: "2025-2",
@@ -249,8 +222,9 @@ async function getStudyMaterials(): Promise<StudyMaterial[]> {
           description: "해커톤 전체 기획서 및 일정표",
         },
       ],
-      category: "Mobile Security",
-      hackingTechnique: "mobile_security",
+      category: "CTF",
+      subCategory: "리버싱",
+      hackingTechnique: "CTF",
       status: "in_progress",
       startDate: "2025-07-05",
       endDate: "2025-08-05",
@@ -266,7 +240,8 @@ interface SCStudyContentProps {
   searchParams: Promise<{
     search?: string;
     semester?: string;
-    technique?: string;
+    category?: string;
+    subCategory?: string;
     status?: string;
     page?: string;
   }>;
@@ -306,16 +281,24 @@ export default async function SCStudyContent({
         currentFilters.semester === "all" ||
         material.semester === currentFilters.semester;
 
-      const matchesTechnique =
-        currentFilters.technique === "all" ||
-        material.hackingTechnique === currentFilters.technique;
+      const matchesCategory =
+        currentFilters.category === "all" ||
+        material.category === currentFilters.category;
+
+      const matchesSubCategory =
+        currentFilters.subCategory === "all" ||
+        material.subCategory === currentFilters.subCategory;
 
       const matchesStatus =
         currentFilters.status === "all" ||
         material.status === currentFilters.status;
 
       return (
-        matchesSearch && matchesSemester && matchesTechnique && matchesStatus
+        matchesSearch &&
+        matchesSemester &&
+        matchesCategory &&
+        matchesSubCategory &&
+        matchesStatus
       );
     });
 
@@ -363,13 +346,12 @@ export default async function SCStudyContent({
                   {/* 상태 및 날짜 정보 */}
                   <div className="flex flex-wrap gap-2 mb-3 items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <span
-                        className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(
-                          material.status
-                        )}`}
+                      <DefaultBadge
+                        variant="outline"
+                        className={getStatusColor(material.status)}
                       >
                         {STATUS_LABELS[material.status]}
-                      </span>
+                      </DefaultBadge>
                       {/* 날짜 정보를 클라이언트 컴포넌트로 교체 */}
                       <CCStudyDateInfo
                         status={material.status}
@@ -388,16 +370,22 @@ export default async function SCStudyContent({
                     {material.description}
                   </p>
 
-                  {/* 커스텀 태그 */}
+                  {/* 카테고리 */}
                   <div className="flex flex-wrap gap-2 mb-4">
-                    {material.customTags.map((tag, index) => (
-                      <span
-                        key={index}
-                        className={`px-2 py-1 rounded text-xs font-medium ${tag.color}`}
-                      >
-                        {tag.name}
-                      </span>
-                    ))}
+                    <DefaultBadge
+                      variant="outline"
+                      className={`inline-flex items-center px-2 py-1 rounded text-xs font-medium border-none
+                        ${getCategoryColor(material.category)}`}
+                    >
+                      {material.category}
+                    </DefaultBadge>
+                    <DefaultBadge
+                      variant="outline"
+                      className={`inline-flex items-center px-2 py-1 rounded text-xs font-medium border-none
+                        ${getCategoryColor(material.subCategory)}`}
+                    >
+                      {material.subCategory}
+                    </DefaultBadge>
                   </div>
 
                   {/* 파일 목록 */}
@@ -515,7 +503,7 @@ export default async function SCStudyContent({
 
         {/* 결과가 없을 때 */}
         {currentMaterials.length === 0 && (
-          <SCStudySearchResultNotFound mode="study" />
+          <SCSearchResultNotFound mode="study" />
         )}
 
         {/* 페이지네이션 */}
@@ -539,7 +527,7 @@ export default async function SCStudyContent({
             데이터를 불러오는 중 오류가 발생했습니다.
           </p>
         </div>
-        <SCStudySearchResultNotFound
+        <SCSearchResultNotFound
           title="데이터를 불러올 수 없습니다"
           description="페이지를 새로고침하거나 잠시 후 다시 시도해주세요."
           mode="study"

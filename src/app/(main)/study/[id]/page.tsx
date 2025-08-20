@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { Calendar, Users, Tag, Download } from "lucide-react";
+import { Calendar, Users, Download } from "lucide-react";
 import DefaultBadge from "@/components/ui/defaultBadge";
 import MarkdownRenderer from "@/components/ui/defaultMarkdownRenderer";
 import {
@@ -15,6 +15,8 @@ import DownloadButton from "@/components/detail/SCDownloadButton";
 import { formatFileSize } from "@/utils/attachedFileUtils";
 import { getFileIcon } from "@/utils/attachedFileUtils";
 import { calculateDDay, getStatusColor } from "@/utils/studyHelper";
+import { STATUS_LABELS } from "@/types/study";
+import EndRequestButton from "@/components/ui/endRequestButton";
 
 function getStudyDataById(id: string): StudyDetailData | null {
   const parsedId = parseInt(id, 10);
@@ -84,7 +86,7 @@ export default async function StudyMaterialDetailPage({
                   </h1>
                   <div className="flex items-center gap-2">
                     <DefaultBadge className={getStatusColor(studyData.status)}>
-                      {studyData.status}
+                      {STATUS_LABELS[studyData.status]}
                     </DefaultBadge>
                     {dDay !== null && (
                       <DefaultBadge
@@ -179,18 +181,15 @@ export default async function StudyMaterialDetailPage({
                     </div>
                   </div>
                 )}
-              {/* Tags */}
+              {/* 공유하기 버튼 */}
               <div className="flex justify-between p-1  pt-6 border-t border-gray-300">
-                <div className="flex flex-wrap gap-2">
-                  {studyData.tags.map((tag) => (
-                    <DefaultBadge
-                      key={tag}
-                      className="text-xs h-6 bg-gray-100 text-gray-600 hover:bg-gray-200 "
-                    >
-                      <Tag className="w-3 h-3 mr-1" />
-                      {tag}
-                    </DefaultBadge>
-                  ))}
+                <div className="flex flex-wrap gap-2 justify-center items-center">
+                  <DefaultBadge className="bg-gray-100 h-6 border border-gray-200 text-gray-700">
+                    {studyData.category}
+                  </DefaultBadge>
+                  <DefaultBadge className="h-6 bg-gray-100 border border-gray-200 text-gray-700">
+                    {studyData.subCategory}
+                  </DefaultBadge>
                 </div>
                 <CCShareButton />
               </div>
@@ -281,6 +280,8 @@ export default async function StudyMaterialDetailPage({
               </div>
             </div>
           </div>
+          {/* 종료 모달 */}
+          <EndRequestButton id={studyData.id} />
         </div>
       </div>
     </div>

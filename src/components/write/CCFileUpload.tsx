@@ -6,17 +6,20 @@ import { Upload, Trash2 } from "lucide-react";
 import {
   convertFileToAttachedFile,
   formatFileSize,
+  getFileIcon,
 } from "@/utils/attachedFileUtils";
-import { getFileIcon } from "@/utils/attachedFileUtils";
+import { cn } from "@/lib/utils";
 
 interface FileUploadProps {
   attachedFiles: AttachedFile[];
   onAttachmentsChange: (files: AttachedFile[]) => void;
+  className?: string;
 }
 
 export default function FileUpload({
   attachedFiles,
   onAttachmentsChange,
+  className,
 }: FileUploadProps) {
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -33,7 +36,12 @@ export default function FileUpload({
 
   return (
     <div className="space-y-4">
-      <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-cert-red transition-colors">
+      <div
+        className={cn(
+          "border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-cert-red transition-colors",
+          className
+        )}
+      >
         <input
           type="file"
           multiple

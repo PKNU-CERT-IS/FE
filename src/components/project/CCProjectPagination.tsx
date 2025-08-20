@@ -2,16 +2,18 @@
 
 import Link from "next/link";
 import { getPageNumbers } from "@/utils/paginationUtils";
-import { SemesterType, TechniqueType, StatusType } from "@/types/project";
+import { SemesterType, StatusType } from "@/types/project";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useEffect } from "react";
+import { CategoryType, SubCategoryType } from "@/types/category";
 
 interface ProjectPaginationProps {
   currentPage: number;
   totalPages: number;
   currentSearch: string;
   currentSemester: SemesterType;
-  currentTechnique: TechniqueType;
+  currentCategory: CategoryType;
+  currentSubCategory: SubCategoryType;
   currentStatus: StatusType;
 }
 
@@ -20,7 +22,8 @@ export default function ProjectPagination({
   totalPages,
   currentSearch,
   currentSemester,
-  currentTechnique,
+  currentCategory,
+  currentSubCategory,
   currentStatus,
 }: ProjectPaginationProps) {
   // 페이지 변경 시 스크롤 제어
@@ -44,8 +47,11 @@ export default function ProjectPagination({
       params.semester = currentSemester;
     }
 
-    if (currentTechnique !== "all") {
-      params.technique = currentTechnique;
+    if (currentCategory !== "all") {
+      params.category = currentCategory;
+    }
+    if (currentSubCategory !== "all") {
+      params.subCategory = currentSubCategory;
     }
 
     if (currentStatus !== "all") {

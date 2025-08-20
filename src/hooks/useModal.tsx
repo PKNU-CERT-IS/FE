@@ -6,24 +6,23 @@ export const useModal = () => {
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
 
   // 모달 내 드롭다운
-  const [isActivityDropdownOpen, setIsActivityDropdownOpen] =
-    useState<boolean>(false);
+  const [isTypeDropdownOpen, setIsTypeDropdownOpen] = useState<boolean>(false);
   const [isStartTimeDropdownOpen, setIsStartTimeDropdownOpen] =
     useState<boolean>(false);
   const [isEndTimeDropdownOpen, setIsEndTimeDropdownOpen] =
     useState<boolean>(false);
-  const [selectedActivity, setSelectedActivity] = useState<string>("선택");
+  const [selectedType, setSelectedType] = useState<string>("선택");
   const [selectedStartTime, setSelectedStartTime] = useState<string>("선택");
   const [selectedEndTime, setSelectedEndTime] = useState<string>("선택");
 
-  const activityDropdownRef = useRef<HTMLDivElement | null>(null);
+  const typeDropdownRef = useRef<HTMLDivElement | null>(null);
   const startTimeDropdownRef = useRef<HTMLDivElement | null>(null);
   const endTimeDropdownRef = useRef<HTMLDivElement | null>(null);
 
   const modalOutsideRef = useRef<HTMLDivElement | null>(null);
 
   const toggleDropdown = () => {
-    setIsActivityDropdownOpen((prev) => !prev);
+    setIsTypeDropdownOpen((prev) => !prev);
   };
 
   const toggleStartTimeDropdown = () => {
@@ -34,9 +33,9 @@ export const useModal = () => {
     setIsEndTimeDropdownOpen((prev) => !prev);
   };
 
-  const handleActivity = (activity: string) => {
-    setSelectedActivity(activity);
-    setIsActivityDropdownOpen(false);
+  const handleType = (type: string) => {
+    setSelectedType(type);
+    setIsTypeDropdownOpen(false);
   };
 
   const handleStartTime = (time: string) => {
@@ -51,10 +50,10 @@ export const useModal = () => {
 
   const handleClickDropdownOutside = (e: MouseEvent) => {
     if (
-      activityDropdownRef.current &&
-      !activityDropdownRef.current.contains(e.target as Node)
+      typeDropdownRef.current &&
+      !typeDropdownRef.current.contains(e.target as Node)
     ) {
-      setIsActivityDropdownOpen(false);
+      setIsTypeDropdownOpen(false);
     }
     if (
       startTimeDropdownRef.current &&
@@ -72,7 +71,7 @@ export const useModal = () => {
 
   useEffect(() => {
     if (
-      isActivityDropdownOpen ||
+      isTypeDropdownOpen ||
       isStartTimeDropdownOpen ||
       isEndTimeDropdownOpen
     ) {
@@ -80,7 +79,7 @@ export const useModal = () => {
     }
     return () =>
       window.removeEventListener("click", handleClickDropdownOutside);
-  }, [isActivityDropdownOpen, isStartTimeDropdownOpen, isEndTimeDropdownOpen]);
+  }, [isTypeDropdownOpen, isStartTimeDropdownOpen, isEndTimeDropdownOpen]);
 
   useEffect(() => {
     const clickedModalOutside = (e: MouseEvent) => {
@@ -104,11 +103,11 @@ export const useModal = () => {
   }, [isOpenModal]);
 
   return {
-    activityDropdownRef,
+    isTypeDropdownOpen,
     toggleDropdown,
-    selectedActivity,
-    isActivityDropdownOpen,
-    handleActivity,
+    selectedType,
+    setIsTypeDropdownOpen,
+    handleType,
     startTimeDropdownRef,
     toggleStartTimeDropdown,
     selectedStartTime,
@@ -122,5 +121,6 @@ export const useModal = () => {
     isOpenModal,
     setIsOpenModal,
     modalOutsideRef,
+    typeDropdownRef,
   };
 };

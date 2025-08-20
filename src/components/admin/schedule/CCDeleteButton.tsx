@@ -8,15 +8,19 @@ import { Trash2 } from "lucide-react";
 
 interface CCDeleteButtonProps {
   schedule: ScheduleInfo;
+  onRemove?: (id: number) => void;
 }
 
-export default function CCDeleteButton({ schedule }: CCDeleteButtonProps) {
+export default function CCDeleteButton({
+  schedule,
+  onRemove,
+}: CCDeleteButtonProps) {
   const { selectedSchedule, setSelectedSchedule } = useSchedule();
   const { isOpenModal, setIsOpenModal } = useModal();
 
   const handleDelete = async () => {
+    onRemove?.(schedule.id);
     setIsOpenModal(false);
-    // api 추가
   };
 
   const openModal = () => {
@@ -24,9 +28,7 @@ export default function CCDeleteButton({ schedule }: CCDeleteButtonProps) {
     setIsOpenModal(true);
   };
 
-  const closeModal = () => {
-    setIsOpenModal(false);
-  };
+  const closeModal = () => setIsOpenModal(false);
 
   return (
     <div className="flex">

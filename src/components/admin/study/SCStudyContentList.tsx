@@ -25,7 +25,6 @@ export const studies: Study[] = [
     description: "최신 OWASP Top 10을 주차별로 읽고 실습합니다.",
     content: "상세 소개...",
     category: "보안/웹",
-    tags: ["OWASP", "웹해킹"],
     attachments: [
       {
         id: "file_1_1",
@@ -50,7 +49,6 @@ export const studies: Study[] = [
     description: "렌더링 최적화/번들 분석 등 실무 중심",
     content: "상세 소개...",
     category: "프론트엔드",
-    tags: ["React", "Performance"],
     attachments: [
       {
         id: "file_1_1",

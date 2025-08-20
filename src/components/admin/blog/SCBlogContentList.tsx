@@ -6,6 +6,7 @@ import Link from "next/link";
 import CCBlogDeleteButton from "@/components/admin/blog/CCBlogDeleteButton";
 import CCPublishedCheckbox from "@/components/admin/blog/CCPublishedCheckbox";
 import { BlogPost } from "@/types/blog";
+import { getCategoryColor } from "@/utils/categoryColorUtils";
 
 interface SCBlogContentListProps {
   paginatedContents: BlogPost[];
@@ -32,13 +33,7 @@ export default function SCBlogContentList({
 
                   <DefaultBadge
                     variant="outline"
-                    className={`${
-                      post.category === "개발"
-                        ? "bg-blue-50 text-blue-600 border border-blue-200"
-                        : post.category === "학습"
-                        ? "bg-green-50 text-green-600 border border-green-200"
-                        : "bg-purple-50 text-purple-600 border border-purple-200"
-                    }`}
+                    className={getCategoryColor(post.category)}
                   >
                     {post.category}
                   </DefaultBadge>

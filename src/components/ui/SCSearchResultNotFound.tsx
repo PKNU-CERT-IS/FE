@@ -1,23 +1,22 @@
 "server-only";
 
-import { resetStudyFilters } from "@/actions/study/StudySearchServerAction";
-import { resetProjectFilters } from "@/actions/project/ProjectSearchServerAction";
+import { resetFilters } from "@/actions/ResetFiltersServerAction";
 
-interface SCStudySearchResultNotFoundProps {
+interface SCSearchResultNotFoundProps {
   title?: string;
   description?: string;
   icon?: React.ReactNode;
   showResetButton?: boolean;
-  mode?: "study" | "project"; // 추가
+  mode?: "study" | "project" | "blog" | "board";
 }
 
-export default async function SCStudySearchResultNotFound({
+export default async function SCSearchResultNotFound({
   title = "검색 결과가 없습니다",
   description = "검색 조건을 변경하거나 필터를 초기화해보세요.",
   icon,
   showResetButton = true,
-  mode = "study", // 기본값은 study
-}: SCStudySearchResultNotFoundProps) {
+  mode = "study",
+}: SCSearchResultNotFoundProps) {
   const searchIcon = (
     <svg
       className="mx-auto h-12 w-12 text-gray-400"
@@ -35,28 +34,31 @@ export default async function SCStudySearchResultNotFound({
     </svg>
   );
 
+  // mode -> pathname 매핑
+  const pathByMode = {
+    study: "/study",
+    project: "/project",
+    blog: "/blog",
+    board: "/board",
+  } as const;
+
+  // ✅ bind로 pathname을 고정한 서버 액션 생성
+  const resetAction = resetFilters.bind(null, pathByMode[mode]);
+
   return (
     <div className="text-center py-16 px-4">
       <div className="max-w-md mx-auto">
-        {/* 아이콘 */}
         <div className="mb-4">{icon || searchIcon}</div>
 
-        {/* 제목 */}
         <h3 className="text-lg font-semibold text-gray-900 mb-2">{title}</h3>
 
-        {/* 설명 */}
         <p className="text-sm text-gray-500 mb-6 leading-relaxed">
           {description}
         </p>
 
-        {/* 액션 버튼 */}
         {showResetButton && (
           <div className="space-y-3">
-            <form
-              action={
-                mode === "project" ? resetProjectFilters : resetStudyFilters
-              }
-            >
+            <form action={resetAction}>
               <button
                 type="submit"
                 className="inline-flex items-center px-4 py-2 bg-cert-red text-white text-sm font-medium rounded-lg hover:bg-red-700 transition-colors focus:outline-none focus:ring-2 focus:ring-cert-red focus:ring-offset-2"
@@ -84,7 +86,6 @@ export default async function SCStudySearchResultNotFound({
           </div>
         )}
 
-        {/* 추가 도움말 */}
         <div className="mt-8 p-4 bg-gray-50 rounded-lg">
           <h4 className="text-sm font-medium text-gray-900 mb-2">검색 팁</h4>
           <ul className="text-xs text-gray-600 space-y-1 text-left">
