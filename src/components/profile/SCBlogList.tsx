@@ -4,10 +4,11 @@ import DefaultButton from "@/components/ui/defaultButton";
 import DefaultBadge from "@/components/ui/defaultBadge";
 import EyeSVG from "/public/icons/eye.svg";
 import ThumbsUpSVG from "/public/icons/thumbs-up.svg";
-import { BlogCategoryType, ProfileBlogDataType } from "@/types/profile";
-import { getBlogCategoryColor } from "@/utils/profileUtils";
+import { ProfileBlogDataType } from "@/types/profile";
 import Link from "next/link";
 import { Plus } from "lucide-react";
+import { BlogCategory } from "@/types/blog";
+import { getCategoryColor } from "@/utils/categoryColorUtils";
 
 interface SCBlogListProps {
   searchParams: Promise<{
@@ -50,10 +51,10 @@ export default async function SCBlogList({
                         {blog.title}
                       </div>
                       <div className="flex items-center gap-4 mt-2 text-sm text-gray-600 transition-colors duration-300">
-                        <span>{blog.date}</span>
+                        <span>{blog.createdAt}</span>
                         <DefaultBadge
-                          className={`border-gray-200 text-gray-600 ${getBlogCategoryColor(
-                            blog.category as BlogCategoryType
+                          className={`border-gray-200 text-gray-600 ${getCategoryColor(
+                            blog.category as BlogCategory
                           )}`}
                         >
                           {blog.category}

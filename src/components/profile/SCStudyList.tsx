@@ -2,41 +2,53 @@
 
 import DefaultBadge from "@/components/ui/defaultBadge";
 import { getStudyCategoryColor } from "@/utils/profileUtils";
-import { ProfileStudyDataType, StudyCategoryType } from "@/types/profile";
+import { StudyStatusToStatusType, StudyTabType } from "@/types/profile";
 import Link from "next/link";
-import { Tag } from "lucide-react";
 import CCProfileStudyStatusFilter from "@/components/profile/CCProfileStudyStatusFilter";
 import CCCreateDropdown from "@/components/profile/CCCreateDropdown";
 import { StudyStatusType, studyStatus } from "@/types/profile";
+import { getCategoryColor } from "@/utils/categoryColorUtils";
+import {
+  mockProfileStudyData,
+  mockProfileProjectData,
+} from "@/mocks/mockProfileData";
+import { CategoryType, SubCategoryType } from "@/types/category";
 
 interface SCStudyListProps {
   searchParams: Promise<{
     tab?: string;
     status?: string;
   }>;
-  studies: ProfileStudyDataType[];
 }
 
-export default async function SCStudyList({
-  searchParams,
-  studies,
-}: SCStudyListProps) {
+export default async function SCStudyList({ searchParams }: SCStudyListProps) {
   const { tab, status } = await searchParams;
   const currentTab = tab || "study";
 
-  if (currentTab !== "study") return null;
-
-  const isValidStatus = (status: string): status is StudyStatusType =>
-    studyStatus.includes(status as StudyStatusType);
-
   const selectedStatus: StudyStatusType =
-    status && isValidStatus(status) ? status : "전체";
+    status && studyStatus.includes(status as StudyStatusType)
+      ? (status as StudyStatusType)
+      : "전체";
 
-  const filteredStudies =
+  const allMaterials = [
+    ...mockProfileStudyData.map((m) => ({ ...m, tab: "Study" as const })),
+    ...mockProfileProjectData.map((m) => ({ ...m, tab: "Project" as const })),
+  ];
+
+  const materialsByTab = allMaterials.filter(
+    (m) => currentTab === "study" || m.tab === currentTab
+  );
+
+  let filteredMaterials =
     selectedStatus === "전체"
-      ? studies
-      : studies.filter((study) => study.status === selectedStatus);
+      ? materialsByTab
+      : materialsByTab.filter(
+          (m) => m.status === StudyStatusToStatusType[selectedStatus]
+        );
 
+  if (selectedStatus === "진행중") {
+    filteredMaterials = filteredMaterials.slice(0, 2);
+  }
   return (
     <>
       <div className="space-y-4 mt-8 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
@@ -53,45 +65,52 @@ export default async function SCStudyList({
         </div>
 
         {/* ✅ 필터링된 목록 출력 */}
-        {filteredStudies.length > 0 ? (
-          filteredStudies.map((study) => (
+        {filteredMaterials.length > 0 ? (
+          filteredMaterials.map((material) => (
             <div
-              key={study.id}
+              key={`${material.tab}-${material.id}`}
               className="card-list text-card-foreground group"
             >
-              <Link href={`/${study.category.toLocaleLowerCase()}/${study.id}`}>
-                <div className="flex flex-col space-y-1.5 p-6">
+              <Link
+                href={`/${material.tab.toLocaleLowerCase()}/${material.id}`}
+              >
+                <div className="flex flex-col space-y-1.5 p-6 pb-4">
                   <div className="flex items-start justify-between">
                     <div>
                       <div className="font-semibold leading-none tracking-tight text-lg text-gray-900 group-hover:text-red-600 transition-colors cursor-pointer">
-                        {study.title}
+                        {material.title}
                       </div>
                       <div className="flex items-center gap-4 mt-2 text-sm text-gray-600 transition-colors duration-300">
-                        <span>{study.date}</span>
+                        <span>{material.startDate}</span>
                         <DefaultBadge
-                          className={`border-gray-200 text-gray-600 hover:text-gray-900 cursor-auto
+                          className={`border-gray-200 text-gray-600 cursor-default
                           ${getStudyCategoryColor(
-                            study.category as StudyCategoryType
+                            material.tab as StudyTabType
                           )}`}
                         >
-                          {study.category}
+                          {material.tab}
                         </DefaultBadge>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div className="p-6 pt-0">
-                  <div className="flex flex-wrap gap-2">
-                    {study.tags.map((tag) => (
-                      <DefaultBadge
-                        key={tag}
-                        className="text-xs bg-gray-100 text-gray-600 hover:bg-gray-200 "
-                      >
-                        <Tag className="w-3 h-3 mr-1" />
-                        {tag}
-                      </DefaultBadge>
-                    ))}
-                  </div>
+                <div className="p-6 pt-0 flex gap-2">
+                  <DefaultBadge
+                    className={`border-gray-200 text-gray-600 cursor-default
+                          ${getCategoryColor(
+                            material.category as CategoryType
+                          )}`}
+                  >
+                    {material.category}
+                  </DefaultBadge>
+                  <DefaultBadge
+                    className={`border-gray-200 text-gray-600 cursor-default
+                          ${getCategoryColor(
+                            material.subCategory as SubCategoryType
+                          )}`}
+                  >
+                    {material.subCategory}
+                  </DefaultBadge>
                 </div>
               </Link>
             </div>

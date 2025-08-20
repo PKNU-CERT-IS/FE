@@ -1,3 +1,4 @@
+import { BlogCategory } from "./blog";
 import BookSVG from "/public/icons/book.svg";
 import CommentSVG from "/public/icons/comment.svg";
 import { MembersDataType } from "@/types/members";
@@ -31,31 +32,50 @@ export const TAB_CONFIG: Record<
 };
 
 // study category
-export const StudyCategories = ["Project", "Study"] as const;
-export type StudyCategoryType = (typeof StudyCategories)[number];
+export const StudyTabs = ["Project", "Study"] as const;
+export type StudyTabType = (typeof StudyTabs)[number];
 
 export interface ProfileStudyDataType {
   id: number;
   title: string;
   date: string;
-  category: StudyCategoryType;
+  tab: StudyTabType;
   status: string; // "진행중", "완료"
 }
 
 // study, project status category
+export type StatusType = "all" | "in_progress" | "completed";
+
 export const studyStatus = ["전체", "진행중", "완료"] as const;
 export type StudyStatusType = (typeof studyStatus)[number];
 
-// blog category
-export const BlogCategories = ["개발", "활동", "회고", "기타"] as const;
-export type BlogCategoryType = (typeof BlogCategories)[number];
+// 영어 한국어 맵핑
+export const StudyStatusToStatusType: Record<StudyStatusType, StatusType> = {
+  전체: "all",
+  진행중: "in_progress",
+  완료: "completed",
+};
 
+export const StatusTypeToStudyStatus: Record<StatusType, StudyStatusType> = {
+  all: "전체",
+  in_progress: "진행중",
+  completed: "완료",
+};
+
+// blog category
 export interface ProfileBlogDataType {
   id: number;
   title: string;
-  date: string;
-  category: BlogCategoryType;
+  content?: string;
+  excerpt: string;
+  author: string;
+  category: BlogCategory;
+  createdAt: string;
+  updatedAt?: string;
   views?: number;
   likes?: number;
-  comments?: number;
+  featured?: boolean;
+  published: boolean;
+  slug?: string;
+  coverImage?: string;
 }

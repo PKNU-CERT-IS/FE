@@ -61,12 +61,7 @@ export default async function SCProfileContent({
     <div className="lg:col-span-2">
       <CCTabBar currentTab={currentTab} />
 
-      {isStudyTab && (
-        <SCStudyList
-          searchParams={searchParams}
-          studies={paginatedStudyContents}
-        />
-      )}
+      {isStudyTab && <SCStudyList searchParams={searchParams} />}
 
       {!isStudyTab && (
         <>
