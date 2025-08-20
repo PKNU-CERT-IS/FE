@@ -11,8 +11,10 @@ import {
 export const getCategoryColor = (
   category: BlogCategory | CategoryType | SubCategoryType
 ) => {
-  // 만약 소카테고리라면 대카테고리로 변환
-  const mainCategory = (SUBCATEGORY_TO_CATEGORY as any)[category] || category;
+  // SubCategory라면 대Category로 변환
+  const mainCategory: CategoryType =
+    (SUBCATEGORY_TO_CATEGORY as Record<string, CategoryType>)[category] ??
+    (category as CategoryType);
 
   switch (mainCategory) {
     case "CTF":

@@ -6,7 +6,7 @@ import { mockBoardData } from "@/mocks/mockBoardData";
 import { mockBoardDetailData } from "@/mocks/mockBoardDetailData";
 import { getCategoryColor } from "@/utils/boardUtils";
 import DownloadButton from "@/components/detail/SCDownloadButton";
-import { Calendar, Eye, Heart, Pin, Tag, Download } from "lucide-react";
+import { Calendar, Eye, Heart, Pin, Download } from "lucide-react";
 import DefaultBadge from "@/components/ui/defaultBadge";
 import KebabMenuButton from "@/components/detail/CCKebabMenu";
 import LikeButton from "@/components/detail/CCLikeButton";

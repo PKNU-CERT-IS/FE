@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { Calendar, User, Tag, Eye, ExternalLink } from "lucide-react";
+import { Calendar, User, Eye, ExternalLink } from "lucide-react";
 import { mockBlogPosts } from "@/mocks/blogData";
 import BackToListButton from "@/components/detail/SCBackToListButton";
 import KebabMenuButton from "@/components/detail/CCKebabMenu";

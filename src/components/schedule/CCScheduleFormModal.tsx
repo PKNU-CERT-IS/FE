@@ -82,8 +82,6 @@ export default function CCScheduleFormModal({
     const started_at = `${date} ${selectedStartTime}:00+00`;
     const ended_at = `${date} ${selectedEndTime}:00+00`;
 
-    const nowISO = new Date().toISOString();
-
     const submitData: ScheduleCreateRequest = {
       title,
       description,
