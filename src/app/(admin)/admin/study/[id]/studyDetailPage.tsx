@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { Calendar, Users, Tag, Download } from "lucide-react";
+import { Calendar, Users, Download } from "lucide-react";
 import DefaultBadge from "@/components/ui/defaultBadge";
 import MarkdownRenderer from "@/components/ui/defaultMarkdownRenderer";
 import {
@@ -9,7 +9,7 @@ import {
 } from "@/mocks/mockStudyDetailData";
 import BackToListButton from "@/components/detail/SCBackToListButton";
 import KebabMenu from "@/components/detail/CCKebabMenu";
-import CCShareButton from "@/components/detail/CCShareButton";
+// import CCShareButton from "@/components/detail/CCShareButton";
 import MeetingMinutes from "@/components/study/CCMeetingMinutes";
 import DownloadButton from "@/components/detail/SCDownloadButton";
 import { formatFileSize } from "@/utils/attachedFileUtils";
