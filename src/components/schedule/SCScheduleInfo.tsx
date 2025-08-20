@@ -14,7 +14,7 @@ interface SCScheduleInfoProps {
 }
 
 export default function SCScheduleInfo({ selectedDate }: SCScheduleInfoProps) {
-  const allSchedules: ScheduleInfo[] = mockScheduleData();
+  const allSchedules: ScheduleInfo[] = mockScheduleData;
   const selectedDateSchedules = selectedDate
     ? allSchedules.filter(
         (sc) => formatDate(sc.started_at, "short") === selectedDate
@@ -30,7 +30,7 @@ export default function SCScheduleInfo({ selectedDate }: SCScheduleInfoProps) {
       <p className="text-lg font-semibold mb-4">
         {formattedSelectedDate ? `${formattedSelectedDate} 일정` : "일정"}
       </p>
-      <div className="space-y-4 max-h-[24rem] overflow-y-auto">
+      <div className="space-y-4 max-h-[18rem] overflow-y-auto">
         {selectedDateSchedules.length === 0 ? (
           <p className="text-gray-500 text-center p-3">
             선택한 날짜에 일정이 없습니다.

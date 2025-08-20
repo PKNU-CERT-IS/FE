@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { X, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import DefaultButton from "@/components/ui/defaultButton";
-import { ScheduleInfo } from "@/types/schedule";
+import { ScheduleCreateRequest, ScheduleInfo } from "@/types/schedule";
 import { formatDate, formatTime } from "@/utils/formatDateUtil";
 import { useModal } from "@/hooks/useModal";
 import { useSchedule } from "@/hooks/useSchedule";
@@ -16,7 +16,7 @@ interface ScheduleFormModalProps {
   closeModal: () => void;
   schedule?: ScheduleInfo;
   modalRef?: RefObject<HTMLDivElement | null>;
-  onAdd?: (data: ScheduleInfo) => void;
+  onAdd?: (data: ScheduleCreateRequest) => void;
   isAdmin?: boolean;
 }
 
@@ -84,17 +84,13 @@ export default function CCScheduleFormModal({
 
     const nowISO = new Date().toISOString();
 
-    const submitData: ScheduleInfo = {
-      id: schedule?.id ?? Date.now(), // 실제 생성은 서버에서 처리
+    const submitData: ScheduleCreateRequest = {
       title,
-      place,
-      description: description,
+      description,
       type: typeValue,
+      place,
       started_at,
       ended_at,
-      created_at: schedule?.created_at ?? nowISO,
-      updated_at: schedule ? nowISO : undefined,
-      deleted_at: undefined,
     };
 
     try {

@@ -20,7 +20,7 @@ export default function Calendar() {
   const [currentDate, setCurrentDate] = useState(new Date());
   const today = useMemo(() => new Date(), []);
 
-  const schedules = useMemo<ScheduleInfo[]>(() => mockScheduleData(), []);
+  const schedules = useMemo<ScheduleInfo[]>(() => mockScheduleData, []);
 
   const days = useMemo(() => generateCalendarDays(currentDate), [currentDate]);
 

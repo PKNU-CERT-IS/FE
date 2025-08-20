@@ -22,13 +22,12 @@ export default async function SchedulePage({ searchParams }: SearchPageProps) {
           <div className="md:col-span-2">
             <Calendar />
           </div>
-
           <div>
-            <CCScheduleRequestWrapper />
-
-            <div className="relative">
-              <SCScheduleInfo selectedDate={selectedDate} />
-            </div>
+            <CCScheduleRequestWrapper>
+              <div className="relative">
+                <SCScheduleInfo selectedDate={selectedDate} />
+              </div>
+            </CCScheduleRequestWrapper>
           </div>
         </div>
 

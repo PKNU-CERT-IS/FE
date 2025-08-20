@@ -24,7 +24,7 @@ export default async function SCScheduleList({
   // });
   // const schedules: ScheduleInfo[] = await res.json();
 
-  const schedules: ScheduleInfo[] = await mockScheduleData();
+  const schedules: ScheduleInfo[] = await mockScheduleData;
 
   const baseDate = date ? new Date(date) : new Date();
   const year = baseDate.getFullYear();

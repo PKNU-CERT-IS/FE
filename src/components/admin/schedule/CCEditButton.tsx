@@ -1,14 +1,14 @@
 "use client";
 
 import CCScheduleFormModal from "@/components/schedule/CCScheduleFormModal";
-import { ScheduleInfo } from "@/types/schedule";
+import { ScheduleCreateRequest, ScheduleInfo } from "@/types/schedule";
 import { useModal } from "@/hooks/useModal";
 import { useSchedule } from "@/hooks/useSchedule";
 import EditSVG from "/public/icons/edit.svg";
 
 interface CCEditButtonProps {
   schedule: ScheduleInfo;
-  onEdit: (reservation: ScheduleInfo) => void;
+  onEdit: (reservation: ScheduleCreateRequest) => void;
 }
 
 export default function CCEditButton({ schedule, onEdit }: CCEditButtonProps) {

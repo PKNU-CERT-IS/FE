@@ -17,7 +17,7 @@ interface SCAdminScheduleInfoProps {
 export default function SCAdminScheduleInfo({
   selectedDate,
 }: SCAdminScheduleInfoProps) {
-  const allSchedules: ScheduleInfo[] = mockScheduleData();
+  const allSchedules: ScheduleInfo[] = mockScheduleData;
   const selectedDateSchedules = selectedDate
     ? allSchedules.filter(
         (schedule) => formatDate(schedule.started_at, "short") === selectedDate
@@ -71,7 +71,7 @@ export default function SCAdminScheduleInfo({
                 </div>
 
                 <div
-                  className={`absolute right-3 top-3 inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors shrink-0 whitespace-nowrap ${getTypeColor(
+                  className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors shrink-0 whitespace-nowrap ${getTypeColor(
                     schedule.type
                   )}`}
                 >

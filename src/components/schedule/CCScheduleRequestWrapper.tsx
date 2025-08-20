@@ -3,15 +3,29 @@
 import { useState } from "react";
 import CCAddScheduleCard from "@/components/schedule/CCAddScheduleCard";
 import CCScheduleRequestList from "@/components/schedule/CCScheduleRequestList";
-import { ScheduleInfo } from "@/types/schedule";
+import { ScheduleCreateRequest, ScheduleInfo } from "@/types/schedule";
 import { usePathname } from "next/navigation";
 
-export default function CCScheduleRequestWrapper() {
+interface Props {
+  children?: React.ReactNode;
+}
+
+export default function CCScheduleRequestWrapper({ children }: Props) {
   const [reservations, setReservation] = useState<ScheduleInfo[]>([]);
   const pathname = usePathname();
   const isAdmin = pathname.startsWith("/admin");
-  const addRequest = (data: ScheduleInfo) => {
-    setReservation((prev) => [data, ...prev]);
+
+  const addRequest = (data: ScheduleCreateRequest) => {
+    const now = new Date().toISOString();
+
+    const newReservation: ScheduleInfo = {
+      id: Date.now(), // 임시 id (API 연동 전)
+      status: "PENDING",
+      created_at: now,
+      ...data, // title, description, type, started_at, ended_at, place
+    };
+
+    setReservation((prev) => [newReservation, ...prev]);
   };
 
   const removeRequest = (id: number) => {
@@ -19,10 +33,11 @@ export default function CCScheduleRequestWrapper() {
       prev.filter((reservation) => reservation.id !== id)
     );
   };
+
   return (
     <>
       <CCAddScheduleCard onAdd={addRequest} />
-      {/* 서비스페이지에서만 렌더링 */}
+      {children}
       {!isAdmin && (
         <CCScheduleRequestList
           requests={reservations}

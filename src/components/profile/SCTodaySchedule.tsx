@@ -9,7 +9,7 @@ import { formatDate, formatTime } from "@/utils/formatDateUtil";
 
 const todayStr = new Date().toISOString().split("T")[0];
 
-const todaySchedule = mockScheduleData().filter(
+const todaySchedule = mockScheduleData.filter(
   (schedule) => formatDate(schedule.started_at, "short") === todayStr
 );
 

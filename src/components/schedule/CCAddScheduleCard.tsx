@@ -5,10 +5,10 @@ import { useModal } from "@/hooks/useModal";
 import CCScheduleFormModal from "@/components/schedule/CCScheduleFormModal";
 import { usePathname } from "next/navigation";
 import { useEffect } from "react";
-import { ScheduleInfo } from "@/types/schedule";
+import { ScheduleCreateRequest } from "@/types/schedule";
 
 interface CCAddScheduleCardProps {
-  onAdd?: (reservation: ScheduleInfo) => void;
+  onAdd?: (reservation: ScheduleCreateRequest) => void;
 }
 
 export default function CCAddScheduleCard({ onAdd }: CCAddScheduleCardProps) {

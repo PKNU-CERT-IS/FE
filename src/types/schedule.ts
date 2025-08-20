@@ -8,22 +8,28 @@ export const SCHEDULE_TYPES = {
 
 export type ScheduleType = (typeof SCHEDULE_TYPES)[keyof typeof SCHEDULE_TYPES];
 
-export interface ScheduleInfo {
-  id: number;
+export const SCHEDULE_STATUS_TYPES = {
+  PENDING: "PENDING",
+  APPROVE: "APPROVE",
+  REJECTED: "REJECTED",
+};
+
+export type ScheduleStatusType =
+  (typeof SCHEDULE_STATUS_TYPES)[keyof typeof SCHEDULE_STATUS_TYPES];
+
+// 스케줄 등록
+export interface ScheduleCreateRequest {
   title: string;
-  started_at: string;
-  ended_at: string;
-  created_at: string;
-  updated_at?: string;
-  deleted_at?: string;
-  place: string;
-  description: string;
+  description?: string;
   type: ScheduleType;
+  started_at: string; // ISO date string
+  ended_at: string;
+  place: string;
 }
 
-export interface ScheduleStatus {
+// 스케줄 정보 조회
+export interface ScheduleInfo extends ScheduleCreateRequest {
   id: number;
-  schedule_id: number;
-  status: "PENDING" | "REJECTED" | "APPROVED";
-  updated_at: string;
+  status: ScheduleStatusType;
+  created_at: string;
 }
