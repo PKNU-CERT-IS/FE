@@ -1,14 +1,11 @@
 "use client";
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import {
-  BLOG_CATEGORIES,
-  BlogCategory as BlogCategoryType,
-} from "@/types/blog";
+import { BLOG_CATEGORIES, BlogCategory } from "@/types/blog";
 import DefaultButton from "@/components/ui/defaultButton";
 
 interface CCBlogCategoryFilterProps {
-  currentCategory: BlogCategoryType;
+  currentCategory: BlogCategory;
   currentSearch: string;
 }
 
@@ -20,7 +17,7 @@ export default function CCBlogCategoryFilter({
   const searchParams = useSearchParams();
   const pathname = usePathname();
 
-  const handleCategoryChange = (newCategory: BlogCategoryType) => {
+  const handleCategoryChange = (newCategory: BlogCategory) => {
     const params = new URLSearchParams(searchParams);
 
     if (newCategory !== "전체") {
