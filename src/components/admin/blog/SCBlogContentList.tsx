@@ -80,11 +80,14 @@ export default function SCBlogContentList({
                 </p>
               </Link>
 
-              <div className="flex justify-between items-center">
-                <div className="text-sm text-gray-500">
+              <div className="flex justify-between">
+                <Link
+                  href={`/admin/blog/${post.id}`}
+                  className="block flex-1 min-w-0 text-sm text-gray-500"
+                >
                   마지막 수정: {post.createdAt}
-                </div>
-                <div className="flex gap-6">
+                </Link>
+                <div className="shrink-0">
                   <CCPublishedCheckbox
                     postId={post.id}
                     published={post.published}

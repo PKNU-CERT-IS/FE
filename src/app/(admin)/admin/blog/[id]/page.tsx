@@ -70,7 +70,7 @@ export default async function AdminBlogDetailPage({
         <header className="p-8 border-b border-gray-200">
           {/* 카테고리와 케밥 메뉴 */}
           <div className="flex items-start justify-between mb-4">
-            <div>
+            <div className="flex items-center gap-2">
               <DefaultBadge
                 variant="outline"
                 className={getCategoryColor(post.category)}
@@ -81,7 +81,7 @@ export default async function AdminBlogDetailPage({
               {post.published && (
                 <DefaultBadge
                   variant="outline"
-                  className="bg-gray-200 text-gray-700 border-gray-300 px-3 py-1 text-sm font-medium"
+                  className="bg-gray-200 text-gray-700 border-gray-300"
                 >
                   <ExternalLink className="w-3 h-3 mr-1" />
                   외부 공개

@@ -24,7 +24,7 @@ const NavBarItems = ({ navBarList }: NavBarItemsProps) => {
           <Link
             key={item.name}
             href={item.href}
-            className={`px-4 py-2 text-sm mx-0.5 transition-all duration-300 rounded-lg relative group overflow-hidden
+            className={`px-4 py-2 text-sm mx-0.5 transition-all duration-300 rounded-lg relative group
               ${
                 isActive
                   ? "text-cert-dark-red bg-cert-dark-red/5 shadow-cert-navbar"

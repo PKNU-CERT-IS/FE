@@ -5,6 +5,7 @@ import Calendar from "@/components/schedule/calendar";
 import SCAdminScheduleInfo from "@/components/admin/schedule/SCAdminScheduleInfo";
 import SCAdminScheduleRequestList from "@/components/admin/schedule/SCAdminScheduleRequestList";
 import CCScheduleRequestWrapper from "@/components/schedule/CCScheduleRequestWrapper";
+import CCScrollScheduleList from "@/components/schedule/CCScrollScheduleList";
 
 interface SearchPageProps {
   searchParams: Promise<{ date?: string }>;
@@ -19,6 +20,9 @@ export default async function AdminSchedulePage({
   return (
     <div className="min-h-screen bg-white">
       <div className="max-w-7xl mx-auto">
+        <div className="absolute right-4 top-40 sm:hidden z-10">
+          <CCScrollScheduleList />
+        </div>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="md:col-span-2">
             <Calendar />

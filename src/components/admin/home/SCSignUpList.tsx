@@ -33,7 +33,7 @@ const signUpList: SignUpList[] = [
 
 export default function CCSignUpList() {
   return (
-    <div className="text-card-foreground card-list h-full cursor-auto">
+    <div className="text-card-foreground card-list h-full cursor-default">
       <div className="pb-4 flex flex-col space-y-1.5 p-6">
         <div className="text-lg font-medium flex text-gray-600 items-center gap-2 leading-none tracking-tight">
           <User className="h-5 w-5 text-cert-dark-red" />

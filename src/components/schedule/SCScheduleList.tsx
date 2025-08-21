@@ -48,7 +48,7 @@ export default async function SCScheduleList({
           {filteredSchedules.map((schedule) => (
             <div
               key={schedule.id}
-              className="card-list text-card-foreground bg-white rounded-xl border shadow-sm"
+              className="card-list text-card-foreground bg-white rounded-xl border shadow-sm cursor-default"
             >
               <div className="flex flex-col space-y-1.5 p-6">
                 <div className="flex items-start justify-between">

@@ -1,7 +1,6 @@
-import MembersSVG from "/public/icons/members.svg";
-import SCMembersCard from "./SCMembersCard";
-import DefaultNoneResultUi from "@/components/ui/defaultNoneResultUi";
+import SCMembersCard from "@/components/members/SCMembersCard";
 import { MembersDataType } from "@/types/members";
+import SCSearchResultNotFound from "@/components/ui/SCSearchResultNotFound";
 
 interface MembersCardListProps {
   members: MembersDataType[];
@@ -9,13 +8,7 @@ interface MembersCardListProps {
 
 export default function MembersCardList({ members }: MembersCardListProps) {
   if (members.length === 0) {
-    return (
-      <DefaultNoneResultUi
-        icon={<MembersSVG className="text-cert-dark-red" />}
-        title="검색 결과가 없습니다"
-        description="다른 검색어나 필터를 시도해보세요."
-      />
-    );
+    return <SCSearchResultNotFound mode="members" />;
   }
 
   return (

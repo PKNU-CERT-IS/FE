@@ -16,7 +16,7 @@ const todaySchedule = mockScheduleData.filter(
 export default function SCTodaySchedule() {
   return (
     <div className="mt-7">
-      <div className="card-list text-card-foreground p-6 cursor-auto">
+      <div className="card-list text-card-foreground p-6 cursor-default">
         <h3 className="text-xl font-semibold mb-6 text-gray-900 flex items-center gap-2">
           <ScheduleSVG className="w-5 h-5 stroke-cert-red" />
           오늘 일정
@@ -27,7 +27,7 @@ export default function SCTodaySchedule() {
               {todaySchedule.map((schedule) => (
                 <div
                   key={schedule.id}
-                  className="card-list bg-gray-50 flex items-center justify-between p-3 group cursor-auto"
+                  className="card-list bg-gray-50 flex items-center justify-between p-3 group cursor-default"
                 >
                   <div>
                     <div className="font-medium text-sm text-gray-900 dark:text-gray-100 group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors">

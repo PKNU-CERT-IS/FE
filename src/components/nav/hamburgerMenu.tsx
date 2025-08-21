@@ -44,6 +44,14 @@ export default function HamburgerMenu({ navBarList }: HamburgerMenuProps) {
     }
   }, [pathname, handleClose]); // handleClose를 의존성 배열에 추가
 
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+  }, [isOpen]);
+
   return (
     <>
       <div className="flex md:hidden relative z-10">

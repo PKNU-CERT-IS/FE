@@ -1,7 +1,7 @@
 "server-only";
 
 import MembersSearchBar from "@/components/members/CCMembersSearchBar";
-import CCMembersList from "@/components/admin/members/CCMembersList";
+import SCMembersContentWrapper from "@/components/admin/members/SCMembersContentWrapper";
 
 interface AdminMembersProps {
   searchParams: Promise<{
@@ -19,7 +19,7 @@ export default async function AdminMembersPage({
     <>
       <MembersSearchBar currentSearch={currentSearch} />
       <div className="flex gap-8 mt-4">
-        <CCMembersList />
+        <SCMembersContentWrapper currentSearch={currentSearch} />
       </div>
     </>
   );

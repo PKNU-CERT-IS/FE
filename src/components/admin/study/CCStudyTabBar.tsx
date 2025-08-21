@@ -43,7 +43,7 @@ export default function CCStudyTabBar({
             <button
               key={tab}
               onClick={() => handleMainTabClick(tab)}
-              className={`inline-flex items-center justify-center gap-2 rounded-sm px-3 py-1.5 text-sm font-medium transition-all
+              className={`inline-flex items-center justify-center gap-2 rounded-sm px-3 py-1.5 text-sm font-medium transition-all cursor-pointer
                 ${
                   isActive
                     ? "bg-cert-red text-white shadow-sm"
@@ -63,7 +63,7 @@ export default function CCStudyTabBar({
             <button
               key={view}
               onClick={() => handleSubTabClick(view)}
-              className={`inline-flex items-center justify-center gap-2 rounded-sm px-3 py-1.5 text-sm font-medium transition-all
+              className={`inline-flex items-center justify-center gap-2 rounded-sm px-3 py-1.5 text-sm font-medium transition-all cursor-pointer
                 ${
                   isActive
                     ? "bg-cert-red text-white shadow-sm"

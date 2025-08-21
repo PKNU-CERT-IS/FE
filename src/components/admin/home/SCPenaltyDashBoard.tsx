@@ -28,7 +28,7 @@ const withdrawalList = [
 export default function SCPenaltyDashBoard() {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-      <div className="text-card-foreground card-list cursor-auto">
+      <div className="text-card-foreground card-list cursor-default">
         <div className="pb-4 flex flex-col space-y-1.5 p-6">
           <div className="text-lg font-medium flex text-gray-600 items-center gap-2 leading-none tracking-tight">
             벌점 분포 현황
@@ -44,14 +44,14 @@ export default function SCPenaltyDashBoard() {
         </div>
       </div>
 
-      <div className="text-card-foreground card-list cursor-auto">
+      <div className="text-card-foreground card-list cursor-default">
         <div className="pb-4 flex flex-col space-y-1.5 p-6">
           <div className="flex items-center gap-2 text-lg text-gray-600 font-medium leading-none tracking-tight ">
             <AlertTriangle className="h-5 w-5 text-cert-dark-red" />
             탈퇴 위험 회원
           </div>
           <div className="text-base text-muted-foreground">
-            벌점 2점 이상 회원 목록
+            벌점 4점 이상 회원 목록
           </div>
         </div>
         <div>

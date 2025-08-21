@@ -1,10 +1,7 @@
+"server-only";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
-import {
-  AUTHOR_STATUS_LABELS,
-  ProjectMaterial,
-  STATUS_LABELS,
-} from "@/types/project";
+import { ProjectMaterial } from "@/types/project";
 import AttachedFilesDownload from "@/components/project/SCAttachedFilesDownload";
 import { Globe, BookText } from "lucide-react";
 import Image from "next/image";
@@ -13,7 +10,10 @@ import BackToListButton from "@/components/detail/SCBackToListButton";
 import KebabMenu from "@/components/detail/CCKebabMenu";
 import ShareButton from "@/components/detail/CCShareButton";
 import { getStatusColor } from "@/utils/projectUtils";
+import { STATUS_LABELS, AUTHOR_STATUS_LABELS } from "@/types/project";
 import DefaultBadge from "@/components/ui/defaultBadge";
+import MeetingMinutes from "@/components/study/CCMeetingMinutes";
+import EndRequestButton from "@/components/ui/endRequestButton";
 
 interface ProjectDetailPageProps {
   params: { id: string };
@@ -91,7 +91,7 @@ export default async function ProjectDetailPage({
   return (
     <div className="mx-auto max-w-full bg-white">
       {/* 뒤로가기 버튼 */}
-      <BackToListButton currentUrl={"admin/study"} />
+      <BackToListButton currentUrl={"admin/study?tab=project"} />
       <article>
         {/* 프로젝트 이미지 */}
         <div className="relative h-96 mb-8 bg-gradient-to-br from-purple-400 to-indigo-600 overflow-hidden mt-6 rounded-lg">
@@ -112,27 +112,17 @@ export default async function ProjectDetailPage({
 
           {/* 상태 배지 */}
           <div className="absolute top-4 left-4">
-            <span
-              className={`px-3 py-1 rounded-full text-xs font-medium backdrop-blur-sm ${getStatusColor(
-                project.status
-              )}`}
+            <DefaultBadge
+              variant="outline"
+              className={getStatusColor(project.status)}
             >
               {STATUS_LABELS[project.status as keyof typeof STATUS_LABELS]}
-            </span>
+            </DefaultBadge>
           </div>
         </div>
 
         {/* 헤더 */}
         <header className=" border-b pb-6">
-          <div className="flex flex-wrap gap-2 mb-4">
-            <DefaultBadge className="bg-gray-100 border border-gray-200 text-gray-700">
-              {project.category}
-            </DefaultBadge>
-            <DefaultBadge className="bg-gray-100 border border-gray-200 text-gray-700">
-              {project.subCategory}
-            </DefaultBadge>
-          </div>
-
           <h1 className="text-4xl font-extrabold tracking-tight text-gray-900 sm:text-5xl mb-4">
             {project.title}
           </h1>
@@ -192,48 +182,57 @@ export default async function ProjectDetailPage({
         </div>
 
         {/* 액션 버튼들 */}
-        <div className="flex flex-wrap gap-4 mb-8">
-          {project.githubUrl && (
-            <a
-              href={project.githubUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-4 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors"
-            >
-              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                <path
-                  fillRule="evenodd"
-                  d="M10 0C4.477 0 0 4.484 0 10.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0110 4.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.203 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.942.359.31.678.921.678 1.856 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0020 10.017C20 4.484 15.522 0 10 0z"
-                  clipRule="evenodd"
-                />
-              </svg>
-              GitHub 저장소
-            </a>
-          )}
-
-          {project.demoUrl && (
-            <a
-              href={project.demoUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-            >
-              <svg
-                className="w-5 h-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
+        <div className="flex justify-between items-center gap-4 mb-8">
+          <div className="flex gap-4">
+            {project.githubUrl && (
+              <a
+                href={project.githubUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-4 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                />
-              </svg>
-              데모 사이트
-            </a>
-          )}
+                <svg
+                  className="w-5 h-5"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M10 0C4.477 0 0 4.484 0 10.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0110 4.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.203 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.942.359.31.678.921.678 1.856 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0020 10.017C20 4.484 15.522 0 10 0z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+                GitHub 저장소
+              </a>
+            )}
+
+            {project.demoUrl && (
+              <a
+                href={project.demoUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              >
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                  />
+                </svg>
+                데모 사이트
+              </a>
+            )}
+          </div>
+          <span>
+            <EndRequestButton id={project.id} />
+          </span>
         </div>
 
         {/* 첨부파일 섹션 */}
@@ -263,6 +262,11 @@ export default async function ProjectDetailPage({
             <ShareButton></ShareButton>
           </div>
         )}
+        <MeetingMinutes
+          studyId={"1"} // 임시로 ID 설정, 실제로는 params에서 받아와야 함 현재 스터디 ID를 나타내는 ID
+          currentUserId={1} // 임시로 현재 사용자 ID 설정, 실제로는 로그인 정보에서 받아와야 함
+          studyLeaderId={1} // 임시로 스터디 리더 ID 설정, 실제로는 스터디 데이터에서 받아와야 함
+        />
       </article>
     </div>
   );
