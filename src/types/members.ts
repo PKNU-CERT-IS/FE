@@ -11,8 +11,18 @@ export const membersRoleCategories = [
 export type MembersRoleCategoryType = (typeof membersRoleCategories)[number];
 
 // 더 많은 카테고리 추가가능
-export const membersGradeCategories = ["1", "2", "3", "4"] as const;
-export type MembersGradeCategoryType = (typeof membersGradeCategories)[number];
+export const membersGradeCategories = [
+  "1학년",
+  "2학년",
+  "3학년",
+  "4학년",
+  "졸업생",
+  "휴학생",
+] as const;
+
+export type MembersGradeCategoryType =
+  | (typeof membersGradeCategories)[number]
+  | "";
 
 // Main members type
 export interface MembersDataType {

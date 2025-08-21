@@ -263,4 +263,8 @@ body {
   .category-filter-active {
     @apply bg-cert-red text-white hover:bg-cert-red/80 duration-200;
   }
+
+  .input-default {
+    @apply h-10 w-full rounded-md border border-gray-300 text-gray-900 bg-white px-3 py-2 text-sm focus:border-cert-red focus:outline-none;
+  }
 }
