@@ -30,6 +30,7 @@ export default function ConfirmModal({
   pageLabel,
 }: ConfirmModalProps) {
   const [attachments, setAttachments] = useState<AttachedFile[]>([]);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [link, setLink] = useState<string>("");
 
   useEffect(() => {
