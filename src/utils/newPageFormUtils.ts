@@ -28,6 +28,7 @@ export const getSubCategories = (mainCategory: string): string[] => {
       "WEB3",
       "AI",
       "MISC",
+      "기타",
     ],
     // CS
     CS: [
@@ -59,6 +60,7 @@ export const getSubCategories = (mainCategory: string): string[] => {
       "데이터 과학 및 분석",
       "인공지능",
       "시계열 데이터",
+      "기타",
     ],
     // RED
     RED: [
@@ -90,6 +92,7 @@ export const getSubCategories = (mainCategory: string): string[] => {
       "게임 해킹",
       "차량 보안",
       "AI 보안",
+      "기타",
     ],
     // BLUE
     BLUE: [
@@ -111,6 +114,7 @@ export const getSubCategories = (mainCategory: string): string[] => {
       "CI/CD Security",
       "소프트웨어 공급망 보안",
       "OT/ICS 보안",
+      "기타",
     ],
     // GRC
     GRC: [
@@ -119,6 +123,7 @@ export const getSubCategories = (mainCategory: string): string[] => {
       "컴플라이언스(GDPR, PCI-DSS)",
       "정보통신망이용촉진및정보보호등에관한법률",
       "사업 연속성 계획 및 재해 복구",
+      "기타",
     ],
     // MISC
     MISC: [
@@ -155,6 +160,7 @@ export const getSubCategories = (mainCategory: string): string[] => {
       "의공학",
       "OSINT",
       "HUMINT",
+      "기타",
     ],
     // 기타(빈 목록)
     기타: [],

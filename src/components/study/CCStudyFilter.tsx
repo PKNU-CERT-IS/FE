@@ -18,7 +18,8 @@ import {
   CATEGORY_LABELS,
   CATEGORY_OPTIONS,
   SUBCATEGORY_LABELS,
-  SUBCATEGORY_OPTIONS,
+  SUBCATEGORY_MAP,
+  SubCategoryKey,
 } from "@/types/category";
 
 interface CCStudyFilterProps extends StudyFilterProps {
@@ -71,6 +72,32 @@ export default function CCStudyFilter({
       }
 
       // 필터 변경 시 페이지를 1로 리셋
+      params.delete("page");
+
+      startTransition(() => {
+        if (isAdmin) {
+          const tab = params.get("tab") || "study";
+          params.set("tab", tab);
+          router.push(`/admin/study?${params.toString()}`);
+        } else {
+          router.push(`/study?${params.toString()}`);
+        }
+      });
+    },
+    [searchParams, router, isAdmin]
+  );
+  // 메인카테고리에서 다른 카테고리 선택 시 서브 카테고리 리셋
+  const resetSubCategory = useCallback(
+    (newCategory: string) => {
+      const params = new URLSearchParams(searchParams);
+
+      if (newCategory === "all" || newCategory === "") {
+        params.delete("category");
+      } else {
+        params.set("category", newCategory);
+      }
+
+      params.delete("subCategory");
       params.delete("page");
 
       startTransition(() => {
@@ -233,7 +260,7 @@ export default function CCStudyFilter({
               </span>
               <ChevronDown
                 className={`h-4 w-4 transition-transform duration-300 text-gray-400 ${
-                  showSemesterDropdown ? "rotate-180" : ""
+                  showCategoryDropdown ? "rotate-180" : ""
                 }`}
               />
             </DefaultButton>
@@ -246,7 +273,7 @@ export default function CCStudyFilter({
                     type="button"
                     className="w-full px-4 py-2 text-left text-gray-900 first:rounded-t-lg last:rounded-b-lg text-sm hover:bg-cert-red hover:text-white duration-100 hover:first:rounded-md hover:rounded-md"
                     onClick={() => {
-                      updateFilter("category", option);
+                      resetSubCategory(option);
                       closeAllDropdowns();
                     }}
                   >
@@ -275,7 +302,11 @@ export default function CCStudyFilter({
               }}
             >
               <span className="text-gray-700 truncate pr-1">
-                {SUBCATEGORY_LABELS[currentFilters.subCategory]}
+                {currentFilters.subCategory
+                  ? SUBCATEGORY_LABELS[
+                      currentFilters.subCategory as SubCategoryKey
+                    ]
+                  : ""}
               </span>
               <ChevronDown
                 className={`h-4 w-4 transition-transform duration-300 text-gray-400 ${
@@ -283,10 +314,9 @@ export default function CCStudyFilter({
                 }`}
               />
             </DefaultButton>
-
             {showSubCategoryDropdown && (
               <div className="absolute top-full mt-1 w-full bg-white border border-gray-300 rounded-lg shadow-lg z-20 max-h-48 overflow-y-auto">
-                {SUBCATEGORY_OPTIONS.map((option) => (
+                {SUBCATEGORY_MAP[currentFilters.category].map((option) => (
                   <button
                     key={option}
                     type="button"
@@ -296,7 +326,7 @@ export default function CCStudyFilter({
                       closeAllDropdowns();
                     }}
                   >
-                    {SUBCATEGORY_LABELS[option]}
+                    {SUBCATEGORY_LABELS[option as SubCategoryKey]}
                   </button>
                 ))}
               </div>
