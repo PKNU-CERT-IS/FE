@@ -39,7 +39,7 @@ export async function middleware(req: NextRequest) {
     }
 
     return NextResponse.next();
-  } catch (error) {
+  } catch {
     return redirectToLogin(req);
   }
 }

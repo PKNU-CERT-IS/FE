@@ -3,8 +3,8 @@ import { jwtVerify } from "jose";
 const JWT_SECRET = new TextEncoder().encode(
   process.env.JWT_SECRET?.substring(0, 32)
 );
-const JWT_ISSUER = "spring-app";
-const JWT_AUDIENCE = "nextjs-app";
+// const JWT_ISSUER = "spring-app";
+// const JWT_AUDIENCE = "nextjs-app";
 
 export interface JwtPayload {
   sub: string; // user id
