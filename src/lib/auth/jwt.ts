@@ -1,6 +1,8 @@
 import { jwtVerify } from "jose";
 
-const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET);
+const JWT_SECRET = new TextEncoder().encode(
+  process.env.JWT_SECRET?.substring(0, 32)
+);
 const JWT_ISSUER = "spring-app";
 const JWT_AUDIENCE = "nextjs-app";
 
@@ -20,13 +22,18 @@ export interface JwtPayload {
 // spring boot 에서 발급한 jwt 토큰 검증
 export async function verifyJwt(token: string): Promise<JwtPayload> {
   try {
-    const { payload } = (await jwtVerify(token, JWT_SECRET, {
-      issuer: JWT_ISSUER,
-      audience: JWT_AUDIENCE,
-    })) as { payload: JwtPayload };
+    const { payload } = (await jwtVerify(
+      token,
+      JWT_SECRET
+      //   {
+      //   issuer: JWT_ISSUER,
+      //   audience: JWT_AUDIENCE,
+      // }
+    )) as { payload: JwtPayload };
 
     return payload as JwtPayload;
   } catch (error) {
+    console.error("JWT verification error");
     throw new Error(`Invalid token: ${error}`);
   }
 }
