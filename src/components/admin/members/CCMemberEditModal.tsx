@@ -121,7 +121,6 @@ export default function CCRoleEditModal({
                         option.value ===
                         (editedMember.grade as MembersGradeCategoryType)
                     )?.label || editedMember.grade}
-                    학년
                   </span>
                   <ChevronDown
                     className={`h-4 w-4 transition-transform duration-300 text-gray-400 ${

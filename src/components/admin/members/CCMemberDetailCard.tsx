@@ -24,6 +24,11 @@ export default function CCMemberDetailCard({
 }: CCMemberDetailCardProps) {
   const [isOpenPenaltyModal, setIsOpenPenaltyModal] = useState<boolean>(false);
   const [isOpenKickModal, setIsOpenKickModal] = useState<boolean>(false);
+  const [isOpenGracePeriodModal, setIsOpenGracePeriodModal] =
+    useState<boolean>(false);
+  const [newGracePeriod, setNewGracePeriod] = useState(
+    selectedMember?.gracePeriod || ""
+  );
 
   const [penaltyCount, setPenaltyCount] = useState(0);
   const { setIsOpenModal, isOpenModal, modalOutsideRef } = useModal();
@@ -31,6 +36,7 @@ export default function CCMemberDetailCard({
   useEffect(() => {
     if (selectedMember) {
       setPenaltyCount(selectedMember.penalty);
+      setNewGracePeriod(selectedMember.gracePeriod || "");
     }
   }, [selectedMember]);
 
@@ -60,6 +66,21 @@ export default function CCMemberDetailCard({
 
   if (!selectedMember) return null;
 
+  // 유예 기간 업데이트
+  const updateGracePeriod = async () => {
+    try {
+      // api 요청 보내기
+      handleUpdateMember({
+        ...selectedMember,
+        gracePeriod: newGracePeriod,
+      });
+
+      console.log("유예 기간이 성공적으로 업데이트되었습니다.");
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
     <div className="w-72 space-y-4">
       <div className="border border-gray-200 rounded-lg shadow-sm">
@@ -75,10 +96,16 @@ export default function CCMemberDetailCard({
               </DefaultBadge>
             </div>
             <div className="flex items-center gap-2">
-              <button onClick={() => setIsOpenModal(true)}>
+              <button
+                onClick={() => setIsOpenModal(true)}
+                className="cursor-pointer"
+              >
                 <EditSVG className="w-4 h-4 stroke-gray-400 hover:stroke-gray-600" />
               </button>
-              <button onClick={() => setSelectedMember(null)}>
+              <button
+                onClick={() => setSelectedMember(null)}
+                className="cursor-pointer"
+              >
                 <X className="w-4 h-4 text-gray-400 hover:text-gray-600" />
               </button>
             </div>
@@ -88,7 +115,7 @@ export default function CCMemberDetailCard({
 
           <div className="text-xs flex flex-row items-center text-gray-600">
             <User className="w-3 h-3 mr-1" />
-            {selectedMember.grade}학년, {selectedMember.gender}자
+            {selectedMember.grade}, {selectedMember.gender}자
           </div>
 
           <div className="text-xs flex flex-row items-center text-gray-600">
@@ -138,7 +165,7 @@ export default function CCMemberDetailCard({
           </div>
 
           {/* 벌점 */}
-          <div className="space-y-3">
+          <div className="space-y-2">
             <div className="flex items-center justify-between">
               <div className="text-sm font-medium">벌점</div>
               <div className="flex items-center gap-2">
@@ -150,7 +177,7 @@ export default function CCMemberDetailCard({
                 >
                   <Minus className="w-3 h-3" />
                 </DefaultButton>
-                <span className="font-medium text-lg px-2 py-1 rounded">
+                <span className="font-medium text-lg px-2 py-1 rounded text-center w-12">
                   {penaltyCount}점
                 </span>
                 <DefaultButton
@@ -188,11 +215,47 @@ export default function CCMemberDetailCard({
           <div className="space-y-2">
             <div className="text-sm font-medium">유예 기간</div>
             <div className="text-xs text-gray-600 p-2 bg-gray-50 rounded border border-gray-300">
-              {penaltyGracePeriod(selectedMember.gracePeriod)} (
-              {selectedMember.gracePeriod})
+              {penaltyGracePeriod(selectedMember.gracePeriod)}
+              <span className="ml-1.5">
+                (
+                <input
+                  type="date"
+                  value={newGracePeriod}
+                  onChange={(e) => setNewGracePeriod(e.target.value)}
+                  className="rounded text-xs cursor-pointer"
+                />
+                )
+              </span>
+            </div>
+
+            <div>
+              <DefaultButton
+                className="w-full h-8 text-xs action-button"
+                onClick={() => setIsOpenGracePeriodModal(true)}
+                disabled={!newGracePeriod}
+              >
+                유예 기간 수정
+              </DefaultButton>
+
+              <ConfirmModal
+                isOpen={isOpenGracePeriodModal}
+                title="유예 기간 수정"
+                message={`${
+                  selectedMember.name
+                }의 유예 기간을 ${newGracePeriod} (${penaltyGracePeriod(
+                  newGracePeriod
+                )})로 수정하시겠습니까?`}
+                confirmText="확인"
+                cancelText="취소"
+                onConfirm={() => {
+                  setIsOpenGracePeriodModal(false);
+                  updateGracePeriod();
+                }}
+                onCancel={() => setIsOpenGracePeriodModal(false)}
+              />
             </div>
           </div>
-
+          <div className="border-b-1 border-gray-200 pb-1.5" />
           <div>
             <DefaultButton
               className="action-button w-full h-8 text-xs"
