@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",
+    "@next/third-parties": "^15.5.0",
     "@supabase/supabase-js": "^2.53.0",
     "@tailwindcss/typography": "^0.5.16",
     "class-variance-authority": "^0.7.1",
@@ -30,6 +31,7 @@
     "@eslint/eslintrc": "^3",
     "@svgr/webpack": "^8.1.0",
     "@tailwindcss/postcss": "^4",
+    "@types/gtag.js": "^0.0.20",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
