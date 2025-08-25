@@ -268,3 +268,15 @@ body {
     @apply h-10 w-full rounded-md border border-gray-300 text-gray-900 bg-white px-3 py-2 text-sm focus:border-cert-red focus:outline-none;
   }
 }
+
+@keyframes flyAcross {
+  0% {
+    transform: translateX(0) translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateX(50vw) translateY(-30px) rotate(20deg);
+  }
+  100% {
+    transform: translateX(100vw) translateY(0) rotate(-20deg);
+  }
+}
