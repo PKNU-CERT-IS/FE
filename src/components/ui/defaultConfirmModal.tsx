@@ -15,6 +15,7 @@ interface ConfirmModalProps {
   confirmText: string;
   cancelText: string;
   type?: "confirm" | "endConfirm";
+  pageLabel?: string;
 }
 
 export default function ConfirmModal({
@@ -26,8 +27,10 @@ export default function ConfirmModal({
   confirmText = "예",
   cancelText = "아니오",
   type = "confirm",
+  pageLabel,
 }: ConfirmModalProps) {
   const [attachments, setAttachments] = useState<AttachedFile[]>([]);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [link, setLink] = useState<string>("");
 
   useEffect(() => {
@@ -62,7 +65,7 @@ export default function ConfirmModal({
       <div className="relative bg-white rounded-lg shadow-xl p-6 w-full max-w-md mx-4">
         <button
           onClick={onCancel}
-          className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
+          className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors cursor-pointer"
         >
           <X className="w-5 h-5" />
         </button>
@@ -93,15 +96,16 @@ export default function ConfirmModal({
               onAttachmentsChange={setAttachments}
               className="py-3"
             />
-            <input
-              type="url"
-              value={link}
-              onChange={(e) => setLink(e.target.value)}
-              className="text-sm w-full px-3 py-2 border border-gray-300 rounded-md 
-                         focus:outline-none focus:ring-2 focus:ring-cert-red 
-                         focus:border-transparent"
-              placeholder="구글폼 또는 결과물 링크 (https://...)"
-            />
+            <p className="text-sm text-gray-700 text-center">
+              <a
+                href="https://docs.google.com/forms/d/e/1FAIpQLSd7fLE7rxJng5uFPsz7NmxIj7xp-7gwgJsNAJZ2_484mvM3GQ/viewform?pli=1"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-cert-red font-semibold underline underline-offset-2 hover:text-cert-dark-red transition-colors"
+              >
+                {pageLabel} 후기 작성하기 →
+              </a>
+            </p>
           </div>
         )}
 

@@ -6,7 +6,8 @@ export type CategoryType =
   | "RED"
   | "BLUE"
   | "GRC"
-  | "MISC";
+  | "MISC"
+  | "기타";
 
 // 서브 카테고리 (타입 변경 없음)
 export type SubCategoryType =
@@ -136,7 +137,8 @@ export type SubCategoryType =
   | "병렬처리 프로그래밍"
   | "의공학"
   | "OSINT"
-  | "HUMINT";
+  | "HUMINT"
+  | "기타";
 
 export const CATEGORY_OPTIONS: readonly CategoryType[] = [
   "all",
@@ -146,6 +148,7 @@ export const CATEGORY_OPTIONS: readonly CategoryType[] = [
   "BLUE",
   "GRC",
   "MISC",
+  "기타",
 ] as const;
 
 export const SUBCATEGORY_OPTIONS: readonly SubCategoryType[] = [
@@ -276,13 +279,15 @@ export const SUBCATEGORY_OPTIONS: readonly SubCategoryType[] = [
   "의공학",
   "OSINT",
   "HUMINT",
+  "기타",
 ] as const;
 
 // 서브카테고리 맵
 export const SUBCATEGORY_MAP: Record<CategoryType, readonly SubCategoryType[]> =
   {
-    all: [],
+    all: ["all"],
     CTF: [
+      "all",
       "포너블",
       "리버싱",
       "웹해킹",
@@ -291,8 +296,10 @@ export const SUBCATEGORY_MAP: Record<CategoryType, readonly SubCategoryType[]> =
       "WEB3",
       "AI",
       "MISC",
+      "기타",
     ],
     CS: [
+      "all",
       "논리회로",
       "정수론",
       "선형대수학",
@@ -321,8 +328,10 @@ export const SUBCATEGORY_MAP: Record<CategoryType, readonly SubCategoryType[]> =
       "데이터 과학 및 분석",
       "인공지능",
       "시계열 데이터",
+      "기타",
     ],
     RED: [
+      "all",
       "모의해킹",
       "취약점 연구",
       "APT Analysis",
@@ -351,8 +360,10 @@ export const SUBCATEGORY_MAP: Record<CategoryType, readonly SubCategoryType[]> =
       "게임 해킹",
       "차량 보안",
       "AI 보안",
+      "기타",
     ],
     BLUE: [
+      "all",
       "침입 탐지 및 방어(관제)",
       "사용자 행위 분석",
       "HoneyPots",
@@ -371,15 +382,19 @@ export const SUBCATEGORY_MAP: Record<CategoryType, readonly SubCategoryType[]> =
       "CI/CD Security",
       "소프트웨어 공급망 보안",
       "OT/ICS 보안",
+      "기타",
     ],
     GRC: [
+      "all",
       "보안 정책 및 표준 관리(ISMS/ISO)",
       "위험 관리 및 위협 모델링",
       "컴플라이언스(GDPR, PCI-DSS)",
       "정보통신망이용촉진및정보보호등에관한법률",
       "사업 연속성 계획 및 재해 복구",
+      "기타",
     ],
     MISC: [
+      "all",
       "모니터링 시스템 개발",
       "자동화 시스템 개발",
       "오픈소스 분석",
@@ -413,7 +428,9 @@ export const SUBCATEGORY_MAP: Record<CategoryType, readonly SubCategoryType[]> =
       "의공학",
       "OSINT",
       "HUMINT",
+      "기타",
     ],
+    기타: ["기타"],
   };
 // 카테고리 라벨
 export const CATEGORY_LABELS = {
@@ -424,11 +441,13 @@ export const CATEGORY_LABELS = {
   BLUE: "BLUE",
   GRC: "GRC",
   MISC: "MISC",
+  기타: "기타",
 } as const;
 
 // 서브카테고리 라벨
 export const SUBCATEGORY_LABELS = {
   all: "전체",
+  기타: "기타",
   // CTF
   포너블: "포너블",
   리버싱: "리버싱",
@@ -571,3 +590,5 @@ export const SUBCATEGORY_TO_CATEGORY: Record<SubCategoryType, CategoryType> =
     });
     return acc;
   }, {} as Record<SubCategoryType, CategoryType>);
+
+export type SubCategoryKey = keyof typeof SUBCATEGORY_LABELS;

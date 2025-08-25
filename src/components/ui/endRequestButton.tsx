@@ -17,7 +17,7 @@ export default function EndRequestButton({ id }: { id: number | string }) {
   const pageType: "study" | "project" =
     tab === "study" || tab === "project"
       ? (tab as "study" | "project")
-      : pathname.startsWith("/admin/study")
+      : pathname.startsWith("/admin/study") || pathname.startsWith("/study")
       ? "study"
       : "project";
 
@@ -62,11 +62,12 @@ export default function EndRequestButton({ id }: { id: number | string }) {
         isOpen={isOpenModal}
         type="endConfirm"
         title={`${pageLabel} 종료하기`}
-        message={`${pageLabel}의 결과물과 구글폼 링크를 제출해주세요.`}
+        message={`${pageLabel}의 결과물과 후기를 반드시 제출해주세요.`}
         confirmText={submitting ? "제출 중..." : "제출"}
         cancelText="취소"
         onConfirm={handleEndRequest}
         onCancel={closeModal}
+        pageLabel={pageLabel}
       />
     </>
   );

@@ -225,6 +225,7 @@ export default function WriteForm({ type }: WriteFormProps) {
                       onClick={() => {
                         setCategory(categoryItem);
                         setIsCategoryOpen(false);
+                        setSubCategory("");
                       }}
                       className="relative flex w-full cursor-pointer select-none items-center rounded-sm py-2 px-2 text-sm outline-none transition-colors hover:bg-cert-red hover:text-white focus:bg-cert-red focus:text-white"
                     >
@@ -337,7 +338,7 @@ export default function WriteForm({ type }: WriteFormProps) {
               type="url"
               value={githubUrl}
               onChange={(e) => setGithubUrl(e.target.value)}
-              className="w-ful text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent"
+              className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent"
               placeholder="https://github.com/username/repository"
             />
           </div>
@@ -395,7 +396,7 @@ export default function WriteForm({ type }: WriteFormProps) {
                 <button
                   type="button"
                   onClick={() => removeExternalLink(index)}
-                  className="px-3 py-2 text-red-600 hover:text-red-800"
+                  className="px-3 py-2 text-red-600 hover:text-red-800 cursor-pointer"
                 >
                   ✕
                 </button>
@@ -421,7 +422,7 @@ export default function WriteForm({ type }: WriteFormProps) {
                 type="date"
                 value={startDate}
                 onChange={(e) => setStartDate(e.target.value)}
-                className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent"
+                className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent cursor-pointer"
                 required
               />
             </div>
@@ -433,7 +434,7 @@ export default function WriteForm({ type }: WriteFormProps) {
                 type="date"
                 value={endDate}
                 onChange={(e) => setEndDate(e.target.value)}
-                className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent"
+                className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent cursor-pointer"
                 required
               />
             </div>

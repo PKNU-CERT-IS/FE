@@ -18,7 +18,8 @@ import {
   CATEGORY_LABELS,
   CATEGORY_OPTIONS,
   SUBCATEGORY_LABELS,
-  SUBCATEGORY_OPTIONS,
+  SUBCATEGORY_MAP,
+  SubCategoryKey,
 } from "@/types/category";
 
 interface ProjectCategoryProps {
@@ -56,6 +57,28 @@ export default function CCProjectFilter({
         params.set(key, value);
       }
 
+      params.delete("page");
+
+      const newUrl = `/project?${params.toString()}`;
+      startTransition(() => {
+        router.push(newUrl);
+      });
+    },
+    [searchParams, router]
+  );
+
+  // 메인카테고리에서 다른 카테고리 선택 시 서브 카테고리 리셋
+  const resetSubCategory = useCallback(
+    (newCategory: string) => {
+      const params = new URLSearchParams(searchParams);
+
+      if (newCategory === "all" || newCategory === "") {
+        params.delete("category");
+      } else {
+        params.set("category", newCategory);
+      }
+
+      params.delete("subCategory");
       params.delete("page");
 
       const newUrl = `/project?${params.toString()}`;
@@ -177,7 +200,7 @@ export default function CCProjectFilter({
                     type="button"
                     className="w-full px-4 py-2 text-left text-gray-900 first:rounded-t-lg last:rounded-b-lg text-sm hover:bg-cert-red hover:text-white duration-100 hover:first:rounded-md hover:rounded-md"
                     onClick={() => {
-                      updateFilter("category", option);
+                      resetSubCategory(option);
                       closeAllDropdowns();
                     }}
                   >
@@ -206,7 +229,11 @@ export default function CCProjectFilter({
               }}
             >
               <span className="text-gray-700 truncate pr-1">
-                {SUBCATEGORY_LABELS[currentFilters.subCategory]}
+                {currentFilters.subCategory
+                  ? SUBCATEGORY_LABELS[
+                      currentFilters.subCategory as SubCategoryKey
+                    ]
+                  : ""}
               </span>
               <ChevronDown
                 className={`h-4 w-4 transition-transform duration-300 text-gray-400 ${
@@ -217,7 +244,7 @@ export default function CCProjectFilter({
 
             {showSubCategoryDropdown && (
               <div className="absolute top-full mt-1 w-full bg-white border border-gray-300 rounded-lg shadow-lg z-20 max-h-48 overflow-y-auto">
-                {SUBCATEGORY_OPTIONS.map((option) => (
+                {SUBCATEGORY_MAP[currentFilters.category].map((option) => (
                   <button
                     key={option}
                     type="button"
@@ -227,7 +254,7 @@ export default function CCProjectFilter({
                       closeAllDropdowns();
                     }}
                   >
-                    {SUBCATEGORY_LABELS[option]}
+                    {SUBCATEGORY_LABELS[option as SubCategoryKey]}
                   </button>
                 ))}
               </div>
