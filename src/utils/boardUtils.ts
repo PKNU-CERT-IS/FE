@@ -43,7 +43,7 @@ export const getCategoryColor = (category: BoardCategoryType) => {
       return "bg-blue-50 text-blue-600 border-blue-200";
     case "활동내용":
       return "bg-green-50 text-green-600 border-green-200";
-    default:
+    case "질문":
       return "bg-gray-50 text-gray-600 border-gray-200";
   }
 };

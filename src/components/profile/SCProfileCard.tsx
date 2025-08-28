@@ -42,7 +42,7 @@ export default function SCProfileCard() {
               variant="outline"
               className="border-gray-200  text-gray-600 "
             >
-              {user.grade}학년
+              {user.grade}
             </DefaultBadge>
           </div>
           <div className="text-sm text-gray-600  transition-colors duration-300">

@@ -29,6 +29,7 @@ export const getCategoryColor = (
       return "bg-green-50 text-green-600 border-green-200";
     case "MISC":
       return "bg-sky-50 text-sky-600 border-sky-200";
+    case "기타":
     default:
       return "bg-gray-50 text-gray-600 border-gray-200";
   }

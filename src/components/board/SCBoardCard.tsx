@@ -1,53 +1,59 @@
 import Link from "next/link";
-import ThunderSVG from "/public/icons/thunder.svg";
 import EyeSVG from "/public/icons/eye.svg";
-import InfoSVG from "/public/icons/info.svg";
-import AlertTriangleSVG from "/public/icons/alert-triangle.svg";
 import DefaultBadge from "@/components/ui/defaultBadge";
-import { BoardPriorityType } from "@/types/board";
 import { BoardDataType } from "@/types/board";
 import { getCategoryColor } from "@/utils/boardUtils";
-import { Heart } from "lucide-react";
+import {
+  AlertCircle,
+  BookOpen,
+  Heart,
+  HelpCircle,
+  Info,
+  ShieldAlert,
+} from "lucide-react";
 
-// svg 요소가 있어 util로 빼기 애매함
-const getPriorityIcon = (priority: BoardPriorityType) => {
-  switch (priority) {
-    case "high":
-      return <AlertTriangleSVG />;
-    case "medium":
-      return <InfoSVG />;
-    default:
-      return <ThunderSVG className="text-cert-accent w-4 h-4" />;
+// 카테고리 종류에 따라 svg 변경 uitl
+const getCategoryIcon = (category: string) => {
+  switch (category) {
+    case "공지사항":
+      return <AlertCircle className="text-red-700 w-4 h-4" />;
+    case "보안이슈":
+      return <ShieldAlert className="text-orange-700 w-4 h-4" />;
+    case "기술자료":
+      return <BookOpen className="text-blue-700 w-4 h-4" />;
+    case "활동내용":
+      return <Info className="text-green-700 w-4 h-4" />;
+    case "질문":
+      return <HelpCircle className="text-gray-700 w-4 h-4" />;
   }
 };
-
 export default function BoardCard({
   id,
   title,
   content,
   author,
   category,
-  priority,
   date,
   views,
   likes,
-  isNotice,
 }: BoardDataType) {
   return (
     <Link href={`/board/${id}`}>
       <div
         className={`card-list group hover:border-cert-red/50  ${
-          isNotice ? "border-red-200 bg-red-50" : "border-gray-200"
+          category === "공지사항"
+            ? "border-red-200 bg-red-50"
+            : "border-gray-200"
         }`}
       >
         <div className="flex flex-col space-y-1.5 p-6 pb-3">
           <div className="flex items-center gap-3 flex-1 justify-between">
             <div className="flex items-center gap-2">
-              {getPriorityIcon(priority)}
+              {getCategoryIcon(category)}
               <DefaultBadge className={getCategoryColor(category)}>
                 {category}
               </DefaultBadge>
-              {isNotice && (
+              {category === "공지사항" && (
                 <DefaultBadge className="bg-cert-red text-white">
                   공지
                 </DefaultBadge>

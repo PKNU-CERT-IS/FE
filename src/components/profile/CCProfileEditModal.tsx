@@ -387,7 +387,7 @@ export default function CCProfileModal({
                 {editedUser.name}
               </div>
               <div className="text-xs text-center text-gray-600">
-                {editedUser.grade ? `${editedUser.grade}학년 · ` : ""}
+                {editedUser.grade ? `${editedUser.grade} · ` : ""}
                 {editedUser.major}
               </div>
               <div className="text-xs text-center text-gray-600 mt-1">

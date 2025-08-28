@@ -3,7 +3,6 @@
 import DefaultButton from "@/components/ui/defaultButton";
 import DefaultBadge from "@/components/ui/defaultBadge";
 import EyeSVG from "/public/icons/eye.svg";
-import ThumbsUpSVG from "/public/icons/thumbs-up.svg";
 import { ProfileBlogDataType } from "@/types/profile";
 import Link from "next/link";
 import { Plus } from "lucide-react";
@@ -68,10 +67,6 @@ export default async function SCBlogList({
                     <div className="flex items-center gap-1">
                       <EyeSVG className="w-4 h-4" />
                       {blog.views}
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <ThumbsUpSVG />
-                      {blog.likes}
                     </div>
                   </div>
                 </div>

@@ -11,9 +11,6 @@ export const mockBoardData: BoardDataType[] = [
     category: "공지사항",
     views: 256,
     likes: 18,
-    comments: 12,
-    isNotice: true,
-    priority: "high",
   },
   {
     id: 2,
@@ -25,9 +22,6 @@ export const mockBoardData: BoardDataType[] = [
     category: "보안이슈",
     views: 189,
     likes: 25,
-    comments: 8,
-    isNotice: false,
-    priority: "medium",
   },
   {
     id: 3,
@@ -39,9 +33,6 @@ export const mockBoardData: BoardDataType[] = [
     category: "질문",
     views: 334,
     likes: 42,
-    comments: 15,
-    isNotice: false,
-    priority: "medium",
   },
   {
     id: 4,
@@ -53,9 +44,6 @@ export const mockBoardData: BoardDataType[] = [
     category: "공지사항",
     views: 178,
     likes: 8,
-    comments: 5,
-    isNotice: true,
-    priority: "high",
   },
   {
     id: 5,
@@ -67,9 +55,6 @@ export const mockBoardData: BoardDataType[] = [
     category: "질문",
     views: 145,
     likes: 19,
-    comments: 7,
-    isNotice: false,
-    priority: "low",
   },
   {
     id: 6,
@@ -81,9 +66,6 @@ export const mockBoardData: BoardDataType[] = [
     category: "활동내용",
     views: 145,
     likes: 19,
-    comments: 7,
-    isNotice: false,
-    priority: "low",
   },
   {
     id: 7,
@@ -95,9 +77,6 @@ export const mockBoardData: BoardDataType[] = [
     category: "활동내용",
     views: 145,
     likes: 19,
-    comments: 7,
-    isNotice: false,
-    priority: "low",
   },
   {
     id: 8,
@@ -109,9 +88,6 @@ export const mockBoardData: BoardDataType[] = [
     category: "활동내용",
     views: 145,
     likes: 19,
-    comments: 7,
-    isNotice: false,
-    priority: "low",
   },
   {
     id: 9,
@@ -123,8 +99,5 @@ export const mockBoardData: BoardDataType[] = [
     category: "활동내용",
     views: 145,
     likes: 19,
-    comments: 7,
-    isNotice: false,
-    priority: "low",
   },
 ];

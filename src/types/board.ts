@@ -9,10 +9,6 @@ export const boardCategories = [
 
 export type BoardCategoryType = (typeof boardCategories)[number];
 
-export const boardPriorities = ["high", "medium", "low"] as const;
-
-export type BoardPriorityType = (typeof boardPriorities)[number];
-
 export interface BoardDataType {
   id: number;
   title: string;
@@ -22,7 +18,4 @@ export interface BoardDataType {
   category: BoardCategoryType;
   views: number;
   likes: number;
-  comments: number;
-  isNotice: boolean;
-  priority: BoardPriorityType;
 }
