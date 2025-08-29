@@ -14,6 +14,12 @@ export type BlogCategory = (typeof BLOG_CATEGORIES)[number];
 // 페이지네이션 설정
 export const ITEMS_PER_PAGE = 6;
 
+export interface Reference {
+  referenceId: number;
+  type: "study" | "project";
+  title: string;
+}
+
 // 블로그 포스트 인터페이스
 export interface BlogPost {
   id: number;
@@ -30,6 +36,7 @@ export interface BlogPost {
   published: boolean;
   slug?: string;
   coverImage?: string;
+  reference: Reference;
 }
 
 // 블로그 필터 인터페이스

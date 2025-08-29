@@ -218,7 +218,12 @@ setTimeout(() => {
     views: 1250,
     likes: 45,
     featured: true,
-    published: true,
+    published: false,
+    reference: {
+      referenceId: 1,
+      type: "study",
+      title: "OWASP Top 10 2023 취약점 분석",
+    },
   },
   {
     id: 2,
@@ -255,5 +260,10 @@ setTimeout(() => {
     views: 890,
     likes: 32,
     published: true,
+    reference: {
+      referenceId: 2,
+      type: "study",
+      title: "Metasploit Framework 완전 정복",
+    },
   },
 ];

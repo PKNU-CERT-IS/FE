@@ -1,4 +1,4 @@
-import { BlogCategory } from "./blog";
+import { BlogCategory, Reference } from "./blog";
 import BookSVG from "/public/icons/book.svg";
 import CommentSVG from "/public/icons/comment.svg";
 import { MembersDataType } from "@/types/members";
@@ -78,4 +78,5 @@ export interface ProfileBlogDataType {
   published: boolean;
   slug?: string;
   coverImage?: string;
+  reference: Reference;
 }

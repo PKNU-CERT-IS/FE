@@ -9,6 +9,7 @@ import { formatDate } from "@/utils/formatDateUtil";
 import { getCategoryColor } from "@/utils/categoryColorUtils";
 import DefaultBadge from "@/components/ui/defaultBadge";
 import CCPublishedCheckbox from "@/components/admin/blog/CCPublishedCheckbox";
+import Link from "next/link";
 
 interface BlogDetailPageProps {
   params: Promise<{
@@ -85,10 +86,27 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
           </h1>
           {/* 요약 */}
           {post.excerpt && (
-            <p className="text-lg text-gray-600 mb-6 leading-relaxed">
+            <p className="text-lg text-gray-600 mb-3 leading-relaxed">
               {post.excerpt}
             </p>
           )}
+          {post.reference && (
+            <div className="mb-3">
+              <Link
+                href={`/${post.reference.type}/${post.reference.referenceId}`}
+                className={`inline-flex items-center px-3 py-1 text-sm font-medium rounded-md transition-colors
+        ${
+          post.reference.type === "study"
+            ? "text-green-700 bg-green-50 border border-green-200 hover:bg-green-100 hover:text-green-800"
+            : "text-blue-700 bg-blue-50 border border-blue-200 hover:bg-blue-100 hover:text-blue-800"
+        }`}
+              >
+                {post.reference.type === "study" ? "스터디" : "프로젝트"} ·{" "}
+                {post.reference.title}
+              </Link>
+            </div>
+          )}
+
           {/* 메타 정보 */}
           <div className="flex flex-wrap items-center text-sm text-gray-600 justify-between">
             <div className="flex flex-row gap-6">

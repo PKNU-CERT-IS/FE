@@ -37,6 +37,11 @@ setTimeout(() => {
     likes: 45,
     featured: true,
     published: false,
+    reference: {
+      referenceId: 1,
+      type: "study",
+      title: "OWASP Top 10 2023 취약점 분석",
+    },
   },
   {
     id: 2,
@@ -73,6 +78,11 @@ setTimeout(() => {
     views: 890,
     likes: 32,
     published: true,
+    reference: {
+      referenceId: 2,
+      type: "study",
+      title: "Metasploit Framework 완전 정복",
+    },
   },
   {
     id: 3,
@@ -116,6 +126,11 @@ type UserWithoutId = Omit<User, 'id'>;
     views: 2100,
     likes: 78,
     published: true,
+    reference: {
+      referenceId: 1,
+      type: "project",
+      title: "Social Impact Hackathon 2025",
+    },
   },
   {
     id: 4,
@@ -162,6 +177,11 @@ def fibonacci(n):
     views: 1680,
     likes: 56,
     published: true,
+    reference: {
+      referenceId: 2,
+      type: "project",
+      title: "OWASP Top 10 2023 취약점 분석",
+    },
   },
   {
     id: 5,
@@ -214,6 +234,11 @@ spec:
     views: 1420,
     likes: 67,
     published: true,
+    reference: {
+      referenceId: 3,
+      type: "project",
+      title: "AI 기반 악성코드 탐지 시스템",
+    },
   },
   {
     id: 6,
@@ -248,6 +273,11 @@ spec:
     views: 980,
     likes: 42,
     published: true,
+    reference: {
+      referenceId: 1,
+      type: "study",
+      title: "OWASP Top 10 2023 취약점 분석",
+    },
   },
   {
     id: 7,
@@ -282,6 +312,11 @@ spec:
     views: 980,
     likes: 42,
     published: true,
+    reference: {
+      referenceId: 1,
+      type: "project",
+      title: "Social Impact Hackathon 2025",
+    },
   },
 ];
 

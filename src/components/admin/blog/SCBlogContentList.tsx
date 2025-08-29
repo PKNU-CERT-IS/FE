@@ -1,7 +1,7 @@
 "server-only";
 
 import DefaultBadge from "@/components/ui/defaultBadge";
-import { ExternalLink, Eye, FileText } from "lucide-react";
+import { ExternalLink, Eye, FileText, BookOpen, Code } from "lucide-react";
 import Link from "next/link";
 import CCBlogDeleteButton from "@/components/admin/blog/CCBlogDeleteButton";
 import CCPublishedCheckbox from "@/components/admin/blog/CCPublishedCheckbox";
@@ -31,6 +31,7 @@ export default function SCBlogContentList({
                     {post.title}
                   </span>
 
+                  {/* 카테고리 뱃지 */}
                   <DefaultBadge
                     variant="outline"
                     className={getCategoryColor(post.category)}
@@ -38,6 +39,26 @@ export default function SCBlogContentList({
                     {post.category}
                   </DefaultBadge>
 
+                  {post.reference && (
+                    <DefaultBadge
+                      variant="outline"
+                      className={`flex items-center gap-1 ${
+                        post.reference.type === "study"
+                          ? "text-green-700 bg-green-50 border-green-200"
+                          : "text-blue-700 bg-blue-50 border-blue-200"
+                      }`}
+                    >
+                      {post.reference.type === "study" ? (
+                        <BookOpen className="w-3 h-3" />
+                      ) : (
+                        <Code className="w-3 h-3" />
+                      )}
+                      {post.reference.type === "study" ? "스터디" : "프로젝트"}{" "}
+                      · {post.reference.title}
+                    </DefaultBadge>
+                  )}
+
+                  {/* 외부 공개 뱃지 */}
                   {post.published && (
                     <DefaultBadge
                       variant="outline"
@@ -87,6 +108,7 @@ export default function SCBlogContentList({
                 >
                   마지막 수정: {post.createdAt}
                 </Link>
+
                 <div className="shrink-0">
                   <CCPublishedCheckbox
                     postId={post.id}

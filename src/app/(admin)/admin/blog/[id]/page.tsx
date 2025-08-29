@@ -8,6 +8,7 @@ import ShareButton from "@/components/detail/CCShareButton";
 import DefaultBadge from "@/components/ui/defaultBadge";
 import { formatDate } from "@/utils/formatDateUtil";
 import { getCategoryColor } from "@/utils/categoryColorUtils";
+import Link from "next/link";
 
 interface BlogDetailPageProps {
   params: Promise<{
@@ -90,19 +91,32 @@ export default async function AdminBlogDetailPage({
             </div>
             <KebabMenuButton currentUrl={"blog"} currentId={blogId} />
           </div>
-
           {/* 제목 */}
           <h1 className="text-3xl font-bold text-gray-900 mb-4 leading-tight">
             {post.title}
           </h1>
-
           {/* 요약 */}
           {post.excerpt && (
-            <p className="text-lg text-gray-600 mb-6 leading-relaxed">
+            <p className="text-lg text-gray-600 mb-3 leading-relaxed">
               {post.excerpt}
             </p>
           )}
-
+          {post.reference && (
+            <div className="mb-3">
+              <Link
+                href={`/${post.reference.type}/${post.reference.referenceId}`}
+                className={`inline-flex items-center px-3 py-1 text-sm font-medium rounded-md transition-colors
+        ${
+          post.reference.type === "study"
+            ? "text-green-700 bg-green-50 border border-green-200 hover:bg-green-100 hover:text-green-800"
+            : "text-blue-700 bg-blue-50 border border-blue-200 hover:bg-blue-100 hover:text-blue-800"
+        }`}
+              >
+                {post.reference.type === "study" ? "스터디" : "프로젝트"} ·{" "}
+                {post.reference.title}
+              </Link>
+            </div>
+          )}
           {/* 메타 정보 */}
           <div className="flex flex-wrap items-center gap-6 text-sm text-gray-600">
             <div className="flex items-center gap-2">

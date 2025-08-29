@@ -19,11 +19,32 @@ import {
   getSubCategories,
 } from "@/utils/newPageFormUtils";
 import { AttachedFile } from "@/types/attachedFile";
+import { Reference } from "@/types/blog";
 
 interface EditFormProps {
   type: NewPageCategoryType;
   dataId: number;
 }
+
+// 내가 참여한 활동 리스트 (더미 예시)
+const myActivities: Reference[] = [
+  { referenceId: 1, type: "study", title: "OWASP Top 10 2023 취약점 분석" },
+  {
+    referenceId: 2,
+    type: "study",
+    title: "Metasploit Framework 완전 정복",
+  },
+  {
+    referenceId: 1,
+    type: "project",
+    title: "Social Impact Hackathon 2025",
+  },
+  {
+    referenceId: 2,
+    type: "project",
+    title: "OWASP Top 10 2023 취약점 분석",
+  },
+];
 
 export default function EditForm({ type, dataId }: EditFormProps) {
   const router = useRouter();
@@ -36,11 +57,17 @@ export default function EditForm({ type, dataId }: EditFormProps) {
   const [startDate, setStartDate] = useState<string>("");
   const [endDate, setEndDate] = useState<string>("");
   const [maxParticipants, setMaxParticipants] = useState("");
+  const [selectedReference, setSelectedReference] = useState<Reference | null>(
+    null
+  );
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isCategoryOpen, setIsCategoryOpen] = useState<boolean>(false);
   const [isSubCategoryOpen, setIsSubCategoryOpen] = useState<boolean>(false);
+  const [isSelectedReferenceOpen, setIsSelecteReferenceOpen] =
+    useState<boolean>(false);
   const categoryRef = useRef<HTMLDivElement>(null);
   const subCategoryRef = useRef<HTMLDivElement>(null);
+  const selectedReferenceRef = useRef<HTMLDivElement>(null);
   // 프로젝트 전용 필드들
   const [githubUrl, setGithubUrl] = useState<string>("");
   const [demoUrl, setDemoUrl] = useState<string>("");
@@ -51,6 +78,7 @@ export default function EditForm({ type, dataId }: EditFormProps) {
   const closeAllDropdowns = useCallback(() => {
     setIsCategoryOpen(false);
     setIsSubCategoryOpen(false);
+    setIsSelecteReferenceOpen(false);
   }, []);
   // 초기 데이터 로드
   useEffect(() => {
@@ -81,6 +109,8 @@ export default function EditForm({ type, dataId }: EditFormProps) {
               title: blogData.title,
               content: blogData.content,
               category: blogData.category,
+              description: blogData.excerpt || "",
+              reference: blogData.reference || null, // ✅ 이미 title 포함되어 있음
             };
           }
         } else if (type === "study") {
@@ -134,6 +164,7 @@ export default function EditForm({ type, dataId }: EditFormProps) {
           setGithubUrl(initialData.githubUrl || "");
           setDemoUrl(initialData.demoUrl || "");
           setExternalLinks(initialData.externalLinks || []);
+          setSelectedReference(initialData.reference || null);
         }
       } catch (error) {
         console.error("데이터 로드 실패:", error);
@@ -152,7 +183,8 @@ export default function EditForm({ type, dataId }: EditFormProps) {
       const target = e.target as Node;
       if (
         categoryRef.current?.contains(target) ||
-        subCategoryRef.current?.contains(target)
+        subCategoryRef.current?.contains(target) ||
+        selectedReferenceRef.current?.contains(target)
       ) {
         return;
       }
@@ -200,6 +232,7 @@ export default function EditForm({ type, dataId }: EditFormProps) {
           externalLinks: externalLinks.filter((link) => link.label && link.url),
           projectImage,
         }),
+        ...(type === "blog" && { reference: selectedReference ?? null }), // ✅ null 허용
       };
 
       console.log("수정 데이터:", updateData);
@@ -256,6 +289,69 @@ export default function EditForm({ type, dataId }: EditFormProps) {
           선택사항이지만, 다른 사용자들이 내용을 빠르게 파악할 수 있도록
           도와줍니다.
         </p>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div
+          className={`relative ${
+            type === "blog" || type === "board" ? "md:col-span-3" : ""
+          }`}
+          ref={selectedReferenceRef}
+        >
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            내가 참여한 스터디 / 프로젝트 목록 *
+          </label>
+          <div className="relative">
+            <button
+              type="button"
+              onClick={() => setIsSelecteReferenceOpen((prev) => !prev)}
+              className="flex w-full items-center justify-between rounded-md border border-gray-300 bg-white px-3 py-2 text-sm cursor-pointer"
+            >
+              <span
+                className={
+                  selectedReference ? "text-gray-900" : "text-gray-500"
+                }
+              >
+                {selectedReference
+                  ? `${
+                      selectedReference.type === "study" ? "스터디" : "프로젝트"
+                    } - ${selectedReference.title}`
+                  : "활동 선택"}
+              </span>
+              <ChevronDown
+                className={`h-4 w-4 transition-transform ${
+                  isSelectedReferenceOpen ? "rotate-180" : ""
+                }`}
+              />
+            </button>
+
+            {isSelectedReferenceOpen && (
+              <div className="absolute z-50 mt-1 w-full rounded-md border border-gray-200 bg-white shadow-lg">
+                <div className="max-h-60 overflow-auto p-1">
+                  {myActivities.map((reference) => (
+                    <button
+                      key={`${reference.type}-${reference.referenceId}`}
+                      type="button"
+                      onClick={() => {
+                        setSelectedReference(reference);
+                        setIsSelecteReferenceOpen(false);
+                      }}
+                      className="w-full px-2 py-2 text-sm text-left hover:bg-cert-red hover:text-white cursor-pointer"
+                    >
+                      {reference.type === "study" ? "스터디" : "프로젝트"} -{" "}
+                      {reference.title}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            <p className="text-xs text-gray-500 mt-2">
+              블로그를 작성하고자 하는 스터디, 프로젝트를 선택해주세요. (최대
+              1개)
+            </p>
+          </div>
+        </div>
       </div>
 
       {/* 카테고리 및 최대 참가자 수 */}
