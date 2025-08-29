@@ -180,7 +180,8 @@ export default function MeetingMinutes({
       participants: 0,
       links: [],
     });
-    setShowAddModal(false);
+    // setShowAddModal(false);
+    closeModal();
   };
 
   const handleEditMinute = (minute: MeetingMinute) => {
@@ -454,8 +455,9 @@ export default function MeetingMinutes({
                   회의록 내용
                 </label>
                 <p className="text-xs text-gray-500 mb-2">
-                  해당 회의록은 회의내용을 간추려 5줄이내로 적어주시기 바랍니다.
-                  만약 관련 지식이나 내용이 있다면 블로그를 활용해주세요.
+                  해당 회의록은 회의 내용을 간추려 5줄 이내로 적어주시기
+                  바랍니다. 만약 관련 지식이나 내용이 있다면 블로그를
+                  활용해주세요.
                 </p>
                 <textarea
                   value={newMinute.content}
