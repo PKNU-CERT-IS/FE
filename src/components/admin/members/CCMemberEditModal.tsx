@@ -144,7 +144,7 @@ export default function CCRoleEditModal({
                           closeAllDropdowns();
                         }}
                       >
-                        {option.label}학년
+                        {option.label}
                       </button>
                     ))}
                   </div>

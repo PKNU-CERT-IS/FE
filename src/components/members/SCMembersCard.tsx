@@ -51,7 +51,7 @@ export default function MembersCard({ members }: MembersCardProps) {
 
           <div className="mt-2 text-sm text-gray-500">
             <p>
-              {members.grade}학년 • {members.major}
+              {members.grade} • {members.major}
             </p>
           </div>
         </div>

@@ -23,9 +23,9 @@ export default function SCPenaltyStatus() {
             {
               title: "벌점 유예 기간",
               value:
-                profile.role === "PLAYER"
-                  ? "-"
-                  : "D - " + profile.penaltyPeriod,
+                profile.role === "UPSOLVER"
+                  ? "D - " + +profile.penaltyPeriod
+                  : "-",
               color: "red-600",
             },
           ].map((stat, index) => (

@@ -80,7 +80,9 @@ export default async function DetailPage({
         <div className="p-6 pb-0">
           <div className="flex items-start justify-between mb-4">
             <div className="flex items-center gap-3">
-              {data.isNotice && <Pin className="w-4 h-4 text-cert-red" />}
+              {data.category === "공지사항" && (
+                <Pin className="w-4 h-4 text-cert-red" />
+              )}
               <DefaultBadge
                 variant="outline"
                 className={getCategoryColor(data.category)}

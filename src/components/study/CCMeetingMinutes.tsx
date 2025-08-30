@@ -77,6 +77,7 @@ export default function MeetingMinutes({
   const [newMinute, setNewMinute] = useState({
     title: "",
     content: "",
+    participants: 0,
     links: [] as LinkItem[],
   });
   const [deleteMinuteId, setDeleteMinuteId] = useState<number | null>(null);
@@ -166,19 +167,21 @@ export default function MeetingMinutes({
       title: newMinute.title,
       content: newMinute.content,
       links: validLinks,
-      author: "현재 사용자",
+      author: "현재 사용자", // TODO: 실제 사용자 이름으로 변경
       created_at: formatDate(new Date(), "dot"),
       updated_at: formatDate(new Date(), "dot"),
-      participants: 0,
+      participants: newMinute.participants,
     };
 
     setMeetingMinutes([...meetingMinutes, minute]);
     setNewMinute({
       title: "",
       content: "",
+      participants: 0,
       links: [],
     });
-    setShowAddModal(false);
+    // setShowAddModal(false);
+    closeModal();
   };
 
   const handleEditMinute = (minute: MeetingMinute) => {
@@ -186,6 +189,7 @@ export default function MeetingMinutes({
     setNewMinute({
       title: minute.title,
       content: minute.content,
+      participants: minute.participants,
       links: minute.links || [],
     });
     openModal();
@@ -205,6 +209,7 @@ export default function MeetingMinutes({
             ...minute,
             title: newMinute.title,
             content: newMinute.content,
+            participants: newMinute.participants,
             links: validLinks,
           }
         : minute
@@ -212,7 +217,7 @@ export default function MeetingMinutes({
 
     setMeetingMinutes(updated);
     setEditingMinute(null);
-    setNewMinute({ title: "", content: "", links: [] });
+    setNewMinute({ title: "", content: "", participants: 0, links: [] });
     setShowAddModal(false);
   };
 
@@ -397,7 +402,12 @@ export default function MeetingMinutes({
                 onClick={() => {
                   closeModal();
                   setEditingMinute(null);
-                  setNewMinute({ title: "", content: "", links: [] });
+                  setNewMinute({
+                    title: "",
+                    content: "",
+                    participants: 0,
+                    links: [],
+                  });
                 }}
                 className="text-gray-400 hover:text-gray-600"
               >
@@ -422,11 +432,32 @@ export default function MeetingMinutes({
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  회의록 링크
+                  참석 인원
+                </label>
+                <input
+                  type="number"
+                  value={
+                    newMinute.participants === 0 ? "" : newMinute.participants
+                  }
+                  onChange={(e) =>
+                    setNewMinute({
+                      ...newMinute,
+                      participants:
+                        e.target.value === "" ? 0 : Number(e.target.value),
+                    })
+                  }
+                  placeholder="참석 인원 수를 입력하세요 (숫자만 입력)"
+                  className="text-sm w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  회의록 내용
                 </label>
                 <p className="text-xs text-gray-500 mb-2">
-                  해당 회의록은 회의내용을 간추려 5줄이내로 적어주시기 바랍니다.
-                  만약 관련 지식이나 내용이 있다면 블로그를 활용해주세요.
+                  해당 회의록은 회의 내용을 간추려 5줄 이내로 적어주시기
+                  바랍니다. 만약 관련 지식이나 내용이 있다면 블로그를
+                  활용해주세요.
                 </p>
                 <textarea
                   value={newMinute.content}
@@ -491,7 +522,7 @@ export default function MeetingMinutes({
 
                   {newMinute.links.length === 0 && (
                     <p className="text-sm text-gray-500 italic">
-                      링크를 추가하려면 &quot;링크 추가&quot; 버튼을 클릭하세요.
+                      회의록 링크를 추가해주세요.
                     </p>
                   )}
                 </div>
@@ -503,7 +534,12 @@ export default function MeetingMinutes({
                   onClick={() => {
                     closeModal();
                     setEditingMinute(null);
-                    setNewMinute({ title: "", content: "", links: [] });
+                    setNewMinute({
+                      title: "",
+                      content: "",
+                      participants: 0,
+                      links: [],
+                    });
                   }}
                   className="flex-1"
                 >
@@ -512,7 +548,9 @@ export default function MeetingMinutes({
                 <DefaultButton
                   onClick={editingMinute ? handleUpdateMinute : handleAddMinute}
                   disabled={
-                    !newMinute.title.trim() || !newMinute.content.trim()
+                    !newMinute.title.trim() ||
+                    !newMinute.participants ||
+                    !newMinute.content.trim()
                   }
                   className="flex-1"
                 >

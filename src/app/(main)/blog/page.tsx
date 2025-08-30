@@ -133,10 +133,21 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
                   </h3>
 
                   {/* 내용 미리보기 */}
-                  <p className="text-gray-600 text-sm mb-4 line-clamp-3 leading-relaxed">
+                  <p className="text-gray-600 text-sm mb-2 line-clamp-3 leading-relaxed">
                     {post.excerpt}
                   </p>
-
+                  {post.reference && (
+                    <span
+                      className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium mb-3 ${
+                        post.reference.type === "study"
+                          ? "text-green-700 bg-green-50 border border-green-200"
+                          : "text-blue-700 bg-blue-50 border border-blue-200"
+                      }`}
+                    >
+                      {post.reference.type === "study" ? "스터디" : "프로젝트"}{" "}
+                      · {post.reference.title}
+                    </span>
+                  )}
                   {/* 작성자 */}
                   <div className="flex items-center gap-2 pt-2 border-t border-gray-100">
                     <div className="w-7 h-7 bg-gray-200 rounded-full flex items-center justify-center">
@@ -147,6 +158,7 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
                     <span className="text-sm text-gray-700 font-medium">
                       {post.author}
                     </span>
+                    {/* ✅ reference 뱃지 */}
                   </div>
                 </div>
               </Link>

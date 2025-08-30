@@ -21,7 +21,7 @@ const navBarList = [
 const NavigationBar = () => {
   return (
     <>
-      <nav className="fixed w-full bg-white/95 backdrop-blur-md border-b border-gray-200 top-0 z-20 transition-colors duration-300">
+      <nav className="fixed w-full bg-white/95 backdrop-blur-md border-b border-gray-200 top-0 z-25 transition-colors duration-300">
         <div className="max-w-7xl mx-auto px-4 lg:px-2 flex justify-between items-center">
           <Link href="/" className="flex items-center group h-16 ">
             <div className="relative w-10 h-10 mr-2">

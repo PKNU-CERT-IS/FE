@@ -18,9 +18,9 @@ export const getRoleBadgeStyle = (
       return "bg-blue-100 text-blue-800 border-blue-600";
     case "스터디장":
       return "bg-purple-100 text-purple-800 border-purple-600";
-    case "PLAYER":
-      return "bg-green-100 text-green-800 border-green-600";
     case "UPSOLVER":
+      return "bg-green-100 text-green-800 border-green-600";
+    case "PLAYER":
       return "bg-gray-100 text-gray-800 border-gray-600";
     case "NONE":
     case "전체":
@@ -40,9 +40,9 @@ export const getRoleBorderStyle = (
       return "hover:border-blue-600 group-hover:border-blue-600";
     case "스터디장":
       return "hover:border-purple-600 group-hover:border-purple-600";
-    case "PLAYER":
-      return "hover:border-green-600 group-hover:border-green-600";
     case "UPSOLVER":
+      return "hover:border-green-600 group-hover:border-green-600";
+    case "PLAYER":
       return "hover:border-gray-600 group-hover:border-gray-600";
     case "NONE":
     case "전체":
@@ -63,7 +63,7 @@ export const gradeOptions = [
   { value: "", label: "전체" },
   ...membersGradeCategories.map((grade) => ({
     value: grade.toString(),
-    label: `${grade}학년`,
+    label: `${grade}`,
   })),
 ];
 
@@ -103,10 +103,10 @@ const filterByRole = (
       return ["회장", "부회장", "임원진"].includes(member.role);
     case "스터디장":
       return member.role === "스터디장";
-    case "PLAYER":
-      return member.role === "PLAYER";
     case "UPSOLVER":
       return member.role === "UPSOLVER";
+    case "PLAYER":
+      return member.role === "PLAYER";
     case "NONE":
     case "전체":
       return true; // 전체 보기 or 역할 없음 → 모든 멤버 포함
@@ -129,10 +129,19 @@ export const filterMembers = (
   role: MembersRoleCategoryType | "전체",
   grade: MembersGradeCategoryType | "전체"
 ) => {
-  return members.filter(
-    (member) =>
-      filterBySearch(member, search) &&
-      filterByRole(member, role) &&
-      filterByGrade(member, grade)
-  );
+  return members
+    .filter(
+      (member) =>
+        filterBySearch(member, search) &&
+        filterByRole(member, role) &&
+        filterByGrade(member, grade)
+    )
+    .sort((a, b) => {
+      const roleDiff =
+        membersRoleCategories.indexOf(a.role) -
+        membersRoleCategories.indexOf(b.role);
+      if (roleDiff !== 0) return roleDiff;
+
+      return a.name.localeCompare(b.name, "ko-KR");
+    });
 };

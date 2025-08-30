@@ -68,7 +68,7 @@ export default function CCSignUpForm() {
             type="text"
             value={signupFormData.name}
             onChange={handleInputChange}
-            className={`input-default pl-10 pl-10 ${
+            className={`input-default pl-10 ${
               errors.name ? "border-red-500" : ""
             }`}
             placeholder="홍길동"
