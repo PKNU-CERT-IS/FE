@@ -304,7 +304,11 @@ export default function EditForm({ type, dataId }: EditFormProps) {
           <div className="relative">
             <button
               type="button"
-              onClick={() => setIsSelecteReferenceOpen((prev) => !prev)}
+              onClick={() => {
+                setIsSelecteReferenceOpen((prev) => !prev);
+                setIsCategoryOpen(false);
+                setIsSubCategoryOpen(false);
+              }}
               className="flex w-full items-center justify-between rounded-md border border-gray-300 bg-white px-3 py-2 text-sm cursor-pointer"
             >
               <span
@@ -336,7 +340,7 @@ export default function EditForm({ type, dataId }: EditFormProps) {
                         setSelectedReference(reference);
                         setIsSelecteReferenceOpen(false);
                       }}
-                      className="w-full px-2 py-2 text-sm text-left hover:bg-cert-red hover:text-white cursor-pointer"
+                      className="relative flex w-full cursor-pointer select-none items-center rounded-sm py-2 px-2 text-sm outline-none transition-colors hover:bg-cert-red hover:text-white focus:bg-cert-red focus:text-white"
                     >
                       {reference.type === "study" ? "스터디" : "프로젝트"} -{" "}
                       {reference.title}
