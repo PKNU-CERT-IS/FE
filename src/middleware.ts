@@ -14,6 +14,7 @@ import { NextRequest } from "next/server";
 //   "/signup",
 // ];
 
+// eslint-disable-line @typescript-eslint/no-unused-vars
 export async function middleware(req: NextRequest) {
   //   const { pathname } = req.nextUrl;
   //   //_next 경로란 Next.js가 빌드/실행 하면서 자동으로 붙이는 런타임 리소스 경로로 Next.js 내부에서 사용하는 파일들을 제공하는 경로입니다.
