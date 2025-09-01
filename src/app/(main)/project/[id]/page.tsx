@@ -28,16 +28,26 @@ const getProjectById = (id: string): ProjectMaterial | undefined => {
 export async function generateMetadata({
   params,
 }: ProjectDetailPageProps): Promise<Metadata> {
-  const resolvedParams = await params;
-  const project = getProjectById(resolvedParams.id);
+  const { id } = await params;
+  const projectData = getProjectById(id);
 
-  if (!project) {
-    return { title: "프로젝트를 찾을 수 없음" };
+  if (!projectData) {
+    return {
+      title: "프로젝트를 찾을 수 없습니다",
+      description: "요청하신 프로젝트를 찾을 수 없습니다.",
+    };
   }
 
   return {
-    title: `${project.title} | 프로젝트`,
-    description: project.description.substring(0, 150),
+    title: `${projectData.title} - CERT-IS Project`,
+    description: projectData.description.substring(0, 160) + "...",
+    openGraph: {
+      title: projectData.title,
+      description: projectData.description.substring(0, 160) + "...",
+      type: "article",
+      authors: [projectData.author],
+      images: ["/logo.svg"],
+    },
   };
 }
 

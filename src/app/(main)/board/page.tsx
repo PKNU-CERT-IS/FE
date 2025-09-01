@@ -31,14 +31,26 @@ export async function generateMetadata({
 
   const validCategory =
     category && isValidCategory(category) ? category : "전체";
+
   return {
-    title: `${search ? `${search} - ` : ""}Security Board`,
-    description: `보안 게시판${
+    title: `CERT-IS Board${
       validCategory !== "전체" ? ` - ${validCategory}` : ""
-    }`,
+    }${search ? ` | ${search}` : ""}`,
+    description:
+      search && validCategory !== "전체"
+        ? `'${search}', '${validCategory}' 관련 보안 게시판 글 목록입니다.`
+        : search
+        ? `'${search}' 관련 보안 게시판 글 목록입니다.`
+        : validCategory !== "전체"
+        ? `'${validCategory}' 관련 보안 게시판 글 목록입니다.`
+        : "CERT-IS 동아리 보안 게시판 글 목록입니다.",
+    openGraph: {
+      title: "CERT-IS Board",
+      description: "보안 정보와 기술 자료를 공유하는 전문 게시판입니다.",
+      images: ["/logo.svg"],
+    },
   };
 }
-
 export default async function BoardPage({ searchParams }: BoardPageProps) {
   const { page, search, category } = await searchParams;
 

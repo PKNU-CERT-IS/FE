@@ -5,6 +5,7 @@ import MembersRoleDropdown from "@/components/members/CCMembersRoleDropDown";
 import { filterMembers } from "@/utils/membersUtils";
 import { isValidRole, isValidGrade } from "@/utils/membersUtils";
 import { mockMembersData } from "@/mocks/mockMembersData";
+import { Metadata } from "next";
 
 interface MembersPageProps {
   searchParams: Promise<{
@@ -12,6 +13,39 @@ interface MembersPageProps {
     search?: string;
     grade?: string;
   }>;
+}
+
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams: Promise<{ role?: string; search?: string; grade?: string }>;
+}): Promise<Metadata> {
+  const { role, search, grade } = await searchParams;
+
+  const currentRole = role && isValidRole(role) ? role : "";
+  const currentGrade = grade && isValidGrade(grade) ? grade : "";
+
+  let description = "CERT-IS 동아리의 멋진 멤버들을 소개합니다.";
+
+  if (search || currentRole || currentGrade) {
+    const parts = [
+      search ? `'${search}' 이름` : null,
+      currentGrade || null,
+      currentRole || null,
+    ].filter(Boolean);
+
+    description = parts.join(", ") + " 멤버 검색 결과입니다.";
+  }
+
+  return {
+    title: "CERT-IS Members",
+    description,
+    openGraph: {
+      title: "CERT-IS Members",
+      description,
+      images: ["/logo.svg"],
+    },
+  };
 }
 
 export default async function MembersPage({ searchParams }: MembersPageProps) {

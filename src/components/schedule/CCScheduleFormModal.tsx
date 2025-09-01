@@ -107,7 +107,7 @@ export default function CCScheduleFormModal({
   return (
     <div
       ref={modalRef}
-      className="fixed inset-0 bg-cert-black/50 flex justify-center items-center z-20"
+      className="fixed inset-0 bg-cert-black/50 flex justify-center items-center z-30"
     >
       <div className="rounded-lg border bg-white border-gray-200 shadow-sm w-96 relative animate-pop-in">
         <div className="flex flex-col space-y-1.5 p-6 text-center pb-6">

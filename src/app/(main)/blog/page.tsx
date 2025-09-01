@@ -19,35 +19,33 @@ interface BlogPageProps {
   }>;
 }
 
-interface GenerateMetadataProps {
-  searchParams: Promise<{
-    search?: string;
-    category?: string;
-  }>;
-}
-
 export async function generateMetadata({
   searchParams,
-}: GenerateMetadataProps): Promise<Metadata> {
-  const resolvedSearchParams = await searchParams;
-  const { search, category } = resolvedSearchParams;
+}: {
+  searchParams: Promise<{ search?: string; category?: string }>;
+}): Promise<Metadata> {
+  const { search, category } = await searchParams;
 
   const validCategory =
     category && isValidCategory(category) ? category : "전체";
 
-  let title = "Security Blog";
-  if (search) {
-    title = `${search} - ${title}`;
-  }
-  if (validCategory !== "전체") {
-    title = `${validCategory} - ${title}`;
-  }
-
   return {
-    title,
-    description: `보안 블로그${
+    title: `CERT-IS Blog${
       validCategory !== "전체" ? ` - ${validCategory}` : ""
-    }${search ? ` - "${search}" 검색 결과` : ""}`,
+    }${search ? ` | ${search}` : ""}`,
+    description:
+      search && validCategory !== "전체"
+        ? `'${search}', '${validCategory}' 관련 블로그 글 목록입니다.`
+        : search
+        ? `'${search}' 관련 블로그 글 목록입니다.`
+        : validCategory !== "전체"
+        ? `'${validCategory}' 관련 블로그 글 목록입니다.`
+        : "CERT-IS 동아리 블로그 글 목록입니다.",
+    openGraph: {
+      title: "CERT-IS Blog",
+      description: "동아리 멤버들의 경험과 지식을 공유하는 공간입니다.",
+      images: ["/logo.svg"],
+    },
   };
 }
 
