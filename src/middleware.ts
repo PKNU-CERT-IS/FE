@@ -59,7 +59,7 @@
 // 개발 편리성을 위한 임시 middleware 코드 -> 위의 코드로 사용해야 함
 import { NextRequest, NextResponse } from "next/server";
 
-export async function middleware(_req: NextRequest) {
+export async function middleware(req: NextRequest) {
   return NextResponse.next();
 }
 
