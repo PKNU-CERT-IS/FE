@@ -1,17 +1,18 @@
-import { NextRequest, NextResponse } from "next/server";
-import { verifyJwt, isAdmin, getLoginUrlByPath } from "@/lib/auth/jwt";
+import { NextRequest } from "next/server";
+// import { NextRequest, NextResponse } from "next/server";
+// import { verifyJwt, isAdmin, getLoginUrlByPath } from "@/lib/auth/jwt";
 
 // 공개 라우트 (인증 불필요)
-const PUBLIC_ROUTES = [
-  "/",
-  "/login",
-  "/admin/login",
-  "/blog",
-  "/members",
-  "/403",
-  "/404",
-  "/signup",
-];
+// const PUBLIC_ROUTES = [
+//   "/",
+//   "/login",
+//   "/admin/login",
+//   "/blog",
+//   "/members",
+//   "/403",
+//   "/404",
+//   "/signup",
+// ];
 
 export async function middleware(req: NextRequest) {
   //   const { pathname } = req.nextUrl;
