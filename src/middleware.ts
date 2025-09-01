@@ -60,6 +60,8 @@
 import { NextRequest, NextResponse } from "next/server";
 
 export async function middleware(req: NextRequest) {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { pathname } = req.nextUrl;
   return NextResponse.next();
 }
 
