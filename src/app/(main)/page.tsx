@@ -18,9 +18,21 @@ import ServerSVG from "/public/icons/server.svg";
 import SectionBadge from "@/components/sectionBadge";
 import MiniCalendar from "@/components/miniCalendar";
 import DefaultButton from "@/components/ui/defaultButton";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "CERT-IS",
+  description: "CERT-IS 홈페이지입니다.",
+  openGraph: {
+    title: "CERT-IS",
+    description: "CERT-IS 홈페이지입니다.",
+    images: ["/logo.svg"],
+  },
+};
 
 // 캘린더 동적 이벤트 생성 -> 이 부분은 추후 /schedule 과 연동하여 제거될 변수입니다
 const generateUpcomingEvents = () => {
+  // schedule API 끌고오기
   const today = new Date();
   const currentMonth = today.getMonth();
   return [

@@ -108,7 +108,7 @@ export default function CCProfileModal({
   return (
     <div
       ref={modalRef}
-      className="fixed inset-0 bg-cert-black/50 flex justify-center items-center z-20"
+      className="fixed inset-0 bg-cert-black/50 flex justify-center items-center z-30"
     >
       <div className="w-[90vw] max-w-[30rem] rounded-lg border bg-white border-gray-200 shadow-sm relative animate-pop-in flex flex-col">
         {/* Header */}

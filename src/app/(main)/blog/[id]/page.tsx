@@ -32,13 +32,13 @@ export async function generateMetadata({
 
   if (!post) {
     return {
-      title: "게시글을 찾을 수 없습니다",
-      description: "요청하신 게시글을 찾을 수 없습니다.",
+      title: "블로그 게시글을 찾을 수 없습니다",
+      description: "요청하신 블로그 게시글을 찾을 수 없습니다.",
     };
   }
 
   return {
-    title: `${post.title} - Security Blog`,
+    title: `${post.title} - CERT-IS Blog`,
     description: post.excerpt || post.content?.slice(0, 150) || "",
     openGraph: {
       title: post.title,
@@ -46,6 +46,7 @@ export async function generateMetadata({
       type: "article",
       publishedTime: post.createdAt,
       authors: [post.author],
+      images: ["/logo.svg"],
     },
   };
 }

@@ -3,9 +3,38 @@ import SCScheduleInfo from "@/components/schedule/SCScheduleInfo";
 import SCScheduleList from "@/components/schedule/SCScheduleList";
 import Calendar from "@/components/schedule/calendar";
 import CCScrollScheduleList from "@/components/schedule/CCScrollScheduleList";
+import { Metadata } from "next";
 
 interface SearchPageProps {
   searchParams: Promise<{ date?: string }>;
+}
+
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams: Promise<{ date?: string }>;
+}): Promise<Metadata> {
+  const { date } = await searchParams;
+  let title = "CERT-IS Schedule";
+  let description = "CERT-IS 동아리 일정을 관리하는 공간입니다.";
+
+  if (date) {
+    const d = new Date(date);
+    if (!isNaN(d.getTime())) {
+      const formatted = `${d.getFullYear()}년 ${d.getMonth() + 1}월`;
+      title = `CERT-IS Schedule - ${formatted}`;
+      description = `CERT-IS 동아리의 ${formatted} 일정을 확인하세요.`;
+    }
+  }
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      images: ["/logo.svg"],
+    },
+  };
 }
 
 export default async function SchedulePage({ searchParams }: SearchPageProps) {

@@ -47,13 +47,14 @@ export async function generateMetadata({
   }
 
   return {
-    title: `${data.title} - Security Board`,
+    title: `${data.title} - CERT-IS Board`,
     description: data.content.substring(0, 160) + "...",
     openGraph: {
       title: data.title,
       description: data.content.substring(0, 160) + "...",
       type: "article",
       authors: [data.author],
+      images: ["/logo.svg"],
     },
   };
 }

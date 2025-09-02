@@ -34,19 +34,20 @@ export async function generateMetadata({
 
   if (!studyData) {
     return {
-      title: "스터디 자료를 찾을 수 없습니다",
-      description: "요청하신 스터디 자료를 찾을 수 없습니다.",
+      title: "스터디를 찾을 수 없습니다",
+      description: "요청하신 스터디를 찾을 수 없습니다.",
     };
   }
 
   return {
-    title: `${studyData.title} - Security Study`,
+    title: `${studyData.title} - CERT-IS Study`,
     description: studyData.description.substring(0, 160) + "...",
     openGraph: {
       title: studyData.title,
       description: studyData.description.substring(0, 160) + "...",
       type: "article",
       authors: [studyData.author],
+      images: ["/logo.svg"],
     },
   };
 }
