@@ -115,7 +115,7 @@ export default function CCProfileModal({
         <div className="p-6 border-b border-gray-200 relative">
           <button
             onClick={closeModal}
-            className="absolute top-6 right-6 text-md text-gray-400 hover:text-gray-600"
+            className="absolute top-6 right-6 text-md text-gray-400 hover:text-gray-600 cursor-pointer"
             aria-label="닫기"
           >
             <X />

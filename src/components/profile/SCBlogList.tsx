@@ -85,7 +85,7 @@ export default async function SCBlogList({
                   <div className="flex items-center gap-4 text-sm text-gray-600 dark:text-gray-400 transition-colors duration-300">
                     <div className="flex items-center gap-1">
                       <EyeSVG className="w-4 h-4" />
-                      {blog.views}
+                      {blog.views?.toLocaleString()}
                     </div>
                   </div>
                 </div>

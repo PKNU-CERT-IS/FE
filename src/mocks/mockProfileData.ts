@@ -216,7 +216,6 @@ setTimeout(() => {
     category: "CS",
     createdAt: "2024-01-15",
     views: 1250,
-    likes: 45,
     featured: true,
     published: false,
     reference: {
@@ -258,7 +257,6 @@ setTimeout(() => {
     category: "CS",
     createdAt: "2024-01-12",
     views: 890,
-    likes: 32,
     published: true,
     reference: {
       referenceId: 2,

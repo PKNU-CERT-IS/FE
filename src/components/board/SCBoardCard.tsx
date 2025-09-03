@@ -80,11 +80,11 @@ export default function BoardCard({
               <span className="font-medium text-gray-700">{author}</span>
               <div className="flex items-center gap-4">
                 <div className="flex items-center gap-1 hover:text-cert-red transition-colors">
-                  <EyeSVG className="w-4 text-cert-dark-red" />
+                  <EyeSVG className="w-4 text-cert-red" />
                   <span>{views}</span>
                 </div>
                 <div className="flex items-center gap-1 hover:text-cert-red transition-colors">
-                  <Heart className="w-4 text-cert-dark-red" />
+                  <Heart className="w-4 text-cert-red" />
                   <span>{likes}</span>
                 </div>
               </div>

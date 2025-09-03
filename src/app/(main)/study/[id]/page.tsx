@@ -167,7 +167,7 @@ export default async function StudyMaterialDetailPage({
                       {studyData.attachedFiles.map((file, index) => (
                         <div
                           key={index}
-                          className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                          className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg"
                         >
                           <span className="text-2xl">
                             {getFileIcon(file.type)}

@@ -221,7 +221,7 @@ export default function AttachedFilesDownload({
           {selectedFiles.length > 0 && (
             <button
               onClick={downloadSelectedFiles}
-              className="flex items-center action-button gap-2 px-4 py-2"
+              className="flex items-center action-button gap-2 px-4 py-2 text-sm"
             >
               <DownloadCloud className="w-4 h-4" />
               선택한 파일 다운로드 ({selectedFiles.length}개)
@@ -229,7 +229,6 @@ export default function AttachedFilesDownload({
           )}
         </div>
       </div>
-
       {/* 본문: 접기/펼치기 애니메이션 */}
       <div
         id={panelId}
@@ -310,7 +309,7 @@ export default function AttachedFilesDownload({
                       <button
                         onClick={() => downloadFile(file)}
                         disabled={isDownloading}
-                        className="flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors disabled:opacity-50"
+                        className="flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors disabled:opacity-50 cursor-pointer"
                       >
                         {isDownloading ? (
                           <div className="w-4 h-4 border-2 border-gray-300 border-t-red-600 rounded-full animate-spin" />

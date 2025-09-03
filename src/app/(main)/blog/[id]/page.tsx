@@ -74,7 +74,7 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
             <div>
               <DefaultBadge
                 variant="custom"
-                className={getCategoryColor(post.category)}
+                className={`${getCategoryColor(post.category)} cursor-default`}
               >
                 {post.category}
               </DefaultBadge>
@@ -122,7 +122,7 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
               {post.views && (
                 <div className="flex items-center gap-2">
                   <Eye className="w-4 h-4" />
-                  <span>{post.views.toLocaleString()}회</span>
+                  <span>{post.views.toLocaleString()}</span>
                 </div>
               )}
             </div>

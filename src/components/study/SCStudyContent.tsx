@@ -431,6 +431,7 @@ export default async function SCStudyContent({
                             name="studyId"
                             value={material.id}
                           />
+
                           <button type="submit">
                             <DownloadGraySVG className="text-gray-400 hover:text-gray-600" />
                           </button>

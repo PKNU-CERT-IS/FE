@@ -35,13 +35,10 @@ export default function SCProfileCard() {
             {user.name}
           </div>
           <div className="flex justify-center gap-2 mb-2">
-            <DefaultBadge className="bg-red-50 text-red-600  border-red-200 ">
+            <DefaultBadge variant="custom" className="badge-red">
               {user.role}
             </DefaultBadge>
-            <DefaultBadge
-              variant="outline"
-              className="border-gray-200  text-gray-600 "
-            >
+            <DefaultBadge variant="custom" className="badge-gray">
               {user.grade}
             </DefaultBadge>
           </div>
@@ -72,7 +69,7 @@ export default function SCProfileCard() {
                 <DefaultBadge
                   key={skill}
                   variant="outline"
-                  className="text-xs border-gray-200  text-gray-600  hover:text-gray-900  hover:border-red-300  transition-colors"
+                  className="text-xs badge-gray bg-white cursor-default"
                 >
                   {skill}
                 </DefaultBadge>
