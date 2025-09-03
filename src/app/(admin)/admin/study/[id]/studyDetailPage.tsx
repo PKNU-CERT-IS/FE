@@ -158,7 +158,7 @@ export default async function StudyDetailPage({
                       {studyData.attachedFiles.map((file, index) => (
                         <div
                           key={index}
-                          className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                          className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg"
                         >
                           <span className="text-2xl">
                             {getFileIcon(file.type)}
@@ -180,10 +180,10 @@ export default async function StudyDetailPage({
 
               <div className="flex justify-between p-1  pt-6 border-t border-gray-300">
                 <div className="flex flex-wrap gap-2 justify-center items-center">
-                  <DefaultBadge className="bg-gray-100 h-6 border border-gray-200 text-gray-700">
+                  <DefaultBadge className="bg-gray-100 h-6 border border-gray-200 text-gray-700 cursor-default">
                     {studyData.category}
                   </DefaultBadge>
-                  <DefaultBadge className="h-6 bg-gray-100 border border-gray-200 text-gray-700">
+                  <DefaultBadge className="h-6 bg-gray-100 border border-gray-200 text-gray-700 cursor-default">
                     {studyData.subCategory}
                   </DefaultBadge>
                 </div>

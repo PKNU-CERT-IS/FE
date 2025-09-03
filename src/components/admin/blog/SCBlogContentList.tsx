@@ -33,7 +33,7 @@ export default function SCBlogContentList({
 
                   {/* 카테고리 뱃지 */}
                   <DefaultBadge
-                    variant="outline"
+                    variant="custom"
                     className={getCategoryColor(post.category)}
                   >
                     {post.category}

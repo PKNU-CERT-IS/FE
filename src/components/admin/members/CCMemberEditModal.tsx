@@ -113,7 +113,10 @@ export default function CCRoleEditModal({
                     "bg-white border-gray-300 hover:border-cert-red hover:bg-white hover:text-cert-black",
                     "focus:border-cert-red focus:ring-2 focus:ring-cert-red/20"
                   )}
-                  onClick={() => setShowGradeDropdown((p) => !p)}
+                  onClick={() => {
+                    setShowGradeDropdown((p) => !p);
+                    setShowRoleDropdown(false);
+                  }}
                 >
                   <span className="text-gray-900 truncate pr-1 text-sm">
                     {gradeOptions.find(
@@ -135,7 +138,7 @@ export default function CCRoleEditModal({
                       <button
                         key={option.value}
                         type="button"
-                        className="w-full px-4 py-2 text-left text-gray-900 first:rounded-t-lg last:rounded-b-lg text-sm hover:bg-cert-red hover:text-white duration-100 hover:first:rounded-md hover:rounded-md"
+                        className="w-full px-4 py-2 text-left text-gray-900 first:rounded-t-lg last:rounded-b-lg text-sm hover:bg-cert-red hover:text-white duration-100 hover:first:rounded-md hover:rounded-md cursor-pointer"
                         onClick={() => {
                           setEditedMember((prev) => ({
                             ...prev,
@@ -163,7 +166,10 @@ export default function CCRoleEditModal({
                     "bg-white border-gray-300 hover:border-cert-red hover:bg-white hover:text-cert-black",
                     "focus:border-cert-red focus:ring-2 focus:ring-cert-red/20"
                   )}
-                  onClick={() => setShowRoleDropdown((p) => !p)}
+                  onClick={() => {
+                    setShowRoleDropdown((p) => !p);
+                    setShowGradeDropdown(false);
+                  }}
                 >
                   <span className="text-gray-900 truncate pr-1 text-sm">
                     {editedMember.role}
@@ -181,7 +187,7 @@ export default function CCRoleEditModal({
                       <button
                         key={option.value}
                         type="button"
-                        className="w-full px-4 py-2 text-left text-gray-900 first:rounded-t-lg last:rounded-b-lg text-sm hover:bg-cert-red hover:text-white duration-100 hover:first:rounded-md hover:rounded-md"
+                        className="w-full px-4 py-2 text-left text-gray-900 first:rounded-t-lg last:rounded-b-lg text-sm hover:bg-cert-red hover:text-white duration-100 hover:first:rounded-md hover:rounded-md cursor-pointer"
                         onClick={() => {
                           setEditedMember((prev) => ({
                             ...prev,

@@ -130,7 +130,7 @@ export default async function AdminBlogDetailPage({
             {post.views && (
               <div className="flex items-center gap-2">
                 <Eye className="w-4 h-4" />
-                <span>{post.views.toLocaleString()}회</span>
+                <span>{post.views.toLocaleString()}</span>
               </div>
             )}
           </div>
