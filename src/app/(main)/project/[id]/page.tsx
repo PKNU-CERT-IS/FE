@@ -9,11 +9,12 @@ import { getProjectMaterials } from "@/mocks/mockProjectData";
 import BackToListButton from "@/components/detail/SCBackToListButton";
 import KebabMenu from "@/components/detail/CCKebabMenu";
 import ShareButton from "@/components/detail/CCShareButton";
-import { getStatusColor } from "@/utils/projectUtils";
-import { STATUS_LABELS, AUTHOR_STATUS_LABELS } from "@/types/project";
+import { AUTHOR_STATUS_LABELS } from "@/types/project";
 import DefaultBadge from "@/components/ui/defaultBadge";
 import MeetingMinutes from "@/components/study/CCMeetingMinutes";
 import EndRequestButton from "@/components/ui/endRequestButton";
+import { getStatusColor } from "@/utils/badgeUtils";
+import { STATUS_LABELS } from "@/types/progressStatus";
 
 interface ProjectDetailPageProps {
   params: Promise<{ id: string }>;
@@ -123,7 +124,7 @@ export default async function ProjectDetailPage({
           {/* 상태 배지 */}
           <div className="absolute top-4 left-4">
             <DefaultBadge
-              variant="outline"
+              variant="custom"
               className={getStatusColor(project.status)}
             >
               {STATUS_LABELS[project.status as keyof typeof STATUS_LABELS]}

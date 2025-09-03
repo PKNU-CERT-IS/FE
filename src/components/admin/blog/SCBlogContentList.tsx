@@ -6,7 +6,7 @@ import Link from "next/link";
 import CCBlogDeleteButton from "@/components/admin/blog/CCBlogDeleteButton";
 import CCPublishedCheckbox from "@/components/admin/blog/CCPublishedCheckbox";
 import { BlogPost } from "@/types/blog";
-import { getCategoryColor } from "@/utils/categoryColorUtils";
+import { getCategoryColor } from "@/utils/badgeUtils";
 
 interface SCBlogContentListProps {
   paginatedContents: BlogPost[];

@@ -2,10 +2,11 @@
 
 import Link from "next/link";
 import { getPageNumbers } from "@/utils/paginationUtils";
-import { SemesterType, StatusType } from "@/types/project";
+import { SemesterType } from "@/types/project";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useEffect } from "react";
 import { CategoryType, SubCategoryType } from "@/types/category";
+import { StatusType } from "@/types/progressStatus";
 
 interface ProjectPaginationProps {
   currentPage: number;

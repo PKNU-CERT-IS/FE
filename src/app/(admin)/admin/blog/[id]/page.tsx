@@ -7,7 +7,7 @@ import KebabMenuButton from "@/components/detail/CCKebabMenu";
 import ShareButton from "@/components/detail/CCShareButton";
 import DefaultBadge from "@/components/ui/defaultBadge";
 import { formatDate } from "@/utils/formatDateUtil";
-import { getCategoryColor } from "@/utils/categoryColorUtils";
+import { getCategoryColor } from "@/utils/badgeUtils";
 import Link from "next/link";
 
 interface BlogDetailPageProps {
@@ -73,7 +73,7 @@ export default async function AdminBlogDetailPage({
           <div className="flex items-start justify-between mb-4">
             <div className="flex items-center gap-2">
               <DefaultBadge
-                variant="outline"
+                variant="custom"
                 className={getCategoryColor(post.category)}
               >
                 {post.category}

@@ -2,7 +2,7 @@ import Link from "next/link";
 import EyeSVG from "/public/icons/eye.svg";
 import DefaultBadge from "@/components/ui/defaultBadge";
 import { BoardDataType } from "@/types/board";
-import { getCategoryColor } from "@/utils/boardUtils";
+import { getBoardCategoryColor } from "@/utils/boardUtils";
 import {
   AlertCircle,
   BookOpen,
@@ -50,7 +50,10 @@ export default function BoardCard({
           <div className="flex items-center gap-3 flex-1 justify-between">
             <div className="flex items-center gap-2">
               {getCategoryIcon(category)}
-              <DefaultBadge className={getCategoryColor(category)}>
+              <DefaultBadge
+                variant="custom"
+                className={getBoardCategoryColor(category)}
+              >
                 {category}
               </DefaultBadge>
               {category === "공지사항" && (

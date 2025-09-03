@@ -7,9 +7,7 @@ import CCProjectSearchBar from "@/components/project/CCProjectSearchBar";
 import {
   CurrentFilters,
   SEMESTER_OPTIONS,
-  STATUS_OPTIONS,
   SEMESTER_LABELS,
-  STATUS_LABELS,
   FilterKey,
 } from "@/types/project";
 import DefaultButton from "@/components/ui/defaultButton";
@@ -21,6 +19,7 @@ import {
   SUBCATEGORY_MAP,
   SubCategoryKey,
 } from "@/types/category";
+import { STATUS_LABELS, STATUS_OPTIONS } from "@/types/progressStatus";
 
 interface ProjectCategoryProps {
   currentFilters: CurrentFilters;

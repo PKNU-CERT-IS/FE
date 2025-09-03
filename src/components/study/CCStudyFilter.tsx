@@ -6,12 +6,7 @@ import { ChevronDown, X } from "lucide-react";
 import DefaultSearchBar from "@/components/ui/defaultSearchBar";
 import SearchSVG from "/public/icons/search.svg";
 import type { StudyFilterProps, FilterKey } from "@/types/study";
-import {
-  SEMESTER_OPTIONS,
-  STATUS_OPTIONS,
-  SEMESTER_LABELS,
-  STATUS_LABELS,
-} from "@/types/study";
+import { SEMESTER_OPTIONS, SEMESTER_LABELS } from "@/types/study";
 import DefaultButton from "@/components/ui/defaultButton";
 import { cn } from "@/lib/utils";
 import {
@@ -21,6 +16,7 @@ import {
   SUBCATEGORY_MAP,
   SubCategoryKey,
 } from "@/types/category";
+import { STATUS_OPTIONS, STATUS_LABELS } from "@/types/progressStatus";
 
 interface CCStudyFilterProps extends StudyFilterProps {
   isAdmin?: boolean;

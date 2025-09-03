@@ -7,7 +7,7 @@ import Link from "next/link";
 import CCProfileStudyStatusFilter from "@/components/profile/CCProfileStudyStatusFilter";
 import CCCreateDropdown from "@/components/profile/CCCreateDropdown";
 import { StudyStatusType, studyStatus } from "@/types/profile";
-import { getCategoryColor } from "@/utils/categoryColorUtils";
+import { getCategoryColor } from "@/utils/badgeUtils";
 import {
   mockProfileStudyData,
   mockProfileProjectData,
@@ -96,18 +96,18 @@ export default async function SCStudyList({ searchParams }: SCStudyListProps) {
                 </div>
                 <div className="p-6 pt-0 flex gap-2">
                   <DefaultBadge
-                    className={`border-gray-200 text-gray-600 cursor-default
-                          ${getCategoryColor(
-                            material.category as CategoryType
-                          )}`}
+                    variant="custom"
+                    className={getCategoryColor(
+                      material.category as CategoryType
+                    )}
                   >
                     {material.category}
                   </DefaultBadge>
                   <DefaultBadge
-                    className={`border-gray-200 text-gray-600 cursor-default
-                          ${getCategoryColor(
-                            material.subCategory as SubCategoryType
-                          )}`}
+                    variant="custom"
+                    className={getCategoryColor(
+                      material.subCategory as SubCategoryType
+                    )}
                   >
                     {material.subCategory}
                   </DefaultBadge>
