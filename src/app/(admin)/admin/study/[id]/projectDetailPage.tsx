@@ -114,7 +114,7 @@ export default async function ProjectDetailPage({
           {/* 상태 배지 */}
           <div className="absolute top-4 left-4">
             <DefaultBadge
-              variant="outline"
+              variant="custom"
               className={getStatusColor(project.status)}
             >
               {STATUS_LABELS[project.status as keyof typeof STATUS_LABELS]}
