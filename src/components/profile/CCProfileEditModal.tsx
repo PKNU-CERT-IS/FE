@@ -2,7 +2,7 @@
 
 import DefaultButton from "@/components/ui/defaultButton";
 import { mockProfileData } from "@/mocks/mockProfileData";
-import { gradeOptions } from "@/utils/membersUtils";
+import { getRoleBadgeStyle, gradeOptions } from "@/utils/membersUtils";
 import { MembersDataType } from "@/types/members";
 import Image from "next/image";
 import { RefObject, useCallback, useEffect, useRef, useState } from "react";
@@ -165,7 +165,7 @@ export default function CCProfileModal({
                 <button
                   type="button"
                   onClick={removeImage}
-                  className="flex items-center gap-1 px-2 h-8 text-xs text-red-600 border border-red-300 rounded-md hover:bg-red-50 transition-colors focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                  className="flex items-center gap-1 px-2 h-8 text-xs text-cert-red border border-red-300 rounded-md hover:bg-red-50 transition-colors focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
                 >
                   <Trash2 className="w-3 h-3" />
                   제거
@@ -386,23 +386,38 @@ export default function CCProfileModal({
               <div className="text-center pb-1 text-black">
                 {editedUser.name}
               </div>
-              <div className="text-xs text-center text-gray-600">
-                {editedUser.grade ? `${editedUser.grade} · ` : ""}
-                {editedUser.major}
+              <div className="flex justify-center mt-1">
+                <DefaultBadge
+                  variant="custom"
+                  className={getRoleBadgeStyle(editedUser.role)}
+                >
+                  {editedUser.role}
+                </DefaultBadge>
               </div>
-              <div className="text-xs text-center text-gray-600 mt-1">
+              <div className="text-xs text-center text-gray-500 mt-2">
+                <p>
+                  {editedUser.grade} • {editedUser.major}
+                </p>
+              </div>
+              <div className="text-xs text-center text-gray-600 mt-3">
                 {editedUser.description}
               </div>
-              <div className="flex flex-wrap justify-center gap-1 mt-3">
-                {editedUser.skills?.map((skill) => (
-                  <DefaultBadge
-                    key={skill}
-                    variant="outline"
-                    className="text-xs bg-gray-100 text-gray-600 border-gray-200"
-                  >
-                    {skill}
-                  </DefaultBadge>
-                ))}
+
+              <div>
+                <p className="text-sm font-medium text-gray-900  mb-2 transition-colors duration-300 mt-4">
+                  기술 스택
+                </p>
+                <div className="flex flex-wrap gap-1">
+                  {editedUser.skills?.map((skill) => (
+                    <DefaultBadge
+                      key={skill}
+                      variant="outline"
+                      className="text-xs badge-gray bg-white cursor-default"
+                    >
+                      {skill}
+                    </DefaultBadge>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
@@ -413,12 +428,12 @@ export default function CCProfileModal({
             <DefaultButton
               variant="outline"
               onClick={closeModal}
-              className="border-gray-300 text-gray-600 hover:border-red-400 hover:bg-cert-red/0 hover:text-red-600"
+              className="border-gray-300 text-gray-600 hover:border-red-400 hover:bg-cert-red/0 hover:text-cert-red"
             >
               취소
             </DefaultButton>
             <DefaultButton
-              className="bg-red-600 hover:bg-red-700 text-white"
+              className="bg-cert-red hover:bg-red-700 text-white"
               onClick={handleSave}
             >
               저장
