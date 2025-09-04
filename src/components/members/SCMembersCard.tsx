@@ -43,7 +43,7 @@ export default function MembersCard({ members }: MembersCardProps) {
           </h3>
 
           <DefaultBadge
-            variant="outline"
+            variant="custom"
             className={getRoleBadgeStyle(members.role)}
           >
             {members.role}

@@ -209,12 +209,12 @@ export default function CCRoleEditModal({
             <DefaultButton
               variant="outline"
               onClick={handleCancel}
-              className="border-gray-300 text-gray-600 hover:border-red-400 hover:bg-cert-red/0 hover:text-red-600"
+              className="border-gray-300 text-gray-600 hover:border-red-400 hover:bg-cert-red/0 hover:text-cert-red"
             >
               취소
             </DefaultButton>
             <DefaultButton
-              className="bg-red-600 hover:bg-red-700 text-white"
+              className="bg-cert-red hover:bg-red-700 text-white"
               onClick={handleSave}
             >
               저장

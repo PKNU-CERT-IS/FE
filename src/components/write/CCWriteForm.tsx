@@ -492,7 +492,7 @@ export default function WriteForm({ type }: WriteFormProps) {
                 <button
                   type="button"
                   onClick={() => removeExternalLink(index)}
-                  className="px-3 py-2 text-red-600 hover:text-red-800 cursor-pointer"
+                  className="px-3 py-2 text-cert-red hover:text-red-800 cursor-pointer"
                 >
                   ✕
                 </button>

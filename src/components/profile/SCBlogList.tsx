@@ -46,7 +46,7 @@ export default async function SCBlogList({
                   <div className="flex items-start justify-between">
                     <div>
                       {/* 제목 */}
-                      <div className="font-semibold leading-none tracking-tight text-lg text-gray-900 group-hover:text-red-600 transition-colors cursor-pointer">
+                      <div className="font-semibold leading-none tracking-tight text-lg text-gray-900 group-hover:text-cert-red transition-colors cursor-pointer">
                         {blog.title}
                       </div>
 

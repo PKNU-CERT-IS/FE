@@ -77,7 +77,7 @@ export default async function SCStudyList({ searchParams }: SCStudyListProps) {
                 <div className="flex flex-col space-y-1.5 p-6 pb-4">
                   <div className="flex items-start justify-between">
                     <div>
-                      <div className="font-semibold leading-none tracking-tight text-lg text-gray-900 group-hover:text-red-600 transition-colors cursor-pointer">
+                      <div className="font-semibold leading-none tracking-tight text-lg text-gray-900 group-hover:text-cert-red transition-colors cursor-pointer">
                         {material.title}
                       </div>
                       <div className="flex items-center gap-4 mt-2 text-sm text-gray-600 transition-colors duration-300">

@@ -26,7 +26,7 @@ export default function SCBlogContentList({
                 className="space-y-2 flex-1 block"
               >
                 <div className="flex items-center gap-2 flex-wrap">
-                  <FileText className="w-5 h-5 text-[#9E0101]" />
+                  <FileText className="w-5 h-5 text-cert-red" />
                   <span className="text-xl font-medium leading-none tracking-tight">
                     {post.title}
                   </span>
