@@ -1,15 +1,11 @@
 "server-only";
 
 import type { StudyMaterial, CurrentFilters } from "@/types/study";
-import { STATUS_LABELS, AUTHOR_STATUS_LABELS } from "@/types/study";
+import { AUTHOR_STATUS_LABELS } from "@/types/study";
 import CCStudyPagination from "@/components/study/CCStudyPagination";
 import CCStudyDateInfo from "@/components/study/CCStudyDateInfo"; // 새로 생성한 클라이언트 컴포넌트
 import SCSearchResultNotFound from "@/components/ui/SCSearchResultNotFound";
-import {
-  getStatusColor,
-  getProgressColor,
-  parseSearchParams,
-} from "@/utils/studyHelper";
+import { getProgressColor, parseSearchParams } from "@/utils/studyHelper";
 import { downloadFile } from "@/actions/study/StudyDownloadFileServerAction";
 import { joinStudy } from "@/actions/study/StudyJoinServerAction";
 
@@ -18,8 +14,9 @@ import PdfSVG from "/public/icons/pdf.svg";
 
 import Link from "next/link";
 import DefaultBadge from "@/components/ui/defaultBadge";
-import { getCategoryColor } from "@/utils/categoryColorUtils";
+import { getCategoryColor, getStatusColor } from "@/utils/badgeUtils";
 import { formatFileSize } from "@/utils/attachedFileUtils";
+import { STATUS_LABELS } from "@/types/progressStatus";
 
 // 학습 자료 데이터를 가져오는 함수 (실제로는 DB에서 가져올 것)
 async function getStudyMaterials(): Promise<StudyMaterial[]> {
@@ -348,7 +345,7 @@ export default async function SCStudyContent({
                   <div className="flex flex-wrap gap-2 mb-3 items-center justify-between">
                     <div className="flex items-center gap-2">
                       <DefaultBadge
-                        variant="outline"
+                        variant="custom"
                         className={getStatusColor(material.status)}
                       >
                         {STATUS_LABELS[material.status]}
@@ -374,14 +371,14 @@ export default async function SCStudyContent({
                   {/* 카테고리 */}
                   <div className="flex flex-wrap gap-2 mb-4">
                     <DefaultBadge
-                      variant="outline"
+                      variant="custom"
                       className={`inline-flex items-center px-2 py-1 rounded text-xs font-medium border-none
                         ${getCategoryColor(material.category)}`}
                     >
                       {material.category}
                     </DefaultBadge>
                     <DefaultBadge
-                      variant="outline"
+                      variant="custom"
                       className={`inline-flex items-center px-2 py-1 rounded text-xs font-medium border-none
                         ${getCategoryColor(material.subCategory)}`}
                     >
@@ -434,6 +431,7 @@ export default async function SCStudyContent({
                             name="studyId"
                             value={material.id}
                           />
+
                           <button type="submit">
                             <DownloadGraySVG className="text-gray-400 hover:text-gray-600" />
                           </button>

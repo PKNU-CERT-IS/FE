@@ -1,6 +1,6 @@
 import { AttachedFile } from "@/types/attachedFile";
 import { CategoryType, SubCategoryType } from "@/types/category";
-import { StatusType } from "@/types/study";
+import { StatusType } from "@/types/progressStatus";
 
 /**
  * 스터디 생성 폼에서 사용하는 데이터 타입

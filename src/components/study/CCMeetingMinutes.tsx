@@ -346,7 +346,7 @@ export default function MeetingMinutes({
                       <button
                         type="button"
                         onClick={() => toggleExpand(minute.id)}
-                        className="inline-flex items-center whitespace-nowrap text-xs text-gray-500 hover:underline"
+                        className="inline-flex items-center whitespace-nowrap text-xs text-gray-500 hover:underline cursor-pointer"
                       >
                         {expanded ? (
                           <>

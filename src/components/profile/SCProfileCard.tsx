@@ -5,6 +5,7 @@ import ScheduleSVG from "/public/icons/schedule.svg";
 import CCEditProfileCard from "@/components/profile/CCEditProfileCard";
 import { mockProfileData } from "@/mocks/mockProfileData";
 import Image from "next/image";
+import { getRoleBadgeStyle } from "@/utils/membersUtils";
 
 export default function SCProfileCard() {
   const user = mockProfileData[0];
@@ -34,19 +35,18 @@ export default function SCProfileCard() {
           <div className="text-xl font-semibold leading-none tracking-tight">
             {user.name}
           </div>
-          <div className="flex justify-center gap-2 mb-2">
-            <DefaultBadge className="bg-red-50 text-red-600  border-red-200 ">
+          <div className="flex justify-center mt-1">
+            <DefaultBadge
+              variant="custom"
+              className={getRoleBadgeStyle(user.role)}
+            >
               {user.role}
             </DefaultBadge>
-            <DefaultBadge
-              variant="outline"
-              className="border-gray-200  text-gray-600 "
-            >
-              {user.grade}
-            </DefaultBadge>
           </div>
-          <div className="text-sm text-gray-600  transition-colors duration-300">
-            {user.major}
+          <div className="text-sm text-gray-500">
+            <p>
+              {user.grade} • {user.major}
+            </p>
           </div>
         </div>
 
@@ -72,7 +72,7 @@ export default function SCProfileCard() {
                 <DefaultBadge
                   key={skill}
                   variant="outline"
-                  className="text-xs border-gray-200  text-gray-600  hover:text-gray-900  hover:border-red-300  transition-colors"
+                  className="text-xs badge-gray bg-white cursor-default"
                 >
                   {skill}
                 </DefaultBadge>

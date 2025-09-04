@@ -568,7 +568,7 @@ export default function EditForm({ type, dataId }: EditFormProps) {
                 <button
                   type="button"
                   onClick={() => removeExternalLink(index)}
-                  className="px-3 py-2 text-red-600 hover:text-red-800"
+                  className="px-3 py-2 text-cert-red hover:text-red-800"
                 >
                   ✕
                 </button>

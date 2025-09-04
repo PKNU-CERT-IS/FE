@@ -7,7 +7,7 @@ import { ProfileBlogDataType } from "@/types/profile";
 import Link from "next/link";
 import { Plus } from "lucide-react";
 import { BlogCategory } from "@/types/blog";
-import { getCategoryColor } from "@/utils/categoryColorUtils";
+import { getCategoryColor } from "@/utils/badgeUtils";
 
 interface SCBlogListProps {
   searchParams: Promise<{
@@ -46,7 +46,7 @@ export default async function SCBlogList({
                   <div className="flex items-start justify-between">
                     <div>
                       {/* 제목 */}
-                      <div className="font-semibold leading-none tracking-tight text-lg text-gray-900 group-hover:text-red-600 transition-colors cursor-pointer">
+                      <div className="font-semibold leading-none tracking-tight text-lg text-gray-900 group-hover:text-cert-red transition-colors cursor-pointer">
                         {blog.title}
                       </div>
 
@@ -54,9 +54,10 @@ export default async function SCBlogList({
                       <div className="flex items-center gap-2 mt-2 text-sm text-gray-600 transition-colors duration-300">
                         <span>{blog.createdAt}</span>
                         <DefaultBadge
-                          className={`border-gray-200 text-gray-600 ml-2 ${getCategoryColor(
+                          variant="custom"
+                          className={getCategoryColor(
                             blog.category as BlogCategory
-                          )}`}
+                          )}
                         >
                           {blog.category}
                         </DefaultBadge>
@@ -84,7 +85,7 @@ export default async function SCBlogList({
                   <div className="flex items-center gap-4 text-sm text-gray-600 dark:text-gray-400 transition-colors duration-300">
                     <div className="flex items-center gap-1">
                       <EyeSVG className="w-4 h-4" />
-                      {blog.views}
+                      {blog.views?.toLocaleString()}
                     </div>
                   </div>
                 </div>

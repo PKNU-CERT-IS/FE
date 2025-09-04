@@ -1,8 +1,9 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import type { SemesterType, StatusType } from "@/types/study";
+import type { SemesterType } from "@/types/study";
 import { CategoryType, SubCategoryType } from "@/types/category";
+import { StatusType } from "@/types/progressStatus";
 
 /**
  * 필터 적용 서버 액션

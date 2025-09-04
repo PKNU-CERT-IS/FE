@@ -32,18 +32,18 @@ export const filterBoardData = (
   );
 };
 
-// 보드 css 유틸
-export const getCategoryColor = (category: BoardCategoryType) => {
+// Board Category Util
+export const getBoardCategoryColor = (category: BoardCategoryType) => {
   switch (category) {
     case "공지사항":
-      return "bg-red-50 text-red-600 border-red-200";
+      return "badge-red";
     case "보안이슈":
-      return "bg-orange-50 text-orange-600 border-orange-200";
+      return "badge-orange";
     case "기술자료":
-      return "bg-blue-50 text-blue-600 border-blue-200";
+      return "badge-blue";
     case "활동내용":
-      return "bg-green-50 text-green-600 border-green-200";
+      return "badge-green";
     case "질문":
-      return "bg-gray-50 text-gray-600 border-gray-200";
+      return "badge-gray";
   }
 };

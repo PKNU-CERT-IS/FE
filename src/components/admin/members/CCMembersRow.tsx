@@ -83,7 +83,9 @@ export default function CCMebersRow({
         </div>
       </td>
       <td className="px-4 py-3 text-center text-xs text-gray-500 w-20 sm:w-24 md:w-28">
-        {penaltyGracePeriod(member.gracePeriod)}
+        {member.gracePeriod == null
+          ? "-"
+          : penaltyGracePeriod(member.gracePeriod)}
       </td>
     </tr>
   );

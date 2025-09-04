@@ -1,6 +1,6 @@
 import { AttachedFile } from "@/types/attachedFile";
 import { CategoryType, SubCategoryType } from "@/types/category";
-import { StatusType } from "@/types/study";
+import { StatusType } from "@/types/progressStatus";
 
 // 타입 정의
 export interface StudyDetailData {

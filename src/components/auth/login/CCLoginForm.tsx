@@ -71,7 +71,7 @@ export default function CCLoginInput() {
       </div>
 
       <div className="space-y-3">
-        <label className="flex items-center space-x-2">
+        <label className="flex items-center space-x-2 cursor-pointer">
           <input
             type="checkbox"
             name="rememberId"
@@ -85,7 +85,7 @@ export default function CCLoginInput() {
           />
           <span className="text-sm text-gray-700">아이디 기억하기</span>
         </label>
-        <label className="flex items-center space-x-2">
+        <label className="flex items-center space-x-2 cursor-pointer">
           <input
             type="checkbox"
             name="autoLogin"

@@ -210,7 +210,7 @@ export default function CCSignUpForm() {
             <button
               type="button"
               onClick={() => setGradeDropdownOpen(!gradeDropdownOpen)}
-              className={`input-default  px-3 py-2 text-sm text-left flex items-center justify-between ${
+              className={`input-default  px-3 py-2 text-sm text-left flex items-center justify-between cursor-pointer ${
                 errors.grade ? "border-red-500" : ""
               }`}
             >
@@ -237,7 +237,7 @@ export default function CCSignUpForm() {
                     key={grade}
                     type="button"
                     onClick={() => selectGrade(grade)}
-                    className="w-full px-3 py-2 text-sm text-left text-gray-900 hover:bg-gray-100 first:rounded-t-md last:rounded-b-md"
+                    className="w-full px-3 py-2 text-sm text-left text-gray-900 hover:bg-gray-100 first:rounded-t-md last:rounded-b-md cursor-pointer"
                   >
                     {grade}
                   </button>
@@ -257,7 +257,7 @@ export default function CCSignUpForm() {
             <button
               type="button"
               onClick={() => setGenderDropdownOpen(!genderDropdownOpen)}
-              className={`input-default px-3 py-2 text-sm text-left flex items-center justify-between ${
+              className={`input-default px-3 py-2 text-sm text-left flex items-center justify-between cursor-pointer ${
                 errors.gender ? "border-red-500" : ""
               }`}
             >
@@ -284,7 +284,7 @@ export default function CCSignUpForm() {
                     key={gender}
                     type="button"
                     onClick={() => selectGender(gender)}
-                    className="w-full px-3 py-2 text-sm text-left text-gray-900 hover:bg-gray-100 first:rounded-t-md last:rounded-b-md"
+                    className="w-full px-3 py-2 text-sm text-left text-gray-900 hover:bg-gray-100 first:rounded-t-md last:rounded-b-md cursor-pointer"
                   >
                     {gender}
                   </button>
@@ -311,7 +311,7 @@ export default function CCSignUpForm() {
             type="date"
             value={signupFormData.birthDate}
             onChange={handleInputChange}
-            className={`h-10 pl-10  w-full rounded-md border border-gray-300 text-gray-900 bg-white px-3 py-2 text-sm focus:border-cert-red focus:outline-none ${
+            className={`h-10 pl-10  w-full rounded-md border border-gray-300 text-gray-900 bg-white px-3 py-2 text-sm focus:border-cert-red focus:outline-none cursor-pointer ${
               errors.birthDate ? "border-red-500" : ""
             }`}
             required

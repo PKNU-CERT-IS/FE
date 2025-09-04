@@ -9,7 +9,7 @@ import Link from "next/link";
 import BlogSearchBar from "@/components/blog/CCBlogSearchBar";
 import { formatDate } from "@/utils/formatDateUtil";
 import SCSearchResultNotFound from "@/components/ui/SCSearchResultNotFound";
-import { getCategoryColor } from "@/utils/categoryColorUtils";
+import { getCategoryColor } from "@/utils/badgeUtils";
 
 interface BlogPageProps {
   searchParams: Promise<{

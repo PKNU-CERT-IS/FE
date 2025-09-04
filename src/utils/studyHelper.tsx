@@ -1,9 +1,9 @@
 import { CategoryType, SubCategoryType } from "@/types/category";
+import { StatusType } from "@/types/progressStatus";
 import type {
   StudyMaterial,
   CurrentFilters,
   SemesterType,
-  StatusType,
   StudySearchParams,
 } from "@/types/study";
 
@@ -214,23 +214,6 @@ export const PROGRESS_COLORS = {
   HIGH: "#16A34A", // 67% 이상 - 초록색
 } as const;
 
-/**
- * 상태에 따른 CSS 클래스를 반환합니다.
- * @param status - 스터디 상태
- * @returns CSS 클래스 문자열
- */
-export function getStatusColor(status: StatusType): string {
-  switch (status) {
-    case "not_started":
-      return "bg-gray-50 text-gray-600 border-gray-200";
-    case "in_progress":
-      return "bg-blue-50 text-blue-600 border-blue-200";
-    case "completed":
-      return "bg-green-50 text-green-600 border-green-200";
-    default:
-      return "bg-gray-50 text-gray-600 border-gray-200";
-  }
-}
 /**
  * 참여율에 따른 Progress 바 색상을 반환합니다.
  * @param percentage - 참여율 (0-100)

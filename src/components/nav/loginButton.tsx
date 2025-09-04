@@ -1,4 +1,3 @@
-// components/LoginButton.tsx
 "server-only";
 
 import { LogIn } from "lucide-react";

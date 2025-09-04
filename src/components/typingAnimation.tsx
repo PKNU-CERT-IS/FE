@@ -13,13 +13,13 @@ export default function TypingAnimation() {
       <div className="animate-pulse">
         {firstText}
         {cursorLine === "firstCursorLine" && (
-          <span className="animate-typing text-red-600">|</span>
+          <span className="animate-typing text-cert-red">|</span>
         )}
       </div>
       <div className="animate-pulse text-center">
         {secondText}
         {cursorLine === "secondCursorLine" && (
-          <span className="animate-typing text-red-600">|</span>
+          <span className="animate-typing text-cert-red">|</span>
         )}
       </div>
     </div>

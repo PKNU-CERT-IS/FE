@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { getStatusDateInfo } from "@/utils/studyHelper";
 import CalendarGraySVG from "/public/icons/calendar-gray.svg";
-import type { StatusType } from "@/types/study";
+import { StatusType } from "@/types/progressStatus";
 
 interface CCStudyDateInfoProps {
   status: StatusType;

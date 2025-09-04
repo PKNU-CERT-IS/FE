@@ -6,7 +6,7 @@ import Link from "next/link";
 import CCBlogDeleteButton from "@/components/admin/blog/CCBlogDeleteButton";
 import CCPublishedCheckbox from "@/components/admin/blog/CCPublishedCheckbox";
 import { BlogPost } from "@/types/blog";
-import { getCategoryColor } from "@/utils/categoryColorUtils";
+import { getCategoryColor } from "@/utils/badgeUtils";
 
 interface SCBlogContentListProps {
   paginatedContents: BlogPost[];
@@ -26,14 +26,14 @@ export default function SCBlogContentList({
                 className="space-y-2 flex-1 block"
               >
                 <div className="flex items-center gap-2 flex-wrap">
-                  <FileText className="w-5 h-5 text-[#9E0101]" />
+                  <FileText className="w-5 h-5 text-cert-red" />
                   <span className="text-xl font-medium leading-none tracking-tight">
                     {post.title}
                   </span>
 
                   {/* 카테고리 뱃지 */}
                   <DefaultBadge
-                    variant="outline"
+                    variant="custom"
                     className={getCategoryColor(post.category)}
                   >
                     {post.category}

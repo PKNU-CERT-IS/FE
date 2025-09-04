@@ -86,7 +86,7 @@ export default function FileUpload({
                 variant="outline"
                 size="sm"
                 onClick={() => handleRemoveFile(index)}
-                className="text-red-600 hover:bg-red-50"
+                className="text-cert-red hover:bg-red-50 hover:text-cert-red"
               >
                 <Trash2 className="w-4 h-4" />
               </DefaultButton>

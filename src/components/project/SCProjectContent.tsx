@@ -2,14 +2,14 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { STATUS_LABELS, AUTHOR_STATUS_LABELS } from "@/types/project";
+import { AUTHOR_STATUS_LABELS } from "@/types/project";
 import CCStudyDateInfo from "@/components/study/CCStudyDateInfo";
-import { getStatusColor } from "@/utils/projectUtils";
 import GithubSVG from "/public/icons/github.svg";
 import ChainSVG from "/public/icons/chain.svg";
 import type { ProjectMaterial } from "@/types/project";
 import DefaultBadge from "@/components/ui/defaultBadge";
-import { getCategoryColor } from "@/utils/categoryColorUtils";
+import { getCategoryColor, getStatusColor } from "@/utils/badgeUtils";
+import { STATUS_LABELS } from "@/types/progressStatus";
 
 interface SCProjectContentProps {
   materials: ProjectMaterial[];
@@ -49,7 +49,7 @@ export default function SCProjectContent({ materials }: SCProjectContentProps) {
                 {/* 상태 배지 */}
                 <div className="absolute top-4 left-4">
                   <DefaultBadge
-                    variant="outline"
+                    variant="custom"
                     className={getStatusColor(project.status)}
                   >
                     {STATUS_LABELS[project.status]}
@@ -78,14 +78,14 @@ export default function SCProjectContent({ materials }: SCProjectContentProps) {
 
                 <div className="flex flex-wrap gap-2 mb-4">
                   <DefaultBadge
-                    variant="outline"
+                    variant="custom"
                     className={`inline-flex items-center px-2 py-1 rounded text-xs font-medium border-none
                         ${getCategoryColor(project.category)}`}
                   >
                     {project.category}
                   </DefaultBadge>
                   <DefaultBadge
-                    variant="outline"
+                    variant="custom"
                     className={`inline-flex items-center px-2 py-1 rounded text-xs font-medium border-none
                         ${getCategoryColor(project.subCategory)}`}
                   >

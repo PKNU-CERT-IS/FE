@@ -72,8 +72,7 @@ export interface ProfileBlogDataType {
   category: BlogCategory;
   createdAt: string;
   updatedAt?: string;
-  views?: number;
-  likes?: number;
+  views: number;
   featured?: boolean;
   published: boolean;
   slug?: string;

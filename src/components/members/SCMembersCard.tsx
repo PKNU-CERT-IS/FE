@@ -13,7 +13,7 @@ interface MembersCardProps {
 export default function MembersCard({ members }: MembersCardProps) {
   return (
     <div
-      className={`card-list p-6 group transform hover:-translate-y-2 hover:shadow-2xl hover:shadow-gray-300/50 shadow-sm ${getRoleBorderStyle(
+      className={`card-list p-6 group transform hover:-translate-y-2 hover:shadow-2xl hover:shadow-gray-300/50 shadow-sm cursor-default ${getRoleBorderStyle(
         members.role
       )} flex flex-col h-full`}
     >
@@ -43,7 +43,7 @@ export default function MembersCard({ members }: MembersCardProps) {
           </h3>
 
           <DefaultBadge
-            variant="outline"
+            variant="custom"
             className={getRoleBadgeStyle(members.role)}
           >
             {members.role}

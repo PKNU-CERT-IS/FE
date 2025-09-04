@@ -37,15 +37,15 @@ export const labelToType = (label: string): ScheduleType | null => {
 export const getTypeColor = (type: ScheduleType) => {
   switch (type) {
     case SCHEDULE_TYPES.MEETING:
-      return "bg-purple-50 text-purple-600 border-purple-200";
+      return "badge-purple";
     case SCHEDULE_TYPES.WORKSHOP:
-      return "bg-red-50 text-red-600 border-red-200";
+      return "badge-red";
     case SCHEDULE_TYPES.STUDY:
-      return "bg-blue-50 text-blue-600 border-blue-200";
+      return "badge-blue";
     case SCHEDULE_TYPES.CONFERENCE:
-      return "bg-green-50 text-green-600 border-green-200";
+      return "badge-green";
     default:
-      return "bg-gray-50 text-gray-600 border-gray-200";
+      return "badge-gray";
   }
 };
 
@@ -53,13 +53,13 @@ export const getTypeColor = (type: ScheduleType) => {
 export function getStatusColor(status: string): ScheduleStatusType {
   switch (status) {
     case "PENDING":
-      return "bg-yellow-100 text-yellow-800 border-yellow-200";
+      return "badge-yellow";
     case "APPROVED":
-      return "bg-green-100 text-green-800 border-green-200";
+      return "badge-green";
     case "REJECTED":
-      return "bg-red-100 text-red-800 border-red-200";
+      return "badge-red";
     default:
-      return "bg-gray-100 text-gray-800 border-gray-200";
+      return "badge-gray";
   }
 }
 

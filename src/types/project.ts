@@ -2,6 +2,7 @@
 
 import { AttachedFile } from "@/types/attachedFile";
 import { CategoryType, SubCategoryType } from "./category";
+import { StatusType } from "./progressStatus";
 
 export type FileCategory =
   | "document"
@@ -73,8 +74,6 @@ export type SemesterType =
   | "2023-2"
   | "2023-1";
 
-export type StatusType = "all" | "not_started" | "in_progress" | "completed";
-
 // 옵션 배열들
 export const SEMESTER_OPTIONS: SemesterType[] = [
   "all",
@@ -86,13 +85,6 @@ export const SEMESTER_OPTIONS: SemesterType[] = [
   "2023-1",
 ];
 
-export const STATUS_OPTIONS: StatusType[] = [
-  "all",
-  "not_started",
-  "in_progress",
-  "completed",
-];
-
 // 한글 라벨 맵핑
 export const SEMESTER_LABELS: Record<SemesterType, string> = {
   all: "전체",
@@ -102,13 +94,6 @@ export const SEMESTER_LABELS: Record<SemesterType, string> = {
   "2024-1": "2024-1학기",
   "2023-2": "2023-2학기",
   "2023-1": "2023-1학기",
-};
-
-export const STATUS_LABELS: Record<StatusType, string> = {
-  all: "전체",
-  not_started: "시작 전",
-  in_progress: "진행 중",
-  completed: "종료",
 };
 
 export const AUTHOR_STATUS_LABELS: Record<
