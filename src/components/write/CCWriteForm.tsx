@@ -214,72 +214,70 @@ export default function WriteForm({ type }: WriteFormProps) {
           도와줍니다.
         </p>
       </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div
-          className={`relative ${
-            type === "blog" || type === "board" ? "md:col-span-3" : ""
-          }`}
-          ref={selectedReferenceRef}
-        >
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            내가 참여한 스터디 / 프로젝트 목록 *
-          </label>
-          <div className="relative">
-            <button
-              type="button"
-              onClick={() => {
-                setIsSelecteReferenceOpen((prev) => !prev);
-                setIsCategoryOpen(false);
-                setIsSubCategoryOpen(false);
-              }}
-              className="flex w-full items-center justify-between rounded-md border border-gray-300 bg-white px-3 py-2 text-sm cursor-pointer"
-            >
-              <span
-                className={
-                  selectedReference ? "text-gray-900" : "text-gray-500"
-                }
+      {type === "blog" && (
+        <div className="grid grid-cols-1 gap-4">
+          <div ref={selectedReferenceRef}>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              내가 참여한 스터디 / 프로젝트 목록 *
+            </label>
+            <div className="relative">
+              <button
+                type="button"
+                onClick={() => {
+                  setIsSelecteReferenceOpen((prev) => !prev);
+                  setIsCategoryOpen(false);
+                  setIsSubCategoryOpen(false);
+                }}
+                className="flex w-full items-center justify-between rounded-md border border-gray-300 bg-white px-3 py-2 text-sm cursor-pointer"
               >
-                {selectedReference
-                  ? `${
-                      selectedReference.type === "study" ? "스터디" : "프로젝트"
-                    } - ${selectedReference.title}`
-                  : "활동 선택"}
-              </span>
-              <ChevronDown
-                className={`h-4 w-4 transition-transform ${
-                  isSelectedReferenceOpen ? "rotate-180" : ""
-                }`}
-              />
-            </button>
+                <span
+                  className={
+                    selectedReference ? "text-gray-900" : "text-gray-500"
+                  }
+                >
+                  {selectedReference
+                    ? `${
+                        selectedReference.type === "study"
+                          ? "스터디"
+                          : "프로젝트"
+                      } - ${selectedReference.title}`
+                    : "활동 선택"}
+                </span>
+                <ChevronDown
+                  className={`h-4 w-4 transition-transform ${
+                    isSelectedReferenceOpen ? "rotate-180" : ""
+                  }`}
+                />
+              </button>
 
-            {isSelectedReferenceOpen && (
-              <div className="absolute z-50 mt-1 w-full rounded-md border border-gray-200 bg-white shadow-lg">
-                <div className="max-h-60 overflow-auto p-1">
-                  {myActivities.map((reference) => (
-                    <button
-                      key={`${reference.type}-${reference.referenceId}`}
-                      type="button"
-                      onClick={() => {
-                        setSelectedReference(reference);
-                        setIsSelecteReferenceOpen(false);
-                      }}
-                      className="relative flex w-full cursor-pointer select-none items-center rounded-sm py-2 px-2 text-sm outline-none transition-colors hover:bg-cert-red hover:text-white focus:bg-cert-red focus:text-white"
-                    >
-                      {reference.type === "study" ? "스터디" : "프로젝트"} -{" "}
-                      {reference.title}
-                    </button>
-                  ))}
+              {isSelectedReferenceOpen && (
+                <div className="absolute z-50 mt-1 w-full rounded-md border border-gray-200 bg-white shadow-lg">
+                  <div className="max-h-60 overflow-auto p-1">
+                    {myActivities.map((reference) => (
+                      <button
+                        key={`${reference.type}-${reference.referenceId}`}
+                        type="button"
+                        onClick={() => {
+                          setSelectedReference(reference);
+                          setIsSelecteReferenceOpen(false);
+                        }}
+                        className="relative flex w-full cursor-pointer select-none items-center rounded-sm py-2 px-2 text-sm outline-none transition-colors hover:bg-cert-red hover:text-white focus:bg-cert-red focus:text-white"
+                      >
+                        {reference.type === "study" ? "스터디" : "프로젝트"} -{" "}
+                        {reference.title}
+                      </button>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            )}
-            <p className="text-xs text-gray-500 mt-2">
-              블로그를 작성하고자 하는 스터디, 프로젝트를 선택해주세요. (최대
-              1개)
-            </p>
+              )}
+              <p className="text-xs text-gray-500 mt-2">
+                블로그를 작성하고자 하는 스터디, 프로젝트를 선택해주세요. (최대
+                1개)
+              </p>
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
       {/* 카테고리 및 최대 참가자 수 */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
