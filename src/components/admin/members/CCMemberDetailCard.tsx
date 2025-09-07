@@ -215,7 +215,9 @@ export default function CCMemberDetailCard({
           <div className="space-y-2">
             <div className="text-sm font-medium">유예 기간</div>
             <div className="text-xs text-gray-600 p-2 bg-gray-50 rounded border border-gray-300">
-              {penaltyGracePeriod(selectedMember.gracePeriod)}
+              {selectedMember.gracePeriod == null
+                ? "-"
+                : penaltyGracePeriod(selectedMember.gracePeriod)}
               <span className="ml-1.5">
                 (
                 <input

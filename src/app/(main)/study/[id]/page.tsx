@@ -14,9 +14,10 @@ import MeetingMinutes from "@/components/study/CCMeetingMinutes";
 import DownloadButton from "@/components/detail/SCDownloadButton";
 import { formatFileSize } from "@/utils/attachedFileUtils";
 import { getFileIcon } from "@/utils/attachedFileUtils";
-import { calculateDDay, getStatusColor } from "@/utils/studyHelper";
-import { STATUS_LABELS } from "@/types/study";
+import { calculateDDay } from "@/utils/studyHelper";
 import EndRequestButton from "@/components/ui/endRequestButton";
+import { getStatusColor } from "@/utils/badgeUtils";
+import { STATUS_LABELS } from "@/types/progressStatus";
 
 function getStudyDataById(id: string): StudyDetailData | null {
   const parsedId = parseInt(id, 10);
@@ -86,7 +87,10 @@ export default async function StudyMaterialDetailPage({
                     {studyData.title}
                   </h1>
                   <div className="flex items-center gap-2">
-                    <DefaultBadge className={getStatusColor(studyData.status)}>
+                    <DefaultBadge
+                      variant="custom"
+                      className={getStatusColor(studyData.status)}
+                    >
                       {STATUS_LABELS[studyData.status]}
                     </DefaultBadge>
                     {dDay !== null && (
@@ -163,7 +167,7 @@ export default async function StudyMaterialDetailPage({
                       {studyData.attachedFiles.map((file, index) => (
                         <div
                           key={index}
-                          className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                          className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg"
                         >
                           <span className="text-2xl">
                             {getFileIcon(file.type)}

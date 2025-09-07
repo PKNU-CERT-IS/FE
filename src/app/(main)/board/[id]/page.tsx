@@ -4,7 +4,6 @@ import BackToListButton from "@/components/detail/SCBackToListButton";
 import MarkdownRenderer from "@/components/ui/defaultMarkdownRenderer";
 import { mockBoardData } from "@/mocks/mockBoardData";
 import { mockBoardDetailData } from "@/mocks/mockBoardDetailData";
-import { getCategoryColor } from "@/utils/boardUtils";
 import DownloadButton from "@/components/detail/SCDownloadButton";
 import { Calendar, Eye, Heart, Pin, Download } from "lucide-react";
 import DefaultBadge from "@/components/ui/defaultBadge";
@@ -13,6 +12,7 @@ import LikeButton from "@/components/detail/CCLikeButton";
 import ShareButton from "@/components/detail/CCShareButton";
 import { formatFileSize } from "@/utils/attachedFileUtils";
 import { getFileIcon } from "@/utils/attachedFileUtils";
+import { getBoardCategoryColor } from "@/utils/boardUtils";
 
 function getDataById(id: string) {
   const dataId = parseInt(id, 10);
@@ -85,8 +85,8 @@ export default async function DetailPage({
                 <Pin className="w-4 h-4 text-cert-red" />
               )}
               <DefaultBadge
-                variant="outline"
-                className={getCategoryColor(data.category)}
+                variant="custom"
+                className={getBoardCategoryColor(data.category)}
               >
                 {data.category}
               </DefaultBadge>
@@ -152,7 +152,7 @@ export default async function DetailPage({
                 {data.attachedFiles.map((file, index) => (
                   <div
                     key={index}
-                    className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                    className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg"
                   >
                     <span className="text-2xl">{getFileIcon(file.type)}</span>
                     <div className="flex-1">

@@ -1,7 +1,7 @@
 import React from "react";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import AttachedFilesDownload from "../SCAttachedFilesDownload";
+import AttachedFilesDownload from "../CCAttachedFilesDownload";
 import { AttachedFile } from "@/types/project";
 
 // Mock 데이터

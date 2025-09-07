@@ -30,7 +30,7 @@ export default function SCTodaySchedule() {
                   className="card-list bg-gray-50 flex items-center justify-between p-3 group cursor-default"
                 >
                   <div>
-                    <div className="font-medium text-sm text-gray-900 dark:text-gray-100 group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors">
+                    <div className="font-medium text-sm text-gray-900 dark:text-gray-100 group-hover:text-cert-red dark:group-hover:text-red-400 transition-colors">
                       {schedule.title}
                     </div>
                     <div className="text-xs text-gray-600 dark:text-gray-400 flex items-center gap-1 transition-colors duration-300">

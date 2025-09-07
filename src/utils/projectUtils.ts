@@ -1,11 +1,7 @@
 // utils/projectUtils.ts
 import { CategoryType, SubCategoryType } from "@/types/category";
-import {
-  ProjectMaterial,
-  CurrentFilters,
-  SemesterType,
-  StatusType,
-} from "@/types/project";
+import { ProjectMaterial, CurrentFilters, SemesterType } from "@/types/project";
+import { StatusType } from "@/types/progressStatus";
 
 /**
  * URL 검색 파라미터를 CurrentFilters 타입으로 파싱하는 함수
@@ -75,22 +71,6 @@ export function paginateProjects(
     hasNextPage: page < totalPages,
     hasPreviousPage: page > 1,
   };
-}
-
-/**
- * 프로젝트 상태에 따른 배지 색상을 반환하는 함수
- */
-export function getStatusColor(status: StatusType): string {
-  switch (status) {
-    case "not_started":
-      return "bg-gray-50 text-gray-600 border-gray-200";
-    case "in_progress":
-      return "bg-blue-50 text-blue-600 border-blue-200";
-    case "completed":
-      return "bg-green-50 text-green-600 border-green-200";
-    default:
-      return "bg-gray-50 text-gray-600 border-gray-200";
-  }
 }
 
 /**

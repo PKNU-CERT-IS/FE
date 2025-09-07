@@ -6,7 +6,7 @@ import BackToListButton from "@/components/detail/SCBackToListButton";
 import KebabMenuButton from "@/components/detail/CCKebabMenu";
 import ShareButton from "@/components/detail/CCShareButton";
 import { formatDate } from "@/utils/formatDateUtil";
-import { getCategoryColor } from "@/utils/categoryColorUtils";
+import { getCategoryColor } from "@/utils/badgeUtils";
 import DefaultBadge from "@/components/ui/defaultBadge";
 import CCPublishedCheckbox from "@/components/admin/blog/CCPublishedCheckbox";
 import Link from "next/link";
@@ -73,8 +73,8 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
           <div className="flex items-start justify-between mb-4 ">
             <div>
               <DefaultBadge
-                variant="outline"
-                className={getCategoryColor(post.category)}
+                variant="custom"
+                className={`${getCategoryColor(post.category)} cursor-default`}
               >
                 {post.category}
               </DefaultBadge>
@@ -122,7 +122,7 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
               {post.views && (
                 <div className="flex items-center gap-2">
                   <Eye className="w-4 h-4" />
-                  <span>{post.views.toLocaleString()}회</span>
+                  <span>{post.views.toLocaleString()}</span>
                 </div>
               )}
             </div>

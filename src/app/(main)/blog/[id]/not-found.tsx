@@ -23,7 +23,7 @@ export default function NotFound() {
         <div className="space-y-4">
           <Link
             href="/blog"
-            className="inline-flex items-center gap-2 w-full justify-center px-6 py-3 bg-red-500 text-white rounded-md hover:bg-red-600 transition-colors font-medium"
+            className="inline-flex items-center gap-2 w-full justify-center px-6 py-3 bg-red-500 text-white rounded-md hover:bg-cert-red transition-colors font-medium"
           >
             <ArrowLeft className="w-4 h-4" />
             블로그 목록으로 돌아가기

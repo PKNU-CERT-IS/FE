@@ -29,7 +29,7 @@ export default function RequestActionButtons({
         <input type="hidden" name="id" value={id} />
         <button
           type="submit"
-          className="w-full flex items-center justify-center px-3 py-1 border border-red-500 text-red-600 hover:text-red-700 hover:bg-red-50 text-xs rounded h-7 transition-colors cursor-pointer"
+          className="w-full flex items-center justify-center px-3 py-1 border border-red-500 text-cert-red hover:text-red-700 hover:bg-red-50 text-xs rounded h-7 transition-colors cursor-pointer"
         >
           <XCircle className="w-3 h-3 mr-1" />
           거절

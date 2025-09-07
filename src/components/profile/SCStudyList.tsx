@@ -7,7 +7,7 @@ import Link from "next/link";
 import CCProfileStudyStatusFilter from "@/components/profile/CCProfileStudyStatusFilter";
 import CCCreateDropdown from "@/components/profile/CCCreateDropdown";
 import { StudyStatusType, studyStatus } from "@/types/profile";
-import { getCategoryColor } from "@/utils/categoryColorUtils";
+import { getCategoryColor } from "@/utils/badgeUtils";
 import {
   mockProfileStudyData,
   mockProfileProjectData,
@@ -77,13 +77,13 @@ export default async function SCStudyList({ searchParams }: SCStudyListProps) {
                 <div className="flex flex-col space-y-1.5 p-6 pb-4">
                   <div className="flex items-start justify-between">
                     <div>
-                      <div className="font-semibold leading-none tracking-tight text-lg text-gray-900 group-hover:text-red-600 transition-colors cursor-pointer">
+                      <div className="font-semibold leading-none tracking-tight text-lg text-gray-900 group-hover:text-cert-red transition-colors cursor-pointer">
                         {material.title}
                       </div>
                       <div className="flex items-center gap-4 mt-2 text-sm text-gray-600 transition-colors duration-300">
                         <span>{material.startDate}</span>
                         <DefaultBadge
-                          className={`border-gray-200 text-gray-600 cursor-auto
+                          className={`border-gray-200 text-gray-600
                           ${getStudyCategoryColor(
                             material.tab as StudyTabType
                           )}`}
@@ -96,18 +96,18 @@ export default async function SCStudyList({ searchParams }: SCStudyListProps) {
                 </div>
                 <div className="p-6 pt-0 flex gap-2">
                   <DefaultBadge
-                    className={`border-gray-200 text-gray-600 cursor-default
-                          ${getCategoryColor(
-                            material.category as CategoryType
-                          )}`}
+                    variant="custom"
+                    className={getCategoryColor(
+                      material.category as CategoryType
+                    )}
                   >
                     {material.category}
                   </DefaultBadge>
                   <DefaultBadge
-                    className={`border-gray-200 text-gray-600 cursor-default
-                          ${getCategoryColor(
-                            material.subCategory as SubCategoryType
-                          )}`}
+                    variant="custom"
+                    className={getCategoryColor(
+                      material.subCategory as SubCategoryType
+                    )}
                   >
                     {material.subCategory}
                   </DefaultBadge>

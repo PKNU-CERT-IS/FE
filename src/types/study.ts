@@ -5,10 +5,10 @@ import {
   SUBCATEGORY_OPTIONS,
   SubCategoryType,
 } from "@/types/category";
+import { STATUS_OPTIONS, StatusType } from "@/types/progressStatus";
 
 export type SemesterType = "all" | "2025-2";
 
-export type StatusType = "all" | "not_started" | "in_progress" | "completed";
 export type AuthorStatusType = "student" | "graduate";
 
 // 필터 키 타입
@@ -80,24 +80,12 @@ export const SEMESTER_OPTIONS: readonly SemesterType[] = [
   "2025-2",
 ] as const;
 
-export const STATUS_OPTIONS: readonly StatusType[] = [
-  "all",
-  "not_started",
-  "in_progress",
-  "completed",
-] as const;
-
 // Label
 export const SEMESTER_LABELS: Record<SemesterType, string> = {
   all: "전체",
   "2025-2": "2025-2학기",
 } as const;
-export const STATUS_LABELS: Record<StatusType, string> = {
-  all: "전체",
-  not_started: "시작 전",
-  in_progress: "진행 중",
-  completed: "종료",
-} as const;
+
 export const AUTHOR_STATUS_LABELS: Record<AuthorStatusType, string> = {
   student: "재학생",
   graduate: "졸업생",

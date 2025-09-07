@@ -212,7 +212,7 @@ export default function AttachedFilesDownload({
         <div className="flex items-center justify-between mb-4">
           <button
             onClick={toggleAllFiles}
-            className="flex items-center gap-2 px-3 py-1 text-sm text-gray-600 hover:text-red-600 transition-colors"
+            className="flex items-center gap-2 px-3 py-1 text-sm text-gray-600 hover:text-cert-red transition-colors"
           >
             <CheckCircle2 className="w-4 h-4" />
             {selectedFiles.length === files.length ? "전체 해제" : "전체 선택"}
@@ -221,7 +221,7 @@ export default function AttachedFilesDownload({
           {selectedFiles.length > 0 && (
             <button
               onClick={downloadSelectedFiles}
-              className="flex items-center action-button gap-2 px-4 py-2"
+              className="flex items-center action-button gap-2 px-4 py-2 text-sm"
             >
               <DownloadCloud className="w-4 h-4" />
               선택한 파일 다운로드 ({selectedFiles.length}개)
@@ -229,7 +229,6 @@ export default function AttachedFilesDownload({
           )}
         </div>
       </div>
-
       {/* 본문: 접기/펼치기 애니메이션 */}
       <div
         id={panelId}
@@ -259,7 +258,7 @@ export default function AttachedFilesDownload({
                         type="checkbox"
                         checked={isSelected}
                         onChange={() => toggleFileSelection(file.id)}
-                        className="w-4 h-4 text-red-600 rounded focus:ring-red-500"
+                        className="w-4 h-4 text-cert-red rounded focus:ring-red-500"
                       />
 
                       <div
@@ -310,10 +309,10 @@ export default function AttachedFilesDownload({
                       <button
                         onClick={() => downloadFile(file)}
                         disabled={isDownloading}
-                        className="flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors disabled:opacity-50"
+                        className="flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors disabled:opacity-50 cursor-pointer"
                       >
                         {isDownloading ? (
-                          <div className="w-4 h-4 border-2 border-gray-300 border-t-red-600 rounded-full animate-spin" />
+                          <div className="w-4 h-4 border-2 border-gray-300 border-t-cert-red rounded-full animate-spin" />
                         ) : (
                           <Download className="w-4 h-4" />
                         )}
