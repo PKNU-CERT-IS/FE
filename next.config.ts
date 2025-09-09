@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+const { withSentryConfig } = require("@sentry/nextjs");
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
@@ -12,4 +13,12 @@ const nextConfig: NextConfig = {
   },
 };
 
-module.exports = nextConfig;
+module.exports = withSentryConfig(nextConfig, {
+  org: "example-org",
+  project: "example-project",
+  // Only print logs for uploading source maps in CI
+  // Set to `true` to suppress logs
+  silent: !process.env.CI,
+  // Automatically tree-shake Sentry logger statements to reduce bundle size
+  disableLogger: true,
+});

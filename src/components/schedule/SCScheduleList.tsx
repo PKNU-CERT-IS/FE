@@ -8,6 +8,7 @@ import { ScheduleInfo } from "@/types/schedule";
 import { formatDate, formatTime } from "@/utils/formatDateUtil";
 import { MessageSquareText } from "lucide-react";
 import { mockScheduleData } from "@/mocks/mockScheduleData";
+// import * as Sentry from "@sentry/nextjs";
 
 interface SCScheduleListProps {
   date?: string;
@@ -19,13 +20,28 @@ export default async function SCScheduleList({
   id = "all-schedule-list",
 }: SCScheduleListProps) {
   // API 호출 코드 -> 나중에 주석 해제
-  // const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/schedule`, {
-  //   next: { revalidate: 60 },
-  // });
-  // const schedules: ScheduleInfo[] = await res.json();
+  // let schedules: ScheduleInfo[] = [];
+
+  // try {
+  //   const res = await fetch(
+  //     `${process.env.NEXT_PUBLIC_BASE_URL}/api/schedule`,
+  //     {
+  //       next: { revalidate: 60 },
+  //     }
+  //   );
+  //   if (!res.ok) {
+  //     // API 실패를 로그로 기록
+  //     Sentry.logger.fatal("API call failed from frontend", {
+  //       status: res.status,
+  //     });
+  //   }
+  //   schedules = await res.json();
+  // } catch (error) {
+  //   Sentry.logger.error("SCScheduleList error 발생!", { error });
+  //   throw error;
+  // }
 
   const schedules: ScheduleInfo[] = await mockScheduleData;
-
   const baseDate = date ? new Date(date) : new Date();
   const year = baseDate.getFullYear();
   const month = baseDate.getMonth() + 1;
