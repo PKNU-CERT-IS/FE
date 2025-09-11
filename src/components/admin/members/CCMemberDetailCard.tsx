@@ -200,7 +200,7 @@ export default function CCMemberDetailCard({
               <ConfirmModal
                 isOpen={isOpenPenaltyModal}
                 title="벌점 부여 확인"
-                message={`${selectedMember.name}에게 벌점을 부여하시겠습니까?`}
+                message={`${selectedMember.name}님에게 벌점을 부여하시겠습니까?`}
                 confirmText="확인"
                 cancelText="취소"
                 onConfirm={() => {
@@ -244,7 +244,7 @@ export default function CCMemberDetailCard({
                 title="유예 기간 수정"
                 message={`${
                   selectedMember.name
-                }의 유예 기간을 ${newGracePeriod} (${penaltyGracePeriod(
+                }님의 유예 기간을 ${newGracePeriod} (${penaltyGracePeriod(
                   newGracePeriod
                 )})로 수정하시겠습니까?`}
                 confirmText="확인"
@@ -268,7 +268,7 @@ export default function CCMemberDetailCard({
             <ConfirmModal
               isOpen={isOpenKickModal}
               title="탈퇴 처리"
-              message={`${selectedMember.name}을 탈퇴 처리하시겠습니까? 이 작업은 되돌릴 수 없습니다.`}
+              message={`${selectedMember.name}님을 탈퇴 처리하시겠습니까? 이 작업은 되돌릴 수 없습니다.`}
               confirmText="확인"
               cancelText="취소"
               onConfirm={() => {
