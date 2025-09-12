@@ -160,7 +160,6 @@ export default function CCStudyFilter({
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [closeAllDropdowns]);
-
   return (
     <div className="mb-1 sm:mb-4">
       {/* 검색바와 필터들을 한 줄로 배치 */}
@@ -194,9 +193,10 @@ export default function CCStudyFilter({
               variant="outline"
               size="default"
               className={cn(
-                "w-full justify-between text-left font-normal transition-all duration-200 cursor-pointer ",
-                "bg-white border-gray-300 hover:border-cert-red hover:bg-white hover:text-cert-black",
-                "focus:border-cert-red focus:ring-2 focus:ring-cert-red/20"
+                "w-full justify-between text-left font-normal transition-all duration-200 cursor-pointer",
+                "border-gray-300 bg-white hover:border-cert-red hover:text-cert-black hover:bg-white",
+                "focus:border-cert-red focus:ring-2 focus:ring-cert-red/20",
+                "dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-800"
               )}
               onClick={() => {
                 setShowSemesterDropdown(!showSemesterDropdown);
@@ -205,7 +205,7 @@ export default function CCStudyFilter({
                 setShowStatusDropdown(false);
               }}
             >
-              <span className="text-gray-700 truncate pr-1">
+              <span className="text-gray-700 truncate pr-1 dark:text-gray-200">
                 {SEMESTER_LABELS[currentFilters.semester]}
               </span>
               <ChevronDown
@@ -216,12 +216,12 @@ export default function CCStudyFilter({
             </DefaultButton>
 
             {showSemesterDropdown && (
-              <div className="absolute top-full mt-1 w-full bg-white border border-gray-300 rounded-lg shadow-lg z-20 max-h-48 overflow-y-auto">
+              <div className="absolute top-full mt-1 w-full rounded-lg border border-gray-300 bg-white shadow-lg z-20 max-h-48 overflow-y-auto dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200">
                 {SEMESTER_OPTIONS.map((option) => (
                   <button
                     key={option}
                     type="button"
-                    className="w-full px-4 py-2 text-left text-gray-900 first:rounded-t-lg last:rounded-b-lg text-sm hover:bg-cert-red hover:text-white duration-100 hover:first:rounded-md hover:rounded-md"
+                    className="w-full px-4 py-2 text-left text-gray-900 dark:text-gray-200 first:rounded-t-lg last:rounded-b-lg text-sm hover:bg-cert-red hover:text-white duration-100"
                     onClick={() => {
                       updateFilter("semester", option);
                       closeAllDropdowns();
@@ -241,8 +241,9 @@ export default function CCStudyFilter({
               size="default"
               className={cn(
                 "w-full justify-between text-left font-normal transition-all duration-200 cursor-pointer",
-                "bg-white border-gray-300 hover:border-cert-red hover:bg-white hover:text-cert-black",
-                "focus:border-cert-red focus:ring-2 focus:ring-cert-red/20"
+                "border-gray-300 bg-white hover:border-cert-red hover:text-cert-black hover:bg-white",
+                "focus:border-cert-red focus:ring-2 focus:ring-cert-red/20",
+                "dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-800"
               )}
               onClick={() => {
                 setShowCategoryDropdown(!showCategoryDropdown);
@@ -251,7 +252,7 @@ export default function CCStudyFilter({
                 setShowStatusDropdown(false);
               }}
             >
-              <span className="text-gray-700 truncate pr-1">
+              <span className="text-gray-700 truncate pr-1 dark:text-gray-200">
                 {CATEGORY_LABELS[currentFilters.category]}
               </span>
               <ChevronDown
@@ -262,12 +263,12 @@ export default function CCStudyFilter({
             </DefaultButton>
 
             {showCategoryDropdown && (
-              <div className="absolute top-full mt-1 w-full bg-white border border-gray-300 rounded-lg shadow-lg z-20 max-h-48 overflow-y-auto">
+              <div className="absolute top-full mt-1 w-full rounded-lg border border-gray-300 bg-white shadow-lg z-20 max-h-48 overflow-y-auto dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200">
                 {CATEGORY_OPTIONS.map((option) => (
                   <button
                     key={option}
                     type="button"
-                    className="w-full px-4 py-2 text-left text-gray-900 first:rounded-t-lg last:rounded-b-lg text-sm hover:bg-cert-red hover:text-white duration-100 hover:first:rounded-md hover:rounded-md"
+                    className="w-full px-4 py-2 text-left text-gray-900 dark:text-gray-200 first:rounded-t-lg last:rounded-b-lg text-sm hover:bg-cert-red hover:text-white duration-100"
                     onClick={() => {
                       resetSubCategory(option);
                       closeAllDropdowns();
@@ -286,9 +287,10 @@ export default function CCStudyFilter({
               variant="outline"
               size="default"
               className={cn(
-                "w-full max-w-36 justify-between text-left font-normal transition-all duration-200 cursor-pointer",
-                "bg-white border-gray-300 hover:border-cert-red hover:bg-white hover:text-cert-black",
-                "focus:border-cert-red focus:ring-2 focus:ring-cert-red/20"
+                "w-full justify-between text-left font-normal transition-all duration-200 cursor-pointer",
+                "border-gray-300 bg-white hover:border-cert-red hover:text-cert-black hover:bg-white",
+                "focus:border-cert-red focus:ring-2 focus:ring-cert-red/20",
+                "dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-800"
               )}
               onClick={() => {
                 setShowSubCategoryDropdown(!showSubCategoryDropdown);
@@ -297,7 +299,7 @@ export default function CCStudyFilter({
                 setShowStatusDropdown(false);
               }}
             >
-              <span className="text-gray-700 truncate pr-1">
+              <span className="text-gray-700 truncate pr-1 dark:text-gray-200">
                 {currentFilters.subCategory
                   ? SUBCATEGORY_LABELS[
                       currentFilters.subCategory as SubCategoryKey
@@ -311,12 +313,12 @@ export default function CCStudyFilter({
               />
             </DefaultButton>
             {showSubCategoryDropdown && (
-              <div className="absolute top-full mt-1 w-full bg-white border border-gray-300 rounded-lg shadow-lg z-20 max-h-48 overflow-y-auto">
+              <div className="absolute top-full mt-1 w-full rounded-lg border border-gray-300 bg-white shadow-lg z-20 max-h-48 overflow-y-auto dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200">
                 {SUBCATEGORY_MAP[currentFilters.category].map((option) => (
                   <button
                     key={option}
                     type="button"
-                    className="w-full px-4 py-2 text-left text-gray-900 first:rounded-t-lg last:rounded-b-lg text-sm hover:bg-cert-red hover:text-white duration-100 hover:first:rounded-md hover:rounded-md"
+                    className="w-full px-4 py-2 text-left text-gray-900 dark:text-gray-200 first:rounded-t-lg last:rounded-b-lg text-sm hover:bg-cert-red hover:text-white duration-100"
                     onClick={() => {
                       updateFilter("subCategory", option);
                       closeAllDropdowns();
@@ -335,9 +337,10 @@ export default function CCStudyFilter({
               variant="outline"
               size="default"
               className={cn(
-                "w-full justify-between text-left font-normal transition-all duration-200 cursor-pointer ",
-                "bg-white border-gray-300 hover:border-cert-red hover:bg-white hover:text-cert-black",
-                "focus:border-cert-red focus:ring-2 focus:ring-cert-red/20"
+                "w-full justify-between text-left font-normal transition-all duration-200 cursor-pointer",
+                "border-gray-300 bg-white hover:border-cert-red hover:text-cert-black hover:bg-white",
+                "focus:border-cert-red focus:ring-2 focus:ring-cert-red/20",
+                "dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-800"
               )}
               onClick={() => {
                 setShowStatusDropdown(!showStatusDropdown);
@@ -346,7 +349,7 @@ export default function CCStudyFilter({
                 setShowSubCategoryDropdown(false);
               }}
             >
-              <span className="text-gray-700 truncate pr-1">
+              <span className="text-gray-700 truncate pr-1 dark:text-gray-200">
                 {STATUS_LABELS[currentFilters.status]}
               </span>
               <ChevronDown
@@ -356,12 +359,12 @@ export default function CCStudyFilter({
               />
             </DefaultButton>
             {showStatusDropdown && (
-              <div className="absolute top-full mt-1 w-full bg-white border border-gray-300 rounded-lg shadow-lg z-20 max-h-48 overflow-y-auto">
+              <div className="absolute top-full mt-1 w-full rounded-lg border border-gray-300 bg-white shadow-lg z-20 max-h-48 overflow-y-auto dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200">
                 {STATUS_OPTIONS.map((option) => (
                   <button
                     key={option}
                     type="button"
-                    className="w-full px-4 py-2 text-left text-gray-900 first:rounded-t-lg last:rounded-b-lg text-sm hover:bg-cert-red hover:text-white duration-100 hover:first:rounded-md hover:rounded-md"
+                    className="w-full px-4 py-2 text-left text-gray-900 dark:text-gray-200 first:rounded-t-lg last:rounded-b-lg text-sm hover:bg-cert-red hover:text-white duration-100"
                     onClick={() => {
                       updateFilter("status", option);
                       closeAllDropdowns();

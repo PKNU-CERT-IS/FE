@@ -35,9 +35,9 @@ const MiniCalendar = () => {
   };
 
   return (
-    <div className="bg-white border border-gray-300 rounded-lg p-4 shadow-lg">
+    <div className="border rounded-lg p-4 shadow-lg dark-default">
       <div className="flex items-center justify-center mb-4">
-        <p className="text-xl font-semibold text-gray-900">
+        <p className="text-xl font-semibold text-gray-900 dark:text-gray-200">
           {year}년 {MONTH_NAMES[month]}
         </p>
       </div>
@@ -46,7 +46,7 @@ const MiniCalendar = () => {
         {DAY_NAMES.map((day) => (
           <div
             key={day}
-            className="text-center text-xs font-medium text-gray-600 p-2"
+            className="text-center text-xs font-medium text-gray-600 p-2 dark:text-gray-200"
           >
             {day}
           </div>
@@ -63,12 +63,20 @@ const MiniCalendar = () => {
             <div
               key={index}
               className={`
-                relative p-2 text-center text-sm rounded duration-200
-                ${isCurrentMonth ? "text-gray-900" : "text-gray-400"}
-                ${!isToday && !hasEvent ? "hover:bg-gray-100" : ""}
+                relative p-2 text-center text-sm rounded duration-200 
+                ${
+                  isCurrentMonth
+                    ? "text-gray-900 dark:text-gray-400"
+                    : "text-gray-400 dark:text-gray-900"
+                }
+                ${
+                  !isToday && !hasEvent
+                    ? "hover:bg-gray-100"
+                    : "dark:text-gray-200"
+                }
                 ${
                   hasEvent
-                    ? "border bg-cert-dark-red/5 border-cert-dark-red/20"
+                    ? "border bg-cert-dark-red/5 border-cert-dark-red/20 dark:bg-cert-red/30"
                     : ""
                 }
               `}

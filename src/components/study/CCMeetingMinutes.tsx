@@ -247,16 +247,16 @@ export default function MeetingMinutes({
     text.length > limit ? `${text.slice(0, limit)}…` : text;
 
   return (
-    <div className="bg-white rounded-lg border border-gray-200 shadow-lg mt-6">
+    <div className="rounded-lg border border-gray-200 shadow-lg mt-6 dark-default dark:border-gray-700">
       {/* 헤더 */}
-      <div className="p-6 border-b border-gray-200">
+      <div className="p-6 border-b border-gray-200 dark:border-gray-700">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-xl font-bold text-cert-black">
+            <h2 className="text-xl font-bold text-cert-black dark:text-gray-200">
               {pageType} 회의록
             </h2>
             <div className="mt-1 space-y-1  rounded-lg">
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-gray-500 dark:text-gray-400">
                 • {pageType} 회의록을 작성하고 관리합니다.
                 <br /> • {pageType} 장만 회의록을 추가할 수 있습니다.
                 <br />• 회의록은 회차별로 관리되며 주에 1회 이상 결과물을
@@ -294,11 +294,11 @@ export default function MeetingMinutes({
               return (
                 <div
                   key={minute.id}
-                  className="bg-gray-50 rounded-lg border border-gray-200 p-3"
+                  className="bg-gray-50 rounded-lg border border-gray-200 p-3 dark:bg-gray-700 dark:border-gray-600"
                 >
                   {/* 상단: 제목 + 액션 */}
                   <div className="flex items-start justify-between gap-3">
-                    <h4 className="font-medium text-gray-900 leading-tight">
+                    <h4 className="font-medium text-gray-900 leading-tight dark:text-gray-200">
                       {minute.title}
                     </h4>
                     {isStudyLeader && (
@@ -322,7 +322,7 @@ export default function MeetingMinutes({
                   </div>
 
                   {/* 메타: 날짜 · 참석 · 작성자 (한 줄 배치) */}
-                  <div className="mt-1 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-gray-600">
+                  <div className="mt-1 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-gray-600 dark:text-gray-400">
                     <span className="inline-flex items-center gap-1">
                       <Calendar className="w-3.5 h-3.5 text-gray-400" />
                       {formatDate(minute.created_at)}
@@ -339,7 +339,7 @@ export default function MeetingMinutes({
 
                   {/* content: 더보기/접기 대상 영역 */}
                   <div className="mt-2 flex flex-row gap-2">
-                    <p className="text-sm text-gray-800 leading-relaxed">
+                    <p className="text-sm text-gray-800 leading-relaxed dark:text-gray-300">
                       {textToShow}
                     </p>
                     {isLong && (
@@ -371,7 +371,7 @@ export default function MeetingMinutes({
                           href={link.url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center text-xs text-blue-600 hover:underline"
+                          className="inline-flex items-center text-xs text-blue-600 hover:underline dark:text-blue-500"
                         >
                           🔗 {link.title}
                         </a>
@@ -390,12 +390,12 @@ export default function MeetingMinutes({
         <div className="fixed inset-0 bg-cert-black/50 bg-opacity-50 flex items-center justify-center z-50">
           <div
             ref={modalRef}
-            className={`bg-white rounded-lg p-6 w-full max-w-2xl mx-4 max-h-[90vh] overflow-y-auto ${
+            className={`bg-white rounded-lg p-6 w-full max-w-2xl mx-4 max-h-[90vh] overflow-y-auto dark:bg-gray-800 dark:border-gray-700 ${
               showAddModal ? "opacity-100 scale-100" : "opacity-0 scale-75"
             } transition-transform duration-300 ease-out`}
           >
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-gray-900">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-200">
                 {editingMinute ? "회의록 수정" : "회의록 추가"}
               </h3>
               <button
@@ -409,7 +409,7 @@ export default function MeetingMinutes({
                     links: [],
                   });
                 }}
-                className="text-gray-400 hover:text-gray-600"
+                className="text-gray-400 hover:text-gray-600 cursor-pointer"
               >
                 <X />
               </button>
@@ -417,7 +417,7 @@ export default function MeetingMinutes({
 
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-gray-200">
                   제목
                 </label>
                 <input
@@ -427,11 +427,11 @@ export default function MeetingMinutes({
                     setNewMinute({ ...newMinute, title: e.target.value })
                   }
                   placeholder="회의록 제목을 입력하세요"
-                  className="text-sm w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent"
+                  className="text-sm w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent dark:border-gray-700"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-gray-200">
                   참석 인원
                 </label>
                 <input
@@ -447,14 +447,14 @@ export default function MeetingMinutes({
                     })
                   }
                   placeholder="참석 인원 수를 입력하세요 (숫자만 입력)"
-                  className="text-sm w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent"
+                  className="text-sm w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent dark:border-gray-700"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-gray-200">
                   회의록 내용
                 </label>
-                <p className="text-xs text-gray-500 mb-2">
+                <p className="text-xs text-gray-500 mb-2 dark:text-gray-400">
                   해당 회의록은 회의 내용을 간추려 5줄 이내로 적어주시기
                   바랍니다. 만약 관련 지식이나 내용이 있다면 블로그를
                   활용해주세요.
@@ -466,14 +466,14 @@ export default function MeetingMinutes({
                   }
                   placeholder="회의 내용을 간략하게 입력하세요 (5줄 이내)"
                   rows={5}
-                  className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent resize-none"
+                  className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent resize-none dark:border-gray-700"
                 />
               </div>
 
               {/* 다중 링크 입력 섹션 */}
               <div>
                 <div className="flex items-center justify-between mb-2">
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-400">
                     관련 링크 (선택)
                   </label>
                   <DefaultButton
@@ -481,6 +481,7 @@ export default function MeetingMinutes({
                     variant="outline"
                     size="sm"
                     onClick={addLink}
+                    className="dark:bg-gray-600"
                   >
                     <Plus className="w-4 h-4 mr-1" />
                     링크 추가
@@ -498,7 +499,7 @@ export default function MeetingMinutes({
                             updateLink(index, "title", e.target.value)
                           }
                           placeholder="링크 제목"
-                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent text-sm"
+                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent text-sm dark:border-gray-700"
                         />
                         <input
                           type="url"
@@ -507,7 +508,7 @@ export default function MeetingMinutes({
                             updateLink(index, "url", e.target.value)
                           }
                           placeholder="https://example.com"
-                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent text-sm"
+                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent text-sm dark:border-gray-700"
                         />
                       </div>
                       <button
@@ -521,7 +522,7 @@ export default function MeetingMinutes({
                   ))}
 
                   {newMinute.links.length === 0 && (
-                    <p className="text-sm text-gray-500 italic">
+                    <p className="text-sm text-gray-500 italic dark:text-gray-400">
                       회의록 링크를 추가해주세요.
                     </p>
                   )}

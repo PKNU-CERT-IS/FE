@@ -174,12 +174,12 @@ export default function AttachedFilesDownload({
   };
 
   return (
-    <div className="bg-white border rounded-lg border-gray-200 shadow-xs">
+    <div className=" border rounded-lg shadow-xs dark-default">
       {/* 헤더 (토글 영역) */}
       <div className="flex items-center justify-between py-4 px-6">
         <div className="flex items-center gap-3">
-          <Folder className="w-6 h-6 text-gray-600" />
-          <h3 className="text-xl font-semibold text-gray-900">
+          <Folder className="w-6 h-6 text-gray-600 dark:text-gray-300" />
+          <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-200">
             첨부파일 ({files.length}개)
           </h3>
         </div>
@@ -188,7 +188,7 @@ export default function AttachedFilesDownload({
           <button
             type="button"
             onClick={() => setOpen((v) => !v)}
-            className="inline-flex items-center whitespace-nowrap text-sm text-gray-500 hover:text-gray-900 cursor-pointer"
+            className="inline-flex items-center whitespace-nowrap text-sm text-gray-500 hover:text-gray-900 cursor-pointer dark:text-gray-400 dark:hover:text-gray-500"
             aria-expanded={open}
             aria-controls={panelId}
           >
@@ -248,8 +248,8 @@ export default function AttachedFilesDownload({
                   key={file.id}
                   className={`border rounded-lg p-4 transition-all ${
                     isSelected
-                      ? "border-red-200 bg-red-50"
-                      : "border-gray-200 hover:border-gray-300"
+                      ? "border-red-200 bg-red-50 dark:bg-red-500/20 dark:border-red-800"
+                      : "border-gray-200 hover:border-gray-300 dark:bg-gray-700 dark:border-gray-600"
                   }`}
                 >
                   <div className="flex items-center justify-between">
@@ -271,11 +271,11 @@ export default function AttachedFilesDownload({
 
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-1">
-                          <h4 className="font-medium text-gray-900 truncate">
+                          <h4 className="font-medium text-gray-900 truncate dark:text-gray-300">
                             {file.name}
                           </h4>
                           <span
-                            className={`px-2 py-1 rounded-full text-xs font-medium ${getCategoryColor(
+                            className={`px-2 py-0.5 rounded-full text-xs font-medium ${getCategoryColor(
                               file.category
                             )}`}
                           >
@@ -283,12 +283,12 @@ export default function AttachedFilesDownload({
                           </span>
                         </div>
 
-                        <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500">
+                        <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500  dark:text-gray-400">
                           <span>{formatFileSize(file.size)}</span>
                           <span>
                             {new Date(file.uploadDate).toLocaleDateString()}
                           </span>
-                          <span className="text-xs bg-gray-100 px-2 py-1 rounded">
+                          <span className="text-xs bg-gray-100 px-2 py-1 rounded dark:bg-gray-500">
                             {file.type}
                           </span>
                         </div>
@@ -296,7 +296,7 @@ export default function AttachedFilesDownload({
                         {file.description && (
                           <div className="mt-2 flex items-start gap-2">
                             <Info className="w-4 h-4 text-blue-500 mt-0.5 flex-shrink-0" />
-                            <p className="text-sm text-gray-600">
+                            <p className="text-sm text-gray-600 dark:text-gray-400 ">
                               {file.description}
                             </p>
                           </div>
@@ -309,7 +309,7 @@ export default function AttachedFilesDownload({
                       <button
                         onClick={() => downloadFile(file)}
                         disabled={isDownloading}
-                        className="flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors disabled:opacity-50 cursor-pointer"
+                        className="flex border border-gray-100 items-center gap-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors disabled:opacity-50 cursor-pointer dark:bg-gray-800 dark:text-gray-200 dark:border-gray-600"
                       >
                         {isDownloading ? (
                           <div className="w-4 h-4 border-2 border-gray-300 border-t-cert-red rounded-full animate-spin" />

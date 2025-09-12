@@ -12,7 +12,7 @@ export default function SCProfileCard() {
 
   return (
     <div className="lg:col-span-1">
-      <div className="rounded-lg border shadow-sm bg-white border-gray-200 hover:border-red-300 transition-all duration-300 hover:shadow-lg group">
+      <div className="rounded-lg border shadow-sm border-gray-200 hover:border-red-300 transition-all duration-300 hover:shadow-lg group dark-default dark:border-gray-700">
         <div className="flex flex-col space-y-1.5 p-6 text-center">
           <div className="relative mb-4">
             <div className="w-24 h-24 mx-auto group-hover:border-red-300 transition-colors">
@@ -32,7 +32,7 @@ export default function SCProfileCard() {
               </div>
             </div>
           </div>
-          <div className="text-xl font-semibold leading-none tracking-tight">
+          <div className="text-xl font-semibold leading-none tracking-tight dark:text-gray-200">
             {user.name}
           </div>
           <div className="flex justify-center mt-1">
@@ -43,7 +43,7 @@ export default function SCProfileCard() {
               {user.role}
             </DefaultBadge>
           </div>
-          <div className="text-sm text-gray-500">
+          <div className="text-sm text-gray-500  dark:text-gray-300">
             <p>
               {user.grade} • {user.major}
             </p>
@@ -51,20 +51,20 @@ export default function SCProfileCard() {
         </div>
 
         <div className="space-y-4 p-6 pt-0">
-          <p className="text-sm text-gray-600  text-center transition-colors duration-300">
+          <p className="text-sm text-gray-600  text-center transition-colors duration-300  dark:text-gray-300">
             {user.description}
           </p>
           <div className="space-y-2">
             <div className="flex items-center gap-2 text-sm">
               <ScheduleSVG className="w-4 h-4 stroke-cert-dark-red" />
-              <span className="text-gray-600 transition-colors duration-300">
+              <span className="text-gray-600 transition-colors duration-300  dark:text-gray-400">
                 {user.joinDate} 가입
               </span>
             </div>
           </div>
 
           <div>
-            <h4 className="text-sm font-medium text-gray-900  mb-2 transition-colors duration-300">
+            <h4 className="text-sm font-medium text-gray-700 mb-2 dark:text-gray-300">
               기술 스택
             </h4>
             <div className="flex flex-wrap gap-1">
@@ -72,7 +72,7 @@ export default function SCProfileCard() {
                 <DefaultBadge
                   key={skill}
                   variant="outline"
-                  className="text-xs badge-gray bg-white cursor-default"
+                  className="text-xs bg-gray-100 text-gray-600 border-gray-200 dark:bg-gray-600 dark:text-gray-200 dark:border-gray-400"
                 >
                   {skill}
                 </DefaultBadge>

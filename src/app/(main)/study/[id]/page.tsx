@@ -122,7 +122,7 @@ export default async function StudyMaterialDetailPage({
             <div className="p-6 space-y-6">
               {/* Basic Description + Detail Content */}
               <div className="space-y-4">
-                <p className="text-black dark:text-gray-300 leading-relaxed border-b border-gray-200 pb-6">
+                <p className="text-black dark:text-gray-300 leading-relaxed border-b border-gray-200 pb-6 dark:border-gray-700">
                   {studyData.description}
                 </p>
                 <MarkdownRenderer content={studyData.detailContent} />
@@ -158,8 +158,8 @@ export default async function StudyMaterialDetailPage({
               </div>
               {studyData.attachedFiles &&
                 studyData.attachedFiles.length > 0 && (
-                  <div className="border-t border-gray-300 pt-6 mb-6">
-                    <h4 className="font-medium text-gray-900 mb-4 flex items-center gap-2">
+                  <div className="border-t border-gray-300 pt-6 mb-6 dark:border-gray-700">
+                    <h4 className="font-medium text-gray-900 mb-4 flex items-center gap-2 dark:text-gray-200">
                       <Download className="w-4 h-4" />
                       첨부파일 ({studyData.attachedFiles.length})
                     </h4>
@@ -167,16 +167,16 @@ export default async function StudyMaterialDetailPage({
                       {studyData.attachedFiles.map((file, index) => (
                         <div
                           key={index}
-                          className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg"
+                          className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg dark:bg-gray-700"
                         >
                           <span className="text-2xl">
                             {getFileIcon(file.type)}
                           </span>
                           <div className="flex-1">
-                            <p className="font-medium text-gray-900">
+                            <p className="font-medium text-gray-900 dark:text-gray-200">
                               {file.name}
                             </p>
-                            <p className="text-sm text-gray-500">
+                            <p className="text-sm text-gray-500 dark:text-gray-400">
                               {formatFileSize(file.size)}
                             </p>
                           </div>
@@ -187,12 +187,12 @@ export default async function StudyMaterialDetailPage({
                   </div>
                 )}
               {/* 공유하기 버튼 */}
-              <div className="flex justify-between p-1  pt-6 border-t border-gray-300">
+              <div className="flex justify-between p-1  pt-6 border-t border-gray-300 dark:border-gray-700">
                 <div className="flex flex-wrap gap-2 justify-center items-center">
-                  <DefaultBadge className="bg-gray-100 h-6 border border-gray-200 text-gray-700">
+                  <DefaultBadge className="bg-gray-100 h-6 border border-gray-200 text-gray-700 dark:bg-gray-600 dark:border-gray-500 dark:text-gray-200">
                     {studyData.category}
                   </DefaultBadge>
-                  <DefaultBadge className="h-6 bg-gray-100 border border-gray-200 text-gray-700">
+                  <DefaultBadge className="bg-gray-100 h-6 border border-gray-200 text-gray-700 dark:bg-gray-600 dark:border-gray-500 dark:text-gray-200">
                     {studyData.subCategory}
                   </DefaultBadge>
                 </div>

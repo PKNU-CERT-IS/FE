@@ -153,18 +153,17 @@ export default function WriteForm({ type }: WriteFormProps) {
   const handleCancel = () => {
     router.back();
   };
-
   return (
     <div className="space-y-6">
       {(type === "study" || type === "project") && (
-        <section className="rounded-lg border border-gray-200 bg-gray-50 px-4 py-3">
+        <section className="rounded-lg border border-gray-200 bg-gray-50 px-4 py-3 dark:bg-gray-700 dark:border-gray-600">
           <div className="flex flex-row items-center justify-between gap-4">
             <div className="flex flex-row items-center gap-2">
-              <FileText className="w-5 h-5 text-gray-600" />
-              <h3 className="text-sm font-semibold text-gray-900 whitespace-nowrap">
+              <FileText className="w-5 h-5 text-gray-600 dark:text-gray-200" />
+              <h3 className="text-sm font-semibold text-gray-900 whitespace-nowrap dark:text-gray-200">
                 계획서 샘플 다운로드
               </h3>
-              <p className="text-xs text-gray-500 whitespace-nowrap">
+              <p className="text-xs text-gray-500 whitespace-nowrap dark:text-gray-400 sm:flex hidden">
                 (계획서 작성 후, 반드시 첨부파일에 첨부해주세요)
               </p>
             </div>
@@ -173,7 +172,7 @@ export default function WriteForm({ type }: WriteFormProps) {
             <a
               href={PLAN_SAMPLE.href}
               download
-              className="inline-flex items-center gap-2 rounded-md border border-gray-300 bg-white px-3 py-1.5 text-xs text-gray-700 hover:bg-gray-100 whitespace-nowrap"
+              className="inline-flex items-center gap-2 rounded-md border border-gray-300 bg-white px-3 py-1.5 text-xs text-gray-700 hover:bg-gray-100 whitespace-nowrap dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 hover:dark:bg-gray-700"
             >
               <Download className="w-4 h-4" />
               {PLAN_SAMPLE.label}
@@ -184,14 +183,14 @@ export default function WriteForm({ type }: WriteFormProps) {
 
       {/* 제목 */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+        <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-gray-200">
           제목 * (25자 이내)
         </label>
         <input
           type="text"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent"
+          className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent dark:border-gray-600"
           placeholder="제목을 입력하세요..."
           maxLength={25}
           required
@@ -200,24 +199,25 @@ export default function WriteForm({ type }: WriteFormProps) {
 
       {/* 설명란 - 모든 도메인에 추가 */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+        <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-gray-200">
           설명
         </label>
         <textarea
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-          className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent resize-none"
+          className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent resize-none dark:border-gray-600"
           placeholder={getDescriptionPlaceholder(type)}
         />
-        <p className="text-xs text-gray-500 mt-1">
+        <p className="text-xs text-gray-500 mt-1 dark:text-gray-400">
           선택사항이지만, 다른 사용자들이 내용을 빠르게 파악할 수 있도록
           도와줍니다.
         </p>
       </div>
+
       {type === "blog" && (
         <div className="grid grid-cols-1 gap-4">
           <div ref={selectedReferenceRef}>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-gray-200">
               내가 참여한 스터디 / 프로젝트 목록 *
             </label>
             <div className="relative">
@@ -228,11 +228,13 @@ export default function WriteForm({ type }: WriteFormProps) {
                   setIsCategoryOpen(false);
                   setIsSubCategoryOpen(false);
                 }}
-                className="flex w-full items-center justify-between rounded-md border border-gray-300 bg-white px-3 py-2 text-sm cursor-pointer"
+                className="flex w-full items-center justify-between rounded-md border border-gray-300 bg-white px-3 py-2 text-sm cursor-pointer dark:border-gray-600 dark:bg-gray-800"
               >
                 <span
                   className={
-                    selectedReference ? "text-gray-900" : "text-gray-500"
+                    selectedReference
+                      ? "text-gray-900 dark:text-gray-200"
+                      : "text-gray-500 dark:text-gray-400"
                   }
                 >
                   {selectedReference
@@ -251,7 +253,7 @@ export default function WriteForm({ type }: WriteFormProps) {
               </button>
 
               {isSelectedReferenceOpen && (
-                <div className="absolute z-50 mt-1 w-full rounded-md border border-gray-200 bg-white shadow-lg">
+                <div className="absolute z-50 mt-1 w-full rounded-md border border-gray-200 bg-white shadow-lg dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200">
                   <div className="max-h-60 overflow-auto p-1">
                     {myActivities.map((reference) => (
                       <button
@@ -270,7 +272,7 @@ export default function WriteForm({ type }: WriteFormProps) {
                   </div>
                 </div>
               )}
-              <p className="text-xs text-gray-500 mt-2">
+              <p className="text-xs text-gray-500 mt-2 dark:text-gray-400">
                 블로그를 작성하고자 하는 스터디, 프로젝트를 선택해주세요. (최대
                 1개)
               </p>
@@ -287,7 +289,7 @@ export default function WriteForm({ type }: WriteFormProps) {
           }`}
           ref={categoryRef}
         >
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-gray-200">
             상위 카테고리 *
           </label>
           <div className="relative">
@@ -297,9 +299,15 @@ export default function WriteForm({ type }: WriteFormProps) {
                 setIsCategoryOpen(!isCategoryOpen);
                 setIsSubCategoryOpen(false);
               }}
-              className="flex w-full items-center justify-between rounded-md border border-gray-300 bg-white px-3 py-2 text-sm transition-colors focus:outline-none focus:ring-1 focus:ring-cert-red cursor-pointer"
+              className="flex w-full items-center justify-between rounded-md border border-gray-300 bg-white px-3 py-2 text-sm transition-colors focus:outline-none focus:ring-1 focus:ring-cert-red cursor-pointer dark:border-gray-600 dark:bg-gray-800"
             >
-              <span className={category ? "text-gray-900" : "text-gray-500"}>
+              <span
+                className={
+                  category
+                    ? "text-gray-900 dark:text-gray-200"
+                    : "text-gray-500 dark:text-gray-400"
+                }
+              >
                 {category || "카테고리 선택"}
               </span>
               <ChevronDown
@@ -310,7 +318,7 @@ export default function WriteForm({ type }: WriteFormProps) {
             </button>
 
             {isCategoryOpen && (
-              <div className="absolute z-50 mt-1 w-full rounded-md border border-gray-200 bg-white shadow-lg animate-in fade-in-0">
+              <div className="absolute z-50 mt-1 w-full rounded-md border border-gray-200 bg-white shadow-lg animate-in fade-in-0 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200">
                 <div className="max-h-60 overflow-auto p-1">
                   {getCategories(type).map((categoryItem) => (
                     <button
@@ -334,7 +342,7 @@ export default function WriteForm({ type }: WriteFormProps) {
 
         {(type === "study" || type === "project") && (
           <div className="relative" ref={subCategoryRef}>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-gray-200">
               하위 카테고리 *
             </label>
             <div className="relative">
@@ -344,11 +352,15 @@ export default function WriteForm({ type }: WriteFormProps) {
                   setIsSubCategoryOpen(!isSubCategoryOpen);
                   setIsCategoryOpen(false);
                 }}
-                disabled={!category || category === "기타"} // 상위 선택 전 비활성화
-                className="flex text-sm w-full items-center justify-between rounded-md border border-gray-300 bg-white px-3 py-2 transition-colors focus:outline-none focus:ring-1 focus:ring-cert-red disabled:opacity-50 cursor-pointer"
+                disabled={!category || category === "기타"}
+                className="flex text-sm w-full items-center justify-between rounded-md border border-gray-300 bg-white px-3 py-2 transition-colors focus:outline-none focus:ring-1 focus:ring-cert-red disabled:opacity-50 cursor-pointer dark:border-gray-600 dark:bg-gray-800"
               >
                 <span
-                  className={subCategory ? "text-gray-900" : "text-gray-500"}
+                  className={
+                    subCategory
+                      ? "text-gray-900 dark:text-gray-200"
+                      : "text-gray-500 dark:text-gray-400"
+                  }
                 >
                   {subCategory ||
                     (category
@@ -363,7 +375,7 @@ export default function WriteForm({ type }: WriteFormProps) {
               </button>
 
               {isSubCategoryOpen && (
-                <div className="absolute z-50 mt-1 w-full rounded-md border border-gray-200 bg-white shadow-lg animate-in fade-in-0">
+                <div className="absolute z-50 mt-1 w-full rounded-md border border-gray-200 bg-white shadow-lg animate-in fade-in-0 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200">
                   <div className="max-h-60 overflow-auto p-1">
                     {getSubCategories(category).map((subCategoryItem) => (
                       <button
@@ -386,14 +398,14 @@ export default function WriteForm({ type }: WriteFormProps) {
         )}
         {(type === "study" || type === "project") && (
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-gray-200">
               최대 참가자 수 *
             </label>
             <input
               type="number"
               value={maxParticipants}
               onChange={(e) => setMaxParticipants(e.target.value)}
-              className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent"
+              className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent dark:border-gray-600"
               placeholder="최대 참가자 수"
               min="1"
               max={type === "study" ? "20" : "10"}
@@ -406,14 +418,14 @@ export default function WriteForm({ type }: WriteFormProps) {
       {/* 프로젝트 이미지 업로드 */}
       {type === "project" && (
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-gray-200">
             프로젝트 대표 이미지
           </label>
           <input
             type="file"
             accept="image/*"
             onChange={(e) => setProjectImage(e.target.files?.[0] || null)}
-            className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent"
+            className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent dark:border-gray-600"
           />
           <p className="text-xs text-gray-500 mt-1">
             선택하지 않으면 제목의 첫 글자로 기본 이미지가 생성됩니다.
@@ -425,26 +437,26 @@ export default function WriteForm({ type }: WriteFormProps) {
       {type === "project" && (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-gray-200">
               GitHub 저장소 URL
             </label>
             <input
               type="url"
               value={githubUrl}
               onChange={(e) => setGithubUrl(e.target.value)}
-              className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent"
+              className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent dark:border-gray-600"
               placeholder="https://github.com/username/repository"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-gray-200">
               데모 사이트 URL
             </label>
             <input
               type="url"
               value={demoUrl}
               onChange={(e) => setDemoUrl(e.target.value)}
-              className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent"
+              className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent dark:border-gray-600"
               placeholder="https://your-demo-site.com"
             />
           </div>
@@ -455,7 +467,7 @@ export default function WriteForm({ type }: WriteFormProps) {
       {type === "project" && (
         <div>
           <div className="flex items-center justify-between mb-2">
-            <label className="block text-sm font-medium text-gray-700">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">
               외부 문서/링크
             </label>
             <DefaultButton type="button" size="sm" onClick={addExternalLink}>
@@ -472,7 +484,7 @@ export default function WriteForm({ type }: WriteFormProps) {
                     onChange={(e) =>
                       updateExternalLink(index, "label", e.target.value)
                     }
-                    className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent"
+                    className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent dark:border-gray-600"
                     placeholder="링크 제목"
                   />
                 </div>
@@ -483,7 +495,7 @@ export default function WriteForm({ type }: WriteFormProps) {
                     onChange={(e) =>
                       updateExternalLink(index, "url", e.target.value)
                     }
-                    className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent"
+                    className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent dark:border-gray-600"
                     placeholder="https://..."
                   />
                 </div>
@@ -509,26 +521,26 @@ export default function WriteForm({ type }: WriteFormProps) {
         <>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-gray-200">
                 시작주 *
               </label>
               <input
                 type="date"
                 value={startDate}
                 onChange={(e) => setStartDate(e.target.value)}
-                className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent cursor-pointer"
+                className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent cursor-pointer dark:border-gray-600"
                 required
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-gray-200">
                 종료주 *
               </label>
               <input
                 type="date"
                 value={endDate}
                 onChange={(e) => setEndDate(e.target.value)}
-                className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent cursor-pointer"
+                className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent cursor-pointer dark:border-gray-600"
                 required
               />
             </div>
@@ -556,7 +568,7 @@ export default function WriteForm({ type }: WriteFormProps) {
       {/* 파일 업로드 */}
       {(type === "study" || type === "board" || type === "project") && (
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-gray-200">
             첨부 파일
           </label>
           <FileUpload
@@ -568,14 +580,14 @@ export default function WriteForm({ type }: WriteFormProps) {
 
       {/* 마크다운 에디터 */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+        <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-gray-200">
           내용 *
         </label>
         <MarkdownEditor content={content} setContent={setContent} />
       </div>
 
       {/* 액션 버튼 */}
-      <div className="flex items-center justify-end gap-3 pt-6 border-t border-gray-200">
+      <div className="flex items-center justify-end gap-3 pt-6 border-t border-gray-200 dark:border-gray-600">
         <DefaultButton variant="outline" onClick={handleCancel}>
           취소
         </DefaultButton>

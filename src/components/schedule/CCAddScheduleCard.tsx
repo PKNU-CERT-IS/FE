@@ -29,13 +29,14 @@ export default function CCAddScheduleCard({ onAdd }: CCAddScheduleCardProps) {
 
   return (
     <div
-      className="rounded-lg border bg-white border-gray-200 shadow-sm h-min"
+      className="rounded-lg border border-gray-200 shadow-sm h-min dark:bg-gray-800 dark:border-gray-700
+"
       ref={modalOutsideRef}
     >
       <div className="flex flex-col space-y-1.5 p-6 text-center pb-6">
         <div className="mb-6 flex flex-row items-center">
           <AddSVG className="w-6" />
-          <div className="ml-2 font-semibold tracking-tight text-gray-900 text-lg">
+          <div className="ml-2 font-semibold tracking-tight text-gray-900 text-lg dark:text-gray-200">
             {title}
           </div>
         </div>

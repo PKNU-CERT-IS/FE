@@ -16,9 +16,9 @@ export default function CCLoginInput() {
       <div className="space-y-2">
         <label
           htmlFor="id"
-          className="font-medium text-gray-700 flex items-center gap-2"
+          className="font-medium text-gray-700 flex items-center gap-2 dark:text-gray-200"
         >
-          <ProfileSVG className="w-4 h-4 stroke-cert-dark-red" />
+          <ProfileSVG className="w-4 h-4 stroke-cert-dark-red dark:stroke-cert-red" />
           아이디
         </label>
         <input
@@ -31,16 +31,16 @@ export default function CCLoginInput() {
             setLoginFormData({ ...loginFormData, id: e.target.value })
           }
           required
-          className="input-default"
+          className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent dark:border-gray-600"
         />
       </div>
 
       <div className="space-y-2">
         <label
           htmlFor="password"
-          className="font-medium text-gray-700 flex items-center gap-2"
+          className="font-medium text-gray-700 flex items-center gap-2 dark:text-gray-200"
         >
-          <LockSVG className="w-4 h-4 stroke-cert-dark-red" />
+          <LockSVG className="w-4 h-4 stroke-cert-dark-red dark:stroke-cert-red" />
           비밀번호
         </label>
         <div className="relative">
@@ -53,12 +53,12 @@ export default function CCLoginInput() {
               setLoginFormData({ ...loginFormData, password: e.target.value })
             }
             placeholder="비밀번호를 입력하세요"
-            className="input-default"
+            className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent dark:border-gray-600"
             required
           />
           <button
             type="button"
-            className="absolute right-0 top-0 h-11 px-3 text-gray-400 hover:text-gray-600"
+            className="absolute right-0 top-0 h-10 px-3 text-gray-400 hover:text-gray-600"
             onClick={() => setShowPassword(!showPassword)}
           >
             {showPassword ? (
@@ -83,7 +83,9 @@ export default function CCLoginInput() {
               })
             }
           />
-          <span className="text-sm text-gray-700">아이디 기억하기</span>
+          <span className="text-sm text-gray-700 dark:text-gray-300">
+            아이디 기억하기
+          </span>
         </label>
         <label className="flex items-center space-x-2 cursor-pointer">
           <input
@@ -97,7 +99,9 @@ export default function CCLoginInput() {
               })
             }
           />
-          <span className="text-sm text-gray-700">자동 로그인</span>
+          <span className="text-sm text-gray-700 dark:text-gray-300">
+            자동 로그인
+          </span>
         </label>
       </div>
 

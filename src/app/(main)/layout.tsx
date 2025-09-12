@@ -1,3 +1,4 @@
+import CCThemeSwitch from "@/components/ui/CCThemeSwitch";
 import CCTopButton from "@/components/ui/CCTopButton";
 import Footer from "@/layouts/footer";
 import NavigationBar from "@/layouts/navigationBar";
@@ -17,7 +18,7 @@ export default function MainLayout({
       <footer>
         <Footer />
       </footer>
-      {/* ✅ Top 버튼은 페이지 어디서든 표시 */}
+      <CCThemeSwitch />
       <CCTopButton />
     </div>
   );

@@ -66,9 +66,11 @@ export default async function SCSearchResultNotFound({
       <div className="max-w-md mx-auto">
         <div className="mb-4">{icon || searchIcon}</div>
 
-        <h3 className="text-lg font-semibold text-gray-900 mb-2">{title}</h3>
+        <h3 className="text-lg font-semibold text-gray-900 mb-2 dark:text-gray-200">
+          {title}
+        </h3>
 
-        <p className="text-sm text-gray-500 mb-6 leading-relaxed">
+        <p className="text-sm text-gray-500 mb-6 leading-relaxed dark:text-gray-300 ">
           {description}
         </p>
 
@@ -77,7 +79,7 @@ export default async function SCSearchResultNotFound({
             <form action={resetAction}>
               <button
                 type="submit"
-                className="inline-flex items-center px-4 py-2 bg-cert-red text-white text-sm font-medium rounded-lg hover:bg-red-700 transition-colors focus:outline-none focus:ring-2 focus:ring-cert-red focus:ring-offset-2"
+                className="inline-flex items-center px-4 py-2 bg-cert-red text-white text-sm font-medium rounded-lg hover:bg-red-700 transition-colors focus:outline-none focus:ring-2 focus:ring-cert-red focus:ring-offset-2 cursor-pointer"
               >
                 <svg
                   className="w-4 h-4 mr-2"
@@ -102,9 +104,11 @@ export default async function SCSearchResultNotFound({
           </div>
         )}
 
-        <div className="mt-8 p-4 bg-gray-50 rounded-lg">
-          <h4 className="text-sm font-medium text-gray-900 mb-2">검색 팁</h4>
-          <ul className="text-xs text-gray-600 space-y-1 text-left">
+        <div className="mt-8 p-4 bg-gray-50 rounded-lg dark:bg-gray-800">
+          <h4 className="text-sm font-medium text-gray-900 mb-2 dark:text-gray-200">
+            검색 팁
+          </h4>
+          <ul className="text-xs text-gray-600 space-y-1 text-left dark:text-gray-300">
             <li>• 다른 키워드로 검색해보세요</li>
             <li>• 필터 조건을 변경해보세요</li>
             <li>• 전체 카테고리에서 검색해보세요</li>

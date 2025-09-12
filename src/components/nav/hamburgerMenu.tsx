@@ -32,28 +32,23 @@ export default function HamburgerMenu({ navBarList }: HamburgerMenuProps) {
     }, 300);
   }, []);
 
-  // isOpen 상태가 변경될 때 ref도 업데이트
   useEffect(() => {
     isOpenRef.current = isOpen;
   }, [isOpen]);
 
-  // pathname이 변경될 때 메뉴 닫기
   useEffect(() => {
     if (isOpenRef.current) {
       handleClose();
     }
-  }, [pathname, handleClose]); // handleClose를 의존성 배열에 추가
+  }, [pathname, handleClose]);
 
   useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto";
-    }
+    document.body.style.overflow = isOpen ? "hidden" : "auto";
   }, [isOpen]);
 
   return (
     <>
+      {/* 햄버거 버튼 */}
       <div className="flex md:hidden relative z-10">
         <DefaultButton
           variant="ghost"
@@ -66,35 +61,57 @@ export default function HamburgerMenu({ navBarList }: HamburgerMenuProps) {
               isOpenRef.current = true;
             }
           }}
-          className="text-gray-900 p-2 transition-all duration-300 hover:text-cert-dark-red hover:bg-cert-dark-red/5"
+          className="text-gray-900 p-2 transition-all duration-300 hover:text-cert-dark-red hover:bg-cert-dark-red/5 dark:text-gray-200 dark:hover:text-cert-red/30"
         >
           {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
         </DefaultButton>
       </div>
 
+      {/* 드롭다운 메뉴 */}
       {isOpen && (
         <div
-          className={`fixed left-0 top-16 w-full h-screen z-50 md:hidden bg-white ${
+          className={`fixed left-0 top-16 w-full h-screen z-50 md:hidden bg-white dark:bg-gray-900 transition-colors duration-300 ${
             isClosing ? "animate-slide-out" : "animate-slide-in"
           }`}
         >
-          <div className="px-4 pt-3 pb-5 space-y-2 border-t text-center border-gray-200 bg-white h-full transition-colors duration-300">
-            {navBarList.map((item) => (
-              <Link
-                key={item.name}
-                href={item.href}
-                className={`block px-4 py-3 text-base font-medium transition-all duration-300 rounded-lg hover:bg-cert-dark-red/5 ${
-                  pathname === item.href
-                    ? "text-cert-dark-red bg-cert-dark-red/5 shadow-lg"
-                    : "text-gray-900"
-                }
-                `}
-                onClick={handleClose}
-              >
-                {item.name}
-              </Link>
-            ))}
-            <div className="border-t border-gray-300 mt-4 mx-6" />
+          <div className="px-4 pt-3 pb-5 space-y-2 border-t border-gray-200 dark:border-gray-700 h-full text-center">
+            {navBarList.map((item) => {
+              const isActive =
+                pathname === item.href ||
+                (pathname.startsWith(item.href + "/") &&
+                  item.href !== "/admin");
+
+              return (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  onClick={handleClose}
+                  className={`block px-4 py-3 text-base font-medium transition-all duration-300 rounded-lg relative group
+                    ${
+                      isActive
+                        ? "text-cert-dark-red bg-cert-dark-red/5 shadow-md dark:text-cert-red"
+                        : "text-gray-900 dark:text-gray-200"
+                    }
+                    hover:text-cert-dark-red hover:bg-cert-dark-red/5 dark:hover:text-cert-red`}
+                >
+                  <div className="relative z-10">{item.name}</div>
+                  {isActive && (
+                    <div
+                      className="absolute inset-0 rounded-lg"
+                      style={{
+                        background:
+                          "linear-gradient(to right, rgba(158, 1, 1, 0.2), rgba(158, 1, 1, 0.1))",
+                      }}
+                    ></div>
+                  )}
+                </Link>
+              );
+            })}
+
+            {/* 구분선 */}
+            <div className="border-t border-gray-300 dark:border-gray-700 mt-4 mx-6" />
+
+            {/* 하단 버튼 */}
             <div className="grid grid-cols-2 items-center justify-center mt-6 px-12 gap-2">
               <BugReport className="w-full h-10 min-w-0 text-md rounded-md flex items-center justify-center" />
               <LoginButton className="w-full h-10 min-w-0 text-md rounded-md flex items-center justify-center" />

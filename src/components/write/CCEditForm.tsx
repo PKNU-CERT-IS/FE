@@ -260,14 +260,14 @@ export default function EditForm({ type, dataId }: EditFormProps) {
     <div className="space-y-6">
       {/* 제목 */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+        <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-gray-200">
           제목 *
         </label>
         <input
           type="text"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent"
+          className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent dark:border-gray-600"
           placeholder="제목을 입력하세요..."
           required
         />
@@ -275,17 +275,17 @@ export default function EditForm({ type, dataId }: EditFormProps) {
 
       {/* 설명란 */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+        <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-gray-200">
           설명
         </label>
         <textarea
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           rows={2}
-          className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent resize-none"
+          className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent resize-none dark:border-gray-600"
           placeholder={getDescriptionPlaceholder(type)}
         />
-        <p className="text-xs text-gray-500 mt-1">
+        <p className="text-xs text-gray-500 mt-1 dark:text-gray-400">
           선택사항이지만, 다른 사용자들이 내용을 빠르게 파악할 수 있도록
           도와줍니다.
         </p>
@@ -298,7 +298,7 @@ export default function EditForm({ type, dataId }: EditFormProps) {
           }`}
           ref={selectedReferenceRef}
         >
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-gray-200">
             내가 참여한 스터디 / 프로젝트 목록 *
           </label>
           <div className="relative">
@@ -309,11 +309,13 @@ export default function EditForm({ type, dataId }: EditFormProps) {
                 setIsCategoryOpen(false);
                 setIsSubCategoryOpen(false);
               }}
-              className="flex w-full items-center justify-between rounded-md border border-gray-300 bg-white px-3 py-2 text-sm cursor-pointer"
+              className="flex w-full items-center justify-between rounded-md border border-gray-300 bg-white px-3 py-2 text-sm cursor-pointer dark:border-gray-600 dark:bg-gray-800"
             >
               <span
                 className={
-                  selectedReference ? "text-gray-900" : "text-gray-500"
+                  selectedReference
+                    ? "text-gray-900 dark:text-gray-200"
+                    : "text-gray-500 dark:text-gray-400"
                 }
               >
                 {selectedReference
@@ -330,7 +332,7 @@ export default function EditForm({ type, dataId }: EditFormProps) {
             </button>
 
             {isSelectedReferenceOpen && (
-              <div className="absolute z-50 mt-1 w-full rounded-md border border-gray-200 bg-white shadow-lg">
+              <div className="absolute z-50 mt-1 w-full rounded-md border border-gray-200 bg-white shadow-lg dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200">
                 <div className="max-h-60 overflow-auto p-1">
                   {myActivities.map((reference) => (
                     <button
@@ -350,7 +352,7 @@ export default function EditForm({ type, dataId }: EditFormProps) {
               </div>
             )}
 
-            <p className="text-xs text-gray-500 mt-2">
+            <p className="text-xs text-gray-500 mt-2 dark:text-gray-400">
               블로그를 작성하고자 하는 스터디, 프로젝트를 선택해주세요. (최대
               1개)
             </p>
@@ -366,7 +368,7 @@ export default function EditForm({ type, dataId }: EditFormProps) {
           }`}
           ref={categoryRef}
         >
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-gray-200">
             상위 카테고리 *
           </label>
           <div className="relative">
@@ -376,9 +378,15 @@ export default function EditForm({ type, dataId }: EditFormProps) {
                 setIsCategoryOpen(!isCategoryOpen);
                 setIsSubCategoryOpen(false);
               }}
-              className="flex w-full items-center justify-between rounded-md border border-gray-300 bg-white px-3 py-2 text-sm transition-colors focus:outline-none focus:ring-1 focus:ring-cert-red cursor-pointer"
+              className="flex w-full items-center justify-between rounded-md border border-gray-300 bg-white px-3 py-2 text-sm transition-colors focus:outline-none focus:ring-1 focus:ring-cert-red cursor-pointer dark:border-gray-600 dark:bg-gray-800"
             >
-              <span className={category ? "text-gray-900" : "text-gray-500"}>
+              <span
+                className={
+                  category
+                    ? "text-gray-900 dark:text-gray-200"
+                    : "text-gray-500 dark:text-gray-400"
+                }
+              >
                 {category || "카테고리 선택"}
               </span>
               <ChevronDown
@@ -389,7 +397,7 @@ export default function EditForm({ type, dataId }: EditFormProps) {
             </button>
 
             {isCategoryOpen && (
-              <div className="absolute z-50 mt-1 w-full rounded-md border border-gray-200 bg-white shadow-lg animate-in fade-in-0">
+              <div className="absolute z-50 mt-1 w-full rounded-md border border-gray-200 bg-white shadow-lg animate-in fade-in-0 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200">
                 <div className="max-h-60 overflow-auto p-1">
                   {getCategories(type).map((categoryItem) => (
                     <button
@@ -412,7 +420,7 @@ export default function EditForm({ type, dataId }: EditFormProps) {
 
         {(type === "study" || type === "project") && (
           <div className="relative" ref={subCategoryRef}>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-gray-200">
               하위 카테고리 *
             </label>
             <div className="relative">
@@ -423,10 +431,14 @@ export default function EditForm({ type, dataId }: EditFormProps) {
                   setIsCategoryOpen(false);
                 }}
                 disabled={!category || category === "기타"} // 상위 선택 전 비활성화
-                className="flex text-sm w-full items-center justify-between rounded-md border border-gray-300 bg-white px-3 py-2 transition-colors focus:outline-none focus:ring-1 focus:ring-cert-red disabled:opacity-50 cursor-pointer"
+                className="flex text-sm w-full items-center justify-between rounded-md border border-gray-300 bg-white px-3 py-2 transition-colors focus:outline-none focus:ring-1 focus:ring-cert-red disabled:opacity-50 cursor-pointer dark:border-gray-600 dark:bg-gray-800"
               >
                 <span
-                  className={subCategory ? "text-gray-900" : "text-gray-500"}
+                  className={
+                    subCategory
+                      ? "text-gray-900 dark:text-gray-200"
+                      : "text-gray-500 dark:text-gray-400"
+                  }
                 >
                   {subCategory ||
                     (category
@@ -441,7 +453,7 @@ export default function EditForm({ type, dataId }: EditFormProps) {
               </button>
 
               {isSubCategoryOpen && (
-                <div className="absolute z-50 mt-1 w-full rounded-md border border-gray-200 bg-white shadow-lg animate-in fade-in-0">
+                <div className="absolute z-50 mt-1 w-full rounded-md border border-gray-200 bg-white shadow-lg animate-in fade-in-0 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200">
                   <div className="max-h-60 overflow-auto p-1">
                     {getSubCategories(category).map((subCategoryItem) => (
                       <button
@@ -464,14 +476,14 @@ export default function EditForm({ type, dataId }: EditFormProps) {
         )}
         {(type === "study" || type === "project") && (
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-gray-200">
               최대 참가자 수 *
             </label>
             <input
               type="number"
               value={maxParticipants}
               onChange={(e) => setMaxParticipants(e.target.value)}
-              className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent"
+              className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent dark:border-gray-600"
               placeholder="최대 참가자 수"
               min="1"
               max={type === "study" ? "20" : "10"}
@@ -484,16 +496,16 @@ export default function EditForm({ type, dataId }: EditFormProps) {
       {/* 프로젝트 이미지 업로드 */}
       {type === "project" && (
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-gray-200">
             프로젝트 대표 이미지
           </label>
           <input
             type="file"
             accept="image/*"
             onChange={(e) => setProjectImage(e.target.files?.[0] || null)}
-            className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent"
+            className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent dark:border-gray-600"
           />
-          <p className="text-xs text-gray-500 mt-1">
+          <p className="text-xs text-gray-500 mt-1 dark:text-gray-400">
             새 이미지를 선택하지 않으면 기존 이미지가 유지됩니다.
           </p>
         </div>
@@ -503,26 +515,26 @@ export default function EditForm({ type, dataId }: EditFormProps) {
       {type === "project" && (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-gray-200">
               GitHub 저장소 URL
             </label>
             <input
               type="url"
               value={githubUrl}
               onChange={(e) => setGithubUrl(e.target.value)}
-              className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent"
+              className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent dark:border-gray-600"
               placeholder="https://github.com/username/repository"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-gray-200">
               데모 사이트 URL
             </label>
             <input
               type="url"
               value={demoUrl}
               onChange={(e) => setDemoUrl(e.target.value)}
-              className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent"
+              className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent dark:border-gray-600"
               placeholder="https://your-demo-site.com"
             />
           </div>
@@ -533,7 +545,7 @@ export default function EditForm({ type, dataId }: EditFormProps) {
       {type === "project" && (
         <div>
           <div className="flex items-center justify-between mb-2">
-            <label className="block text-sm font-medium text-gray-700">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">
               외부 문서/링크
             </label>
             <DefaultButton type="button" size="sm" onClick={addExternalLink}>
@@ -550,7 +562,7 @@ export default function EditForm({ type, dataId }: EditFormProps) {
                     onChange={(e) =>
                       updateExternalLink(index, "label", e.target.value)
                     }
-                    className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent"
+                    className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent dark:border-gray-600"
                     placeholder="링크 제목"
                   />
                 </div>
@@ -561,7 +573,7 @@ export default function EditForm({ type, dataId }: EditFormProps) {
                     onChange={(e) =>
                       updateExternalLink(index, "url", e.target.value)
                     }
-                    className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent"
+                    className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent dark:border-gray-600"
                     placeholder="https://..."
                   />
                 </div>
@@ -575,7 +587,7 @@ export default function EditForm({ type, dataId }: EditFormProps) {
               </div>
             ))}
           </div>
-          <p className="text-xs text-gray-500 mt-1">
+          <p className="text-xs text-gray-500 mt-1 dark:text-gray-400">
             노션, 구글 독스, 피그마 등의 외부 문서나 관련 링크를 추가할 수
             있습니다.
           </p>
@@ -587,36 +599,36 @@ export default function EditForm({ type, dataId }: EditFormProps) {
         <>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-gray-200">
                 시작일 *
               </label>
               <input
                 type="date"
                 value={startDate}
                 onChange={(e) => setStartDate(e.target.value)}
-                className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent"
+                className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent dark:border-gray-600"
                 required
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-gray-200">
                 종료일 *
               </label>
               <input
                 type="date"
                 value={endDate}
                 onChange={(e) => setEndDate(e.target.value)}
-                className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent"
+                className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent dark:border-gray-600"
                 required
               />
             </div>
           </div>
 
           {/* 기간 정책 안내 */}
-          <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+          <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg dark:bg-blue-900/30 dark:border-blue-700">
             <div className="flex items-start gap-2">
-              <Info className="w-5 h-5 text-blue-600 mt-0.5" />
-              <div className="text-sm text-blue-800">
+              <Info className="w-5 h-5 text-blue-600 mt-0.5 dark:text-blue-300" />
+              <div className="text-sm text-blue-800 dark:text-blue-200">
                 <p className="font-medium mb-1">
                   {getPeriodPolicyInfo(type)?.title}
                 </p>
@@ -634,7 +646,7 @@ export default function EditForm({ type, dataId }: EditFormProps) {
       {/* 파일 업로드 */}
       {(type === "study" || type === "board" || type === "project") && (
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-gray-200">
             첨부 파일
           </label>
           <FileUpload
@@ -646,14 +658,14 @@ export default function EditForm({ type, dataId }: EditFormProps) {
 
       {/* 마크다운 에디터 */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+        <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-gray-200">
           내용 *
         </label>
         <MarkdownEditor content={content} setContent={setContent} />
       </div>
 
       {/* 액션 버튼 */}
-      <div className="flex items-center justify-end gap-3 pt-6 border-t border-gray-200">
+      <div className="flex items-center justify-end gap-3 pt-6 border-t border-gray-200 dark:border-gray-700">
         <DefaultButton variant="outline" onClick={handleCancel}>
           취소
         </DefaultButton>

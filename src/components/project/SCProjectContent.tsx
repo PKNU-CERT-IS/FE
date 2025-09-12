@@ -22,7 +22,7 @@ export default function SCProjectContent({ materials }: SCProjectContentProps) {
         {materials.map((project) => (
           <div
             key={project.id}
-            className="card-list bg-white overflow-hidden group relative flex flex-col transition-shadow hover:shadow-md"
+            className="card-list overflow-hidden group relative flex flex-col transition-shadow hover:shadow-md dark-default"
           >
             <Link
               href={`/project/${project.id}`}
@@ -68,11 +68,11 @@ export default function SCProjectContent({ materials }: SCProjectContentProps) {
                   />
                 </div>
 
-                <h3 className="text-xl font-bold text-gray-900 mb-2">
+                <h3 className="text-xl font-bold text-gray-900 mb-2 dark:text-gray-200">
                   {project.title}
                 </h3>
 
-                <p className="text-gray-600 text-sm leading-relaxed mb-4 line-clamp-2">
+                <p className="text-gray-600 text-sm leading-relaxed mb-4 line-clamp-2 dark:text-gray-300">
                   {project.description}
                 </p>
 
@@ -99,7 +99,7 @@ export default function SCProjectContent({ materials }: SCProjectContentProps) {
             <div className="mb-4"></div>
 
             {/* 하단 바 (외부 링크 & 버튼들) */}
-            <div className="relative flex items-center justify-between px-6 pb-6 pt-4 border-t border-gray-100">
+            <div className="relative flex items-center justify-between px-6 pb-6 pt-4 border-t border-gray-100 dark:border-gray-700">
               {/* 전체를 덮는 투명한 Link */}
               <Link
                 href={`/project/${project.id}`}
@@ -118,7 +118,9 @@ export default function SCProjectContent({ materials }: SCProjectContentProps) {
                 >
                   {AUTHOR_STATUS_LABELS[project.authorStatus]}
                 </span>
-                <span className="text-sm text-gray-500">{project.author}</span>
+                <span className="text-sm text-gray-500 dark:text-gray-300">
+                  {project.author}
+                </span>
               </div>
 
               <div className="flex items-center gap-2">
@@ -130,7 +132,7 @@ export default function SCProjectContent({ materials }: SCProjectContentProps) {
                     className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors relative z-10"
                     title="GitHub 저장소"
                   >
-                    <GithubSVG className="w-5 h-5" />
+                    <GithubSVG className="w-5 h-5 dark:text-gray-500" />
                   </a>
                 )}
 
@@ -142,7 +144,7 @@ export default function SCProjectContent({ materials }: SCProjectContentProps) {
                     className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors relative z-10"
                     title="데모 사이트"
                   >
-                    <ChainSVG className="w-5 h-5" />
+                    <ChainSVG className="w-5 h-5 dark:text-gray-500" />
                   </a>
                 )}
 

@@ -22,7 +22,12 @@ export default function ShareButton() {
   };
 
   return (
-    <DefaultButton variant="outline" size="sm" onClick={handleShare}>
+    <DefaultButton
+      variant="outline"
+      size="sm"
+      onClick={handleShare}
+      className="dark:bg-gray-800 dark:border-gray-700"
+    >
       <Share2 className="w-4 h-4 mr-2" />
       공유하기
     </DefaultButton>

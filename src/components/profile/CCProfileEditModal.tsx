@@ -104,24 +104,25 @@ export default function CCProfileModal({
     console.log("save profile:", editedUser);
     closeModal();
   };
-
   return (
     <div
       ref={modalRef}
       className="fixed inset-0 bg-cert-black/50 flex justify-center items-center z-30"
     >
-      <div className="w-[90vw] max-w-[30rem] rounded-lg border bg-white border-gray-200 shadow-sm relative animate-pop-in flex flex-col">
+      <div className="w-[90vw] max-w-[30rem] rounded-lg border bg-white border-gray-200 shadow-sm relative animate-pop-in flex flex-col dark:bg-gray-800 dark:border-gray-700">
         {/* Header */}
-        <div className="p-6 border-b border-gray-200 relative">
+        <div className="p-6 border-b border-gray-200 relative dark:border-gray-700">
           <button
             onClick={closeModal}
-            className="absolute top-6 right-6 text-md text-gray-400 hover:text-gray-600 cursor-pointer"
+            className="absolute top-6 right-6 text-md text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 cursor-pointer"
             aria-label="닫기"
           >
             <X />
           </button>
-          <p className="text-gray-900 text-base font-medium">프로필 수정</p>
-          <p className="text-gray-500 text-sm">
+          <p className="text-gray-900 text-base font-medium dark:text-gray-200">
+            프로필 수정
+          </p>
+          <p className="text-gray-500 text-sm dark:text-gray-400">
             People 카드에서 이렇게 보입니다.
           </p>
         </div>
@@ -130,11 +131,11 @@ export default function CCProfileModal({
         <div className="px-6 py-4 space-y-6 overflow-y-auto max-h-[70vh]">
           {/* 프로필 사진 */}
           <div className="space-y-2">
-            <label className="block text-sm font-medium text-gray-700">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">
               프로필 사진
             </label>
             <div className="flex gap-4 items-center">
-              <div className="relative flex shrink-0 overflow-hidden rounded-full w-16 h-16 border border-gray-200">
+              <div className="relative flex shrink-0 overflow-hidden rounded-full w-16 h-16 border border-gray-200 dark:border-gray-600">
                 {previewImage ? (
                   <Image
                     src={previewImage}
@@ -144,7 +145,7 @@ export default function CCProfileModal({
                     className="w-full h-full object-cover rounded-full"
                   />
                 ) : (
-                  <div className="flex h-full w-full items-center justify-center bg-gray-100 text-gray-400 text-xs rounded-full">
+                  <div className="flex h-full w-full items-center justify-center bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-500 text-xs rounded-full">
                     {editedUser.name?.[0] || "사진"}
                   </div>
                 )}
@@ -157,7 +158,7 @@ export default function CCProfileModal({
                     onChange={handleImageChange}
                     className="hidden"
                   />
-                  <div className="flex items-center h-8 gap-1 px-2 text-xs border border-gray-300 rounded-md hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent">
+                  <div className="flex items-center h-8 gap-1 px-2 text-xs border border-gray-300 rounded-md hover:bg-gray-50 dark:border-gray-600 dark:hover:bg-gray-800 dark:text-gray-200 transition-colors focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent">
                     <Upload className="w-3 h-3" />
                     업로드
                   </div>
@@ -165,14 +166,14 @@ export default function CCProfileModal({
                 <button
                   type="button"
                   onClick={removeImage}
-                  className="flex items-center gap-1 px-2 h-8 text-xs text-cert-red border border-red-300 rounded-md hover:bg-red-50 transition-colors focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                  className="flex items-center gap-1 px-2 h-8 text-xs text-cert-red border border-red-300 rounded-md hover:bg-red-50 dark:hover:bg-red-900/40 transition-colors focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
                 >
                   <Trash2 className="w-3 h-3" />
                   제거
                 </button>
               </div>
             </div>
-            <p className="text-xs text-gray-500 mt-1">
+            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
               JPG, PNG 파일만 업로드 가능합니다. (최대 1MB)
             </p>
           </div>
@@ -181,28 +182,30 @@ export default function CCProfileModal({
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {/* 이름 */}
               <div>
-                <p className="text-sm mb-1.5">이름</p>
+                <p className="text-sm mb-1.5 dark:text-gray-200">이름</p>
                 <input
                   value={editedUser.name}
                   onChange={onChange("name")}
-                  className="text-sm flex h-10 w-full rounded-md border px-3 py-2 bg-white border-gray-300 text-gray-900 focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent"
+                  className="text-sm flex h-10 w-full rounded-md border px-3 py-2 bg-white border-gray-300 text-gray-900 focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent dark:bg-gray-800 dark:border-gray-600 dark:text-gray-200"
                 />
               </div>
 
               {/* 전공 */}
               <div>
-                <p className="text-sm mb-1.5">전공</p>
+                <p className="text-sm mb-1.5 dark:text-gray-200">전공</p>
                 <input
                   value={editedUser.major}
                   onChange={onChange("major")}
-                  className="text-sm flex h-10 w-full rounded-md border px-3 py-2 bg-white border-gray-300 text-gray-900 focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent"
+                  className="text-sm flex h-10 w-full rounded-md border px-3 py-2 bg-white border-gray-300 text-gray-900 focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent dark:bg-gray-800 dark:border-gray-600 dark:text-gray-200"
                   placeholder="예: 컴퓨터공학과 소프트웨어전공"
                 />
               </div>
 
               {/* 학년 */}
               <div>
-                <p className="text-sm mb-1.5 font-medium text-gray-700">학년</p>
+                <p className="text-sm mb-1.5 font-medium text-gray-700 dark:text-gray-200">
+                  학년
+                </p>
                 <div className="relative" ref={gradeRef}>
                   <DefaultButton
                     variant="outline"
@@ -210,11 +213,12 @@ export default function CCProfileModal({
                     className={cn(
                       "w-full justify-between text-left font-normal transition-all duration-200 cursor-pointer h-10",
                       "bg-white border-gray-300 hover:border-cert-red hover:bg-white hover:text-cert-black",
-                      "focus:border-cert-red focus:ring-2 focus:ring-cert-red/20"
+                      "focus:border-cert-red focus:ring-2 focus:ring-cert-red/20",
+                      "dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-800"
                     )}
                     onClick={() => setShowGradeDropdown((p) => !p)}
                   >
-                    <span className="text-gray-900 truncate pr-1 text-sm">
+                    <span className="text-gray-900 truncate pr-1 text-sm dark:text-gray-200">
                       {gradeOptions.find(
                         (option) => option.value === (editedUser.grade ?? "")
                       )?.label || "선택"}
@@ -227,14 +231,14 @@ export default function CCProfileModal({
                   </DefaultButton>
 
                   {showGradeDropdown && (
-                    <div className="absolute top-full mt-1 w-full bg-white border border-gray-300 rounded-lg shadow-lg z-20 max-h-48 overflow-y-auto">
+                    <div className="absolute top-full mt-1 w-full bg-white border border-gray-300 rounded-lg shadow-lg z-20 max-h-48 overflow-y-auto dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200">
                       {gradeOptions
                         .filter((option) => option.value !== "")
                         .map((option) => (
                           <button
                             key={option.value}
                             type="button"
-                            className="w-full px-4 py-2 text-left text-gray-900 first:rounded-t-lg last:rounded-b-lg text-sm hover:bg-cert-red hover:text-white duration-100 hover:first:rounded-md hover:rounded-md"
+                            className="w-full px-4 py-2 text-left text-gray-900 dark:text-gray-200 cursor-pointer first:rounded-t-lg last:rounded-b-lg text-sm hover:bg-cert-red hover:text-white dark:hover:bg-cert-red duration-100"
                             onClick={() => {
                               setEditedUser((prev) => ({
                                 ...prev,
@@ -253,33 +257,33 @@ export default function CCProfileModal({
 
               {/* 생년월일 */}
               <div>
-                <p className="text-sm mb-1.5">생년월일</p>
+                <p className="text-sm mb-1.5 dark:text-gray-200">생년월일</p>
                 <input
                   type="date"
                   value={editedUser.birthday}
                   onChange={onChange("birthday")}
-                  className="text-sm w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent"
+                  className="text-sm w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent dark:bg-gray-800 dark:border-gray-600 dark:text-gray-200"
                 />
               </div>
 
               {/* 전화번호 */}
               <div>
-                <p className="text-sm mb-1.5">전화번호</p>
+                <p className="text-sm mb-1.5 dark:text-gray-200">전화번호</p>
                 <input
                   value={editedUser.phoneNumber}
                   onChange={onChange("phoneNumber")}
-                  className="text-sm flex h-10 w-full rounded-md border px-3 py-2 bg-white border-gray-300 text-gray-900 focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent"
+                  className="text-sm flex h-10 w-full rounded-md border px-3 py-2 bg-white border-gray-300 text-gray-900 focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent dark:bg-gray-800 dark:border-gray-600 dark:text-gray-200"
                   placeholder="010-0000-0000"
                 />
               </div>
 
               {/* 학번 */}
               <div>
-                <p className="text-sm mb-1.5">학번</p>
+                <p className="text-sm mb-1.5 dark:text-gray-200">학번</p>
                 <input
                   value={editedUser.studentId}
                   onChange={onChange("studentId")}
-                  className="text-sm flex h-10 w-full rounded-md border px-3 py-2 bg-white border-gray-300 text-gray-900 focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent"
+                  className="text-sm flex h-10 w-full rounded-md border px-3 py-2 bg-white border-gray-300 text-gray-900 focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent dark:bg-gray-800 dark:border-gray-600 dark:text-gray-200"
                 />
               </div>
             </div>
@@ -287,18 +291,18 @@ export default function CCProfileModal({
 
           {/* 소개 */}
           <div className="space-y-2">
-            <p className="text-sm">소개</p>
+            <p className="text-sm dark:text-gray-200">소개</p>
             <textarea
               value={editedUser.description ?? ""}
               onChange={onChange("description")}
-              className="w-full h-16 text-sm rounded-md border px-3 py-2 bg-white border-gray-300 text-gray-900 focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent"
+              className="w-full h-16 text-sm rounded-md border px-3 py-2 bg-white border-gray-300 text-gray-900 focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent dark:bg-gray-800 dark:border-gray-600 dark:text-gray-200"
               placeholder="간단한 소개를 입력하세요"
             />
           </div>
 
-          {/* 기술스택 (항상 표시) */}
+          {/* 기술스택 */}
           <div className="space-y-2">
-            <p className="text-sm">기술스택</p>
+            <p className="text-sm dark:text-gray-200">기술스택</p>
             <input
               value={(editedUser.skills ?? []).join(", ")}
               onChange={(e) =>
@@ -310,13 +314,14 @@ export default function CCProfileModal({
                     .filter(Boolean),
                 }))
               }
-              className="text-sm flex h-10 w-full rounded-md border px-3 py-2 bg-white border-gray-300 text-gray-900 focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent"
+              className="text-sm flex h-10 w-full rounded-md border px-3 py-2 bg-white border-gray-300 text-gray-900 focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent dark:bg-gray-800 dark:border-gray-600 dark:text-gray-200"
               placeholder="React, Node.js, Python (쉼표로 구분)"
             />
           </div>
 
-          <details className="group rounded-lg border border-gray-300">
-            <summary className="cursor-pointer select-none px-4 py-3 text-sm text-gray-800 flex items-center justify-between">
+          {/* 이메일 및 링크 */}
+          <details className="group rounded-lg border border-gray-300 dark:border-gray-600">
+            <summary className="cursor-pointer select-none px-4 py-3 text-sm text-gray-800 dark:text-gray-200 flex items-center justify-between">
               이메일 및 링크 (펼쳐서 수정)
               <span className="transition-transform group-open:rotate-180">
                 <ChevronDown className="w-4 h-4 text-gray-400" />
@@ -324,36 +329,35 @@ export default function CCProfileModal({
             </summary>
 
             <div className="px-4 pb-4 grid grid-cols-1 gap-4">
-              {/* 이메일 */}
               <div>
-                <p className="text-sm mb-1.5">이메일</p>
+                <p className="text-sm mb-1.5 dark:text-gray-200">이메일</p>
                 <input
                   type="email"
                   value={editedUser.email ?? ""}
                   onChange={onChange("email")}
-                  className="text-sm flex h-10 w-full rounded-md border px-3 py-2 bg-white border-gray-300 text-gray-900 focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent"
+                  className="text-sm flex h-10 w-full rounded-md border px-3 py-2 bg-white border-gray-300 text-gray-900 focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent dark:bg-gray-800 dark:border-gray-600 dark:text-gray-200"
                   placeholder="example@email.com"
                 />
               </div>
-              {/* GitHub */}
               <div>
-                <p className="text-sm mb-1.5">GitHub URL</p>
+                <p className="text-sm mb-1.5 dark:text-gray-200">GitHub URL</p>
                 <input
                   type="url"
                   value={editedUser.githubUrl ?? ""}
                   onChange={onChange("githubUrl")}
-                  className="text-sm flex h-10 w-full rounded-md border px-3 py-2 bg-white border-gray-300 text-gray-900 focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent"
+                  className="text-sm flex h-10 w-full rounded-md border px-3 py-2 bg-white border-gray-300 text-gray-900 focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent dark:bg-gray-800 dark:border-gray-600 dark:text-gray-200"
                   placeholder="https://github.com/username"
                 />
               </div>
-              {/* LinkedIn */}
               <div>
-                <p className="text-sm mb-1.5">LinkedIn URL</p>
+                <p className="text-sm mb-1.5 dark:text-gray-200">
+                  LinkedIn URL
+                </p>
                 <input
                   type="url"
                   value={editedUser.linkedinUrl ?? ""}
                   onChange={onChange("linkedinUrl")}
-                  className="text-sm flex h-10 w-full rounded-md border px-3 py-2 bg-white border-gray-300 text-gray-900 focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent"
+                  className="text-sm flex h-10 w-full rounded-md border px-3 py-2 bg-white border-gray-300 text-gray-900 focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent dark:bg-gray-800 dark:border-gray-600 dark:text-gray-200"
                   placeholder="https://www.linkedin.com/in/username"
                 />
               </div>
@@ -361,10 +365,13 @@ export default function CCProfileModal({
           </details>
 
           {/* 미리보기 */}
-          <div className="mt-2 p-4 flex flex-col border rounded-lg bg-gray-50 border-gray-200 transition-colors duration-300">
-            <h4 className="text-sm font-medium text-gray-900 mb-2">미리보기</h4>
-            <div className="p-6 rounded-lg border text-card-foreground shadow-sm bg-white border-gray-200">
-              <div className="relative flex shrink-0 overflow-hidden rounded-full w-12 h-12 mx-auto mb-2 border border-gray-200">
+          <div className="mt-2 p-4 flex flex-col border rounded-lg bg-gray-50 border-gray-200 transition-colors duration-300 dark:bg-gray-900 dark:border-gray-600">
+            <h4 className="text-sm font-medium text-gray-900 mb-2 dark:text-gray-200">
+              미리보기
+            </h4>
+            <div className="p-6 rounded-lg border text-card-foreground shadow-sm bg-white border-gray-200 dark:bg-gray-800 dark:border-gray-700">
+              {/* 프로필 아바타 */}
+              <div className="relative flex shrink-0 overflow-hidden rounded-full w-12 h-12 mx-auto mb-2 border border-gray-200 dark:border-gray-600">
                 <div className="aspect-square h-full w-full">
                   <div className="flex h-full w-full items-center justify-center rounded-full">
                     {previewImage ? (
@@ -376,14 +383,14 @@ export default function CCProfileModal({
                         className="w-full h-full object-cover rounded-full"
                       />
                     ) : (
-                      <div className="bg-gray-100 text-gray-500 text-xs w-full h-full flex items-center justify-center rounded-full">
+                      <div className="bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 text-xs w-full h-full flex items-center justify-center rounded-full">
                         {editedUser.name?.[0] || "사진"}
                       </div>
                     )}
                   </div>
                 </div>
               </div>
-              <div className="text-center pb-1 text-black">
+              <div className="text-center pb-1 text-black dark:text-gray-200">
                 {editedUser.name}
               </div>
               <div className="flex justify-center mt-1">
@@ -394,17 +401,17 @@ export default function CCProfileModal({
                   {editedUser.role}
                 </DefaultBadge>
               </div>
-              <div className="text-xs text-center text-gray-500 mt-2">
+              <div className="text-xs text-center text-gray-500 mt-2 dark:text-gray-300">
                 <p>
                   {editedUser.grade} • {editedUser.major}
                 </p>
               </div>
-              <div className="text-xs text-center text-gray-600 mt-3">
+              <div className="text-xs text-center text-gray-600 mt-3 dark:text-gray-300">
                 {editedUser.description}
               </div>
 
               <div>
-                <p className="text-sm font-medium text-gray-900  mb-2 transition-colors duration-300 mt-4">
+                <p className="text-sm font-medium text-gray-900 mb-2 dark:text-gray-300 transition-colors duration-300 mt-4">
                   기술 스택
                 </p>
                 <div className="flex flex-wrap gap-1">
@@ -412,7 +419,7 @@ export default function CCProfileModal({
                     <DefaultBadge
                       key={skill}
                       variant="outline"
-                      className="text-xs badge-gray bg-white cursor-default"
+                      className="text-xs bg-gray-100 text-gray-600 border-gray-200 dark:bg-gray-600 dark:text-gray-200 dark:border-gray-400"
                     >
                       {skill}
                     </DefaultBadge>
@@ -423,13 +430,9 @@ export default function CCProfileModal({
           </div>
         </div>
 
-        <div className="p-4 border-t border-gray-200 sticky bottom-0 bg-white">
+        <div className="p-4 border-t border-gray-200 sticky bottom-0 dark:border-gray-700">
           <div className="flex justify-end gap-2">
-            <DefaultButton
-              variant="outline"
-              onClick={closeModal}
-              className="border-gray-300 text-gray-600 hover:border-red-400 hover:bg-cert-red/0 hover:text-cert-red"
-            >
+            <DefaultButton variant="outline" onClick={closeModal}>
               취소
             </DefaultButton>
             <DefaultButton

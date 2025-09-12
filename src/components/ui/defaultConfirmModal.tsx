@@ -62,7 +62,7 @@ export default function ConfirmModal({
         onClick={onCancel}
       />
 
-      <div className="relative bg-white rounded-lg shadow-xl p-6 w-full max-w-md mx-4">
+      <div className="relative bg-white rounded-lg shadow-xl p-6 w-full max-w-md mx-4 dark:bg-gray-700">
         <button
           onClick={onCancel}
           className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors cursor-pointer"
@@ -83,10 +83,12 @@ export default function ConfirmModal({
           )}
         </div>
 
-        <h3 className="text-lg font-semibold text-gray-900 text-center mb-2">
+        <h3 className="text-lg font-semibold text-gray-900 text-center mb-2 dark:text-gray-200">
           {title}
         </h3>
-        <p className="text-sm text-gray-600 text-center mb-6">{message}</p>
+        <p className="text-sm text-gray-600 text-center mb-6 dark:text-gray-300">
+          {message}
+        </p>
 
         {/* 종료 시 제출 폼 */}
         {isEnd && (
@@ -114,7 +116,7 @@ export default function ConfirmModal({
           <DefaultButton
             variant="outline"
             onClick={onCancel}
-            className="px-4 py-2 min-w-[80px]"
+            className="px-4 py-2 min-w-[80px] dark:text-gray-300"
           >
             {cancelText}
           </DefaultButton>

@@ -38,7 +38,7 @@ export default function FileUpload({
     <div className="space-y-4">
       <div
         className={cn(
-          "border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-cert-red transition-colors",
+          "border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-cert-red transition-colors  dark:border-gray-600",
           className
         )}
       >
@@ -55,7 +55,7 @@ export default function FileUpload({
           className="cursor-pointer flex flex-col items-center gap-2"
         >
           <Upload className="w-8 h-8 text-gray-400" />
-          <span className="text-sm text-gray-600">
+          <span className="text-sm text-gray-600 dark:text-gray-400 ">
             파일을 드래그하거나 클릭하여 업로드
           </span>
           <span className="text-xs text-gray-500">

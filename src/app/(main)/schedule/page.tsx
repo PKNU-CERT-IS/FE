@@ -42,7 +42,7 @@ export default async function SchedulePage({ searchParams }: SearchPageProps) {
   const selectedDate = resolvedSearchParams?.date || null;
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen">
       <div className="max-w-7xl mx-auto">
         <div className="absolute right-4 top-40 sm:hidden z-10">
           <CCScrollScheduleList />

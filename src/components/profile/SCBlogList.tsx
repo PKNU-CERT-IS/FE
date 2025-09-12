@@ -30,7 +30,7 @@ export default async function SCBlogList({
       {currentTab === "blog" && (
         <div className="space-y-4 mt-8 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
           <div className="flex justify-between items-center">
-            <h3 className="text-lg font-semibold text-gray-900 transition-colors duration-300">
+            <h3 className="text-lg font-semibold text-gray-900 transition-colors duration-300 dark:text-gray-200">
               내가 작성한 블로그 포스트
             </h3>
             <Link href="/blog/write">
@@ -41,17 +41,17 @@ export default async function SCBlogList({
           </div>
           {blogs.map((blog) => (
             <Link href={`/blog/${blog.id}`} key={blog.id}>
-              <div className="card-list text-card-foreground group mb-4">
+              <div className="card-list text-card-foreground group mb-4 dark-default">
                 <div className="flex flex-col space-y-1.5 p-6">
                   <div className="flex items-start justify-between">
                     <div>
                       {/* 제목 */}
-                      <div className="font-semibold leading-none tracking-tight text-lg text-gray-900 group-hover:text-cert-red transition-colors cursor-pointer">
+                      <div className="font-semibold leading-none tracking-tight text-lg text-gray-900 group-hover:text-cert-red transition-colors cursor-pointer dark:text-gray-200">
                         {blog.title}
                       </div>
 
                       {/* 작성일 + 카테고리 + ✅ reference */}
-                      <div className="flex items-center gap-2 mt-2 text-sm text-gray-600 transition-colors duration-300">
+                      <div className="flex items-center gap-2 mt-2 text-sm text-gray-600 transition-colors duration-300 dark:text-gray-400">
                         <span>{blog.createdAt}</span>
                         <DefaultBadge
                           variant="custom"
@@ -66,8 +66,8 @@ export default async function SCBlogList({
                           <span
                             className={`ml-auto rounded-full inline-flex items-center px-2 py-0.5 text-xs font-medium ${
                               blog.reference.type === "study"
-                                ? "text-green-700 bg-green-50 border border-green-200"
-                                : "text-blue-700 bg-blue-50 border border-blue-200"
+                                ? "badge-green"
+                                : "badge-blue"
                             }`}
                           >
                             {blog.reference.type === "study"

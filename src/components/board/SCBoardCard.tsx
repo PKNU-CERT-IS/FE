@@ -42,8 +42,8 @@ export default function BoardCard({
       <div
         className={`card-list group hover:border-cert-red/50  ${
           category === "공지사항"
-            ? "border-red-200 bg-red-50"
-            : "border-gray-200"
+            ? "border-red-200 bg-red-50 dark:bg-cert-red/30 dark:border-cert-red/30"
+            : "border-gray-200 dark:bg-gray-800 dark:border-gray-700 "
         }`}
       >
         <div className="flex flex-col space-y-1.5 p-6 pb-3">
@@ -62,28 +62,32 @@ export default function BoardCard({
                 </DefaultBadge>
               )}
             </div>
-            <span className="text-sm text-gray-500">{date}</span>
+            <span className="text-sm text-gray-500 dark:text-gray-400 ">
+              {date}
+            </span>
           </div>
 
-          <div className="text-lg font-semibold text-gray-900 group-hover:text-cert-red transition-colors mt-2">
+          <div className="text-lg font-semibold text-gray-900 group-hover:text-cert-red transition-colors mt-2 dark:text-gray-200">
             {title}
           </div>
         </div>
 
         <div className="p-6 pt-0">
-          <div className="text-gray-600 mb-4 line-clamp-2 leading-relaxed">
+          <div className="text-gray-600 mb-4 line-clamp-2 leading-relaxed dark:text-gray-400">
             {content}
           </div>
 
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4 text-sm text-gray-500">
-              <span className="font-medium text-gray-700">{author}</span>
+              <span className="font-medium text-gray-700 dark:text-gray-200">
+                {author}
+              </span>
               <div className="flex items-center gap-4">
-                <div className="flex items-center gap-1 hover:text-cert-red transition-colors">
+                <div className="flex items-center gap-1 hover:text-cert-red transition-colors dark:text-gray-400">
                   <EyeSVG className="w-4 text-cert-red" />
                   <span>{views}</span>
                 </div>
-                <div className="flex items-center gap-1 hover:text-cert-red transition-colors">
+                <div className="flex items-center gap-1 hover:text-cert-red transition-colors dark:text-gray-400">
                   <Heart className="w-4 text-cert-red" />
                   <span>{likes}</span>
                 </div>

@@ -252,7 +252,7 @@ body {
   }
   /* 카드 리스트 스타일 */
   .card-list {
-    @apply bg-white rounded-lg border shadow-sm hover:shadow-lg cursor-pointer transition-all duration-300 border-gray-200 hover:border-cert-red/50;
+    @apply rounded-lg border shadow-sm hover:shadow-lg cursor-pointer transition-all duration-300 border-gray-200 hover:border-cert-red/50;
   }
 
   /* 카테고리 필터 버튼 스타일 */
@@ -265,33 +265,52 @@ body {
   }
 
   .input-default {
-    @apply h-10 w-full rounded-md border border-gray-300 text-gray-900 bg-white px-3 py-2 text-sm focus:border-cert-red focus:outline-none;
+    @apply h-10 w-full rounded-md border border-gray-300 text-gray-900 bg-white px-3 py-2 text-sm 
+         focus:border-cert-red focus:outline-none focus:ring-2 focus:ring-cert-red 
+         resize-none dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200;
+  }
+
+  .dark-default {
+    @apply bg-white border-gray-200 text-gray-900
+           dark:bg-gray-800 dark:border-gray-700 dark:text-gray-200;
+  }
+  .dark-surface {
+    @apply bg-white border-gray-200 text-gray-900
+           dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200;
   }
 
   /* Badge 색상 */
   .badge-gray {
-    @apply bg-gray-50 text-gray-600 border-gray-200;
+    @apply bg-gray-50 text-gray-600 border-gray-200 
+         dark:bg-gray-700 dark:text-gray-200 dark:border-gray-600;
   }
   .badge-blue {
-    @apply bg-blue-50 text-blue-600 border-blue-200;
+    @apply bg-blue-50 text-blue-600 border-blue-200 
+         dark:bg-blue-700 dark:text-blue-200 dark:border-blue-600;
   }
   .badge-green {
-    @apply bg-green-50 text-green-600 border-green-200;
+    @apply bg-green-50 text-green-600 border-green-200 
+         dark:bg-green-700 dark:text-green-200 dark:border-green-600;
   }
   .badge-orange {
-    @apply bg-orange-50 text-orange-600 border-orange-200;
+    @apply bg-orange-50 text-orange-600 border-orange-200 
+         dark:bg-orange-700 dark:text-orange-200 dark:border-orange-600;
   }
   .badge-red {
-    @apply bg-red-50 text-red-600 border-red-200;
+    @apply bg-red-50 text-red-600 border-red-200 
+         dark:bg-red-700 dark:text-red-200 dark:border-red-600;
   }
   .badge-purple {
-    @apply bg-purple-50 text-purple-600 border-purple-200;
+    @apply bg-purple-50 text-purple-600 border-purple-200 
+         dark:bg-purple-700 dark:text-purple-200 dark:border-purple-600;
   }
   .badge-sky {
-    @apply bg-sky-50 text-sky-600 border-sky-200;
+    @apply bg-sky-50 text-sky-600 border-sky-200 
+         dark:bg-sky-700 dark:text-sky-200 dark:border-sky-600;
   }
   .badge-yellow {
-    @apply bg-yellow-50 text-yellow-600 border-yellow-200;
+    @apply bg-yellow-50 text-yellow-600 border-yellow-200 
+         dark:bg-yellow-700 dark:text-yellow-200 dark:border-yellow-600;
   }
 }
 

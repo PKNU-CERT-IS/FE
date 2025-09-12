@@ -40,7 +40,7 @@ export default function CCProfileStudyStatusFilter({
           className={
             selectedStatus === status
               ? "category-filter-active"
-              : "category-filter"
+              : "category-filter dark:text-gray-200"
           }
         >
           {status}

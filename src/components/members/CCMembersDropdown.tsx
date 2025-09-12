@@ -18,7 +18,7 @@ interface MembersDropdownProps<T> {
   disabled?: boolean;
 }
 
-export default function MembersDropdow<T>({
+export default function MembersDropdown<T>({
   value,
   onValueChange,
   options,
@@ -38,12 +38,18 @@ export default function MembersDropdow<T>({
           "w-full justify-between text-left font-normal transition-all duration-200 cursor-pointer",
           "bg-white border-gray-300 hover:border-cert-red hover:bg-white hover:text-cert-black",
           "focus:border-cert-red focus:ring-2 focus:ring-cert-red/20",
+          "dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-800",
           disabled && "cursor-not-allowed opacity-50 bg-cert-dark-red/5"
         )}
         onClick={() => !disabled && setIsOpen(!isOpen)}
         disabled={disabled}
       >
-        <span className={cn(!selectedOption && "text-gray-400")}>
+        <span
+          className={cn(
+            !selectedOption && "text-gray-400",
+            "dark:text-gray-200"
+          )}
+        >
           {selectedOption?.label || placeholder}
         </span>
         <ChevronDown
@@ -62,7 +68,8 @@ export default function MembersDropdow<T>({
           <div
             className={cn(
               "absolute top-full left-0 right-0 z-50 mt-1 max-h-60 overflow-auto",
-              "rounded-lg border border-gray-200 bg-white shadow-xl"
+              "rounded-lg border border-gray-200 bg-white shadow-xl",
+              "dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200"
             )}
           >
             {options.map((option) => (
@@ -70,10 +77,10 @@ export default function MembersDropdow<T>({
                 key={option.value as string}
                 type="button"
                 className={cn(
-                  "w-full px-3 py-2 text-left text-sm text-gray-900",
+                  "w-full px-3 py-2 text-left text-sm text-gray-900 dark:text-gray-200 cursor-pointer",
                   "transition-all duration-100",
-                  "hover:bg-cert-red hover:text-white",
-                  "focus:bg-cert-red",
+                  "hover:bg-cert-red hover:text-white dark:hover:bg-cert-red",
+                  "focus:bg-cert-red focus:text-white",
                   "first:rounded-t-md last:rounded-b-md",
                   "hover:first:rounded-md hover:rounded-md"
                 )}

@@ -47,11 +47,14 @@ export default function CCBlogCategoryFilter({
           variant={currentCategory === category ? "default" : "outline"}
           size="sm"
           onClick={() => handleCategoryChange(category)}
-          className={
+          className={`
+          dark:text-gray-200
+          ${
             currentCategory === category
               ? "category-filter-active"
               : "category-filter"
           }
+        `}
         >
           {category}
         </DefaultButton>

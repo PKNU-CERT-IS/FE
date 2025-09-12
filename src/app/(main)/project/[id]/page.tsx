@@ -100,7 +100,7 @@ export default async function ProjectDetailPage({
   }
 
   return (
-    <div className="mx-auto max-w-full bg-white">
+    <div className="mx-auto max-w-full">
       {/* 뒤로가기 버튼 */}
       <BackToListButton currentUrl="project" />
       <article>
@@ -133,12 +133,12 @@ export default async function ProjectDetailPage({
         </div>
 
         {/* 헤더 */}
-        <header className=" border-b pb-6">
-          <h1 className="text-4xl font-extrabold tracking-tight text-gray-900 sm:text-5xl mb-4">
+        <header className=" border-b pb-6 dark:border-gray-700">
+          <h1 className="text-4xl font-extrabold tracking-tight text-gray-900 sm:text-5xl mb-4 dark:text-gray-200">
             {project.title}
           </h1>
 
-          <div className="flex items-center gap-6 text-sm text-gray-500 mb-6">
+          <div className="flex items-center gap-6 text-sm text-gray-500 mb-6 dark:text-gray-400">
             <div className="flex items-center gap-2">
               <span
                 className={`px-2 py-1 rounded text-xs font-medium ${
@@ -165,18 +165,20 @@ export default async function ProjectDetailPage({
           </div>
 
           {/* 프로젝트 기간 및 참가 정보 */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 bg-gray-100 rounded-lg">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 bg-gray-100 rounded-lg dark:bg-gray-800">
             <div>
-              <h4 className="font-semibold text-gray-700 mb-1">
+              <h4 className="font-semibold text-gray-700 mb-1 dark:text-gray-300">
                 프로젝트 기간
               </h4>
-              <p className="text-sm text-gray-600">
+              <p className="text-sm text-gray-600 dark:text-gray-400">
                 {project.startDate} {project.endDate && `~ ${project.endDate}`}
               </p>
             </div>
             <div>
-              <h4 className="font-semibold text-gray-700 mb-1">참가 인원</h4>
-              <p className="text-sm text-gray-600">
+              <h4 className="font-semibold text-gray-700 mb-1 dark:text-gray-300">
+                참가 인원
+              </h4>
+              <p className="text-sm text-gray-600 dark:text-gray-400">
                 {project.currentParticipants} / {project.maxParticipants}명
               </p>
             </div>
@@ -270,7 +272,7 @@ export default async function ProjectDetailPage({
                   href={link.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-blue-100 transition-colors border border-gray-200"
+                  className="inline-flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-blue-100 transition-colors border border-gray-200 dark:bg-gray-600 dark:border-gray-500 dark:text-gray-200 dark:hover:bg-gray-700"
                 >
                   {getExternalLinkIcon(link.type)}
                   <span className="font-medium">{link.label}</span>

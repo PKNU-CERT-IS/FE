@@ -75,12 +75,12 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
   const paginatedContents = filteredContents.slice(startIndex, endIndex);
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen">
       <div className="max-w-7xl mx-auto">
         {/* 메인 헤더 */}
 
         {/* 검색 및 필터 바 */}
-        <div className="bg-white rounded-lg mb-6">
+        <div className=" rounded-lg mb-6">
           <div className="flex flex-col lg:flex-row gap-4 items-center">
             {/* 검색바 */}
             <div className="flex-1 w-full">
@@ -109,7 +109,7 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
               <Link
                 key={post.id}
                 href={`/blog/${post.id}`}
-                className="card-list block overflow-hidden"
+                className="card-list block overflow-hidden dark-default"
               >
                 <div className="p-5">
                   {/* 카테고리 및 날짜 */}
@@ -120,26 +120,26 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
                     >
                       {post.category}
                     </span>
-                    <span className="text-xs text-gray-500">
+                    <span className="text-xs text-gray-500 dark:text-gray-400">
                       {formatDate(post.createdAt)}
                     </span>
                   </div>
 
                   {/* 제목 */}
-                  <h3 className="font-semibold text-gray-900 mb-3 text-base leading-tight line-clamp-2">
+                  <h3 className="font-semibold text-gray-900 mb-3 text-base leading-tight line-clamp-2  dark:text-gray-200">
                     {post.title}
                   </h3>
 
                   {/* 내용 미리보기 */}
-                  <p className="text-gray-600 text-sm mb-2 line-clamp-3 leading-relaxed">
+                  <p className="text-gray-600 text-sm mb-2 line-clamp-3 leading-relaxed  dark:text-gray-300">
                     {post.excerpt}
                   </p>
                   {post.reference && (
                     <span
                       className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium mb-3 ${
                         post.reference.type === "study"
-                          ? "text-green-700 bg-green-50 border border-green-200"
-                          : "text-blue-700 bg-blue-50 border border-blue-200"
+                          ? "badge-green"
+                          : "badge-blue"
                       }`}
                     >
                       {post.reference.type === "study" ? "스터디" : "프로젝트"}{" "}
@@ -147,13 +147,13 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
                     </span>
                   )}
                   {/* 작성자 */}
-                  <div className="flex items-center gap-2 pt-2 border-t border-gray-100">
+                  <div className="flex items-center gap-2 pt-2 border-t border-gray-100 dark:border-gray-700">
                     <div className="w-7 h-7 bg-gray-200 rounded-full flex items-center justify-center">
                       <span className="text-xs font-semibold text-gray-600">
                         {post.author.charAt(0).toUpperCase()}
                       </span>
                     </div>
-                    <span className="text-sm text-gray-700 font-medium">
+                    <span className="text-sm text-gray-700 font-medium dark:text-gray-300">
                       {post.author}
                     </span>
                     {/* ✅ reference 뱃지 */}

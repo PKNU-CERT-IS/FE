@@ -16,7 +16,7 @@ export default function CCScrollScheduleList() {
         onClick={scrollToAllSchedules}
         className="flex flex-row items-center w-auto py-1.5 px-2 md:px-3 sm:px-1
                    hover:bg-gray-400/15 text-gray-400 border border-gray-300 
-                   rounded-lg transition-colors duration-200 shadow-sm"
+                   rounded-lg transition-colors duration-200 shadow-sm dark:border-gray-600"
       >
         <span className="text-xs sm:text-sm cursor-pointer">
           전체 일정 확인

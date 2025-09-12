@@ -53,7 +53,7 @@ export default function EndRequestButton({ id }: { id: number | string }) {
       <DefaultButton
         onClick={openModal}
         disabled={submitting}
-        className="px-6 py-2 w-full bg-white text-cert-red hover:text-white hover:bg-cert-red dark:bg-gray-800 rounded-lg shadow-lg border border-cert-red/50 dark:border-gray-700 cursor-pointer"
+        className="px-6 py-2 w-full bg-white text-cert-red hover:text-white hover:bg-cert-red dark:bg-gray-800 rounded-lg shadow-lg border border-cert-red/50  dark:text-gray-200 cursor-pointer"
       >
         {pageLabel} 종료하기
       </DefaultButton>

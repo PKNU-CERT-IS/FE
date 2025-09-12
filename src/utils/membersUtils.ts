@@ -11,23 +11,22 @@ export const getRoleBadgeStyle = (
 ) => {
   switch (role) {
     case "회장":
-      return "bg-cert-red/20 text-cert-dark-red border-cert-red";
+      return "bg-cert-red/20 text-cert-dark-red border-cert-red dark:bg-cert-red/30 dark:text-red-200 dark:border-red-400";
     case "부회장":
-      return "bg-orange-100 text-orange-800 border-orange-600";
+      return "bg-orange-100 text-orange-800 border-orange-600 dark:bg-orange-700 dark:text-orange-200 dark:border-orange-500";
     case "임원진":
-      return "bg-blue-100 text-blue-800 border-blue-600";
+      return "bg-blue-100 text-blue-800 border-blue-600 dark:bg-blue-700 dark:text-blue-200 dark:border-blue-500";
     case "스터디장":
-      return "bg-purple-100 text-purple-800 border-purple-600";
+      return "bg-purple-100 text-purple-800 border-purple-600 dark:bg-purple-700 dark:text-purple-200 dark:border-purple-500";
     case "UPSOLVER":
-      return "bg-green-100 text-green-800 border-green-600";
+      return "bg-green-100 text-green-800 border-green-600 dark:bg-green-700 dark:text-green-200 dark:border-green-500";
     case "PLAYER":
-      return "bg-gray-100 text-gray-800 border-gray-600";
+      return "bg-gray-100 text-gray-800 border-gray-600 dark:bg-gray-700 dark:text-gray-200 dark:border-gray-500";
     case "NONE":
     case "전체":
-      return "bg-slate-100 text-slate-800 border-slate-400";
+      return "bg-slate-100 text-slate-800 border-slate-400 dark:bg-slate-700 dark:text-slate-200 dark:border-slate-500";
   }
 };
-
 export const getRoleBorderStyle = (
   role: MembersRoleCategoryType | "전체" | "NONE"
 ) => {

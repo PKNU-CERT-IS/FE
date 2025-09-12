@@ -53,7 +53,7 @@ export default async function SCStudyList({ searchParams }: SCStudyListProps) {
     <>
       <div className="space-y-4 mt-8 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
         <div className="flex items-center justify-between flex-wrap gap-2 sm:flex-row">
-          <h3 className="text-lg font-semibold text-gray-900 transition-colors duration-300">
+          <h3 className="text-lg font-semibold text-gray-900 transition-colors duration-300 dark:text-gray-200">
             내 스터디/프로젝트 목록
           </h3>
 
@@ -69,7 +69,7 @@ export default async function SCStudyList({ searchParams }: SCStudyListProps) {
           filteredMaterials.map((material) => (
             <div
               key={`${material.tab}-${material.id}`}
-              className="card-list text-card-foreground group"
+              className="card-list text-card-foreground group  dark-default"
             >
               <Link
                 href={`/${material.tab.toLocaleLowerCase()}/${material.id}`}
@@ -77,10 +77,10 @@ export default async function SCStudyList({ searchParams }: SCStudyListProps) {
                 <div className="flex flex-col space-y-1.5 p-6 pb-4">
                   <div className="flex items-start justify-between">
                     <div>
-                      <div className="font-semibold leading-none tracking-tight text-lg text-gray-900 group-hover:text-cert-red transition-colors cursor-pointer">
+                      <div className="font-semibold leading-none tracking-tight text-lg text-gray-900 group-hover:text-cert-red transition-colors cursor-pointer dark:text-gray-200">
                         {material.title}
                       </div>
-                      <div className="flex items-center gap-4 mt-2 text-sm text-gray-600 transition-colors duration-300">
+                      <div className="flex items-center gap-4 mt-2 text-sm text-gray-600 transition-colors duration-300 dark:text-gray-400">
                         <span>{material.startDate}</span>
                         <DefaultBadge
                           className={`border-gray-200 text-gray-600
@@ -116,7 +116,7 @@ export default async function SCStudyList({ searchParams }: SCStudyListProps) {
             </div>
           ))
         ) : (
-          <div className="text-center text-sm text-gray-500 py-8">
+          <div className="text-center text-sm text-gray-500 py-8 dark:text-gray-400">
             해당 상태의 스터디/프로젝트가 없습니다.
           </div>
         )}

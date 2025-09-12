@@ -24,9 +24,9 @@ export default function CCTopButton() {
   return (
     <button
       onClick={scrollToTop}
-      className="fixed bottom-6 right-6 z-50 p-3 rounded-full bg-white border border-cert-red/40 text-cert-red/70 shadow-lg hover:bg-cert-red/20 transition-colors"
+      className="fixed bottom-20 right-6 z-50 p-3 rounded-full bg-white border border-cert-red/40 text-cert-red/70 shadow-lg hover:bg-cert-red/20 transition-colors dark:bg-gray-800 dark:hover:bg-gray-700 cursor-pointer"
     >
-      <ArrowUp className="w-5 h-5" />
+      <ArrowUp className="w-5 h-5 " />
     </button>
   );
 }

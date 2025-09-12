@@ -40,7 +40,7 @@ export default function BoardCategory({
           className={`cursor-pointer ${
             selectedCategory === category
               ? "category-filter-active"
-              : "category-filter"
+              : "category-filte dark:text-gray-200"
           }`}
         >
           {category}
