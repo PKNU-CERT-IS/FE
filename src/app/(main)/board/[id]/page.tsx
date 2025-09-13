@@ -76,7 +76,7 @@ export default async function DetailPage({
       <BackToListButton currentUrl={"board"} />
 
       {/* 게시글 카드 */}
-      <div className="bg-white border border-gray-200 rounded-lg shadow-lg mt-6 p-4">
+      <div className="border border-gray-200 rounded-lg shadow-lg mt-6 p-4 dark:bg-gray-800 dark:border-gray-700">
         {/* 게시글 헤더 */}
         <div className="p-6 pb-0">
           <div className="flex items-start justify-between mb-4">
@@ -94,7 +94,7 @@ export default async function DetailPage({
             <KebabMenuButton currentUrl={"board"} currentId={data.id} />
           </div>
 
-          <h1 className="text-3xl font-bold text-gray-900 mb-6 leading-tight">
+          <h1 className="text-3xl font-bold text-gray-900 mb-6 leading-tight dark:text-gray-200">
             {data.title}
           </h1>
 
@@ -106,14 +106,14 @@ export default async function DetailPage({
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
-                    <span className="font-medium text-gray-900">
+                    <span className="font-medium text-gray-900 dark:text-gray-200">
                       {data.author}
                     </span>
                     <DefaultBadge variant="outline" className="text-xs">
                       {data.authorInfo.role}
                     </DefaultBadge>
                   </div>
-                  <div className="flex mt-1 items-center gap-2 text-sm text-gray-500">
+                  <div className="flex mt-1 items-center gap-2 text-sm text-gray-500 dark:text-gray-300">
                     <Calendar className="w-3 h-3" />
                     {data.date}
                   </div>
@@ -137,14 +137,14 @@ export default async function DetailPage({
         {/* 게시글 본문 */}
         <div className="p-6">
           {/* React-Markdown으로 렌더링 - Tailwind Typography 사용 */}
-          <div className="max-w-none mb-8 pt-6 border-t border-gray-300">
+          <div className="max-w-none mb-8 pt-6 border-t border-gray-300 dark:border-gray-700">
             <MarkdownRenderer content={data.detailContent} />
           </div>
 
           {/* 첨부파일 */}
           {data.attachedFiles && data.attachedFiles.length > 0 && (
-            <div className="border-t border-gray-300 pt-6 mb-6">
-              <h4 className="font-medium text-gray-900 mb-4 flex items-center gap-2">
+            <div className="border-t border-gray-300 pt-6 mb-6 dark:border-gray-700">
+              <h4 className="font-medium text-gray-900 mb-4 flex items-center gap-2 dark:text-gray-200">
                 <Download className="w-4 h-4" />
                 첨부파일 ({data.attachedFiles.length})
               </h4>
@@ -152,12 +152,14 @@ export default async function DetailPage({
                 {data.attachedFiles.map((file, index) => (
                   <div
                     key={index}
-                    className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg"
+                    className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg dark:bg-gray-700"
                   >
                     <span className="text-2xl">{getFileIcon(file.type)}</span>
                     <div className="flex-1">
-                      <p className="font-medium text-gray-900">{file.name}</p>
-                      <p className="text-sm text-gray-500">
+                      <p className="font-medium text-gray-900 dark:text-gray-200">
+                        {file.name}
+                      </p>
+                      <p className="text-sm text-gray-500 dark:text-gray-400">
                         {" "}
                         {formatFileSize(file.size)}
                       </p>
@@ -169,7 +171,7 @@ export default async function DetailPage({
             </div>
           )}
 
-          <div className="flex items-center justify-between pt-6 border-t border-gray-300">
+          <div className="flex items-center justify-between pt-6 border-t border-gray-300 dark:border-gray-700">
             <div className="flex gap-4">
               <LikeButton currentLikes={data.likes} />
             </div>

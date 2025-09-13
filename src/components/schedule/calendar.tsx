@@ -71,10 +71,10 @@ export default function Calendar() {
   );
 
   return (
-    <div className="bg-white border border-gray-300 rounded-lg p-4 shadow-lg">
+    <div className="border border-gray-300 rounded-lg p-4 shadow-lg dark:bg-gray-800 dark:border-gray-700">
       <div className="flex items-center justify-between mb-4 p-2">
         <div className="flex flex-row">
-          <h3 className="text-xl font-semibold text-gray-900">
+          <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-200">
             {formatDate(currentDate, "long")}
           </h3>
         </div>
@@ -84,15 +84,15 @@ export default function Calendar() {
           </div>
           <button
             onClick={prevMonth}
-            className="text-gray-600 p-1 sm:p-3 rounded-md hover:text-gray-900 hover:bg-gray-100 mr-3 duration-200 cursor-pointer"
+            className="text-gray-600 p-1 sm:p-3 rounded-md hover:text-gray-900 hover:bg-gray-100 mr-3 duration-200 cursor-pointer dark:hover:bg-gray-700"
           >
-            <AngleSVG className="rotate-90 w-2.5 sm:w-3.5" />
+            <AngleSVG className="rotate-90 w-2.5 sm:w-3.5 dark:stroke-gray-300" />
           </button>
           <button
             onClick={nextMonth}
-            className="text-gray-600 p-1 sm:p-3 rounded-md hover:text-gray-900 hover:bg-gray-100 duration-200 cursor-pointer"
+            className="text-gray-600 p-1 sm:p-3 rounded-md hover:text-gray-900 hover:bg-gray-100 duration-200 cursor-pointer dark:hover:bg-gray-700"
           >
-            <AngleSVG className="rotate-270 w-2.5 sm:w-3.5" />
+            <AngleSVG className="rotate-270 w-2.5 sm:w-3.5 dark:stroke-gray-300" />
           </button>
         </div>
       </div>
@@ -119,15 +119,15 @@ export default function Calendar() {
             <div
               key={index}
               onClick={() => handleDateClick(day)}
-              className={`relative min-h-[8rem] p-2 border border-gray-100 cursor-pointer transition-all duration-200 hover:bg-gray-100
+              className={`relative min-h-[8rem]  p-2 border border-gray-100 cursor-pointer transition-all duration-200 hover:bg-gray-100 dark:border-gray-700 dark:hover:bg-gray-700
                 ${
                   isCurrentMonth
-                    ? "text-gray-900 bg-white"
+                    ? "text-gray-900 bg-white dark:bg-gray-800 dark:text-gray-200"
                     : "text-gray-400 text-xs"
                 }
                 ${
                   daySchedules.length > 0
-                    ? "border bg-gray-300/10 border-cert-dark-red-20"
+                    ? "border bg-gray-300/10 border-cert-dark-red-20 dark:text-gray-200"
                     : "hover:bg-gray-100"
                 }
                 ${isToday ? "text-white" : ""}

@@ -51,26 +51,26 @@ export default function KebabMenu({ currentId, currentUrl }: KebabMenuProps) {
         <DefaultButton
           variant="outline"
           size="sm"
-          className="cursor-pointer border-0 hover:bg-white hover:text-cert-dark-red"
+          className="cursor-pointer border-0 hover:bg-white hover:text-cert-dark-red dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-gray-200"
           onClick={() => setIsKebabOpen(!isKebabOpen)}
         >
           <MoreVertical className="w-4 h-4" />
         </DefaultButton>
 
         {isKebabOpen && (
-          <div className="absolute right-0 mt-2 w-36 bg-white border border-gray-200 rounded-lg shadow-lg z-10">
+          <div className="absolute right-0 mt-2 w-36 bg-white border border-gray-200 rounded-lg shadow-lg z-10 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-200">
             <div className="p-1">
               <button
                 onClick={handleEdit}
-                className="w-full text-left px-3 py-2 text-sm hover:bg-gray-100 rounded flex items-center gap-2 no-underline text-gray-700 duration-200 cursor-pointer"
+                className="w-full text-left px-3 py-2 text-sm rounded flex items-center gap-2 no-underline text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-cert-red duration-200 cursor-pointer"
               >
                 <Edit className="w-4 h-4" />
                 수정
               </button>
-              <hr className="my-1 text-gray-300 " />
+              <hr className="my-1 border-gray-300 dark:border-gray-600" />
               <button
                 onClick={handleDeleteClick}
-                className="w-full text-left px-3 py-2 text-sm hover:bg-gray-100 rounded flex items-center gap-2 text-cert-red duration-200 cursor-pointer"
+                className="w-full text-left px-3 py-2 text-sm rounded flex items-center gap-2 text-cert-red hover:bg-gray-100 dark:hover:bg-cert-red duration-200 cursor-pointer dark:hover:text-gray-200"
               >
                 <Trash2 className="w-4 h-4" />
                 삭제

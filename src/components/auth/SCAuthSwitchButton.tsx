@@ -17,16 +17,18 @@ export default function SCAuthSwitchButton({ type }: AuthSwitchPromptProps) {
           <span className="w-full border-t border-gray-300" />
         </div>
         <div className="relative flex justify-center text-xs uppercase mb-5">
-          <span className="bg-white px-2 text-gray-500">또는</span>
+          <span className="bg-white px-2 text-gray-500 dark:bg-gray-800 dark:text-gray-400">
+            또는
+          </span>
         </div>
       </div>
 
       <div className="text-center">
-        <p className="text-sm text-gray-600 mb-3">
+        <p className="text-sm text-gray-600 mb-3 dark:text-gray-300">
           {isLogin ? "아직 회원이 아니신가요?" : "이미 계정이 있으신가요?"}
         </p>
         <Link href={isLogin ? "/signup" : "/login"}>
-          <button className="text-sm w-full h-11 border border-cert-red/30 text-cert-red cursor-pointer hover:bg-cert-red/5 hover:border-cert-red hover:text-cert-red transition-all duration-300 bg-transparent rounded-md flex items-center justify-center">
+          <button className="text-sm w-full h-11 border border-cert-red/30 text-cert-red cursor-pointer hover:bg-cert-red/5 hover:border-cert-red hover:text-cert-red transition-all duration-300 bg-transparent rounded-md flex items-center justify-center dark:border-cert-red/80">
             {isLogin ? (
               <>
                 <UserPlus className="w-4 h-4 mr-2" />

@@ -22,9 +22,9 @@ export default function LikeButton({ currentLikes }: LikeButtonProps) {
       variant="outline"
       size="sm"
       onClick={handleLike}
-      className={`${
+      className={`dark:bg-gray-800 ${
         isLiked ? "text-cert-red " : ""
-      } border-0 hover:bg-white hover:text-cert-red`}
+      } border-0 hover:bg-white hover:text-cert-red dark:hover:bg-gray-800`}
     >
       <Heart
         className={`w-4 h-4  ${isLiked ? "fill-cert-red text-cert-red" : ""} `}

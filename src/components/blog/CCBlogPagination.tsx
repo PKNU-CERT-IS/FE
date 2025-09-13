@@ -103,8 +103,8 @@ export default function BlogPagination({
           disabled={currentPage === 1}
           className={`p-2 rounded-md transition-all duration-200 ${
             currentPage === 1
-              ? "text-gray-400 cursor-not-allowed"
-              : "text-gray-700 hover:bg-gray-100"
+              ? "text-gray-400 cursor-not-allowed dark:text-gray-600"
+              : "text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700/40"
           }`}
           title="이전 페이지"
         >
@@ -115,7 +115,7 @@ export default function BlogPagination({
         {visiblePages.map((page, index) => (
           <div key={index}>
             {page === "..." ? (
-              <span className="w-10 h-10 flex items-center justify-center text-gray-500 text-sm">
+              <span className="w-10 h-10 flex items-center justify-center text-gray-500 text-sm dark:text-gray-400">
                 ...
               </span>
             ) : (
@@ -124,7 +124,7 @@ export default function BlogPagination({
                 className={`w-10 h-10 rounded-md text-sm font-medium transition-all duration-200 flex items-center justify-center border ${
                   currentPage === page
                     ? "bg-cert-red text-white shadow-md border-cert-red"
-                    : "bg-white text-gray-700 border-gray-300 hover:bg-gray-100"
+                    : "text-gray-700 border-gray-300 hover:bg-gray-100 dark-default dark:hover:bg-gray-600 dark:text-gray-500 dark:border-gray-700"
                 }`}
               >
                 {page}
@@ -139,8 +139,8 @@ export default function BlogPagination({
           disabled={currentPage === totalPages}
           className={`p-2 rounded-md transition-all duration-200 ${
             currentPage === totalPages
-              ? "text-gray-400 cursor-not-allowed"
-              : "text-gray-700 hover:bg-gray-100"
+              ? "text-gray-400 cursor-not-allowed dark:text-gray-600"
+              : "text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700/40"
           }`}
           title="다음 페이지"
         >

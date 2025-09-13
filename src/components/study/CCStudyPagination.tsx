@@ -56,7 +56,7 @@ export default function CCStudyPagination({
         {currentPage > 1 ? (
           <Link href={createSafePageUrl(currentPage - 1)}>
             <div
-              className="p-2 rounded-md transition-all duration-200 text-gray-700 hover:bg-gray-100"
+              className="p-2 rounded-md transition-all duration-200 text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700/40"
               title="이전 페이지"
             >
               <ChevronLeft className="w-4 h-4" />
@@ -64,7 +64,7 @@ export default function CCStudyPagination({
           </Link>
         ) : (
           <div
-            className="p-2 rounded-md transition-all duration-200 text-gray-400 cursor-not-allowed"
+            className="p-2 rounded-md transition-all duration-200 text-gray-400 cursor-not-allowed dark:text-gray-600"
             title="이전 페이지"
           >
             <ChevronLeft className="w-4 h-4" />
@@ -75,12 +75,14 @@ export default function CCStudyPagination({
         {visiblePages[0] > 1 && (
           <>
             <Link key={1} href={createSafePageUrl(1)}>
-              <div className="text-sm font-medium shadow-lg inline-flex items-center justify-center h-9 px-3 rounded-md border border-gray-300 text-gray-600 hover:bg-cert-red hover:border-cert-red hover:text-white transition-colors min-w-[40px]">
+              <div className="text-sm font-medium inline-flex items-center justify-center h-9 px-3 rounded-md border border-gray-300 text-gray-600 bg-white hover:bg-cert-red hover:border-cert-red hover:text-white transition-colors min-w-[40px] dark-default dark:hover:bg-gray-600 dark:border-gray-800 dark:text-gray-500">
                 1
               </div>
             </Link>
             {visiblePages[0] > 2 && (
-              <span className="px-3 py-2 text-gray-500 text-sm">...</span>
+              <span className="px-3 py-2 text-gray-500 text-sm dark:text-gray-400">
+                ...
+              </span>
             )}
           </>
         )}
@@ -89,10 +91,10 @@ export default function CCStudyPagination({
         {visiblePages.map((page) => (
           <Link key={page} href={createSafePageUrl(page)}>
             <div
-              className={`w-10 h-10 text-sm font-medium flex items-center justify-center rounded-md transition-colors border  ${
+              className={`w-10 h-10 text-sm font-medium flex items-center justify-center rounded-md transition-colors border ${
                 page === currentPage
                   ? "bg-cert-red text-white shadow-md border-cert-red"
-                  : "bg-white text-gray-700 border-gray-300 hover:bg-gray-100"
+                  : "text-gray-700 border-gray-300 hover:bg-gray-100 dark-default dark:hover:bg-gray-600 dark:border-gray-700 dark:text-gray-500"
               }`}
             >
               {page}
@@ -104,10 +106,12 @@ export default function CCStudyPagination({
         {visiblePages[visiblePages.length - 1] < totalPages && (
           <>
             {visiblePages[visiblePages.length - 1] < totalPages - 1 && (
-              <span className="px-3 py-2 text-gray-500 text-sm">...</span>
+              <span className="px-3 py-2 text-gray-500 text-sm dark:text-gray-400">
+                ...
+              </span>
             )}
             <Link key={totalPages} href={createSafePageUrl(totalPages)}>
-              <div className="text-sm font-medium shadow-lg inline-flex items-center justify-center h-9 px-3 rounded-md border border-gray-300 text-gray-600 hover:bg-cert-red hover:border-cert-red hover:text-white transition-colors min-w-[40px]">
+              <div className="text-sm font-medium inline-flex items-center justify-center h-9 px-3 rounded-md border border-gray-300 text-gray-600 bg-white hover:bg-cert-red hover:border-cert-red hover:text-white transition-colors min-w-[40px] dark-default dark:hover:bg-gray-600 dark:border-gray-800 dark:text-gray-500">
                 {totalPages}
               </div>
             </Link>
@@ -118,7 +122,7 @@ export default function CCStudyPagination({
         {currentPage < totalPages ? (
           <Link href={createSafePageUrl(currentPage + 1)}>
             <div
-              className="p-2 rounded-md transition-all duration-200 text-gray-700 hover:bg-gray-100"
+              className="p-2 rounded-md transition-all duration-200 text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700/40"
               title="다음 페이지"
             >
               <ChevronRight className="w-4 h-4" />
@@ -126,7 +130,7 @@ export default function CCStudyPagination({
           </Link>
         ) : (
           <div
-            className="p-2 rounded-md transition-all duration-200 text-gray-400 cursor-not-allowed"
+            className="p-2 rounded-md transition-all duration-200 text-gray-400 cursor-not-allowed dark:text-gray-600"
             title="다음 페이지"
           >
             <ChevronRight className="w-4 h-4" />

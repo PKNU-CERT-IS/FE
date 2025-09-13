@@ -40,22 +40,27 @@ export default function CCBlogCategoryFilter({
   };
 
   return (
-    <div className="flex gap-2 flex-wrap">
-      {BLOG_CATEGORIES.map((category) => (
-        <DefaultButton
-          key={category}
-          variant={currentCategory === category ? "default" : "outline"}
-          size="sm"
-          onClick={() => handleCategoryChange(category)}
-          className={
-            currentCategory === category
-              ? "category-filter-active"
-              : "category-filter"
-          }
-        >
-          {category}
-        </DefaultButton>
-      ))}
+    <div className="sm:w-auto w-full overflow-x-auto scrollbar-hide">
+      <div className="inline-flex gap-2 sm:flex-wrap">
+        {BLOG_CATEGORIES.map((category) => (
+          <DefaultButton
+            key={category}
+            variant={currentCategory === category ? "default" : "outline"}
+            size="sm"
+            onClick={() => handleCategoryChange(category)}
+            className={`
+            whitespace-nowrap flex-shrink-0
+            ${
+              currentCategory === category
+                ? "category-filter-active"
+                : "category-filter"
+            }
+          `}
+          >
+            {category}
+          </DefaultButton>
+        ))}
+      </div>
     </div>
   );
 }

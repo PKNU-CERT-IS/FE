@@ -21,7 +21,7 @@ export default function CCTabBar({ currentTab }: CCTabBarProps) {
   };
 
   return (
-    <div className="h-10 items-center justify-center rounded-md p-1 text-muted-foreground grid w-full grid-cols-2 bg-gray-100 ">
+    <div className="h-10 items-center justify-center rounded-md p-1 text-muted-foreground grid w-full grid-cols-2 bg-gray-100 dark:bg-gray-800">
       {profileTabCategory.map((tab) => {
         const { label, Icon } = TAB_CONFIG[tab];
         const isActive = currentTab === tab;
@@ -32,7 +32,9 @@ export default function CCTabBar({ currentTab }: CCTabBarProps) {
             onClick={() => handleTabClick(tab)}
             className={`inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium transition-all duration-300 cursor-pointer
               ${
-                isActive ? "bg-cert-red text-white shadow-sm" : "text-gray-500"
+                isActive
+                  ? "bg-cert-red text-white shadow-sm"
+                  : "text-gray-500 dark:text-gray-400"
               }`}
           >
             <Icon

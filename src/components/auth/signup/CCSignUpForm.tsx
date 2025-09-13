@@ -55,13 +55,17 @@ export default function CCSignUpForm() {
       {/* hidden inputs for server action */}
       <input type="hidden" name="grade" value={signupFormData.grade} />
       <input type="hidden" name="gender" value={signupFormData.gender} />
+
       {/* 이름 */}
       <div className="space-y-2">
-        <label htmlFor="name" className="font-medium text-gray-700">
+        <label
+          htmlFor="name"
+          className="font-medium text-gray-700 dark:text-gray-200"
+        >
           이름
         </label>
         <div className="relative mt-1">
-          <ProfileSVG className="absolute left-3 top-3 h-4 w-4 stroke-gray-400" />
+          <ProfileSVG className="absolute left-3 top-3 h-4 w-4 stroke-gray-400 dark:stroke-cert-red" />
           <input
             id="name"
             name="name"
@@ -69,7 +73,7 @@ export default function CCSignUpForm() {
             value={signupFormData.name}
             onChange={handleInputChange}
             className={`input-default pl-10 ${
-              errors.name ? "border-red-500" : ""
+              errors.name ? "border-red-500" : "dark:border-gray-600"
             }`}
             placeholder="홍길동"
             required
@@ -80,11 +84,14 @@ export default function CCSignUpForm() {
 
       {/* 아이디 */}
       <div className="space-y-2">
-        <label htmlFor="id" className="font-medium text-gray-700">
+        <label
+          htmlFor="id"
+          className="font-medium text-gray-700 dark:text-gray-200"
+        >
           아이디
         </label>
         <div className="relative mt-1">
-          <ProfileSVG className="absolute left-3 top-3 h-4 w-4 stroke-gray-400" />
+          <ProfileSVG className="absolute left-3 top-3 h-4 w-4 stroke-gray-400 dark:stroke-cert-red" />
           <input
             id="id"
             name="id"
@@ -92,7 +99,7 @@ export default function CCSignUpForm() {
             value={signupFormData.id}
             onChange={handleInputChange}
             className={`input-default pl-10 ${
-              errors.id ? "border-red-500" : ""
+              errors.id ? "border-red-500" : "dark:border-gray-600"
             }`}
             placeholder="example"
             required
@@ -103,11 +110,14 @@ export default function CCSignUpForm() {
 
       {/* 비밀번호 */}
       <div className="space-y-2">
-        <label htmlFor="password" className="font-medium text-gray-700">
+        <label
+          htmlFor="password"
+          className="font-medium text-gray-700 dark:text-gray-200"
+        >
           비밀번호
         </label>
         <div className="relative mt-1">
-          <LockSVG className="absolute left-3 top-3 h-4 w-4 stroke-gray-400" />
+          <LockSVG className="absolute left-3 top-3 h-4 w-4 stroke-gray-400 dark:stroke-cert-red" />
           <input
             id="password"
             name="password"
@@ -115,7 +125,7 @@ export default function CCSignUpForm() {
             value={signupFormData.password}
             onChange={handleInputChange}
             className={`input-default pl-10 ${
-              errors.password ? "border-red-500" : ""
+              errors.password ? "border-red-500" : "dark:border-gray-600"
             }`}
             placeholder="최소 8자 이상"
             required
@@ -123,7 +133,7 @@ export default function CCSignUpForm() {
           <button
             type="button"
             onClick={() => setShowPassword(!showPassword)}
-            className="absolute right-3 top-3 text-gray-400 hover:text-gray-600"
+            className="absolute right-3 top-3 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
           >
             {showPassword ? (
               <EyeOff className="h-4 w-4 cursor-pointer" />
@@ -139,11 +149,14 @@ export default function CCSignUpForm() {
 
       {/* 비밀번호 확인 */}
       <div className="space-y-2">
-        <label htmlFor="confirmPassword" className="font-medium text-gray-700">
+        <label
+          htmlFor="confirmPassword"
+          className="font-medium text-gray-700 dark:text-gray-200"
+        >
           비밀번호 확인
         </label>
         <div className="relative mt-1">
-          <LockSVG className="absolute left-3 top-3 h-4 w-4 stroke-gray-400" />
+          <LockSVG className="absolute left-3 top-3 h-4 w-4 stroke-gray-400 dark:stroke-cert-red" />
           <input
             id="confirmPassword"
             name="confirmPassword"
@@ -151,7 +164,9 @@ export default function CCSignUpForm() {
             value={signupFormData.confirmPassword}
             onChange={handleInputChange}
             className={`input-default pl-10 ${
-              errors.confirmPassword || !isSamePassword ? "border-red-500" : ""
+              errors.confirmPassword || !isSamePassword
+                ? "border-red-500"
+                : "dark:border-gray-600"
             }`}
             placeholder="비밀번호를 다시 입력하세요"
             required
@@ -159,7 +174,7 @@ export default function CCSignUpForm() {
           <button
             type="button"
             onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-            className="absolute right-3 top-3 text-gray-400 hover:text-gray-600"
+            className="absolute right-3 top-3 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
           >
             {showConfirmPassword ? (
               <EyeOff className="h-4 w-4 cursor-pointer" />
@@ -178,11 +193,14 @@ export default function CCSignUpForm() {
 
       {/* 학번 */}
       <div className="space-y-2">
-        <label htmlFor="studentId" className="font-medium text-gray-700">
+        <label
+          htmlFor="studentId"
+          className="font-medium text-gray-700 dark:text-gray-200"
+        >
           학번
         </label>
         <div className="relative mt-1">
-          <IdCard className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+          <IdCard className="absolute left-3 top-3 h-4 w-4 text-gray-400 dark:stroke-cert-red" />
           <input
             id="studentId"
             name="studentId"
@@ -190,7 +208,7 @@ export default function CCSignUpForm() {
             value={signupFormData.studentId}
             onChange={handleInputChange}
             className={`input-default pl-10 ${
-              errors.studentId ? "border-red-500" : ""
+              errors.studentId ? "border-red-500" : "dark:border-gray-600"
             }`}
             placeholder="2024123456"
             required
@@ -201,24 +219,28 @@ export default function CCSignUpForm() {
         )}
       </div>
 
-      {/* 학년, 성별 (한 줄에 나란히) */}
+      {/* 학년, 성별 */}
       <div className="grid grid-cols-2 gap-4 ">
         {/* 학년 */}
         <div className="space-y-2">
-          <label className="font-medium text-gray-700">학년</label>
+          <label className="font-medium text-gray-700 dark:text-gray-200">
+            학년
+          </label>
           <div className="relative mt-1" ref={gradeDropdownRef}>
             <button
               type="button"
               onClick={() => setGradeDropdownOpen(!gradeDropdownOpen)}
               className={`input-default  px-3 py-2 text-sm text-left flex items-center justify-between cursor-pointer ${
-                errors.grade ? "border-red-500" : ""
+                errors.grade ? "border-red-500" : "dark:border-gray-600"
               }`}
             >
               <div className="flex items-center">
-                <GraduationCap className="h-4 w-4 text-gray-400 mr-2" />
+                <GraduationCap className="h-4 w-4 text-gray-400 dark:stroke-cert-red mr-2" />
                 <span
                   className={
-                    signupFormData.grade ? "text-gray-900" : "text-gray-400"
+                    signupFormData.grade
+                      ? "text-gray-900 dark:text-gray-200"
+                      : "text-gray-400"
                   }
                 >
                   {selectedGradeLabel}
@@ -231,13 +253,13 @@ export default function CCSignUpForm() {
               />
             </button>
             {gradeDropdownOpen && (
-              <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg">
+              <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg dark:bg-gray-800 dark:border-gray-600 dark:text-gray-200">
                 {membersGradeCategories.map((grade) => (
                   <button
                     key={grade}
                     type="button"
                     onClick={() => selectGrade(grade)}
-                    className="w-full px-3 py-2 text-sm text-left text-gray-900 hover:bg-gray-100 first:rounded-t-md last:rounded-b-md cursor-pointer"
+                    className="w-full px-3 py-2 text-sm text-left text-gray-900 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-cert-red first:rounded-t-md last:rounded-b-md cursor-pointer"
                   >
                     {grade}
                   </button>
@@ -252,20 +274,24 @@ export default function CCSignUpForm() {
 
         {/* 성별 */}
         <div className="space-y-2">
-          <label className="font-medium text-gray-700">성별</label>
+          <label className="font-medium text-gray-700 dark:text-gray-200">
+            성별
+          </label>
           <div className="relative mt-1" ref={genderDropdownRef}>
             <button
               type="button"
               onClick={() => setGenderDropdownOpen(!genderDropdownOpen)}
               className={`input-default px-3 py-2 text-sm text-left flex items-center justify-between cursor-pointer ${
-                errors.gender ? "border-red-500" : ""
+                errors.gender ? "border-red-500" : "dark:border-gray-600"
               }`}
             >
               <div className="flex items-center">
-                <User className="h-4 w-4 text-gray-400 mr-2" />
+                <User className="h-4 w-4 text-gray-400 dark:stroke-cert-red mr-2" />
                 <span
                   className={
-                    signupFormData.gender ? "text-gray-900" : "text-gray-400"
+                    signupFormData.gender
+                      ? "text-gray-900 dark:text-gray-200"
+                      : "text-gray-400"
                   }
                 >
                   {selectedGenderLabel}
@@ -278,13 +304,13 @@ export default function CCSignUpForm() {
               />
             </button>
             {genderDropdownOpen && (
-              <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg">
+              <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg dark:bg-gray-800 dark:border-gray-600 dark:text-gray-200">
                 {GENDER_OPTIONS.map((gender) => (
                   <button
                     key={gender}
                     type="button"
                     onClick={() => selectGender(gender)}
-                    className="w-full px-3 py-2 text-sm text-left text-gray-900 hover:bg-gray-100 first:rounded-t-md last:rounded-b-md cursor-pointer"
+                    className="w-full px-3 py-2 text-sm text-left text-gray-900 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-cert-red first:rounded-t-md last:rounded-b-md cursor-pointer"
                   >
                     {gender}
                   </button>
@@ -300,11 +326,14 @@ export default function CCSignUpForm() {
 
       {/* 생년월일 */}
       <div className="space-y-2">
-        <label htmlFor="birthDate" className="font-medium text-gray-700">
+        <label
+          htmlFor="birthDate"
+          className="font-medium text-gray-700 dark:text-gray-200"
+        >
           생년월일
         </label>
         <div className="relative mt-1">
-          <Calendar className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+          <Calendar className="absolute left-3 top-3 h-4 w-4 text-gray-400 dark:stroke-cert-red" />
           <input
             id="birthDate"
             name="birthDate"
@@ -312,7 +341,9 @@ export default function CCSignUpForm() {
             value={signupFormData.birthDate}
             onChange={handleInputChange}
             className={`h-10 pl-10  w-full rounded-md border border-gray-300 text-gray-900 bg-white px-3 py-2 text-sm focus:border-cert-red focus:outline-none cursor-pointer ${
-              errors.birthDate ? "border-red-500" : ""
+              errors.birthDate
+                ? "border-red-500"
+                : "dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200"
             }`}
             required
           />
@@ -324,11 +355,14 @@ export default function CCSignUpForm() {
 
       {/* 전화번호 */}
       <div className="space-y-2">
-        <label htmlFor="phone" className="font-medium text-gray-700">
+        <label
+          htmlFor="phone"
+          className="font-medium text-gray-700 dark:text-gray-200"
+        >
           전화번호
         </label>
         <div className="relative mt-1">
-          <Phone className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+          <Phone className="absolute left-3 top-3 h-4 w-4 text-gray-400 dark:stroke-cert-red" />
           <input
             id="phone"
             name="phone"
@@ -336,7 +370,7 @@ export default function CCSignUpForm() {
             value={signupFormData.phone}
             onChange={handleInputChange}
             className={`input-default pl-10 ${
-              errors.phone ? "border-red-500" : ""
+              errors.phone ? "border-red-500" : "dark:border-gray-600"
             }`}
             placeholder="010-1234-5678"
             required
@@ -347,11 +381,14 @@ export default function CCSignUpForm() {
 
       {/* 이메일 */}
       <div className="space-y-2">
-        <label htmlFor="email" className="font-medium text-gray-700">
+        <label
+          htmlFor="email"
+          className="font-medium text-gray-700 dark:text-gray-200"
+        >
           이메일
         </label>
         <div className="relative mt-1">
-          <Mail className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+          <Mail className="absolute left-3 top-3 h-4 w-4 text-gray-400 dark:stroke-cert-red" />
           <input
             id="email"
             name="email"
@@ -359,7 +396,7 @@ export default function CCSignUpForm() {
             value={signupFormData.email}
             onChange={handleInputChange}
             className={`input-default pl-10 ${
-              errors.email ? "border-red-500" : ""
+              errors.email ? "border-red-500" : "dark:border-gray-600"
             }`}
             placeholder="example@gmail.com"
             required
@@ -370,11 +407,14 @@ export default function CCSignUpForm() {
 
       {/* 전공 */}
       <div className="space-y-2 pb-6">
-        <label htmlFor="major" className="font-medium text-gray-700">
+        <label
+          htmlFor="major"
+          className="font-medium text-gray-700 dark:text-gray-200"
+        >
           전공
         </label>
         <div className="relative mt-1">
-          <GraduationCap className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+          <GraduationCap className="absolute left-3 top-3 h-4 w-4 text-gray-400 dark:stroke-cert-red" />
           <input
             id="major"
             name="major"
@@ -382,7 +422,7 @@ export default function CCSignUpForm() {
             value={signupFormData.major}
             onChange={handleInputChange}
             className={`input-default pl-10 ${
-              errors.major ? "border-red-500" : ""
+              errors.major ? "border-red-500" : "dark:border-gray-600"
             }`}
             placeholder="예: 컴퓨터공학과"
             required

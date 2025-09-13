@@ -314,9 +314,9 @@ export default async function SCStudyContent({
       <div className="mb-8">
         {/* 검색 결과 요약 */}
         <div className="mb-6">
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-gray-600 dark:text-gray-300">
             총{" "}
-            <span className="font-semibold text-gray-900">
+            <span className="font-semibold text-gray-900 dark:text-gray-200">
               {filteredMaterials.length}
             </span>
             개의 학습 자료가 있습니다.
@@ -340,7 +340,7 @@ export default async function SCStudyContent({
 
             return (
               <Link href={`/study/${material.id}`} key={material.id}>
-                <div key={material.id} className="card-list bg-white p-6">
+                <div key={material.id} className="card-list p-6 dark-default">
                   {/* 상태 및 날짜 정보 */}
                   <div className="flex flex-wrap gap-2 mb-3 items-center justify-between">
                     <div className="flex items-center gap-2">
@@ -361,10 +361,10 @@ export default async function SCStudyContent({
                   </div>
 
                   {/* 제목 및 설명 */}
-                  <h3 className="text-xl font-bold text-gray-900 mb-2">
+                  <h3 className="text-xl font-bold text-gray-900 mb-2 dark:text-gray-200">
                     {material.title}
                   </h3>
-                  <p className="text-gray-600 text-sm leading-relaxed mb-4">
+                  <p className="text-gray-600 text-sm leading-relaxed mb-4 dark:text-gray-300">
                     {material.description}
                   </p>
 
@@ -388,7 +388,7 @@ export default async function SCStudyContent({
 
                   {/* 파일 목록 */}
                   <div className="space-y-2 mb-4">
-                    <h4 className="text-sm font-medium text-gray-900 flex items-center gap-2">
+                    <h4 className="text-sm font-medium text-gray-900 flex items-center gap-2 dark:text-gray-200">
                       <svg
                         className="w-4 h-4"
                         fill="none"
@@ -407,15 +407,15 @@ export default async function SCStudyContent({
                     {material.attachedFiles?.map((file, index) => (
                       <div
                         key={index}
-                        className="flex items-center justify-between bg-gray-50 rounded-lg p-3"
+                        className="flex items-center justify-between rounded-lg p-3 dark-default bg-gray-50 dark:bg-gray-700"
                       >
                         <div className="flex items-center gap-3">
                           <PdfSVG className="w-5 h-5 text-red-500" />
                           <div>
-                            <p className="text-sm font-medium text-gray-900">
+                            <p className="text-sm font-medium text-gray-900 dark:text-gray-300">
                               {file.name}
                             </p>
-                            <p className="text-xs text-gray-500">
+                            <p className="text-xs text-gray-500 dark:text-gray-400">
                               {formatFileSize(file.size)}
                             </p>
                           </div>
@@ -433,7 +433,7 @@ export default async function SCStudyContent({
                           />
 
                           <button type="submit">
-                            <DownloadGraySVG className="text-gray-400 hover:text-gray-600" />
+                            <DownloadGraySVG className="text-gray-400 hover:text-gray-600 dark:text-gray-400" />
                           </button>
                         </form>
                       </div>
@@ -443,8 +443,10 @@ export default async function SCStudyContent({
                   {/* 참가 인원 Progress 바 */}
                   <div className="mb-4">
                     <div className="flex justify-between items-center mb-2">
-                      <span className="text-sm text-gray-600">참가자</span>
-                      <span className="text-sm font-medium text-gray-900">
+                      <span className="text-sm text-gray-600  dark:text-gray-300">
+                        참가자
+                      </span>
+                      <span className="text-sm font-medium text-gray-900 dark:text-gray-300">
                         {material.currentParticipants}/
                         {material.maxParticipants}
                       </span>
@@ -458,13 +460,13 @@ export default async function SCStudyContent({
                         }}
                       />
                     </div>
-                    <span className="text-xs text-gray-500 mt-1 block">
+                    <span className="text-xs text-gray-500 mt-1 block dark:text-gray-400">
                       {participationRate}%
                     </span>
                   </div>
 
                   {/* 작성자 및 참가하기 버튼 */}
-                  <div className="flex items-center justify-between pt-4 border-t border-gray-100">
+                  <div className="flex items-center justify-between pt-4 border-t border-gray-100 dark:border-gray-700">
                     <div className="flex items-center gap-2">
                       <span
                         className={`px-2 py-1 rounded text-xs font-medium ${
@@ -475,7 +477,7 @@ export default async function SCStudyContent({
                       >
                         {AUTHOR_STATUS_LABELS[material.authorStatus]}
                       </span>
-                      <span className="text-sm text-gray-500">
+                      <span className="text-sm text-gray-500 dark:text-gray-300">
                         {material.author}
                       </span>
                     </div>

@@ -98,9 +98,8 @@ export default async function ProjectDetailPage({
   if (!project) {
     notFound();
   }
-
   return (
-    <div className="mx-auto max-w-full bg-white">
+    <div className="mx-auto max-w-full">
       {/* 뒤로가기 버튼 */}
       <BackToListButton currentUrl="project" />
       <article>
@@ -133,13 +132,14 @@ export default async function ProjectDetailPage({
         </div>
 
         {/* 헤더 */}
-        <header className=" border-b pb-6">
-          <h1 className="text-4xl font-extrabold tracking-tight text-gray-900 sm:text-5xl mb-4">
+        <header className="border-b pb-6 dark:border-gray-700">
+          <h1 className="text-4xl font-extrabold tracking-tight text-gray-900 sm:text-5xl mb-4 dark:text-gray-200">
             {project.title}
           </h1>
 
-          <div className="flex items-center gap-6 text-sm text-gray-500 mb-6">
-            <div className="flex items-center gap-2">
+          <div className="flex flex-wrap gap-6 text-sm text-gray-500 mb-6 dark:text-gray-400">
+            {/* authorStatus + author */}
+            <div className="flex flex-col sm:flex-row sm:items-center sm:gap-2">
               <span
                 className={`px-2 py-1 rounded text-xs font-medium ${
                   project.authorStatus === "student"
@@ -151,32 +151,43 @@ export default async function ProjectDetailPage({
               >
                 {AUTHOR_STATUS_LABELS[project.authorStatus]}
               </span>
-              <span>{project.author}</span>
+              <span className="ml-1 sm:ml-0">{project.author}</span>
             </div>
-            <span>
-              <strong>학기:</strong> {project.semester}
-            </span>
-            <span>
-              <strong>카테고리:</strong> {project.category}
-            </span>
-            <span>
-              <strong>하위 카테고리:</strong> {project.subCategory}
-            </span>
+
+            {/* 학기 */}
+            <div className="flex flex-col sm:flex-row sm:items-center sm:gap-2">
+              <strong>학기:</strong>
+              <span>{project.semester}</span>
+            </div>
+
+            {/* 카테고리 */}
+            <div className="flex flex-col sm:flex-row sm:items-center sm:gap-2">
+              <strong>카테고리:</strong>
+              <span>{project.category}</span>
+            </div>
+
+            {/* 하위 카테고리 */}
+            <div className="flex flex-col sm:flex-row sm:items-center sm:gap-2">
+              <strong>하위 카테고리:</strong>
+              <span>{project.subCategory}</span>
+            </div>
           </div>
 
           {/* 프로젝트 기간 및 참가 정보 */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 bg-gray-100 rounded-lg">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 bg-gray-100 rounded-lg dark:bg-gray-800">
             <div>
-              <h4 className="font-semibold text-gray-700 mb-1">
+              <h4 className="font-semibold text-gray-700 mb-1 dark:text-gray-300">
                 프로젝트 기간
               </h4>
-              <p className="text-sm text-gray-600">
+              <p className="text-sm text-gray-600 dark:text-gray-400">
                 {project.startDate} {project.endDate && `~ ${project.endDate}`}
               </p>
             </div>
             <div>
-              <h4 className="font-semibold text-gray-700 mb-1">참가 인원</h4>
-              <p className="text-sm text-gray-600">
+              <h4 className="font-semibold text-gray-700 mb-1 dark:text-gray-300">
+                참가 인원
+              </h4>
+              <p className="text-sm text-gray-600 dark:text-gray-400">
                 {project.currentParticipants} / {project.maxParticipants}명
               </p>
             </div>
@@ -184,27 +195,30 @@ export default async function ProjectDetailPage({
         </header>
 
         {/* 본문 */}
-        <div className="mt-16  max-w-none mb-8">
-          <div className="flex items-center justify-between mb-4  ">
+        <div className="mt-16 max-w-none mb-8">
+          <div className="flex items-center justify-between mb-4">
             <h2 className="text-3xl font-bold">프로젝트 소개</h2>
             <KebabMenu currentId={id} currentUrl="project" />
           </div>
           <p className="text-lg leading-relaxed">{project.description}</p>
         </div>
 
-        {/* 액션 버튼들 */}
-        <div className="flex justify-between items-center gap-4 mb-8">
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-8">
           {/* 왼쪽 버튼 그룹 */}
-          <div className="flex gap-4">
+          <div className="flex flex-row flex-wrap gap-2 sm:gap-4 w-full sm:w-auto">
             {project.githubUrl && (
               <a
                 href={project.githubUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-4 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors"
+                className="inline-flex items-center justify-center gap-2 
+                   px-2.5 sm:px-4 py-1.5 sm:py-2 
+                   bg-gray-900 text-white rounded-md
+                   hover:bg-gray-800 transition-colors 
+                   text-md sm:text-base"
               >
                 <svg
-                  className="w-5 h-5"
+                  className="hidden sm:inline-block w-5 h-5"
                   fill="currentColor"
                   viewBox="0 0 20 20"
                 >
@@ -223,10 +237,14 @@ export default async function ProjectDetailPage({
                 href={project.demoUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                className="inline-flex items-center justify-center gap-2 
+                   px-2.5 sm:px-4 py-1.5 sm:py-2 
+                   bg-blue-600 text-white rounded-md
+                   hover:bg-blue-700 transition-colors 
+                   text-md sm:text-base"
               >
                 <svg
-                  className="w-5 h-5"
+                  className="hidden sm:inline-block w-5 h-5"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -242,12 +260,16 @@ export default async function ProjectDetailPage({
               </a>
             )}
 
-            <button className="action-button inline-flex rounded-lg items-center gap-2 px-6 py-2">
+            <button
+              className="action-button inline-flex items-center justify-center gap-2 
+                 px-2.5 sm:px-6 py-1.5 sm:py-2 
+                 text-md sm:text-base"
+            >
               프로젝트 참가하기
             </button>
           </div>
 
-          {/* 오른쪽 끝 버튼 */}
+          {/* 종료 버튼 */}
           <span>
             <EndRequestButton id={project.id} />
           </span>
@@ -260,31 +282,33 @@ export default async function ProjectDetailPage({
           </div>
         )}
 
-        {/* 외부 문서/링크 섹션 */}
-        {project.externalLinks && project.externalLinks.length > 0 && (
-          <div className="mb-8 flex justify-between">
-            <div className="flex flex-wrap gap-3">
+        {/* 외부 문서/링크 + 공유하기 */}
+        <div className="flex flex-col sm:flex-row sm:justify-between gap-3">
+          {project.externalLinks && project.externalLinks.length > 0 && (
+            <div className="flex flex-row flex-wrap gap-2 sm:gap-3">
               {project.externalLinks.map((link, idx) => (
                 <a
                   key={idx}
                   href={link.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-blue-100 transition-colors border border-gray-200"
+                  className="inline-flex items-center justify-center gap-2 px-2.5 py-2 sm:px-4 sm:py-2
+                     bg-gray-100 text-gray-700 rounded-lg hover:bg-blue-100 transition-colors
+                     border border-gray-200 dark:bg-gray-600 dark:border-gray-500
+                     dark:text-gray-200 dark:hover:bg-gray-700 text-sm sm:text-base"
                 >
                   {getExternalLinkIcon(link.type)}
                   <span className="font-medium">{link.label}</span>
                 </a>
               ))}
             </div>
-            <ShareButton></ShareButton>
-          </div>
-        )}
-        <MeetingMinutes
-          studyId={"1"} // 임시로 ID 설정, 실제로는 params에서 받아와야 함 현재 스터디 ID를 나타내는 ID
-          currentUserId={1} // 임시로 현재 사용자 ID 설정, 실제로는 로그인 정보에서 받아와야 함
-          studyLeaderId={1} // 임시로 스터디 리더 ID 설정, 실제로는 스터디 데이터에서 받아와야 함
-        />
+          )}
+        </div>
+        <div className="flex justify-end mb-8 ">
+          <ShareButton />
+        </div>
+
+        <MeetingMinutes studyId={"1"} currentUserId={1} studyLeaderId={1} />
       </article>
     </div>
   );

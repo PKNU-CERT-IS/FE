@@ -45,17 +45,17 @@ export default function CCCreateDropdown() {
       </DefaultButton>
 
       {isOpen && (
-        <div className="absolute right-0 top-full mt-1 w-full bg-white border border-gray-300 rounded-lg shadow-lg z-20">
+        <div className="absolute right-0 top-full mt-1 w-full bg-white border border-gray-300 rounded-lg shadow-lg z-20 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-200">
           <Link
             href="/study/write"
-            className="w-full px-4 py-2 text-left text-gray-900 first:rounded-t-lg text-sm hover:bg-cert-red hover:text-white duration-100 hover:rounded-md items-center gap-2 flex"
+            className="w-full px-4 py-2 text-left text-gray-900 dark:text-gray-200 first:rounded-t-lg text-sm hover:bg-cert-red hover:text-white dark:hover:bg-cert-red dark:hover:text-white duration-100 hover:rounded-md items-center gap-2 flex cursor-pointer"
             onClick={closeDropdown}
           >
             스터디 생성
           </Link>
           <Link
             href="/project/write"
-            className="w-full px-4 py-2 text-left text-gray-900 last:rounded-b-lg text-sm hover:bg-cert-red hover:text-white duration-100 hover:rounded-md items-center gap-2 flex"
+            className="w-full px-4 py-2 text-left text-gray-900 dark:text-gray-200 last:rounded-b-lg text-sm hover:bg-cert-red hover:text-white dark:hover:bg-cert-red dark:hover:text-white duration-100 hover:rounded-md items-center gap-2 flex cursor-pointer"
             onClick={closeDropdown}
           >
             프로젝트 생성

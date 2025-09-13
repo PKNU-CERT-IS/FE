@@ -53,7 +53,7 @@ export default async function SCScheduleList({
 
   return (
     <div id={id} className="my-12">
-      <h2 className="text-2xl font-bold text-gray-900 mb-6">{`${month}월 전체 일정`}</h2>
+      <h2 className="text-2xl font-bold text-gray-900 mb-6 dark:text-gray-200">{`${month}월 전체 일정`}</h2>
 
       {filteredSchedules.length === 0 ? (
         <div className="text-center text-gray-500 text-lg py-5">
@@ -64,17 +64,17 @@ export default async function SCScheduleList({
           {filteredSchedules.map((schedule) => (
             <div
               key={schedule.id}
-              className="card-list text-card-foreground bg-white rounded-xl border shadow-sm cursor-default"
+              className="card-list rounded-xl border shadow-sm cursor-default dark:bg-gray-800 dark:border-gray-700"
             >
               <div className="flex flex-col space-y-1.5 p-6">
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
-                    <p className="text-md font-semibold text-gray-700 mb-3">
+                    <p className="text-md font-semibold text-gray-700 mb-3 dark:text-gray-200">
                       {schedule.title}
                     </p>
-                    <div className="space-y-2 text-sm text-gray-600">
+                    <div className="space-y-2 text-sm text-gray-600  dark:text-gray-300">
                       <div className="flex items-center">
-                        <ScheduleSVG className="w-4 mr-2 stroke-gray-600" />
+                        <ScheduleSVG className="w-4 mr-2 stroke-gray-600  dark:stroke-gray-300" />
                         {formatDate(schedule.started_at, "dot")}
                       </div>
                       <div className="flex items-center">

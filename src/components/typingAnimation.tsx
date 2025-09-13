@@ -9,7 +9,7 @@ export default function TypingAnimation() {
   );
 
   return (
-    <div className="h-12 text-lg sm:text-xl text-gray-600 whitespace-pre-line text-center font-mono">
+    <div className="h-12 text-lg sm:text-xl text-gray-600 whitespace-pre-line text-center font-mono dark:text-gray-200">
       <div className="animate-pulse">
         {firstText}
         {cursorLine === "firstCursorLine" && (

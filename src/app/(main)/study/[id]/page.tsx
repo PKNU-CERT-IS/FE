@@ -70,22 +70,21 @@ export default async function StudyMaterialDetailPage({
 
   return (
     <div>
-      {/* Header */}
       <div className="space-y-6">
         <BackToListButton currentUrl={"study"} />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8  mt-6">
-        {/* Main Content */}
         <div className="lg:col-span-2  space-y-6">
-          {/* Study Material Info Card */}
           <div className="bg-white dark:bg-gray-800 p-1 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
-            <div className="p-6 pb-0 ">
-              <div className="flex items-start  justify-between mb-4">
-                <div className="space-y-2 ">
-                  <h1 className="text-2xl font-bold  text-black dark:text-white">
+            <div className="p-6 pb-0">
+              <div className="flex items-start justify-between mb-4">
+                <div className="flex-1 space-y-2">
+                  <h1 className="text-2xl font-bold text-black dark:text-white">
                     {studyData.title}
                   </h1>
+
+                  {/* 상태 배지 */}
                   <div className="flex items-center gap-2">
                     <DefaultBadge
                       variant="custom"
@@ -105,16 +104,20 @@ export default async function StudyMaterialDetailPage({
                           : `D+${Math.abs(dDay)}`}
                       </DefaultBadge>
                     )}
+                    {/* 모바일일때 참가 버튼 */}
+                    <button className="px-4 py-2 action-button sm:hidden ml-auto">
+                      참가하기
+                    </button>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
-                  <button className="px-4 py-2 action-button">
+                  {/* 데스크톱 버튼*/}
+                  <button className="hidden sm:inline-block px-4 py-2 action-button">
                     스터디 참가하기
                   </button>
-                  <KebabMenu
-                    currentId={studyData.id}
-                    currentUrl={"study"}
-                  ></KebabMenu>
+
+                  {/* 케밥은 항상 표시 */}
+                  <KebabMenu currentId={studyData.id} currentUrl={"study"} />
                 </div>
               </div>
             </div>
@@ -122,7 +125,7 @@ export default async function StudyMaterialDetailPage({
             <div className="p-6 space-y-6">
               {/* Basic Description + Detail Content */}
               <div className="space-y-4">
-                <p className="text-black dark:text-gray-300 leading-relaxed border-b border-gray-200 pb-6">
+                <p className="text-black dark:text-gray-300 leading-relaxed border-b border-gray-200 pb-6 dark:border-gray-700">
                   {studyData.description}
                 </p>
                 <MarkdownRenderer content={studyData.detailContent} />
@@ -158,8 +161,8 @@ export default async function StudyMaterialDetailPage({
               </div>
               {studyData.attachedFiles &&
                 studyData.attachedFiles.length > 0 && (
-                  <div className="border-t border-gray-300 pt-6 mb-6">
-                    <h4 className="font-medium text-gray-900 mb-4 flex items-center gap-2">
+                  <div className="border-t border-gray-300 pt-6 mb-6 dark:border-gray-700">
+                    <h4 className="font-medium text-gray-900 mb-4 flex items-center gap-2 dark:text-gray-200">
                       <Download className="w-4 h-4" />
                       첨부파일 ({studyData.attachedFiles.length})
                     </h4>
@@ -167,16 +170,16 @@ export default async function StudyMaterialDetailPage({
                       {studyData.attachedFiles.map((file, index) => (
                         <div
                           key={index}
-                          className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg"
+                          className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg dark:bg-gray-700"
                         >
                           <span className="text-2xl">
                             {getFileIcon(file.type)}
                           </span>
                           <div className="flex-1">
-                            <p className="font-medium text-gray-900">
+                            <p className="font-medium text-gray-900 dark:text-gray-200">
                               {file.name}
                             </p>
-                            <p className="text-sm text-gray-500">
+                            <p className="text-sm text-gray-500 dark:text-gray-400">
                               {formatFileSize(file.size)}
                             </p>
                           </div>
@@ -187,12 +190,12 @@ export default async function StudyMaterialDetailPage({
                   </div>
                 )}
               {/* 공유하기 버튼 */}
-              <div className="flex justify-between p-1  pt-6 border-t border-gray-300">
+              <div className="flex justify-between p-1  pt-6 border-t border-gray-300 dark:border-gray-700">
                 <div className="flex flex-wrap gap-2 justify-center items-center">
-                  <DefaultBadge className="bg-gray-100 h-6 border border-gray-200 text-gray-700">
+                  <DefaultBadge className="bg-gray-100 h-6 border border-gray-200 text-gray-700 dark:bg-gray-600 dark:border-gray-500 dark:text-gray-200">
                     {studyData.category}
                   </DefaultBadge>
-                  <DefaultBadge className="h-6 bg-gray-100 border border-gray-200 text-gray-700">
+                  <DefaultBadge className="bg-gray-100 h-6 border border-gray-200 text-gray-700 dark:bg-gray-600 dark:border-gray-500 dark:text-gray-200">
                     {studyData.subCategory}
                   </DefaultBadge>
                 </div>

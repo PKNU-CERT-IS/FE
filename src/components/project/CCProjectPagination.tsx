@@ -77,7 +77,7 @@ export default function ProjectPagination({
         {currentPage > 1 ? (
           <Link href={createPageUrl(currentPage - 1)}>
             <div
-              className="p-2 rounded-md transition-all duration-200 text-gray-700 hover:bg-gray-100"
+              className="p-2 rounded-md transition-all duration-200 text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700/40"
               title="이전 페이지"
             >
               <ChevronLeft className="w-4 h-4" />
@@ -85,7 +85,7 @@ export default function ProjectPagination({
           </Link>
         ) : (
           <div
-            className="p-2 rounded-md transition-all duration-200 text-gray-400 cursor-not-allowed"
+            className="p-2 rounded-md transition-all duration-200 text-gray-400 cursor-not-allowed dark:text-gray-600"
             title="이전 페이지"
           >
             <ChevronLeft className="w-4 h-4" />
@@ -98,7 +98,7 @@ export default function ProjectPagination({
             return (
               <span
                 key={`ellipsis-${index}`}
-                className="w-10 h-10 flex items-center justify-center text-gray-500 text-sm"
+                className="w-10 h-10 flex items-center justify-center text-gray-500 text-sm dark:text-gray-400"
               >
                 ...
               </span>
@@ -116,7 +116,7 @@ export default function ProjectPagination({
             </div>
           ) : (
             <Link key={pageNumber} href={createPageUrl(pageNumber)}>
-              <div className="w-10 h-10 text-sm font-medium flex items-center justify-center rounded-md border border-gray-300 text-gray-700 bg-white hover:bg-gray-100 transition-colors">
+              <div className="w-10 h-10 text-sm font-medium flex items-center justify-center rounded-md border border-gray-300 text-gray-700 hover:bg-gray-100 transition-colors dark-default dark:border-gray-700 dark:hover:bg-gray-600 dark:text-gray-500">
                 {pageNumber}
               </div>
             </Link>
@@ -127,7 +127,7 @@ export default function ProjectPagination({
         {currentPage < totalPages ? (
           <Link href={createPageUrl(currentPage + 1)}>
             <div
-              className="p-2 rounded-md transition-all duration-200 text-gray-700 hover:bg-gray-100"
+              className="p-2 rounded-md transition-all duration-200 text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700/40"
               title="다음 페이지"
             >
               <ChevronRight className="w-4 h-4" />
@@ -135,7 +135,7 @@ export default function ProjectPagination({
           </Link>
         ) : (
           <div
-            className="p-2 rounded-md transition-all duration-200 text-gray-400 cursor-not-allowed"
+            className="p-2 rounded-md transition-all duration-200 text-gray-400 cursor-not-allowed dark:text-gray-600"
             title="다음 페이지"
           >
             <ChevronRight className="w-4 h-4" />

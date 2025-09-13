@@ -15,7 +15,6 @@ import {
   FileBarChart,
   Presentation,
   Folder,
-  Info,
   CheckCircle2,
   DownloadCloud,
   ChevronDown,
@@ -174,12 +173,12 @@ export default function AttachedFilesDownload({
   };
 
   return (
-    <div className="bg-white border rounded-lg border-gray-200 shadow-xs">
+    <div className=" border rounded-lg shadow-xs dark-default">
       {/* 헤더 (토글 영역) */}
       <div className="flex items-center justify-between py-4 px-6">
         <div className="flex items-center gap-3">
-          <Folder className="w-6 h-6 text-gray-600" />
-          <h3 className="text-xl font-semibold text-gray-900">
+          <Folder className="w-6 h-6 text-gray-600 dark:text-gray-300" />
+          <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-200">
             첨부파일 ({files.length}개)
           </h3>
         </div>
@@ -188,7 +187,7 @@ export default function AttachedFilesDownload({
           <button
             type="button"
             onClick={() => setOpen((v) => !v)}
-            className="inline-flex items-center whitespace-nowrap text-sm text-gray-500 hover:text-gray-900 cursor-pointer"
+            className="inline-flex items-center whitespace-nowrap text-sm text-gray-500 hover:text-gray-900 cursor-pointer dark:text-gray-400 dark:hover:text-gray-500"
             aria-expanded={open}
             aria-controls={panelId}
           >
@@ -205,25 +204,25 @@ export default function AttachedFilesDownload({
         )}
       </div>
 
-      {/* 액션 바 (펼쳐졌을 때만) */}
+      {/* 액션 바 */}
       <div
         className={`px-4 ${open ? "block" : collapsible ? "hidden" : "block"}`}
       >
-        <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center mb-3 sm:mb-4">
           <button
             onClick={toggleAllFiles}
-            className="flex items-center gap-2 px-3 py-1 text-sm text-gray-600 hover:text-cert-red transition-colors"
+            className="flex items-center gap-1.5 px-2.5 py-1 text-xs sm:text-sm text-gray-600 hover:text-cert-red transition-colors"
           >
-            <CheckCircle2 className="w-4 h-4" />
+            <CheckCircle2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             {selectedFiles.length === files.length ? "전체 해제" : "전체 선택"}
           </button>
 
           {selectedFiles.length > 0 && (
             <button
               onClick={downloadSelectedFiles}
-              className="flex items-center action-button gap-2 px-4 py-2 text-sm"
+              className="ml-auto flex items-center action-button gap-1.5 px-2.5 py-1 text-xs sm:px-4 sm:py-2 sm:text-sm"
             >
-              <DownloadCloud className="w-4 h-4" />
+              <DownloadCloud className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               선택한 파일 다운로드 ({selectedFiles.length}개)
             </button>
           )}
@@ -236,9 +235,8 @@ export default function AttachedFilesDownload({
           open || !collapsible ? "max-h-screen" : "max-h-0"
         }`}
       >
-        <div className="px-4 pb-4">
-          {/* 파일 목록 */}
-          <div className="space-y-3">
+        <div className="px-3 sm:px-4 pb-4">
+          <div className="space-y-2 sm:space-y-3">
             {files.map((file) => {
               const isSelected = selectedFiles.includes(file.id);
               const isDownloading = downloadingFiles.includes(file.id);
@@ -246,36 +244,37 @@ export default function AttachedFilesDownload({
               return (
                 <div
                   key={file.id}
-                  className={`border rounded-lg p-4 transition-all ${
+                  className={`border rounded-lg p-3 sm:p-4 transition-all ${
                     isSelected
-                      ? "border-red-200 bg-red-50"
-                      : "border-gray-200 hover:border-gray-300"
+                      ? "border-red-200 bg-red-50 dark:bg-red-500/20 dark:border-red-800"
+                      : "border-gray-200 hover:border-gray-300 dark:bg-gray-700 dark:border-gray-600"
                   }`}
                 >
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-4 flex-1">
+                  <div className="flex items-center justify-between gap-2">
+                    <div className="flex items-center gap-2 sm:gap-4 flex-1 min-w-0">
                       <input
                         type="checkbox"
                         checked={isSelected}
                         onChange={() => toggleFileSelection(file.id)}
-                        className="w-4 h-4 text-cert-red rounded focus:ring-red-500"
+                        className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-cert-red rounded focus:ring-red-500"
                       />
 
+                      {/* 아이콘 */}
                       <div
-                        className={`p-2 rounded-lg border ${getCategoryColor(
+                        className={`p-1.5 sm:p-2 rounded-lg border ${getCategoryColor(
                           file.category
                         )}`}
                       >
                         {getFileIcon(file.category)}
                       </div>
 
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2 mb-1">
-                          <h4 className="font-medium text-gray-900 truncate">
+                      <div className="min-w-0">
+                        <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 min-w-0">
+                          <h4 className="flex-1 min-w-0 font-medium text-sm sm:text-base text-gray-900 break-words dark:text-gray-300">
                             {file.name}
                           </h4>
                           <span
-                            className={`px-2 py-1 rounded-full text-xs font-medium ${getCategoryColor(
+                            className={`px-2 py-0.5 rounded-full text-xs font-medium w-fit ${getCategoryColor(
                               file.category
                             )}`}
                           >
@@ -283,40 +282,27 @@ export default function AttachedFilesDownload({
                           </span>
                         </div>
 
-                        <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500">
+                        <div className="mt-2 flex flex-wrap items-center gap-2 sm:gap-4 text-xs sm:text-sm text-gray-500 dark:text-gray-400">
                           <span>{formatFileSize(file.size)}</span>
                           <span>
                             {new Date(file.uploadDate).toLocaleDateString()}
                           </span>
-                          <span className="text-xs bg-gray-100 px-2 py-1 rounded">
-                            {file.type}
-                          </span>
                         </div>
-
-                        {file.description && (
-                          <div className="mt-2 flex items-start gap-2">
-                            <Info className="w-4 h-4 text-blue-500 mt-0.5 flex-shrink-0" />
-                            <p className="text-sm text-gray-600">
-                              {file.description}
-                            </p>
-                          </div>
-                        )}
                       </div>
                     </div>
 
-                    <div className="flex items-center gap-2">
-                      {/* 미리보기 버튼 필요 시 여기에 조건부 렌더 */}
+                    <div className="flex items-center flex-shrink-0 ml-2 sm:ml-4">
                       <button
                         onClick={() => downloadFile(file)}
                         disabled={isDownloading}
-                        className="flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors disabled:opacity-50 cursor-pointer"
+                        className="flex items-center gap-1.5 sm:gap-2 px-2.5 py-1 sm:px-4 sm:py-2 border border-gray-100 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors disabled:opacity-50 cursor-pointer dark:bg-gray-800 dark:text-gray-200 dark:border-gray-600"
                       >
                         {isDownloading ? (
-                          <div className="w-4 h-4 border-2 border-gray-300 border-t-cert-red rounded-full animate-spin" />
+                          <div className="w-3.5 h-3.5 sm:w-4 sm:h-4 border-2 border-gray-300 border-t-cert-red rounded-full animate-spin" />
                         ) : (
-                          <Download className="w-4 h-4" />
+                          <Download className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                         )}
-                        <span className="text-sm font-medium">
+                        <span className="text-xs sm:text-sm font-medium">
                           {isDownloading ? "다운로드 중..." : "다운로드"}
                         </span>
                       </button>

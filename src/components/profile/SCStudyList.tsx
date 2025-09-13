@@ -52,24 +52,38 @@ export default async function SCStudyList({ searchParams }: SCStudyListProps) {
   return (
     <>
       <div className="space-y-4 mt-8 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
-        <div className="flex items-center justify-between flex-wrap gap-2 sm:flex-row">
-          <h3 className="text-lg font-semibold text-gray-900 transition-colors duration-300">
-            내 스터디/프로젝트 목록
-          </h3>
+        {/* 헤더 */}
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+          {/* 모바일: 제목 + 새 글 작성 버튼 */}
+          <div className="flex w-full items-center justify-between">
+            <h3 className="text-lg font-semibold text-gray-900 transition-colors duration-300 dark:text-gray-200">
+              내 스터디/프로젝트 목록
+            </h3>
+            {/* 모바일 전용 새 글 작성 버튼 */}
+            <div className="sm:hidden">
+              <CCCreateDropdown />
+            </div>
+          </div>
 
-          <div className="flex flex-row items-center gap-4 sm:justify-between justify-center">
-            <CCProfileStudyStatusFilter selectedStatus={selectedStatus} />
-            {/* 새 자료 생성 버튼 -> 드롭다운 통해서 스터디/프로젝트 선택 */}
-            <CCCreateDropdown />
+          {/* 모바일일 때는 아래쪽에서 왼쪽 정렬, 데스크톱은 row 정렬 */}
+          <div className="flex flex-col sm:flex-row sm:items-center sm:gap-4 sm:justify-end w-full">
+            {/* 카테고리 필터 */}
+            <div className="w-full sm:w-auto">
+              <CCProfileStudyStatusFilter selectedStatus={selectedStatus} />
+            </div>
+            {/* 데스크톱 전용 새 글 작성 버튼 */}
+            <div className="hidden sm:block">
+              <CCCreateDropdown />
+            </div>
           </div>
         </div>
 
-        {/* ✅ 필터링된 목록 출력 */}
+        {/* 필터링된 목록 출력 */}
         {filteredMaterials.length > 0 ? (
           filteredMaterials.map((material) => (
             <div
               key={`${material.tab}-${material.id}`}
-              className="card-list text-card-foreground group"
+              className="card-list text-card-foreground group dark-default"
             >
               <Link
                 href={`/${material.tab.toLocaleLowerCase()}/${material.id}`}
@@ -77,14 +91,13 @@ export default async function SCStudyList({ searchParams }: SCStudyListProps) {
                 <div className="flex flex-col space-y-1.5 p-6 pb-4">
                   <div className="flex items-start justify-between">
                     <div>
-                      <div className="font-semibold leading-none tracking-tight text-lg text-gray-900 group-hover:text-cert-red transition-colors cursor-pointer">
+                      <div className="font-semibold leading-none tracking-tight text-lg text-gray-900 group-hover:text-cert-red transition-colors cursor-pointer dark:text-gray-200">
                         {material.title}
                       </div>
-                      <div className="flex items-center gap-4 mt-2 text-sm text-gray-600 transition-colors duration-300">
+                      <div className="flex items-center gap-4 mt-2 text-sm text-gray-600 transition-colors duration-300 dark:text-gray-400">
                         <span>{material.startDate}</span>
                         <DefaultBadge
-                          className={`border-gray-200 text-gray-600
-                          ${getStudyCategoryColor(
+                          className={`border-gray-200 text-gray-600 ${getStudyCategoryColor(
                             material.tab as StudyTabType
                           )}`}
                         >
@@ -116,7 +129,7 @@ export default async function SCStudyList({ searchParams }: SCStudyListProps) {
             </div>
           ))
         ) : (
-          <div className="text-center text-sm text-gray-500 py-8">
+          <div className="text-center text-sm text-gray-500 py-8 dark:text-gray-400">
             해당 상태의 스터디/프로젝트가 없습니다.
           </div>
         )}

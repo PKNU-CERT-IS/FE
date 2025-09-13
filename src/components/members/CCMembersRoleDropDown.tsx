@@ -32,7 +32,7 @@ export default function MembersRoleDropdown() {
       onValueChange={handleRoleChange}
       options={roleOptions}
       placeholder="직책"
-      className="w-32"
+      className="w-full sm:w-32"
       disabled={isPending}
     />
   );
