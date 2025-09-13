@@ -116,9 +116,13 @@ export default function CCProjectFilter({
       <div className="flex flex-col sm:flex-row gap-3 mb-4">
         <CCProjectSearchBar currentSearch={currentFilters.search} />
 
-        <div className="flex flex-row flex-wrap gap-3">
+        {/* 필터 버튼들 */}
+        <div className="grid grid-cols-2 gap-3 sm:flex sm:flex-row sm:flex-wrap">
           {/* 학기 필터 */}
-          <div className="relative sm:min-w-36 min-w-30" ref={semesterRef}>
+          <div
+            className="relative w-full sm:w-auto sm:min-w-36"
+            ref={semesterRef}
+          >
             <DefaultButton
               variant="outline"
               size="default"
@@ -165,7 +169,10 @@ export default function CCProjectFilter({
           </div>
 
           {/* 메인 카테고리 */}
-          <div className="relative sm:min-w-36 min-w-30" ref={categoryRef}>
+          <div
+            className="relative w-full sm:w-auto sm:min-w-36"
+            ref={categoryRef}
+          >
             <DefaultButton
               variant="outline"
               size="default"
@@ -212,12 +219,15 @@ export default function CCProjectFilter({
           </div>
 
           {/* 서브 카테고리 */}
-          <div className="relative sm:min-w-36 min-w-30" ref={subCategoryRef}>
+          <div
+            className="relative w-full sm:w-auto sm:min-w-36"
+            ref={subCategoryRef}
+          >
             <DefaultButton
               variant="outline"
               size="default"
               className={cn(
-                "w-full max-w-36 justify-between text-left font-normal transition-all duration-200 cursor-pointer",
+                "w-full justify-between text-left font-normal transition-all duration-200 cursor-pointer",
                 "bg-white border-gray-300 hover:border-cert-red hover:bg-white hover:text-cert-black",
                 "focus:border-cert-red focus:ring-2 focus:ring-cert-red/20",
                 "dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-800"
@@ -263,7 +273,10 @@ export default function CCProjectFilter({
           </div>
 
           {/* 상태 필터 */}
-          <div className="relative sm:min-w-36 min-w-30" ref={statusRef}>
+          <div
+            className="relative w-full sm:w-auto sm:min-w-36"
+            ref={statusRef}
+          >
             <DefaultButton
               variant="outline"
               size="default"
@@ -310,6 +323,7 @@ export default function CCProjectFilter({
           </div>
         </div>
       </div>
+
       {/* 활성 필터 태그 */}
       <div className="flex flex-wrap gap-2 mt-2">
         {currentFilters.search && (
@@ -348,7 +362,6 @@ export default function CCProjectFilter({
             </button>
           </span>
         )}
-
         {currentFilters.subCategory !== "all" && (
           <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 mb-3 sm:mb-0">
             {currentFilters.subCategory}

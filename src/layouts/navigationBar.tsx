@@ -39,12 +39,12 @@ const NavigationBar = () => {
           </Link>
 
           {/* 데스크탑 메뉴 */}
-          <div className="hidden md:flex flex-row items-center">
+          <div className="hidden md:flex flex-row items-center overflow-x-auto scrollbar-hide whitespace-nowrap">
             <NavBarItems navBarList={navBarList} />
-            <div className="pl-6 ml-2 border-l border-gray-300 dark:border-gray-700">
+            <div className="pl-6 ml-2 border-l border-gray-300 dark:border-gray-700 flex-shrink-0">
               <BugReport className="text-sm" />
             </div>
-            <LoginButton className="text-sm" />
+            <LoginButton className="text-sm flex-shrink-0" />
           </div>
 
           {/* 모바일 메뉴 */}

@@ -32,7 +32,7 @@ export default function MembersGradeDropdown() {
       onValueChange={handleGradeChange}
       options={gradeOptions}
       placeholder="학년"
-      className="w-32"
+      className="w-full sm:w-32"
       disabled={isPending}
     />
   );

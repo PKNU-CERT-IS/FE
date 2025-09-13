@@ -30,22 +30,24 @@ export default function BoardCategory({
   };
 
   return (
-    <div className="flex gap-2 flex-wrap">
-      {boardCategories.map((category) => (
-        <DefaultButton
-          key={category}
-          variant={selectedCategory === category ? "default" : "outline"}
-          size="sm"
-          onClick={() => handleCategoryChange(category)}
-          className={`cursor-pointer ${
-            selectedCategory === category
-              ? "category-filter-active"
-              : "category-filte dark:text-gray-200"
-          }`}
-        >
-          {category}
-        </DefaultButton>
-      ))}
+    <div className="sm:w-auto w-full overflow-x-auto scrollbar-hide">
+      <div className="inline-flex gap-2 sm:flex-wrap">
+        {boardCategories.map((category) => (
+          <DefaultButton
+            key={category}
+            variant={selectedCategory === category ? "default" : "outline"}
+            size="sm"
+            onClick={() => handleCategoryChange(category)}
+            className={`cursor-pointer whitespace-nowrap flex-shrink-0 ${
+              selectedCategory === category
+                ? "category-filter-active"
+                : "category-filte dark:text-gray-200"
+            }`}
+          >
+            {category}
+          </DefaultButton>
+        ))}
+      </div>
     </div>
   );
 }

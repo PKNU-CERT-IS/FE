@@ -69,7 +69,7 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
       {/* 메인 콘텐츠 */}
       <article className="rounded-lg border border-gray-200 overflow-hidden shadow-lg p-4  mt-6 dark:bg-gray-800 dark:border-gray-700">
         {/* 헤더 */}
-        <header className="p-8 border-b border-gray-200 dark:border-gray-700">
+        <header className="p-4 sm:p-6 lg:p-8 border-b border-gray-200 dark:border-gray-700">
           {/* 카테고리와 케밥 메뉴 */}
           <div className="flex items-start justify-between mb-4 ">
             <div>
@@ -83,12 +83,12 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
             <KebabMenuButton currentUrl={"blog"} currentId={blogId} />
           </div>
           {/* 제목 */}
-          <h1 className="text-3xl font-bold text-gray-900 mb-6 leading-tight dark:text-gray-200">
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-6 leading-tight dark:text-gray-200">
             {post.title}
           </h1>
           {/* 요약 */}
           {post.excerpt && (
-            <p className="text-lg text-gray-600 mb-3 leading-relaxed dark:text-gray-300">
+            <p className="text-base sm:text-lg text-gray-600 mb-3 leading-relaxed dark:text-gray-300">
               {post.excerpt}
             </p>
           )}
@@ -96,7 +96,7 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
             <div className="mb-3">
               <Link
                 href={`/${post.reference.type}/${post.reference.referenceId}`}
-                className={`inline-flex items-center px-3 py-1 text-sm font-medium rounded-md transition-colors
+                className={`inline-flex items-center px-2.5 sm:px-3 py-1 text-xs sm:text-sm font-medium rounded-md transition-colors
         ${
           post.reference.type === "study"
             ? "badge-green hover:bg-green-100 hover:text-green-800"
@@ -110,18 +110,18 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
           )}
 
           {/* 메타 정보 */}
-          <div className="flex flex-wrap items-center text-sm text-gray-600 justify-between  dark:text-gray-300">
-            <div className="flex flex-row gap-6">
-              <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center text-xs sm:text-sm text-gray-600 justify-between dark:text-gray-300">
+            <div className="flex flex-row gap-4 sm:gap-6">
+              <div className="flex items-center gap-1.5 sm:gap-2">
                 <User className="w-4 h-4" />
                 <span>{post.author}</span>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1.5 sm:gap-2">
                 <Calendar className="w-4 h-4" />
                 <span>{formatDate(post.createdAt)}</span>
               </div>
               {post.views && (
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-1.5 sm:gap-2">
                   <Eye className="w-4 h-4" />
                   <span>{post.views.toLocaleString()}</span>
                 </div>
@@ -129,8 +129,6 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
             </div>
             <CCPublishedCheckbox postId={post.id} published={post.published} />
           </div>
-          {/* 태그 */}
-          <div className="flex justify-between items-end"></div>
         </header>
 
         {/* 본문 */}

@@ -312,6 +312,17 @@ body {
     @apply bg-yellow-50 text-yellow-600 border-yellow-200 
          dark:bg-yellow-700 dark:text-yellow-200 dark:border-yellow-600;
   }
+
+  /* 스크롤바 숨기기 (Chrome, Safari) */
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* 스크롤바 숨기기 (Firefox, IE) */
+  .scrollbar-hide {
+    -ms-overflow-style: none; /* IE */
+    scrollbar-width: none; /* Firefox */
+  }
 }
 
 @keyframes flyAcross {

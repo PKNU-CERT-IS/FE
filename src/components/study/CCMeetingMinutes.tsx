@@ -248,30 +248,42 @@ export default function MeetingMinutes({
 
   return (
     <div className="rounded-lg border border-gray-200 shadow-lg mt-6 dark-default dark:border-gray-700">
-      {/* 헤더 */}
       <div className="p-6 border-b border-gray-200 dark:border-gray-700">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
           <div>
-            <h2 className="text-xl font-bold text-cert-black dark:text-gray-200">
-              {pageType} 회의록
-            </h2>
-            <div className="mt-1 space-y-1  rounded-lg">
-              <p className="text-sm text-gray-500 dark:text-gray-400">
+            <div className="flex items-center justify-between sm:block">
+              <h2 className="text-xl font-bold text-cert-black dark:text-gray-200">
+                {pageType} 회의록
+              </h2>
+              {/* 모바일 전용 */}
+              {isStudyLeader && (
+                <div className="sm:hidden">
+                  <DefaultButton size="sm" onClick={openModal}>
+                    <Plus className="w-4 h-4 mr-2" />
+                    회의록 추가
+                  </DefaultButton>
+                </div>
+              )}
+            </div>
+
+            <div className="mt-2 space-y-1 text-sm text-gray-500 dark:text-gray-400">
+              <p>
                 • {pageType} 회의록을 작성하고 관리합니다.
                 <br /> • {pageType} 장만 회의록을 추가할 수 있습니다.
-                <br />• 회의록은 회차별로 관리되며 주에 1회 이상 결과물을
+                <br /> • 회의록은 회차별로 관리되며 주에 1회 이상 결과물을
                 작성해주시기 바랍니다.
               </p>
             </div>
           </div>
-          <div>
-            {isStudyLeader && (
+          {/* 데스크톱 전용 */}
+          {isStudyLeader && (
+            <div className="hidden sm:block">
               <DefaultButton size="sm" onClick={openModal}>
                 <Plus className="w-4 h-4 mr-2" />
                 회의록 추가
               </DefaultButton>
-            )}
-          </div>
+            </div>
+          )}
         </div>
       </div>
 

@@ -119,7 +119,7 @@ export default function Calendar() {
             <div
               key={index}
               onClick={() => handleDateClick(day)}
-              className={`relative min-h-[8rem] p-2 border border-gray-100 cursor-pointer transition-all duration-200 hover:bg-gray-100 dark:border-gray-700 dark:hover:bg-gray-700
+              className={`relative min-h-[8rem]  p-2 border border-gray-100 cursor-pointer transition-all duration-200 hover:bg-gray-100 dark:border-gray-700 dark:hover:bg-gray-700
                 ${
                   isCurrentMonth
                     ? "text-gray-900 bg-white dark:bg-gray-800 dark:text-gray-200"

@@ -66,9 +66,13 @@ export default async function MembersPage({ searchParams }: MembersPageProps) {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row gap-4">
         <MembersSearchBar currentSearch={currentSearch} />
-        <div className="flex gap-2 flex-wrap">
-          <MembersGradeDropdown />
-          <MembersRoleDropdown />
+        <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-row">
+          <div className="w-full sm:w-auto">
+            <MembersGradeDropdown />
+          </div>
+          <div className="w-full sm:w-auto">
+            <MembersRoleDropdown />
+          </div>
         </div>
       </div>
 

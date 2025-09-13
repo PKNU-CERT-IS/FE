@@ -70,22 +70,21 @@ export default async function StudyMaterialDetailPage({
 
   return (
     <div>
-      {/* Header */}
       <div className="space-y-6">
         <BackToListButton currentUrl={"study"} />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8  mt-6">
-        {/* Main Content */}
         <div className="lg:col-span-2  space-y-6">
-          {/* Study Material Info Card */}
           <div className="bg-white dark:bg-gray-800 p-1 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
-            <div className="p-6 pb-0 ">
-              <div className="flex items-start  justify-between mb-4">
-                <div className="space-y-2 ">
-                  <h1 className="text-2xl font-bold  text-black dark:text-white">
+            <div className="p-6 pb-0">
+              <div className="flex items-start justify-between mb-4">
+                <div className="flex-1 space-y-2">
+                  <h1 className="text-2xl font-bold text-black dark:text-white">
                     {studyData.title}
                   </h1>
+
+                  {/* 상태 배지 */}
                   <div className="flex items-center gap-2">
                     <DefaultBadge
                       variant="custom"
@@ -105,16 +104,20 @@ export default async function StudyMaterialDetailPage({
                           : `D+${Math.abs(dDay)}`}
                       </DefaultBadge>
                     )}
+                    {/* 모바일일때 참가 버튼 */}
+                    <button className="px-4 py-2 action-button sm:hidden ml-auto">
+                      참가하기
+                    </button>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
-                  <button className="px-4 py-2 action-button">
+                  {/* 데스크톱 버튼*/}
+                  <button className="hidden sm:inline-block px-4 py-2 action-button">
                     스터디 참가하기
                   </button>
-                  <KebabMenu
-                    currentId={studyData.id}
-                    currentUrl={"study"}
-                  ></KebabMenu>
+
+                  {/* 케밥은 항상 표시 */}
+                  <KebabMenu currentId={studyData.id} currentUrl={"study"} />
                 </div>
               </div>
             </div>

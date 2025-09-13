@@ -186,9 +186,12 @@ export default function CCStudyFilter({
         </div>
 
         {/* 필터 버튼들 */}
-        <div className="flex flex-row flex-wrap gap-3">
+        <div className="grid grid-cols-2 sm:flex sm:flex-row sm:flex-wrap gap-3">
           {/* 학기 필터 */}
-          <div className="relative sm:min-w-36 min-w-30" ref={semesterRef}>
+          <div
+            className="relative w-full sm:w-auto sm:min-w-36"
+            ref={semesterRef}
+          >
             <DefaultButton
               variant="outline"
               size="default"
@@ -235,7 +238,10 @@ export default function CCStudyFilter({
           </div>
 
           {/* 메인 카테고리 */}
-          <div className="relative sm:min-w-36 min-w-30" ref={categoryRef}>
+          <div
+            className="relative w-full sm:w-auto sm:min-w-36"
+            ref={categoryRef}
+          >
             <DefaultButton
               variant="outline"
               size="default"
@@ -282,7 +288,10 @@ export default function CCStudyFilter({
           </div>
 
           {/* 서브 카테고리 */}
-          <div className="relative sm:min-w-36 min-w-30" ref={subCategoryRef}>
+          <div
+            className="relative w-full sm:w-auto sm:min-w-36"
+            ref={subCategoryRef}
+          >
             <DefaultButton
               variant="outline"
               size="default"
@@ -332,7 +341,10 @@ export default function CCStudyFilter({
           </div>
 
           {/* 상태 필터 */}
-          <div className="relative sm:min-w-36 min-w-30" ref={statusRef}>
+          <div
+            className="relative w-full sm:w-auto sm:min-w-36"
+            ref={statusRef}
+          >
             <DefaultButton
               variant="outline"
               size="default"
@@ -378,7 +390,8 @@ export default function CCStudyFilter({
           </div>
         </div>
       </div>
-      {/* 활성 필터 태그 (한국어 표시) */}
+
+      {/* 활성 필터 태그 */}
       <div className="flex flex-wrap gap-2 mt-2">
         {currentFilters.search && (
           <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800 mb-3 sm:mb-0">
