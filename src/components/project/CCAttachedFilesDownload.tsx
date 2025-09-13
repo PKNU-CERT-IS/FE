@@ -15,7 +15,6 @@ import {
   FileBarChart,
   Presentation,
   Folder,
-  Info,
   CheckCircle2,
   DownloadCloud,
   ChevronDown,
