@@ -6,8 +6,13 @@ import CCEditProfileCard from "@/components/profile/CCEditProfileCard";
 import { mockProfileData } from "@/mocks/mockProfileData";
 import Image from "next/image";
 import { getRoleBadgeStyle } from "@/utils/membersUtils";
+import { getProfile } from "@/app/api/profile/SCprofileApi";
 
-export default function SCProfileCard() {
+export default async function SCProfileCard() {
+  const result = await getProfile();
+
+  const profile = result.data;
+
   const user = mockProfileData[0];
 
   return (
@@ -27,32 +32,32 @@ export default function SCProfileCard() {
                     className="rounded-full object-cover"
                   />
                 ) : (
-                  <div>{user.name}</div>
+                  <div>{profile.name}</div>
                 )}
               </div>
             </div>
           </div>
           <div className="text-xl font-semibold leading-none tracking-tight dark:text-gray-200">
-            {user.name}
+            {profile.name}
           </div>
           <div className="flex justify-center mt-1">
             <DefaultBadge
               variant="custom"
               className={getRoleBadgeStyle(user.role)}
             >
-              {user.role}
+              {profile.role}
             </DefaultBadge>
           </div>
           <div className="text-sm text-gray-500  dark:text-gray-300">
             <p>
-              {user.grade} • {user.major}
+              {profile.grade} • {profile.major}
             </p>
           </div>
         </div>
 
         <div className="space-y-4 p-6 pt-0">
           <p className="text-sm text-gray-600  text-center transition-colors duration-300  dark:text-gray-300">
-            {user.description}
+            {profile.description}
           </p>
           <div className="space-y-2">
             <div className="flex items-center gap-2 text-sm">

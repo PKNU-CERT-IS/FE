@@ -5,14 +5,37 @@ import LockSVG from "/public/icons/lock.svg";
 import ProfileSVG from "/public/icons/profile.svg";
 import { loginAction } from "@/actions/auth/LoginServerAction";
 import { useAuth } from "@/hooks/useAuth";
-import { Eye, EyeOff, LockOpen } from "lucide-react";
+import { Eye, EyeOff, LockOpen, Loader2 } from "lucide-react";
+import { useTransition } from "react";
+import { useRouter } from "next/navigation";
+import { useAuthStore } from "@/store/authStore";
 
 export default function CCLoginInput() {
   const { showPassword, setShowPassword, loginFormData, setLoginFormData } =
     useAuth();
+  const setIsLogin = useAuthStore((state) => state.setIsLogin);
+  const [isPending, startTransition] = useTransition();
+  const router = useRouter();
+
+  async function handleSubmit(formData: FormData) {
+    startTransition(async () => {
+      try {
+        const result = await loginAction(formData);
+        if (result.success) {
+          setIsLogin(true);
+          router.push("/");
+        } else {
+          console.log(result.message);
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    });
+  }
 
   return (
-    <form action={loginAction} className="space-y-4">
+    <form action={handleSubmit} className="space-y-4">
+      {/* 아이디 입력 */}
       <div className="space-y-2">
         <label
           htmlFor="id"
@@ -31,10 +54,13 @@ export default function CCLoginInput() {
             setLoginFormData({ ...loginFormData, id: e.target.value })
           }
           required
-          className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent dark:border-gray-600"
+          className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md 
+            focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent 
+            dark:border-gray-600"
         />
       </div>
 
+      {/* 비밀번호 입력 */}
       <div className="space-y-2">
         <label
           htmlFor="password"
@@ -53,7 +79,9 @@ export default function CCLoginInput() {
               setLoginFormData({ ...loginFormData, password: e.target.value })
             }
             placeholder="비밀번호를 입력하세요"
-            className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent dark:border-gray-600"
+            className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md 
+              focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent 
+              dark:border-gray-600"
             required
           />
           <button
@@ -70,6 +98,7 @@ export default function CCLoginInput() {
         </div>
       </div>
 
+      {/* 추가 옵션 */}
       <div className="space-y-3">
         <label className="flex items-center space-x-2 cursor-pointer">
           <input
@@ -105,12 +134,23 @@ export default function CCLoginInput() {
         </label>
       </div>
 
+      {/* 로그인 버튼 */}
       <DefaultButton
         type="submit"
-        className="w-full h-12 text-white font-medium shadow-lg "
+        disabled={isPending}
+        className="w-full h-12 text-white font-medium shadow-lg flex justify-center items-center gap-2"
       >
-        <LockOpen className="w-4 h-4 stroke-white" />
-        로그인
+        {isPending ? (
+          <>
+            <Loader2 className="w-4 h-4 animate-spin" />
+            로그인 중...
+          </>
+        ) : (
+          <>
+            <LockOpen className="w-4 h-4 stroke-white" />
+            로그인
+          </>
+        )}
       </DefaultButton>
     </form>
   );

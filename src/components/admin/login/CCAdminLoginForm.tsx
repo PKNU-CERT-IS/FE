@@ -3,16 +3,39 @@
 import DefaultButton from "@/components/ui/defaultButton";
 import LockSVG from "/public/icons/lock.svg";
 import ProfileSVG from "/public/icons/profile.svg";
-import { adminLoginAction } from "@/actions/admin/auth/AdminLoginServerAction";
+import { useAuthStore } from "@/store/authStore";
+import { loginAction } from "@/actions/auth/LoginServerAction";
 import { useAuth } from "@/hooks/useAuth";
-import { Eye, EyeOff, LockOpen } from "lucide-react";
+import { Eye, EyeOff, LockOpen, Loader2 } from "lucide-react";
+import { useTransition } from "react";
+import { useRouter } from "next/navigation";
 
 export default function CCAdminLoginForm() {
   const { showPassword, setShowPassword, loginFormData, setLoginFormData } =
     useAuth();
+  const setIsLogin = useAuthStore((state) => state.setIsLogin);
+  const [isPending, startTransition] = useTransition();
+  const router = useRouter();
+
+  async function handleSubmit(formData: FormData) {
+    startTransition(async () => {
+      try {
+        const result = await loginAction(formData);
+        if (result.success) {
+          setIsLogin(true);
+          router.push("/admin");
+        } else {
+          // 에러 처리 UI 추가 가능
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    });
+  }
 
   return (
-    <form action={adminLoginAction} className="space-y-4">
+    <form action={handleSubmit} className="space-y-4">
+      {/* 아이디 입력 */}
       <div className="space-y-2">
         <label
           htmlFor="id"
@@ -35,6 +58,7 @@ export default function CCAdminLoginForm() {
         />
       </div>
 
+      {/* 비밀번호 입력 */}
       <div className="space-y-2">
         <label
           htmlFor="password"
@@ -70,12 +94,23 @@ export default function CCAdminLoginForm() {
         </div>
       </div>
 
+      {/* 로그인 버튼 */}
       <DefaultButton
         type="submit"
-        className="w-full h-12 text-white font-medium shadow-lg "
+        className="w-full h-12 text-white font-medium shadow-lg flex justify-center items-center gap-2"
+        disabled={isPending} // 로딩 중 버튼 비활성화
       >
-        <LockOpen className="w-4 h-4 stroke-white" />
-        로그인
+        {isPending ? (
+          <>
+            <Loader2 className="w-4 h-4 animate-spin" />
+            로그인 중...
+          </>
+        ) : (
+          <>
+            <LockOpen className="w-4 h-4 stroke-white" />
+            로그인
+          </>
+        )}
       </DefaultButton>
     </form>
   );
