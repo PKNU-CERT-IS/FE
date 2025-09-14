@@ -2,6 +2,8 @@
 
 import LockSVG from "/public/icons/lock.svg";
 import ProfileSVG from "/public/icons/profile.svg";
+import { useRouter } from "next/navigation";
+import { toOffsetDateTime, toGenderCode } from "@/utils/transformRequestValue";
 import {
   Eye,
   EyeOff,
@@ -50,8 +52,20 @@ export default function CCSignUpForm() {
   const selectedGradeLabel = signupFormData.grade || "학년을 선택해주세요";
   const selectedGenderLabel = signupFormData.gender || "성별을 선택해주세요";
 
+  const router = useRouter();
+
+  async function handleSubmit(formData: FormData) {
+    const result = await signupAction(formData);
+
+    if (result.success) {
+      router.push("/login");
+    } else {
+      console.log(result.message);
+    }
+  }
+
   return (
-    <form action={signupAction} className="space-y-4 flex flex-col gap-2">
+    <form action={handleSubmit} className="space-y-4 flex flex-col gap-2">
       {/* hidden inputs for server action */}
       <input type="hidden" name="grade" value={signupFormData.grade} />
       <input type="hidden" name="gender" value={signupFormData.gender} />
