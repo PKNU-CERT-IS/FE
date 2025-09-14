@@ -2,6 +2,9 @@ import type { NextConfig } from "next";
 const { withSentryConfig } = require("@sentry/nextjs");
 
 const nextConfig: NextConfig = {
+  images: {
+    domains: ["example.com"],
+  },
   reactStrictMode: true,
   webpack: (config) => {
     config.module.rules.push({

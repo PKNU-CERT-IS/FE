@@ -16,7 +16,7 @@ export const getRoleBadgeStyle = (
       return "bg-orange-100 text-orange-800 border-orange-600 dark:bg-orange-700 dark:text-orange-200 dark:border-orange-500";
     case "임원진":
       return "bg-blue-100 text-blue-800 border-blue-600 dark:bg-blue-700 dark:text-blue-200 dark:border-blue-500";
-    case "스터디장":
+    case "관리자":
       return "bg-purple-100 text-purple-800 border-purple-600 dark:bg-purple-700 dark:text-purple-200 dark:border-purple-500";
     case "UPSOLVER":
       return "bg-green-100 text-green-800 border-green-600 dark:bg-green-700 dark:text-green-200 dark:border-green-500";
@@ -37,7 +37,7 @@ export const getRoleBorderStyle = (
       return "hover:border-orange-600 group-hover:border-orange-600";
     case "임원진":
       return "hover:border-blue-600 group-hover:border-blue-600";
-    case "스터디장":
+    case "관리자":
       return "hover:border-purple-600 group-hover:border-purple-600";
     case "UPSOLVER":
       return "hover:border-green-600 group-hover:border-green-600";
@@ -100,8 +100,8 @@ const filterByRole = (
       return member.role === "부회장";
     case "임원진":
       return ["회장", "부회장", "임원진"].includes(member.role);
-    case "스터디장":
-      return member.role === "스터디장";
+    case "관리자":
+      return member.role === "관리자";
     case "UPSOLVER":
       return member.role === "UPSOLVER";
     case "PLAYER":

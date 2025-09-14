@@ -9,20 +9,18 @@ import { Plus } from "lucide-react";
 import { BlogCategory } from "@/types/blog";
 import { getCategoryColor } from "@/utils/badgeUtils";
 import { cn } from "@/lib/utils";
+import { getProfileBlog } from "@/app/api/profile/SCprofileApi";
 
 interface SCBlogListProps {
   searchParams: Promise<{
     tab?: string;
   }>;
-  blogs: ProfileBlogDataType[];
 }
 
-export default async function SCBlogList({
-  searchParams,
-  blogs,
-}: SCBlogListProps) {
+export default async function SCBlogList({ searchParams }: SCBlogListProps) {
   const { tab } = await searchParams;
   const currentTab = tab || "study";
+  const blogs = await getProfileBlog();
 
   if (currentTab !== "blog") return null;
 
@@ -45,7 +43,7 @@ export default async function SCBlogList({
           </div>
 
           {blogs.map((blog) => (
-            <Link href={`/blog/${blog.id}`} key={blog.id}>
+            <Link href={`/blog/${blog.blogId}`} key={blog.blogId}>
               <div className="card-list text-card-foreground group mb-4 dark-default">
                 <div className="flex flex-col space-y-1.5 p-4 sm:p-6">
                   <div className="flex items-start justify-between">
@@ -55,7 +53,9 @@ export default async function SCBlogList({
                       </div>
 
                       <div className="mt-2 text-xs sm:text-sm text-gray-600 transition-colors duration-300 dark:text-gray-400">
-                        <div className="sm:inline-block">{blog.createdAt}</div>
+                        <div className="sm:inline-block">
+                          {blog.blogStartDate}
+                        </div>
 
                         <div className="flex flex-row items-center gap-2 mt-1 sm:mt-0 sm:ml-2">
                           <DefaultBadge
@@ -93,7 +93,7 @@ export default async function SCBlogList({
                   <div className="flex items-center gap-4 text-xs sm:text-sm text-gray-600 dark:text-gray-400 transition-colors duration-300">
                     <div className="flex items-center gap-1">
                       <EyeSVG className="w-4 h-4" />
-                      {blog.views?.toLocaleString()}
+                      {blog.viewCount?.toLocaleString()}
                     </div>
                   </div>
                 </div>

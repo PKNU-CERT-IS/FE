@@ -66,10 +66,7 @@ export default async function SCProfileContent({
 
       {!isStudyTab && (
         <>
-          <SCBlogList
-            searchParams={searchParams}
-            blogs={paginatedBlogContents}
-          />
+          <SCBlogList searchParams={searchParams} />
           <CCProfilePagination
             currentPage={currentPage}
             totalItems={allBlogData.length}

@@ -21,3 +21,17 @@ export function toGenderCode(
   if (gender === "여") return "FEMALE";
   return "NONE";
 }
+
+export function translateKoreanToGrade(korean: string): string {
+  const koreanToGradeMap: Record<string, string> = {
+    "1학년": "FRESHMAN",
+    "2학년": "SOPHOMORE",
+    "3학년": "JUNIOR",
+    "4학년": "SENIOR",
+    졸업생: "GRADUATED",
+    휴학생: "LEAVE",
+    NONE: "NONE",
+  };
+
+  return koreanToGradeMap[korean];
+}

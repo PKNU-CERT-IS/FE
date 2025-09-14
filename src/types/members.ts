@@ -1,8 +1,8 @@
 export const membersRoleCategories = [
+  "관리자",
   "회장",
   "부회장",
   "임원진",
-  "스터디장",
   "UPSOLVER",
   "PLAYER",
   "NONE",
