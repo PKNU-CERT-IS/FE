@@ -14,7 +14,7 @@ apiClient.interceptors.response.use(
         const refreshResponse = await axios.post(
           `${
             process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080/api/v1"
-          }/auth/refresh`,
+          }/auth/token/refresh`,
           {},
           { withCredentials: true }
         );

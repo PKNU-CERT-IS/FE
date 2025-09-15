@@ -5,8 +5,13 @@ import DefaultButton from "@/components/ui/defaultButton";
 import EditSVG from "/public/icons/edit.svg";
 import CCProfileEditModal from "@/components/profile/CCProfileEditModal";
 import { useEffect } from "react";
+import { ProfileDataType } from "@/types/profile";
 
-export default function CCEditProfileCard() {
+interface CCEditProfileCardProps {
+  profile: ProfileDataType;
+}
+
+export default function CCEditProfileCard({ profile }: CCEditProfileCardProps) {
   const { setIsOpenModal, isOpenModal, modalOutsideRef } = useModal();
   // 모달 오픈 시 스크롤 잠금
   useEffect(() => {
@@ -30,6 +35,7 @@ export default function CCEditProfileCard() {
         <CCProfileEditModal
           closeModal={() => setIsOpenModal(false)}
           modalRef={modalOutsideRef}
+          initialProfileData={profile}
         />
       )}
     </div>

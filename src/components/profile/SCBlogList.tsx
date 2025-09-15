@@ -10,6 +10,7 @@ import { BlogCategory } from "@/types/blog";
 import { getCategoryColor } from "@/utils/badgeUtils";
 import { cn } from "@/lib/utils";
 import { getProfileBlog } from "@/app/api/profile/SCprofileApi";
+import { fromOffsetDateTime } from "@/utils/transfromResponseValue";
 
 interface SCBlogListProps {
   searchParams: Promise<{
@@ -54,7 +55,7 @@ export default async function SCBlogList({ searchParams }: SCBlogListProps) {
 
                       <div className="mt-2 text-xs sm:text-sm text-gray-600 transition-colors duration-300 dark:text-gray-400">
                         <div className="sm:inline-block">
-                          {blog.blogStartDate}
+                          {fromOffsetDateTime(blog.blogStartDate)}
                         </div>
 
                         <div className="flex flex-row items-center gap-2 mt-1 sm:mt-0 sm:ml-2">

@@ -1,0 +1,31 @@
+import { fetchWithAuth } from "@/lib/serverIntercept";
+import { MembersDataType } from "@/types/members";
+
+interface MemberSearchParams {
+  grade?: string;
+  role?: string;
+  search?: string;
+}
+
+export async function getMembers(
+  params: MemberSearchParams
+): Promise<MembersDataType[]> {
+  const queryString = new URLSearchParams(
+    Object.fromEntries(
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      Object.entries(params).filter(([_, v]) => v && v.length > 0) // 값 없는 건 제외
+    )
+  ).toString();
+
+  const res = await fetchWithAuth(`/member/keyword?${queryString}`, {
+    method: "GET",
+    headers: { "Content-Type": "application/json" },
+  });
+
+  if (!res.ok) {
+    return [];
+  }
+
+  const { data } = await res.json();
+  return data as MembersDataType[];
+}

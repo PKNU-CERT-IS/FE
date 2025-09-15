@@ -1,12 +1,7 @@
 import SCMembersCard from "@/components/members/SCMembersCard";
-import { MembersDataType } from "@/types/members";
 import SCSearchResultNotFound from "@/components/ui/SCSearchResultNotFound";
 
-interface MembersCardListProps {
-  members: MembersDataType[];
-}
-
-export default function MembersCardList({ members }: MembersCardListProps) {
+export default function MembersCardList({ members }) {
   if (members.length === 0) {
     return <SCSearchResultNotFound mode="members" />;
   }

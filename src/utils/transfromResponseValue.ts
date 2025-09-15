@@ -42,14 +42,3 @@ export function translateGradeToKorean(grade: string): string {
 
   return gradeToKoreanMap[grade];
 }
-
-export function translateStudyStatusToKorean(status: string): string {
-  const statusMap: Record<string, string> = {
-    READY: "준비 중",
-    INPROGRESS: "진행 중",
-    COMPLETED: "완료",
-    REJECTED: "중단됨",
-  };
-
-  return statusMap[status] ?? "알 수 없음";
-}

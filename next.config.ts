@@ -3,7 +3,14 @@ const { withSentryConfig } = require("@sentry/nextjs");
 
 const nextConfig: NextConfig = {
   images: {
-    domains: ["example.com"],
+    remotePatterns: [
+      {
+        protocol: "http",
+        hostname: "example.com",
+        port: "",
+        pathname: "/**",
+      },
+    ],
   },
   reactStrictMode: true,
   webpack: (config) => {

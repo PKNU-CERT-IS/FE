@@ -14,7 +14,7 @@ import {
 
 export default async function SCProfileCard() {
   const profile = await getProfile();
-
+  console.log("Profile data:", profile);
   const role = translateMemberRole(profile.memberRole);
   const grade = translateGradeToKorean(profile.memberGrade);
   const createdAt = fromOffsetDateTime(profile.createdAt);
@@ -85,7 +85,7 @@ export default async function SCProfileCard() {
             </div>
           </div>
 
-          <CCEditProfileCard />
+          <CCEditProfileCard profile={profile} />
         </div>
       </div>
     </div>

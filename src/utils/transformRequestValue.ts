@@ -35,3 +35,17 @@ export function translateKoreanToGrade(korean: string): string {
 
   return koreanToGradeMap[korean];
 }
+
+export function translateKoreanToRole(korean: string): string {
+  const koreanToRoleMap: Record<string, string> = {
+    관리자: "ADMIN",
+    회장: "CHAIRMAN",
+    부회장: "VICECHAIRMAN",
+    임원진: "STAFF",
+    PLAYER: "PLAYER",
+    UPSOLVER: "UPSOLVER",
+    NONE: "NONE",
+  };
+
+  return koreanToRoleMap[korean];
+}
