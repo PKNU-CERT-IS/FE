@@ -23,7 +23,7 @@ apiClient.interceptors.response.use(
           throw new Error("Failed to refresh token");
         }
 
-        const newAccessToken = refreshResponse.data.accessToken;
+        const newAccessToken = refreshResponse.data.data.accessToken;
         // 새로운 accessToken을 원래 요청에 첨부하고 재시도
         if (error.config && newAccessToken) {
           error.config.headers["Authorization"] = `Bearer ${newAccessToken}`;
@@ -40,4 +40,21 @@ apiClient.interceptors.response.use(
     }
     return Promise.reject(error);
   }
+);
+
+apiClient.interceptors.request.use(
+  (config) => {
+    if (typeof document !== "undefined") {
+      const token = document.cookie
+        .split("; ")
+        .find((row) => row.startsWith("accessToken="))
+        ?.split("=")[1];
+
+      if (token) {
+        config.headers["Authorization"] = `Bearer ${token}`;
+      }
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
 );
