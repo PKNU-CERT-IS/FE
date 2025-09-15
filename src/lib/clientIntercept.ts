@@ -23,7 +23,7 @@ apiClient.interceptors.response.use(
           throw new Error("Failed to refresh token");
         }
 
-        const newAccessToken = refreshResponse.data.accessToken;
+        const newAccessToken = refreshResponse.data.data.accessToken;
         // 새로운 accessToken을 원래 요청에 첨부하고 재시도
         if (error.config && newAccessToken) {
           error.config.headers["Authorization"] = `Bearer ${newAccessToken}`;
