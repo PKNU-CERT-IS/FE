@@ -24,7 +24,7 @@ export async function fetchWithAuth(url: string, options: RequestInit = {}) {
     const refreshRes = await fetch(
       `${
         process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080/api/v1"
-      }/auth/refresh`,
+      }/auth/token/refresh`,
       {
         method: "POST",
         credentials: "include", // 쿠키 포함

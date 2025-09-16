@@ -1,11 +1,11 @@
 "server-only";
 
-import { mockProfileData } from "@/mocks/mockProfileData";
+import { getProfile } from "@/app/api/profile/SCprofileApi";
 import WarningSVG from "/public/icons/warning.svg";
+import { getDDay } from "@/utils/dateUtils";
 
-export default function SCPenaltyStatus() {
-  const profile = mockProfileData[0];
-
+export default async function SCPenaltyStatus() {
+  const profile = await getProfile();
   return (
     <div className="mt-7">
       <div className="card-list text-card-foreground text-center group p-6 cursor-default dark-default">
@@ -18,14 +18,14 @@ export default function SCPenaltyStatus() {
           {[
             {
               title: "현재 벌점",
-              value: profile.penaltyPoint,
+              value: profile.penaltyCount,
               color: "red-600",
             },
             {
               title: "벌점 유예 기간",
               value:
-                profile.role === "UPSOLVER"
-                  ? "D - " + +profile.penaltyPeriod
+                profile.memberRole === "STAFF"
+                  ? getDDay(profile.gracePeriod)
                   : "-",
               color: "red-600",
             },

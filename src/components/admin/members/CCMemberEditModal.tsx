@@ -11,6 +11,13 @@ import {
   membersGradeCategories,
   MembersGradeCategoryType,
 } from "@/types/members";
+import { translateGradeToKorean } from "@/utils/transfromResponseValue";
+import {
+  translateKoreanToGrade,
+  translateKoreanToRole,
+} from "@/utils/transformRequestValue";
+import { updateMemberGradeRole } from "@/app/api/member/CCadminMemberApi";
+import { useRouter } from "next/navigation";
 
 interface CCRoleEditModalProps {
   member: AdminMemberDetailInfoType;
@@ -35,6 +42,8 @@ export default function CCRoleEditModal({
 
   const [showGradeDropdown, setShowGradeDropdown] = useState(false);
   const gradeRef = useRef<HTMLDivElement>(null);
+
+  const router = useRouter();
 
   useEffect(() => {
     setEditedMember(member);
@@ -61,8 +70,21 @@ export default function CCRoleEditModal({
 
   if (!isOpen) return null;
 
-  const handleSave = () => {
+  const handleSave = async () => {
+    // 학년: 드롭다운에서 바꿨으면 editedMember.grade, 아니면 원래 member.grade
+    const newGrade = translateKoreanToGrade(editedMember.grade) || member.grade;
+
+    // 직급: 드롭다운에서 바꿨으면 editedMember.role, 아니면 원래 member.role
+    const newRole = translateKoreanToRole(editedMember.role) || member.role;
+
+    await updateMemberGradeRole({
+      targetMemberId: editedMember.memberId,
+      newGrade,
+      newRole,
+    });
+
     onSave(editedMember);
+    router.refresh();
     closeModal();
   };
 
@@ -80,7 +102,6 @@ export default function CCRoleEditModal({
     value,
     label: value,
   }));
-
   return (
     <div
       ref={modalRef}
@@ -102,6 +123,7 @@ export default function CCRoleEditModal({
 
         <div className="space-y-4 text-left pt-6">
           <div className="grid grid-cols-1 gap-4">
+            {/* 학년 */}
             <div>
               <p className="text-sm mb-1.5 font-medium text-gray-700">학년</p>
               <div className="relative" ref={gradeRef}>
@@ -122,7 +144,9 @@ export default function CCRoleEditModal({
                     {gradeOptions.find(
                       (option) =>
                         option.value ===
-                        (editedMember.grade as MembersGradeCategoryType)
+                        (translateGradeToKorean(
+                          editedMember.grade
+                        ) as MembersGradeCategoryType)
                     )?.label || editedMember.grade}
                   </span>
                   <ChevronDown
@@ -155,6 +179,7 @@ export default function CCRoleEditModal({
               </div>
             </div>
 
+            {/* 직급 */}
             <div>
               <p className="text-sm mb-1.5 font-medium text-gray-700">직급</p>
               <div className="relative" ref={roleRef}>
@@ -205,6 +230,7 @@ export default function CCRoleEditModal({
             </div>
           </div>
 
+          {/* 버튼 */}
           <div className="flex justify-end gap-2">
             <DefaultButton
               variant="outline"

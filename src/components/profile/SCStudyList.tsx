@@ -2,17 +2,19 @@
 
 import DefaultBadge from "@/components/ui/defaultBadge";
 import { getStudyCategoryColor } from "@/utils/profileUtils";
-import { StudyStatusToStatusType, StudyTabType } from "@/types/profile";
+import { StudyTabType } from "@/types/profile";
 import Link from "next/link";
 import CCProfileStudyStatusFilter from "@/components/profile/CCProfileStudyStatusFilter";
 import CCCreateDropdown from "@/components/profile/CCCreateDropdown";
 import { StudyStatusType, studyStatus } from "@/types/profile";
 import { getCategoryColor } from "@/utils/badgeUtils";
-import {
-  mockProfileStudyData,
-  mockProfileProjectData,
-} from "@/mocks/mockProfileData";
+import { translateStudyProjectStatusToKorean } from "@/utils/profileUtils";
+import { fromOffsetDateTime } from "@/utils/transfromResponseValue";
 import { CategoryType, SubCategoryType } from "@/types/category";
+import {
+  getProfileStudy,
+  getProfileProject,
+} from "@/app/api/profile/SCprofileApi";
 
 interface SCStudyListProps {
   searchParams: Promise<{
@@ -21,9 +23,30 @@ interface SCStudyListProps {
   }>;
 }
 
+interface StudyType {
+  studyId: number;
+  title: string;
+  description: string;
+  studyStatus: string;
+  studyStartDate: string; // ISO DateTime (e.g., "2025-09-02T08:59:22.933095425Z")
+  studyEndDate: string; // ISO DateTime
+  tags: string[];
+}
+interface ProjectType {
+  projectId: number;
+  title: string;
+  description: string;
+  projectStatus: string;
+  projectStartDate: string; // ISO DateTime
+  projectEndDate: string; // ISO DateTime
+  tags: string[];
+}
+
 export default async function SCStudyList({ searchParams }: SCStudyListProps) {
   const { tab, status } = await searchParams;
   const currentTab = tab || "study";
+  const studydata = await getProfileStudy();
+  const projectdata = await getProfileProject();
 
   const selectedStatus: StudyStatusType =
     status && studyStatus.includes(status as StudyStatusType)
@@ -31,8 +54,23 @@ export default async function SCStudyList({ searchParams }: SCStudyListProps) {
       : "전체";
 
   const allMaterials = [
-    ...mockProfileStudyData.map((m) => ({ ...m, tab: "Study" as const })),
-    ...mockProfileProjectData.map((m) => ({ ...m, tab: "Project" as const })),
+    ...studydata.map((m: StudyType) => ({
+      ...m,
+      tab: "Study" as const,
+      id: m.studyId,
+
+      status: m.studyStatus, // 공통 status 필드로 맞추기
+      startDate: fromOffsetDateTime(m.studyStartDate),
+      endDate: fromOffsetDateTime(m.studyEndDate),
+    })),
+    ...projectdata.map((m: ProjectType) => ({
+      ...m,
+      tab: "Project" as const,
+      id: m.projectId,
+      status: m.projectStatus, // 공통 status 필드로 맞추기
+      startDate: fromOffsetDateTime(m.projectStartDate),
+      endDate: fromOffsetDateTime(m.projectEndDate),
+    })),
   ];
 
   const materialsByTab = allMaterials.filter(
@@ -43,7 +81,8 @@ export default async function SCStudyList({ searchParams }: SCStudyListProps) {
     selectedStatus === "전체"
       ? materialsByTab
       : materialsByTab.filter(
-          (m) => m.status === StudyStatusToStatusType[selectedStatus]
+          (m) =>
+            translateStudyProjectStatusToKorean(m.status) === selectedStatus
         );
 
   if (selectedStatus === "진행중") {

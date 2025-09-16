@@ -5,6 +5,7 @@ import { membersRoleCategories } from "@/types/members";
 import { AdminMemberDetailInfoType } from "@/types/admin/adminMembers";
 import CCMembersRow from "@/components/admin/members/CCMembersRow";
 import CCMemberDetailCard from "@/components/admin/members/CCMemberDetailCard";
+import { translateMemberRole } from "@/utils/transfromResponseValue";
 
 interface CCMembersListProps {
   filteredMembers: AdminMemberDetailInfoType[]; // 서버에서 필터된 결과
@@ -40,7 +41,7 @@ export default function CCMembersList({ filteredMembers }: CCMembersListProps) {
             <tbody className="divide-y divide-gray-200">
               {membersRoleCategories.map((role) => {
                 const sorted = filteredMembers.filter(
-                  (member) => member.role === role
+                  (member) => translateMemberRole(member.role) === role
                 );
                 if (sorted.length === 0) return null;
 
@@ -56,7 +57,7 @@ export default function CCMembersList({ filteredMembers }: CCMembersListProps) {
                     </tr>
                     {sorted.map((member: AdminMemberDetailInfoType) => (
                       <CCMembersRow
-                        key={member.id}
+                        key={member.memberId}
                         member={member}
                         selectedMember={selectedMember}
                         setSelectedMember={setSelectedMember}

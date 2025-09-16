@@ -37,17 +37,17 @@ export default function CCMebersRow({
       <td className="px-4 py-3 text-xs text-gray-600 w-48 sm:w-56 md:w-64 lg:w-72">
         <div className="flex flex-col">
           <span>{member.major} / </span>
-          <span>{member.studentId}</span>
+          <span>{member.studentNumber}</span>
         </div>
       </td>
       <td className="px-1 py-3 w-56 sm:w-64 md:w-80 lg:w-[24rem]">
         <div className="space-y-1">
-          {member.currentProjects.length === 0 &&
-          member.currentStudies.length === 0 ? (
+          {member.activeProjects.length === 0 &&
+          member.activeStudies.length === 0 ? (
             <span className="text-xs text-gray-400">활동 없음</span>
           ) : (
             <>
-              {member.currentProjects.map((project: string, item: number) => (
+              {member.activeProjects.map((project: string, item: number) => (
                 <div
                   key={`p-${item}`}
                   className="text-xs px-2 py-1 bg-blue-100 text-blue-800 rounded inline-block mr-1 mb-1"
@@ -56,7 +56,7 @@ export default function CCMebersRow({
                   {project.length > 12 ? project.slice(0, 12) + "..." : project}
                 </div>
               ))}
-              {member.currentStudies.map((study: string, item: number) => (
+              {member.activeStudies.map((study: string, item: number) => (
                 <div
                   key={`s-${item}`}
                   className="text-xs px-2 py-1 bg-green-100 text-green-800 rounded inline-block mr-1 mb-1"
@@ -72,12 +72,12 @@ export default function CCMebersRow({
         <div className="flex items-center justify-center">
           <span
             className={`text-sm font-medium ${
-              member.penalty >= 2 ? "text-cert-red" : "text-gray-900"
+              member.penaltyPoints >= 2 ? "text-cert-red" : "text-gray-900"
             }`}
           >
-            {member.penalty}점
+            {member.penaltyPoints}점
           </span>
-          {member.penalty >= 2 && (
+          {member.penaltyPoints >= 2 && (
             <AlertTriangle className="w-3 h-3 inline ml-1 text-cert-red" />
           )}
         </div>

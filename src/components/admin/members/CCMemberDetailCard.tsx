@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import DefaultBadge from "@/components/ui/defaultBadge";
 import { User, Minus, Plus, X, Cake, Phone, Mail } from "lucide-react";
 import EditSVG from "/public/icons/edit.svg";
@@ -10,6 +11,13 @@ import CCMemberEditModal from "@/components/admin/members/CCMemberEditModal";
 import { AdminMemberDetailInfoType } from "@/types/admin/adminMembers";
 import { penaltyGracePeriod } from "@/utils/adminPenaltyGracePeriodUtils";
 import { useModal } from "@/hooks/useModal";
+import { translateGradeToKorean } from "@/utils/transfromResponseValue";
+import { toOffsetDateTime } from "@/utils/transformRequestValue";
+import {
+  assignPenalty,
+  grantGracePeriod,
+  deleteMember,
+} from "@/app/api/member/CCadminMemberApi";
 
 interface CCMemberDetailCardProps {
   selectedMember: AdminMemberDetailInfoType | null;
@@ -22,31 +30,26 @@ export default function CCMemberDetailCard({
   setSelectedMember,
   onUpdateMember,
 }: CCMemberDetailCardProps) {
-  const [isOpenPenaltyModal, setIsOpenPenaltyModal] = useState<boolean>(false);
-  const [isOpenKickModal, setIsOpenKickModal] = useState<boolean>(false);
-  const [isOpenGracePeriodModal, setIsOpenGracePeriodModal] =
-    useState<boolean>(false);
+  const router = useRouter();
+
+  const [isOpenPenaltyModal, setIsOpenPenaltyModal] = useState(false);
+  const [isOpenKickModal, setIsOpenKickModal] = useState(false);
+  const [isOpenGracePeriodModal, setIsOpenGracePeriodModal] = useState(false);
   const [newGracePeriod, setNewGracePeriod] = useState(
     selectedMember?.gracePeriod || ""
   );
-
   const [penaltyCount, setPenaltyCount] = useState(0);
-  const { setIsOpenModal, isOpenModal, modalOutsideRef } = useModal();
 
+  const { setIsOpenModal, isOpenModal, modalOutsideRef } = useModal();
   useEffect(() => {
     if (selectedMember) {
-      setPenaltyCount(selectedMember.penalty);
+      setPenaltyCount(selectedMember.penaltyPoints);
       setNewGracePeriod(selectedMember.gracePeriod || "");
     }
   }, [selectedMember]);
 
-  // 모달 오픈 시 스크롤 잠금
   useEffect(() => {
-    if (isOpenModal) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto";
-    }
+    document.body.style.overflow = isOpenModal ? "hidden" : "auto";
   }, [isOpenModal]);
 
   const handlePenaltyScoreIncrement = () => {
@@ -58,28 +61,11 @@ export default function CCMemberDetailCard({
   };
 
   const handleUpdateMember = (updatedMember: AdminMemberDetailInfoType) => {
-    if (onUpdateMember) {
-      onUpdateMember(updatedMember);
-    }
+    onUpdateMember?.(updatedMember);
     setSelectedMember(updatedMember);
   };
 
   if (!selectedMember) return null;
-
-  // 유예 기간 업데이트
-  const updateGracePeriod = async () => {
-    try {
-      // api 요청 보내기
-      handleUpdateMember({
-        ...selectedMember,
-        gracePeriod: newGracePeriod,
-      });
-
-      console.log("유예 기간이 성공적으로 업데이트되었습니다.");
-    } catch (err) {
-      console.error(err);
-    }
-  };
 
   return (
     <div className="w-72 space-y-4">
@@ -115,7 +101,9 @@ export default function CCMemberDetailCard({
 
           <div className="text-xs flex flex-row items-center text-gray-600">
             <User className="w-3 h-3 mr-1" />
-            {selectedMember.grade}, {selectedMember.gender}자
+            {translateGradeToKorean(selectedMember.grade) ||
+              selectedMember.grade}
+            , {selectedMember.gender}자
           </div>
 
           <div className="text-xs flex flex-row items-center text-gray-600">
@@ -139,7 +127,7 @@ export default function CCMemberDetailCard({
           <div className="space-y-2">
             <div className="text-sm font-medium">현재 참여 중인 활동</div>
             <div className="space-y-1">
-              {selectedMember.currentStudies.map((study, index) => (
+              {selectedMember.activeStudies.map((study, index) => (
                 <div
                   key={`study-${index}`}
                   className="text-xs p-2 bg-green-50 rounded border border-green-200"
@@ -147,7 +135,7 @@ export default function CCMemberDetailCard({
                   📚 {study}
                 </div>
               ))}
-              {selectedMember.currentProjects.map((project, index) => (
+              {selectedMember.activeProjects.map((project, index) => (
                 <div
                   key={`project-${index}`}
                   className="text-xs p-2 bg-blue-50 rounded border border-blue-200"
@@ -155,8 +143,8 @@ export default function CCMemberDetailCard({
                   🚀 {project}
                 </div>
               ))}
-              {selectedMember.currentProjects.length === 0 &&
-                selectedMember.currentStudies.length === 0 && (
+              {selectedMember.activeProjects.length === 0 &&
+                selectedMember.activeStudies.length === 0 && (
                   <div className="text-xs text-gray-400 p-2">
                     참여 중인 활동 없음
                   </div>
@@ -203,8 +191,13 @@ export default function CCMemberDetailCard({
                 message={`${selectedMember.name}님에게 벌점을 부여하시겠습니까?`}
                 confirmText="확인"
                 cancelText="취소"
-                onConfirm={() => {
+                onConfirm={async () => {
                   setIsOpenPenaltyModal(false);
+                  await assignPenalty({
+                    memberId: selectedMember.memberId,
+                    penaltyPoints: penaltyCount,
+                  });
+                  router.refresh();
                 }}
                 onCancel={() => setIsOpenPenaltyModal(false)}
               />
@@ -249,15 +242,22 @@ export default function CCMemberDetailCard({
                 )})로 수정하시겠습니까?`}
                 confirmText="확인"
                 cancelText="취소"
-                onConfirm={() => {
+                onConfirm={async () => {
                   setIsOpenGracePeriodModal(false);
-                  updateGracePeriod();
+                  await grantGracePeriod({
+                    memberId: selectedMember.memberId,
+                    gracePeriod: toOffsetDateTime(newGracePeriod),
+                  });
+                  router.refresh();
                 }}
                 onCancel={() => setIsOpenGracePeriodModal(false)}
               />
             </div>
           </div>
+
           <div className="border-b-1 border-gray-200 pb-1.5" />
+
+          {/* 탈퇴 처리 */}
           <div>
             <DefaultButton
               className="action-button w-full h-8 text-xs"
@@ -271,8 +271,11 @@ export default function CCMemberDetailCard({
               message={`${selectedMember.name}님을 탈퇴 처리하시겠습니까? 이 작업은 되돌릴 수 없습니다.`}
               confirmText="확인"
               cancelText="취소"
-              onConfirm={() => {
+              onConfirm={async () => {
                 setIsOpenKickModal(false);
+                await deleteMember(selectedMember.memberId);
+                setSelectedMember(null);
+                router.refresh();
               }}
               onCancel={() => setIsOpenKickModal(false)}
             />
