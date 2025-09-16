@@ -2,7 +2,6 @@
 
 import { useCallback, useMemo, useState } from "react";
 import AngleSVG from "/public/icons/angle.svg";
-import { mockScheduleData } from "@/mocks/mockScheduleData";
 import {
   DAY_NAMES,
   generateCalendarDays,

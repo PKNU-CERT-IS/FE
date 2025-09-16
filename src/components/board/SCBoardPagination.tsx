@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { getPageNumbers } from "@/utils/paginationUtils";
-import { BoardCategoryType } from "@/types/board";
+import { BoardCategoryType, categoryMappingToEN } from "@/types/board";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 interface BoardPaginationProps {
@@ -21,11 +21,12 @@ export default function BoardPagination({
   const totalPages = Math.ceil(totalItems / itemsPerPage);
 
   if (totalPages <= 1) return null;
-
   const createPageUrl = (page: number) => {
     const params = {
       ...(currentSearch && { search: currentSearch }),
-      ...(currentCategory !== "전체" && { category: currentCategory }),
+      ...(currentCategory !== "전체" && {
+        category: categoryMappingToEN[currentCategory],
+      }),
       ...(page > 1 && { page: page.toString() }),
     };
 

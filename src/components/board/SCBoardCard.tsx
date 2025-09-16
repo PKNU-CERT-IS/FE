@@ -1,7 +1,13 @@
+"server-only";
+
 import Link from "next/link";
 import EyeSVG from "/public/icons/eye.svg";
 import DefaultBadge from "@/components/ui/defaultBadge";
-import { BoardDataType } from "@/types/board";
+import {
+  BoardCategoryTypeEN,
+  BoardDataType,
+  toKoreanCategory,
+} from "@/types/board";
 import { getBoardCategoryColor } from "@/utils/boardUtils";
 import {
   AlertCircle,
@@ -11,10 +17,12 @@ import {
   Info,
   ShieldAlert,
 } from "lucide-react";
+import { formatDate } from "@/utils/formatDateUtil";
 
 // 카테고리 종류에 따라 svg 변경 uitl
-const getCategoryIcon = (category: string) => {
-  switch (category) {
+const getCategoryIcon = (category: BoardCategoryTypeEN) => {
+  const koreanCategory = toKoreanCategory(category);
+  switch (koreanCategory) {
     case "공지사항":
       return <AlertCircle className="text-red-700 w-4 h-4" />;
     case "보안이슈":
@@ -28,20 +36,20 @@ const getCategoryIcon = (category: string) => {
   }
 };
 export default function BoardCard({
-  id,
+  boardId,
   title,
-  content,
-  author,
+  description,
+  authorName,
   category,
-  date,
-  views,
-  likes,
+  updatedAt,
+  viewCount,
+  likeCount,
 }: BoardDataType) {
   return (
-    <Link href={`/board/${id}`}>
+    <Link href={`/board/${boardId}`}>
       <div
         className={`card-list group hover:border-cert-red/50  ${
-          category === "공지사항"
+          category === "NOTICE"
             ? "border-red-200 bg-red-50 dark:bg-cert-red/30 dark:border-cert-red/30"
             : "border-gray-200 dark:bg-gray-800 dark:border-gray-700 "
         }`}
@@ -54,16 +62,16 @@ export default function BoardCard({
                 variant="custom"
                 className={getBoardCategoryColor(category)}
               >
-                {category}
+                {toKoreanCategory(category)}
               </DefaultBadge>
-              {category === "공지사항" && (
+              {category === "NOTICE" && (
                 <DefaultBadge className="bg-cert-red text-white">
                   공지
                 </DefaultBadge>
               )}
             </div>
             <span className="text-sm text-gray-500 dark:text-gray-400 ">
-              {date}
+              {formatDate(updatedAt, "short")}
             </span>
           </div>
 
@@ -74,22 +82,22 @@ export default function BoardCard({
 
         <div className="p-6 pt-0">
           <div className="text-gray-600 mb-4 line-clamp-2 leading-relaxed dark:text-gray-400">
-            {content}
+            {description}
           </div>
 
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4 text-sm text-gray-500">
               <span className="font-medium text-gray-700 dark:text-gray-200">
-                {author}
+                {authorName}
               </span>
               <div className="flex items-center gap-4">
                 <div className="flex items-center gap-1 hover:text-cert-red transition-colors dark:text-gray-400">
                   <EyeSVG className="w-4 text-cert-red" />
-                  <span>{views}</span>
+                  <span>{viewCount}</span>
                 </div>
                 <div className="flex items-center gap-1 hover:text-cert-red transition-colors dark:text-gray-400">
                   <Heart className="w-4 text-cert-red" />
-                  <span>{likes}</span>
+                  <span>{likeCount}</span>
                 </div>
               </div>
             </div>

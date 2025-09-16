@@ -7,7 +7,7 @@ export interface AttachedFile {
   size: number; // bytes
   type: string; // MIME type
   category: FileCategory;
-  downloadUrl: string;
+  attachedUrl: string;
   uploadDate: string;
   description?: string;
 }

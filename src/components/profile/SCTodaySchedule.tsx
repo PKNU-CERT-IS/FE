@@ -10,7 +10,7 @@ import { formatDate, formatTime } from "@/utils/formatDateUtil";
 const todayStr = new Date().toISOString().split("T")[0];
 
 const todaySchedule = mockScheduleData.filter(
-  (schedule) => formatDate(schedule.started_at, "short") === todayStr
+  (schedule) => formatDate(schedule.startedAt, "short") === todayStr
 );
 
 export default function SCTodaySchedule() {
@@ -26,7 +26,7 @@ export default function SCTodaySchedule() {
             <div className="space-y-3">
               {todaySchedule.map((schedule) => (
                 <div
-                  key={schedule.id}
+                  key={schedule.scheduleId}
                   className="card-list bg-gray-50 flex items-center justify-between p-3 group cursor-default"
                 >
                   <div>
@@ -35,8 +35,8 @@ export default function SCTodaySchedule() {
                     </div>
                     <div className="text-xs text-gray-600 dark:text-gray-400 flex items-center gap-1 transition-colors duration-300">
                       <Clock className="w-3 h-3" />
-                      {`${formatTime(schedule.started_at)} - ${formatTime(
-                        schedule.ended_at
+                      {`${formatTime(schedule.startedAt)} - ${formatTime(
+                        schedule.endedAt
                       )}`}
                     </div>
                     <div className="text-xs text-gray-600 dark:text-gray-400 flex items-center gap-1 transition-colors duration-300">

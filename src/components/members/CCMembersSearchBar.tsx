@@ -49,7 +49,7 @@ export default function MembersSearchBar({
     }, DEBOUNCE_DELAY);
 
     return () => clearTimeout(debounceTimer);
-  }, [searchInput, router, searchParams]);
+  }, [searchInput, router, searchParams, pathname]);
 
   return (
     <div className="relative flex-1">

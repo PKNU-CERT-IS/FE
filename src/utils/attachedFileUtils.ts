@@ -27,6 +27,6 @@ export const convertFileToAttachedFile = (file: File): AttachedFile => ({
   size: file.size,
   type: file.type,
   category: "other",
-  downloadUrl: "",
+  attachedUrl: "",
   uploadDate: new Date().toISOString(),
 });

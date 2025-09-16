@@ -146,7 +146,7 @@ export default function AttachedFilesDownload({
     try {
       // 실제 다운로드 로직 (API 호출)
       const link = document.createElement("a");
-      link.href = file.downloadUrl;
+      link.href = file.attachedUrl;
       link.download = file.name;
       link.click();
 

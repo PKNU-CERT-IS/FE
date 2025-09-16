@@ -1,15 +1,19 @@
 import { Metadata } from "next";
-import { mockBoardData } from "@/mocks/mockBoardData";
 import BoardSearchBar from "@/components/board/CCBoardSearchBar";
 import BoardCategory from "@/components/board/CCBoardCategory";
 import BoardCardList from "@/components/board/SCBoardCardList";
 import BoardPagination from "@/components/board/SCBoardPagination";
 import PlusSVG from "/public/icons/plus.svg";
-import { boardCategories, BoardCategoryType } from "@/types/board";
-import { filterBoardData } from "@/utils/boardUtils";
+import {
+  boardCategoriesEN,
+  BoardCategoryType,
+  BoardCategoryTypeEN,
+  toKoreanCategory,
+} from "@/types/board";
 import Link from "next/link";
+import { getBoards } from "@/api/board/SCBoard";
 
-const ITEMS_PER_PAGE = 8;
+const ITEMS_PER_PAGE = 5;
 
 interface BoardPageProps {
   searchParams: Promise<{
@@ -18,8 +22,9 @@ interface BoardPageProps {
     category?: string;
   }>;
 }
-const isValidCategory = (category: string): category is BoardCategoryType => {
-  return boardCategories.includes(category as BoardCategoryType);
+
+const isValidCategory = (category: string): category is BoardCategoryTypeEN => {
+  return (boardCategoriesEN as readonly string[]).includes(category);
 };
 
 export async function generateMetadata({
@@ -51,24 +56,35 @@ export async function generateMetadata({
     },
   };
 }
+
 export default async function BoardPage({ searchParams }: BoardPageProps) {
   const { page, search, category } = await searchParams;
-
   const currentPage = parseInt(page || "1", 10);
   const currentSearch = search || "";
   const currentCategory: BoardCategoryType =
-    category && isValidCategory(category) ? category : "전체";
+    category && isValidCategory(category)
+      ? toKoreanCategory(category as BoardCategoryTypeEN)
+      : "전체";
 
-  const filteredContents = filterBoardData(
-    mockBoardData,
+  const getBoardList = async (
+    search = "",
+    category = "",
+    page = 0,
+    size = 10
+  ) => {
+    const data = await getBoards(search, category, page, size);
+    return {
+      contents: data.content ?? [],
+      totalItems: data.totalElements ?? data.totalCount ?? 0,
+    };
+  };
+
+  const { contents, totalItems } = await getBoardList(
     currentSearch,
-    currentCategory
+    currentCategory !== "전체" ? category! : "",
+    currentPage - 1,
+    ITEMS_PER_PAGE
   );
-
-  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const endIndex = startIndex + ITEMS_PER_PAGE;
-
-  const paginatedContents = filteredContents.slice(startIndex, endIndex);
 
   return (
     <div className="space-y-6">
@@ -86,11 +102,11 @@ export default async function BoardPage({ searchParams }: BoardPageProps) {
         </Link>
       </div>
 
-      <BoardCardList contents={paginatedContents} />
+      <BoardCardList contents={contents} />
 
       <BoardPagination
         currentPage={currentPage}
-        totalItems={filteredContents.length}
+        totalItems={totalItems}
         itemsPerPage={ITEMS_PER_PAGE}
         currentSearch={currentSearch}
         currentCategory={currentCategory}

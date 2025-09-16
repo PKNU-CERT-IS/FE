@@ -74,7 +74,7 @@ export default function CCScheduleFormModal({
       handleStartTime(formatTime(schedule.startedAt, "hm"));
       handleEndTime(formatTime(schedule.endedAt, "hm"));
     }
-  }, [schedule]);
+  }, [schedule, handleType, handleStartTime, handleEndTime]);
 
   const isValidForm =
     title &&

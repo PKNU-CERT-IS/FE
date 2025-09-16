@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 export const useModal = () => {
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
@@ -34,31 +34,36 @@ export const useModal = () => {
   const toggleEndTimeDropdown = () => {
     setIsEndTimeDropdownOpen((prev) => !prev);
   };
-
-  const handleType = (type: string) => {
+  const handleType = useCallback((type: string) => {
     setSelectedType(type);
     setIsTypeDropdownOpen(false);
-  };
+  }, []);
 
-  const handleStartTime = (time: string) => {
-    if (selectedEndTime !== "선택" && time >= selectedEndTime) {
-      setTimeError("시작 시간은 종료 시간보다 빨라야 합니다.");
-    } else {
-      setTimeError("");
-    }
-    setSelectedStartTime(time);
-    setIsStartTimeDropdownOpen(false);
-  };
+  const handleStartTime = useCallback(
+    (time: string) => {
+      if (selectedEndTime !== "선택" && time >= selectedEndTime) {
+        setTimeError("시작 시간은 종료 시간보다 빨라야 합니다.");
+      } else {
+        setTimeError("");
+      }
+      setSelectedStartTime(time);
+      setIsStartTimeDropdownOpen(false);
+    },
+    [selectedEndTime]
+  );
 
-  const handleEndTime = (time: string) => {
-    if (selectedStartTime !== "선택" && selectedStartTime >= time) {
-      setTimeError("종료 시간은 시작 시간보다 늦어야 합니다.");
-    } else {
-      setTimeError("");
-    }
-    setSelectedEndTime(time);
-    setIsEndTimeDropdownOpen(false);
-  };
+  const handleEndTime = useCallback(
+    (time: string) => {
+      if (selectedStartTime !== "선택" && selectedStartTime >= time) {
+        setTimeError("종료 시간은 시작 시간보다 늦어야 합니다.");
+      } else {
+        setTimeError("");
+      }
+      setSelectedEndTime(time);
+      setIsEndTimeDropdownOpen(false);
+    },
+    [selectedStartTime]
+  );
 
   const handleClickDropdownOutside = (e: MouseEvent) => {
     if (
