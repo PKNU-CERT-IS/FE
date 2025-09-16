@@ -1,9 +1,9 @@
 "server-only";
 
 import SCSearchResultNotFound from "@/components/ui/SCSearchResultNotFound";
-import { members } from "@/mocks/mockAdminMembersData";
-import { AdminMemberDetailInfoType } from "@/types/admin/adminMembers";
+// import { AdminMemberDetailInfoType } from "@/types/admin/adminMembers";
 import CCMembersList from "@/components/admin/members/CCMembersList";
+import { getMembersForStaff } from "@/app/api/member/SCadminMemberApi";
 
 interface SCMembersContentWrapperProps {
   currentSearch: string;
@@ -12,26 +12,28 @@ interface SCMembersContentWrapperProps {
 export default async function SCMembersContentWrapper({
   currentSearch,
 }: SCMembersContentWrapperProps) {
+  const members = await getMembersForStaff(currentSearch);
+
   const sortKorean = (a: string, b: string) => a.localeCompare(b, "ko-KR");
-  const sortedMembers = [...(members as AdminMemberDetailInfoType[])].sort(
-    (a, b) => sortKorean(a.name, b.name)
+  const sortedMembers = [...(await members)].sort((a, b) =>
+    sortKorean(a.name, b.name)
   );
 
-  const filteredMembers = () => {
-    return sortedMembers.filter(
-      (member: AdminMemberDetailInfoType) =>
-        member.name.includes(currentSearch) ||
-        member.major.includes(currentSearch) ||
-        member.studentId.includes(currentSearch) ||
-        member.currentProjects.some((project: string) =>
-          project.includes(currentSearch)
-        ) ||
-        member.currentStudies.some((study: string) =>
-          study.includes(currentSearch)
-        )
-    );
-  };
-  const filtered = filteredMembers();
+  // const filteredMembers = () => {
+  //   return sortedMembers.filter(
+  //     (member: AdminMemberDetailInfoType) =>
+  //       member.name.includes(currentSearch) ||
+  //       member.major.includes(currentSearch) ||
+  //       member.studentNumber.includes(currentSearch) ||
+  //       member.activeProjects.some((project: string) =>
+  //         project.includes(currentSearch)
+  //       ) ||
+  //       member.activeStudies.some((study: string) =>
+  //         study.includes(currentSearch)
+  //       )
+  //   );
+  // };
+  const filtered = sortedMembers;
 
   if (filtered.length === 0) {
     return (

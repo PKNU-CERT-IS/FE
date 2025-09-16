@@ -1,3 +1,4 @@
+// 백엔들에서 들어오는 응답값을 변환하는 유틸 함수들
 import { MembersRoleCategoryType } from "@/types/members";
 
 /**
