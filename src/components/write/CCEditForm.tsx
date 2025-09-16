@@ -717,7 +717,6 @@ export default function EditForm({ type, dataId }: EditFormProps) {
               content,
               category,
               type,
-              description,
               maxParticipants,
               startDate,
               endDate

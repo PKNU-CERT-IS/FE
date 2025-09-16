@@ -216,17 +216,14 @@ export const getDescriptionPlaceholder = (type: NewPageCategoryType) => {
 // 추후 가능하면 매개변수를 줄일 수 있도록
 export const isFormValid = (
   title: string,
-
   content: string,
   category: string,
   type: NewPageCategoryType,
-  description: string,
   maxParticipants?: string,
   startDate?: string,
   endDate?: string
 ) => {
-  const baseValid =
-    title.trim() && content.trim() && category && description?.trim();
+  const baseValid = title.trim() && content.trim() && category;
   const dateValid =
     type === "study" || type === "project"
       ? startDate && endDate && maxParticipants
