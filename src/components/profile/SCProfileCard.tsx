@@ -3,18 +3,21 @@
 import DefaultBadge from "@/components/ui/defaultBadge";
 import ScheduleSVG from "/public/icons/schedule.svg";
 import CCEditProfileCard from "@/components/profile/CCEditProfileCard";
-import { mockProfileData } from "@/mocks/mockProfileData";
 import Image from "next/image";
 import { getRoleBadgeStyle } from "@/utils/membersUtils";
 import { getProfile } from "@/app/api/profile/SCprofileApi";
+import {
+  translateMemberRole,
+  translateGradeToKorean,
+  fromOffsetDateTime,
+} from "@/utils/transfromResponseValue";
 
 export default async function SCProfileCard() {
-  const result = await getProfile();
-
-  const profile = result.data;
-
-  const user = mockProfileData[0];
-
+  const profile = await getProfile();
+  console.log("Profile data:", profile);
+  const role = translateMemberRole(profile.memberRole);
+  const grade = translateGradeToKorean(profile.memberGrade);
+  const createdAt = fromOffsetDateTime(profile.createdAt);
   return (
     <div className="lg:col-span-1">
       <div className="rounded-lg border shadow-sm border-gray-200 hover:border-red-300 transition-all duration-300 hover:shadow-lg group dark-default dark:border-gray-700">
@@ -22,10 +25,10 @@ export default async function SCProfileCard() {
           <div className="relative mb-4">
             <div className="w-24 h-24 mx-auto group-hover:border-red-300 transition-colors">
               <div className="flex h-full w-full items-center justify-center rounded-full bg-auto border group-hover:border-red-300 border-gray-200 text-lg font-medium text-gray-600">
-                {user.profileImage ? (
+                {profile.profileImage ? (
                   <Image
-                    src={user.profileImage}
-                    alt={`${user.name} 프로필`}
+                    src={profile.profileImage}
+                    alt={`${profile.name} 프로필`}
                     width={80}
                     height={80}
                     priority={false}
@@ -41,16 +44,13 @@ export default async function SCProfileCard() {
             {profile.name}
           </div>
           <div className="flex justify-center mt-1">
-            <DefaultBadge
-              variant="custom"
-              className={getRoleBadgeStyle(user.role)}
-            >
-              {profile.role}
+            <DefaultBadge variant="custom" className={getRoleBadgeStyle(role)}>
+              {role}
             </DefaultBadge>
           </div>
           <div className="text-sm text-gray-500  dark:text-gray-300">
             <p>
-              {profile.grade} • {profile.major}
+              {grade} • {profile.major}
             </p>
           </div>
         </div>
@@ -63,7 +63,7 @@ export default async function SCProfileCard() {
             <div className="flex items-center gap-2 text-sm">
               <ScheduleSVG className="w-4 h-4 stroke-cert-dark-red" />
               <span className="text-gray-600 transition-colors duration-300  dark:text-gray-400">
-                {user.joinDate} 가입
+                {createdAt} 가입
               </span>
             </div>
           </div>
@@ -73,7 +73,7 @@ export default async function SCProfileCard() {
               기술 스택
             </h4>
             <div className="flex flex-wrap gap-1">
-              {user.skills?.map((skill) => (
+              {profile.skills?.map((skill: string) => (
                 <DefaultBadge
                   key={skill}
                   variant="outline"
@@ -85,7 +85,7 @@ export default async function SCProfileCard() {
             </div>
           </div>
 
-          <CCEditProfileCard />
+          <CCEditProfileCard profile={profile} />
         </div>
       </div>
     </div>

@@ -1,7 +1,6 @@
 "use client";
 
 import DefaultButton from "@/components/ui/defaultButton";
-import { mockProfileData } from "@/mocks/mockProfileData";
 import { getRoleBadgeStyle, gradeOptions } from "@/utils/membersUtils";
 import { MembersDataType } from "@/types/members";
 import Image from "next/image";
@@ -10,28 +9,39 @@ import { X, Upload, Trash2, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import DefaultBadge from "@/components/ui/defaultBadge";
 import { ProfileDataType } from "@/types/profile";
+import {
+  translateMemberRole,
+  translateGradeToKorean,
+  // fromOffsetDateTime,
+} from "@/utils/transfromResponseValue";
 
 interface ModalProps {
   closeModal: () => void;
   modalRef?: RefObject<HTMLDivElement | null>;
   onSave?: (profile: MembersDataType) => void;
+  initialProfileData: ProfileDataType;
 }
 
 export default function CCProfileModal({
   closeModal,
   modalRef,
   onSave,
+  initialProfileData,
 }: ModalProps) {
-  const user = mockProfileData[0] as ProfileDataType;
-  const [editedUser, setEditedUser] = useState<ProfileDataType>(user);
+  const [editedUser, setEditedUser] =
+    useState<ProfileDataType>(initialProfileData);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [profileImageFile, setProfileImageFile] = useState<File | null>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(
-    user.profileImage || null
+    initialProfileData.profileImage || null
   );
   const [showGradeDropdown, setShowGradeDropdown] = useState<boolean>(false);
 
   const gradeRef = useRef<HTMLDivElement>(null);
+
+  const role = translateMemberRole(editedUser.memberRole);
+  const grade = translateGradeToKorean(editedUser.memberGrade);
+  // const createdAt = fromOffsetDateTime(editedUser.createdAt);
 
   const closeAllDropdowns = useCallback(() => {
     setShowGradeDropdown(false);
@@ -220,7 +230,7 @@ export default function CCProfileModal({
                   >
                     <span className="text-gray-900 truncate pr-1 text-sm dark:text-gray-200">
                       {gradeOptions.find(
-                        (option) => option.value === (editedUser.grade ?? "")
+                        (option) => option.value === (grade ?? "")
                       )?.label || "선택"}
                     </span>
                     <ChevronDown
@@ -396,14 +406,14 @@ export default function CCProfileModal({
               <div className="flex justify-center mt-1">
                 <DefaultBadge
                   variant="custom"
-                  className={getRoleBadgeStyle(editedUser.role)}
+                  className={getRoleBadgeStyle(role)}
                 >
-                  {editedUser.role}
+                  {role}
                 </DefaultBadge>
               </div>
               <div className="text-xs text-center text-gray-500 mt-2 dark:text-gray-300">
                 <p>
-                  {editedUser.grade} • {editedUser.major}
+                  {grade} • {editedUser.major}
                 </p>
               </div>
               <div className="text-xs text-center text-gray-600 mt-3 dark:text-gray-300">

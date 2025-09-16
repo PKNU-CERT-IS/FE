@@ -10,3 +10,14 @@ export const getStudyCategoryColor = (type: StudyTabType) => {
       return "bg-gray-50 text-gray-600 border-gray-200 dark:bg-gray-700 dark:text-gray-200 dark:border-gray-600";
   }
 };
+
+export function translateStudyProjectStatusToKorean(status: string): string {
+  const statusMap: Record<string, string> = {
+    READY: "준비중",
+    INPROGRESS: "진행중",
+    COMPLETED: "완료",
+    REJECTED: "중단됨",
+  };
+
+  return statusMap[status];
+}

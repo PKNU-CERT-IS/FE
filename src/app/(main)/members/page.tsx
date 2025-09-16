@@ -2,11 +2,13 @@ import MembersCardList from "@/components/members/SCMembersCardList";
 import MembersSearchBar from "@/components/members/CCMembersSearchBar";
 import MembersGradeDropdown from "@/components/members/CCMembersGradeDown";
 import MembersRoleDropdown from "@/components/members/CCMembersRoleDropDown";
-import { filterMembers } from "@/utils/membersUtils";
 import { isValidRole, isValidGrade } from "@/utils/membersUtils";
-import { mockMembersData } from "@/mocks/mockMembersData";
 import { Metadata } from "next";
-
+import { getMembers } from "@/app/api/member/SCmemberApi";
+import {
+  translateKoreanToGrade,
+  translateKoreanToRole,
+} from "@/utils/transformRequestValue";
 interface MembersPageProps {
   searchParams: Promise<{
     role?: string;
@@ -51,16 +53,17 @@ export async function generateMetadata({
 export default async function MembersPage({ searchParams }: MembersPageProps) {
   const { role, search, grade } = await searchParams;
 
-  const currentRole = role && isValidRole(role) ? role : "전체";
+  const currentRole =
+    role && isValidRole(role) ? translateKoreanToRole(role) : "전체";
   const currentSearch = search || "";
-  const currentGrade = grade && isValidGrade(grade) ? grade : "전체";
+  const currentGrade =
+    grade && isValidGrade(grade) ? translateKoreanToGrade(grade) : "전체";
 
-  const filteredMembers = filterMembers(
-    mockMembersData,
-    currentSearch,
-    currentRole,
-    currentGrade
-  );
+  const members = await getMembers({
+    role: currentRole === "전체" ? "" : currentRole,
+    grade: currentGrade === "전체" ? "" : currentGrade,
+    search: currentSearch,
+  });
 
   return (
     <div className="space-y-6">
@@ -76,7 +79,7 @@ export default async function MembersPage({ searchParams }: MembersPageProps) {
         </div>
       </div>
 
-      <MembersCardList members={filteredMembers} />
+      <MembersCardList members={members} />
     </div>
   );
 }

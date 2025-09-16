@@ -4,12 +4,13 @@ import CommentSVG from "/public/icons/comment.svg";
 import { MembersDataType } from "@/types/members";
 
 export interface ProfileDataType extends MembersDataType {
-  joinDate: string;
-  penaltyPoint: number;
-  penaltyPeriod: number;
+  createdAt: string;
+  penaltyCount: number;
+  gracePeriod: number;
   birthday: string;
-  phoneNumber: string;
+  phoneNumber?: string;
   gender: string;
+  studentId: string;
 }
 
 // tab category

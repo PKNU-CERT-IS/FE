@@ -3,17 +3,15 @@
 import ScheduleSVG from "/public/icons/schedule.svg";
 import { Clock, MapPin } from "lucide-react";
 import DefaultBadge from "@/components/ui/defaultBadge";
-import { mockScheduleData } from "@/mocks/mockScheduleData";
 import { getTypeColor, getTypeLabel } from "@/utils/scheduleUtils";
-import { formatDate, formatTime } from "@/utils/formatDateUtil";
+import { formatTime } from "@/utils/formatDateUtil";
+import { getProfile } from "@/app/api/profile/SCprofileApi";
 
-const todayStr = new Date().toISOString().split("T")[0];
+import { ScheduleInfo } from "@/types/schedule";
 
-const todaySchedule = mockScheduleData.filter(
-  (schedule) => formatDate(schedule.startedAt, "short") === todayStr
-);
-
-export default function SCTodaySchedule() {
+export default async function SCTodaySchedule() {
+  const profile = await getProfile();
+  console.log(profile);
   return (
     <div className="mt-7">
       <div className="card-list text-card-foreground p-6 cursor-default dark-default">
@@ -22,9 +20,9 @@ export default function SCTodaySchedule() {
           오늘 일정
         </h3>
         <div>
-          {todaySchedule.length > 0 ? (
+          {profile.todaySchedules.length > 0 ? (
             <div className="space-y-3">
-              {todaySchedule.map((schedule) => (
+              {profile.todaySchedules.map((schedule: ScheduleInfo) => (
                 <div
                   key={schedule.scheduleId}
                   className="card-list bg-gray-50 flex items-center justify-between p-3 group cursor-default"
