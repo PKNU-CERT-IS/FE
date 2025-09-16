@@ -1,5 +1,5 @@
 import { fetchWithAuth } from "@/lib/serverIntercept";
-import { MembersDataType } from "@/types/members";
+import { AdminMemberDetailInfoType } from "@/types/admin/adminMembers";
 
 interface MemberSearchParams {
   grade?: string;
@@ -9,7 +9,7 @@ interface MemberSearchParams {
 
 export async function getMembers(
   params: MemberSearchParams
-): Promise<MembersDataType[]> {
+): Promise<AdminMemberDetailInfoType[]> {
   const queryString = new URLSearchParams(
     Object.fromEntries(
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -27,5 +27,5 @@ export async function getMembers(
   }
 
   const { data } = await res.json();
-  return data as MembersDataType[];
+  return data as AdminMemberDetailInfoType[];
 }

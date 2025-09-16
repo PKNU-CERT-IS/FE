@@ -23,6 +23,25 @@ interface SCStudyListProps {
   }>;
 }
 
+interface StudyType {
+  studyId: number;
+  title: string;
+  description: string;
+  studyStatus: string;
+  studyStartDate: string; // ISO DateTime (e.g., "2025-09-02T08:59:22.933095425Z")
+  studyEndDate: string; // ISO DateTime
+  tags: string[];
+}
+interface ProjectType {
+  projectId: number;
+  title: string;
+  description: string;
+  projectStatus: string;
+  projectStartDate: string; // ISO DateTime
+  projectEndDate: string; // ISO DateTime
+  tags: string[];
+}
+
 export default async function SCStudyList({ searchParams }: SCStudyListProps) {
   const { tab, status } = await searchParams;
   const currentTab = tab || "study";
@@ -35,7 +54,7 @@ export default async function SCStudyList({ searchParams }: SCStudyListProps) {
       : "전체";
 
   const allMaterials = [
-    ...studydata.map((m) => ({
+    ...studydata.map((m: StudyType) => ({
       ...m,
       tab: "Study" as const,
       id: m.studyId,
@@ -44,7 +63,7 @@ export default async function SCStudyList({ searchParams }: SCStudyListProps) {
       startDate: fromOffsetDateTime(m.studyStartDate),
       endDate: fromOffsetDateTime(m.studyEndDate),
     })),
-    ...projectdata.map((m) => ({
+    ...projectdata.map((m: ProjectType) => ({
       ...m,
       tab: "Project" as const,
       id: m.projectId,

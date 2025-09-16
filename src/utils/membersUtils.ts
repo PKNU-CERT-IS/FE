@@ -5,6 +5,7 @@ import {
   MembersGradeCategoryType,
   MembersDataType,
 } from "@/types/members";
+import { AdminMemberDetailInfoType } from "@/types/admin/adminMembers";
 
 export const getRoleBadgeStyle = (
   role: MembersRoleCategoryType | "전체" | "NONE"
@@ -90,7 +91,7 @@ const filterBySearch = (member: MembersDataType, search: string) => {
 
 // 역할 필터
 const filterByRole = (
-  member: MembersDataType,
+  member: AdminMemberDetailInfoType,
   role: MembersRoleCategoryType | "전체" | "NONE"
 ) => {
   switch (role) {
@@ -123,7 +124,7 @@ const filterByGrade = (
 
 // 통합 필터
 export const filterMembers = (
-  members: MembersDataType[],
+  members: AdminMemberDetailInfoType[],
   search: string,
   role: MembersRoleCategoryType | "전체",
   grade: MembersGradeCategoryType | "전체"
@@ -137,8 +138,8 @@ export const filterMembers = (
     )
     .sort((a, b) => {
       const roleDiff =
-        membersRoleCategories.indexOf(a.role) -
-        membersRoleCategories.indexOf(b.role);
+        membersRoleCategories.indexOf(a.role as MembersRoleCategoryType) -
+        membersRoleCategories.indexOf(b.role as MembersRoleCategoryType);
       if (roleDiff !== 0) return roleDiff;
 
       return a.name.localeCompare(b.name, "ko-KR");

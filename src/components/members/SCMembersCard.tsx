@@ -5,8 +5,12 @@ import Image from "next/image";
 import GithubSVG from "/public/icons/github.svg";
 import EmailSVG from "/public/icons/email.svg";
 import { translateMemberRole } from "@/utils/transfromResponseValue";
-
-export default function MembersCard({ members }) {
+import { AdminMemberDetailInfoType } from "@/types/admin/adminMembers";
+export default function MembersCard({
+  members,
+}: {
+  members: AdminMemberDetailInfoType;
+}) {
   const role = translateMemberRole(members.role);
   return (
     <div

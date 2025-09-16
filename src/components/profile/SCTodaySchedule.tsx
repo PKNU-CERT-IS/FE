@@ -7,9 +7,11 @@ import { getTypeColor, getTypeLabel } from "@/utils/scheduleUtils";
 import { formatTime } from "@/utils/formatDateUtil";
 import { getProfile } from "@/app/api/profile/SCprofileApi";
 
+import { ScheduleInfo } from "@/types/schedule";
+
 export default async function SCTodaySchedule() {
   const profile = await getProfile();
-
+  console.log(profile);
   return (
     <div className="mt-7">
       <div className="card-list text-card-foreground p-6 cursor-default dark-default">
@@ -20,7 +22,7 @@ export default async function SCTodaySchedule() {
         <div>
           {profile.todaySchedules.length > 0 ? (
             <div className="space-y-3">
-              {profile.todaySchedules.map((schedule) => (
+              {profile.todaySchedules.map((schedule: ScheduleInfo) => (
                 <div
                   key={schedule.id}
                   className="card-list bg-gray-50 flex items-center justify-between p-3 group cursor-default"

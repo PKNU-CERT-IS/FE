@@ -37,5 +37,6 @@ export interface MembersDataType {
   linkedinUrl?: string;
   skills?: string[]; // 기술 스택이 없을 수도 있으므로 선택적
   description?: string; // 자기소개가 없을 수도 있으므로 선택적
-  studentId: string;
+  studentNumber: string;
+  grade: string;
 }

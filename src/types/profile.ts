@@ -10,6 +10,7 @@ export interface ProfileDataType extends MembersDataType {
   birthday: string;
   phoneNumber?: string;
   gender: string;
+  studentId: string;
 }
 
 // tab category

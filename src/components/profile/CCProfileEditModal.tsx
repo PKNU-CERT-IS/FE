@@ -12,7 +12,7 @@ import { ProfileDataType } from "@/types/profile";
 import {
   translateMemberRole,
   translateGradeToKorean,
-  fromOffsetDateTime,
+  // fromOffsetDateTime,
 } from "@/utils/transfromResponseValue";
 
 interface ModalProps {
@@ -41,7 +41,7 @@ export default function CCProfileModal({
 
   const role = translateMemberRole(editedUser.memberRole);
   const grade = translateGradeToKorean(editedUser.memberGrade);
-  const createdAt = fromOffsetDateTime(editedUser.createdAt);
+  // const createdAt = fromOffsetDateTime(editedUser.createdAt);
 
   const closeAllDropdowns = useCallback(() => {
     setShowGradeDropdown(false);
