@@ -15,6 +15,8 @@ export const useModal = () => {
   const [selectedStartTime, setSelectedStartTime] = useState<string>("선택");
   const [selectedEndTime, setSelectedEndTime] = useState<string>("선택");
 
+  const [timeError, setTimeError] = useState<string>("");
+
   const typeDropdownRef = useRef<HTMLDivElement | null>(null);
   const startTimeDropdownRef = useRef<HTMLDivElement | null>(null);
   const endTimeDropdownRef = useRef<HTMLDivElement | null>(null);
@@ -39,11 +41,21 @@ export const useModal = () => {
   };
 
   const handleStartTime = (time: string) => {
+    if (selectedEndTime !== "선택" && time >= selectedEndTime) {
+      setTimeError("시작 시간은 종료 시간보다 빨라야 합니다.");
+    } else {
+      setTimeError("");
+    }
     setSelectedStartTime(time);
     setIsStartTimeDropdownOpen(false);
   };
 
   const handleEndTime = (time: string) => {
+    if (selectedStartTime !== "선택" && selectedStartTime >= time) {
+      setTimeError("종료 시간은 시작 시간보다 늦어야 합니다.");
+    } else {
+      setTimeError("");
+    }
     setSelectedEndTime(time);
     setIsEndTimeDropdownOpen(false);
   };
@@ -122,5 +134,6 @@ export const useModal = () => {
     setIsOpenModal,
     modalOutsideRef,
     typeDropdownRef,
+    timeError,
   };
 };

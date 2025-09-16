@@ -1,17 +1,16 @@
 "use client";
 
 import CCScheduleFormModal from "@/components/schedule/CCScheduleFormModal";
-import { ScheduleCreateRequest, ScheduleInfo } from "@/types/schedule";
+import { ScheduleInfo } from "@/types/schedule";
 import { useModal } from "@/hooks/useModal";
 import { useSchedule } from "@/hooks/useSchedule";
 import EditSVG from "/public/icons/edit.svg";
 
 interface CCEditButtonProps {
   schedule: ScheduleInfo;
-  onEdit: (reservation: ScheduleCreateRequest) => void;
 }
 
-export default function CCEditButton({ schedule, onEdit }: CCEditButtonProps) {
+export default function CCEditButton({ schedule }: CCEditButtonProps) {
   const { selectedSchedule, setSelectedSchedule } = useSchedule();
   const { isOpenModal, setIsOpenModal, modalOutsideRef } = useModal();
 
@@ -27,12 +26,12 @@ export default function CCEditButton({ schedule, onEdit }: CCEditButtonProps) {
         <EditSVG className="stroke-gray-500 hover:stroke-gray-400 transition-all duration-200" />
       </button>
 
-      {selectedSchedule?.id === schedule.id && isOpenModal && (
+      {selectedSchedule?.scheduleId === schedule.scheduleId && isOpenModal && (
         <CCScheduleFormModal
           schedule={selectedSchedule}
           closeModal={() => setIsOpenModal(false)}
           modalRef={modalOutsideRef}
-          onAdd={onEdit}
+          isAdmin={true}
         />
       )}
     </div>

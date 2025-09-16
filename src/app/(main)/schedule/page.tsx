@@ -1,12 +1,15 @@
-import CCScheduleRequestWrapper from "@/components/schedule/CCScheduleRequestWrapper";
 import SCScheduleInfo from "@/components/schedule/SCScheduleInfo";
 import SCScheduleList from "@/components/schedule/SCScheduleList";
 import Calendar from "@/components/schedule/calendar";
 import CCScrollScheduleList from "@/components/schedule/CCScrollScheduleList";
 import { Metadata } from "next";
+import { getSchedules } from "@/api/schedule/SCschedule";
+import { ScheduleInfo } from "@/types/schedule";
+import SCScheduleRequestList from "@/components/schedule/SCScheduleRequestList";
+import CCAddScheduleCard from "@/components/schedule/CCAddScheduleCard";
 
 interface SearchPageProps {
-  searchParams: Promise<{ date?: string }>;
+  searchParams: Promise<{ date: string }>;
 }
 
 export async function generateMetadata({
@@ -37,9 +40,18 @@ export async function generateMetadata({
   };
 }
 
+function toLocalDate(date: string | Date) {
+  const d = typeof date === "string" ? new Date(date) : date;
+  return d.toISOString().split("T")[0];
+}
 export default async function SchedulePage({ searchParams }: SearchPageProps) {
   const resolvedSearchParams = await searchParams;
-  const selectedDate = resolvedSearchParams?.date || null;
+
+  const selectedDate = resolvedSearchParams?.date
+    ? toLocalDate(resolvedSearchParams.date)
+    : toLocalDate(new Date());
+
+  const schedules: ScheduleInfo[] = await getSchedules(selectedDate);
 
   return (
     <div className="min-h-screen">
@@ -49,21 +61,19 @@ export default async function SchedulePage({ searchParams }: SearchPageProps) {
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="md:col-span-2">
-            <Calendar />
+            <Calendar schedules={schedules} selectedDate={selectedDate} />
           </div>
           <div>
-            <CCScheduleRequestWrapper>
-              <div className="relative">
-                <SCScheduleInfo selectedDate={selectedDate} />
-              </div>
-            </CCScheduleRequestWrapper>
+            <CCAddScheduleCard />
+
+            <div className="relative">
+              <SCScheduleInfo selectedDate={selectedDate} />
+            </div>
+            <SCScheduleRequestList />
           </div>
         </div>
 
-        <SCScheduleList
-          id="all-schedule-list"
-          date={selectedDate ?? undefined}
-        />
+        <SCScheduleList id="all-schedule-list" date={selectedDate ?? ""} />
       </div>
     </div>
   );

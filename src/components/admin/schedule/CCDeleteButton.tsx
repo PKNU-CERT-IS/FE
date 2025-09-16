@@ -5,23 +5,16 @@ import { useSchedule } from "@/hooks/useSchedule";
 import { ScheduleInfo } from "@/types/schedule";
 import ConfirmModal from "@/components/ui/defaultConfirmModal";
 import { Trash2 } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { deleteSchedule } from "@/api/schedule/CCSchedule";
 
 interface CCDeleteButtonProps {
   schedule: ScheduleInfo;
-  onRemove?: (id: number) => void;
 }
 
-export default function CCDeleteButton({
-  schedule,
-  onRemove,
-}: CCDeleteButtonProps) {
+export default function CCDeleteButton({ schedule }: CCDeleteButtonProps) {
   const { selectedSchedule, setSelectedSchedule } = useSchedule();
   const { isOpenModal, setIsOpenModal } = useModal();
-
-  const handleDelete = async () => {
-    onRemove?.(schedule.id);
-    setIsOpenModal(false);
-  };
 
   const openModal = () => {
     setSelectedSchedule(schedule);
@@ -30,6 +23,17 @@ export default function CCDeleteButton({
 
   const closeModal = () => setIsOpenModal(false);
 
+  const router = useRouter();
+
+  const handleDelete = async () => {
+    try {
+      await deleteSchedule(schedule.scheduleId);
+      router.refresh();
+    } catch (err) {
+      console.error("스케줄 삭제 실패:", err);
+    }
+  };
+
   return (
     <div className="flex">
       <button onClick={openModal} className="cursor-pointer">
@@ -37,12 +41,17 @@ export default function CCDeleteButton({
       </button>
 
       <ConfirmModal
-        isOpen={selectedSchedule?.id === schedule.id && isOpenModal}
+        isOpen={
+          selectedSchedule?.scheduleId === schedule.scheduleId && isOpenModal
+        }
         title="일정 삭제"
         message="정말 이 일정을 삭제하시겠습니까?"
         confirmText="삭제"
         cancelText="취소"
-        onConfirm={handleDelete}
+        onConfirm={() => {
+          handleDelete();
+          setIsOpenModal(false);
+        }}
         onCancel={closeModal}
       />
     </div>

@@ -1,9 +1,9 @@
 // 상수 타입 정의
 export const SCHEDULE_TYPES = {
-  MEETING: "meeting",
-  WORKSHOP: "workshop",
-  STUDY: "study",
-  CONFERENCE: "conference",
+  MEETING: "ADVERTISE", // FIXME:L 타입 변경 시 수정
+  WORKSHOP: "WORKSHOP",
+  STUDY: "STUDY",
+  CONFERENCE: "CONFERENCE",
 } as const;
 
 export type ScheduleType = (typeof SCHEDULE_TYPES)[keyof typeof SCHEDULE_TYPES];
@@ -17,19 +17,30 @@ export const SCHEDULE_STATUS_TYPES = {
 export type ScheduleStatusType =
   (typeof SCHEDULE_STATUS_TYPES)[keyof typeof SCHEDULE_STATUS_TYPES];
 
-// 스케줄 등록
 export interface ScheduleCreateRequest {
   title: string;
   description?: string;
   type: ScheduleType;
-  started_at: string; // ISO date string
-  ended_at: string;
+  startedAt: string;
+  endedAt: string;
+  place?: string;
+}
+
+// 관리자 전용 예약 생성 요청
+export interface AdminScheduleCreateRequest extends ScheduleCreateRequest {
   place: string;
 }
 
-// 스케줄 정보 조회
 export interface ScheduleInfo extends ScheduleCreateRequest {
-  id: number;
+  scheduleId: number;
+  place: string;
   status: ScheduleStatusType;
-  created_at: string;
+  createdAt: string; // 오늘 날짜
+}
+
+export interface AdminScheduleInfo extends ScheduleInfo {
+  memberInfo: {
+    memberId: number;
+    memberName: string;
+  };
 }

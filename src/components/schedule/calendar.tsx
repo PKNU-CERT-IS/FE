@@ -13,14 +13,18 @@ import { formatDate } from "@/utils/formatDateUtil";
 import CCScrollScheduleList from "@/components/schedule/CCScrollScheduleList";
 import { ScheduleInfo } from "@/types/schedule";
 
-export default function Calendar() {
+interface CalendarProps {
+  schedules: ScheduleInfo[];
+  selectedDate: string;
+}
+
+export default function Calendar({ schedules, selectedDate }: CalendarProps) {
   const router = useRouter();
   const currentParams = useSearchParams();
 
-  const [currentDate, setCurrentDate] = useState(new Date());
-  const today = useMemo(() => new Date(), []);
+  const [currentDate, setCurrentDate] = useState(new Date(selectedDate));
 
-  const schedules = useMemo<ScheduleInfo[]>(() => mockScheduleData, []);
+  const today = useMemo(() => new Date(), []);
 
   const days = useMemo(() => generateCalendarDays(currentDate), [currentDate]);
 
@@ -64,7 +68,7 @@ export default function Calendar() {
     (day: Date) => {
       const dayKey = formatDate(day, "short");
       return schedules.filter(
-        (s) => formatDate(s.started_at, "short") === dayKey
+        (s) => formatDate(s.startedAt, "short") === dayKey
       );
     },
     [schedules]

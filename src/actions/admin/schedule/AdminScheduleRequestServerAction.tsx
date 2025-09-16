@@ -1,32 +1,32 @@
+import { fetchWithAuth } from "@/lib/serverIntercept";
 import { revalidatePath } from "next/cache";
 export async function approveReservation(formData: FormData) {
   "use server";
+  const id = Number(formData.get("id"));
+  if (!id) throw new Error("유효하지 않은 ID");
 
-  const id = formData.get("id") as string;
-  console.log("승인", id);
+  const res = await fetchWithAuth(`/admin/schedule/update`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ scheduleId: id, status: "APPROVED" }),
+  });
 
-  // 실제로는 DB 업데이트
-  // await db.reservation.update({
-  //   where: { id: parseInt(id) },
-  //   data: { status: 'approved' }
-  // });
+  if (!res.ok) throw new Error("승인 실패");
 
-  // 페이지 자동 갱신
   revalidatePath("/admin/schedule");
 }
 
 export async function rejectReservation(formData: FormData) {
   "use server";
+  const id = Number(formData.get("id"));
+  if (!id) throw new Error("유효하지 않은 ID");
+  const res = await fetchWithAuth(`/admin/schedule/update`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ scheduleId: id, status: "REJECTED" }),
+  });
 
-  const id = formData.get("id") as string;
-  console.log("거절", id);
+  if (!res.ok) throw new Error("거절 실패");
 
-  // 실제로는 DB 업데이트
-  // await db.reservation.update({
-  //   where: { id: parseInt(id) },
-  //   data: { status: 'rejected' }
-  // });
-
-  // 페이지 자동 갱신
   revalidatePath("/admin/schedule");
 }
