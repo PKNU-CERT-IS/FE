@@ -30,14 +30,10 @@ export const studies: Study[] = [
     subCategory: "AI",
     attachments: [
       {
-        id: "file_1_1",
         name: "해커톤_기획서.pdf",
         size: 2547892,
         type: "application/pdf",
-        category: "document",
         attachedUrl: "/api/files/download/hackathon_plan.pdf",
-        uploadDate: "2025-01-15T09:30:00Z",
-        description: "해커톤 전체 기획서 및 일정표",
       },
     ],
     startDate: "2025-09-01",
@@ -57,14 +53,10 @@ export const studies: Study[] = [
     subCategory: "정수론",
     attachments: [
       {
-        id: "file_1_1",
         name: "해커톤_기획서.pdf",
         size: 2547892,
         type: "application/pdf",
-        category: "document",
         attachedUrl: "/api/files/download/hackathon_plan.pdf",
-        uploadDate: "2025-01-15T09:30:00Z",
-        description: "해커톤 전체 기획서 및 일정표",
       },
     ],
     startDate: "2025-08-20",
@@ -86,14 +78,10 @@ export const studies: Study[] = [
     subCategory: "선형대수학",
     attachments: [
       {
-        id: "file_1_1",
         name: "해커톤_기획서.pdf",
         size: 2547892,
         type: "application/pdf",
-        category: "document",
         attachedUrl: "/api/files/download/hackathon_plan.pdf",
-        uploadDate: "2025-01-15T09:30:00Z",
-        description: "해커톤 전체 기획서 및 일정표",
       },
     ],
     startDate: "2025-08-20",

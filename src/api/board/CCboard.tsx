@@ -52,7 +52,6 @@ export async function deleteBoard(boardId: number) {
 }
 
 // 게시글 수정
-
 export async function updateBoard(
   boardId: number,
   payload: UpdateBoardPayload

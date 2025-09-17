@@ -1,3 +1,5 @@
+import { AttachedFile } from "@/types/attachedFile";
+
 export const boardCategories = [
   "전체",
   "공지사항",
@@ -75,13 +77,4 @@ export interface NewBoardFormData {
   category: string;
   content: string;
   attachments?: AttachedFile[];
-}
-
-// 첨부파일 타입 정의
-export interface AttachedFile {
-  id: string;
-  name: string;
-  size: number; // bytes
-  type: string; // MIME type
-  attachedUrl: string;
 }

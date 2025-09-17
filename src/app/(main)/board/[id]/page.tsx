@@ -14,8 +14,9 @@ import { formatFileSize } from "@/utils/attachedFileUtils";
 import { getFileIcon } from "@/utils/attachedFileUtils";
 import { getBoardCategoryColor } from "@/utils/boardUtils";
 import { getDetailBoard } from "@/api/board/SCBoard";
-import { AttachedFile, toKoreanCategory } from "@/types/board";
+import { toKoreanCategory } from "@/types/board";
 import { formatDate } from "@/utils/formatDateUtil";
+import { AttachedFile, getFileKey } from "@/types/attachedFile";
 
 export async function generateMetadata({
   params,
@@ -145,7 +146,7 @@ export default async function DetailPage({
               <div className="space-y-3">
                 {data.attachments.map((file: AttachedFile) => (
                   <div
-                    key={file.id}
+                    key={getFileKey(file)}
                     className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg dark:bg-gray-700"
                   >
                     <span className="text-2xl">{getFileIcon(file.type)}</span>
@@ -159,8 +160,8 @@ export default async function DetailPage({
                     </div>
                     <DownloadButton
                       fileName={file.name}
-                      fileId={file.id}
-                      // fileUrl={file.attachedUrl}
+                      // fileId={file.id}
+                      fileUrl={file.attachedUrl}
                     />
                   </div>
                 ))}

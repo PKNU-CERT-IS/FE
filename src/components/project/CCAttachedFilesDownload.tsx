@@ -20,7 +20,7 @@ import {
   ChevronDown,
   ChevronUp,
 } from "lucide-react";
-import { AttachedFile } from "@/types/attachedFile";
+import { AttachedFile, getFileKey } from "@/types/attachedFile";
 
 interface AttachedFilesDownloadProps {
   files: AttachedFile[];
@@ -67,8 +67,8 @@ const getFileIcon = (category: FileCategory) => {
 };
 
 // 파일 카테고리별 색상 테마
-const getCategoryColor = (category: FileCategory): string => {
-  switch (category) {
+const getCategoryColor = (type: FileCategory): string => {
+  switch (type) {
     case "document":
       return "bg-blue-50 border-blue-200 text-blue-700";
     case "image":
@@ -109,6 +109,32 @@ const getCategoryLabel = (category: FileCategory): string => {
   return labels[category];
 };
 
+const mapMimeToCategory = (mime: string): FileCategory => {
+  if (mime.startsWith("image/")) return "image"; // jpg, png, gif 등
+  if (mime.startsWith("video/")) return "video"; // mp4, avi 등
+  if (mime.startsWith("audio/")) return "audio"; // mp3, wav 등
+  if (
+    mime.includes("zip") ||
+    mime.includes("rar") ||
+    mime.includes("compressed")
+  )
+    return "archive";
+  if (
+    mime.includes("pdf") ||
+    mime.includes("msword") ||
+    mime.includes("officedocument") ||
+    mime.includes("text")
+  )
+    return "document";
+  if (
+    mime.includes("json") ||
+    mime.includes("javascript") ||
+    mime.includes("typescript")
+  )
+    return "code";
+  return "other";
+};
+
 export default function AttachedFilesDownload({
   files,
   collapsible = true,
@@ -124,54 +150,49 @@ export default function AttachedFilesDownload({
   }
 
   // 파일 선택/해제
-  const toggleFileSelection = (fileId: string) => {
+  const toggleFileSelection = (fileKey: string) => {
     setSelectedFiles((prev) =>
-      prev.includes(fileId)
-        ? prev.filter((id) => id !== fileId)
-        : [...prev, fileId]
+      prev.includes(fileKey)
+        ? prev.filter((id) => id !== fileKey)
+        : [...prev, fileKey]
     );
   };
 
-  // 모든 파일 선택/해제
+  // 전체 선택/해제
   const toggleAllFiles = () => {
     setSelectedFiles((prev) =>
-      prev.length === files.length ? [] : files.map((f) => f.id)
+      prev.length === files.length ? [] : files.map((f) => getFileKey(f))
     );
   };
 
   // 단일 파일 다운로드
   const downloadFile = async (file: AttachedFile) => {
-    setDownloadingFiles((prev) => [...prev, file.id]);
+    const fileKey = getFileKey(file);
+    setDownloadingFiles((prev) => [...prev, fileKey]);
 
     try {
-      // 실제 다운로드 로직 (API 호출)
       const link = document.createElement("a");
       link.href = file.attachedUrl;
       link.download = file.name;
       link.click();
-
-      // 시뮬레이션을 위한 딜레이
       await new Promise((resolve) => setTimeout(resolve, 1000));
     } catch (error) {
       console.error("Download failed:", error);
     } finally {
-      setDownloadingFiles((prev) => prev.filter((id) => id !== file.id));
+      setDownloadingFiles((prev) => prev.filter((id) => id !== fileKey));
     }
   };
 
-  // 선택된 파일들 일괄 다운로드
+  // 선택된 파일 다운로드
   const downloadSelectedFiles = async () => {
     const selectedFileObjects = files.filter((f) =>
-      selectedFiles.includes(f.id)
+      selectedFiles.includes(getFileKey(f))
     );
-
     for (const file of selectedFileObjects) {
       await downloadFile(file);
     }
-
     setSelectedFiles([]);
   };
-
   return (
     <div className=" border rounded-lg shadow-xs dark-default">
       {/* 헤더 (토글 영역) */}
@@ -238,12 +259,13 @@ export default function AttachedFilesDownload({
         <div className="px-3 sm:px-4 pb-4">
           <div className="space-y-2 sm:space-y-3">
             {files.map((file) => {
-              const isSelected = selectedFiles.includes(file.id);
-              const isDownloading = downloadingFiles.includes(file.id);
+              const fileKey = getFileKey(file);
+              const isSelected = selectedFiles.includes(fileKey);
+              const isDownloading = downloadingFiles.includes(fileKey);
 
               return (
                 <div
-                  key={file.id}
+                  key={fileKey}
                   className={`border rounded-lg p-3 sm:p-4 transition-all ${
                     isSelected
                       ? "border-red-200 bg-red-50 dark:bg-red-500/20 dark:border-red-800"
@@ -255,17 +277,17 @@ export default function AttachedFilesDownload({
                       <input
                         type="checkbox"
                         checked={isSelected}
-                        onChange={() => toggleFileSelection(file.id)}
+                        onChange={() => toggleFileSelection(fileKey)}
                         className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-cert-red rounded focus:ring-red-500"
                       />
 
                       {/* 아이콘 */}
                       <div
                         className={`p-1.5 sm:p-2 rounded-lg border ${getCategoryColor(
-                          file.category
+                          mapMimeToCategory(file.type)
                         )}`}
                       >
-                        {getFileIcon(file.category)}
+                        {getFileIcon(mapMimeToCategory(file.type))}
                       </div>
 
                       <div className="min-w-0">
@@ -275,18 +297,18 @@ export default function AttachedFilesDownload({
                           </h4>
                           <span
                             className={`px-2 py-0.5 rounded-full text-xs font-medium w-fit ${getCategoryColor(
-                              file.category
+                              mapMimeToCategory(file.type)
                             )}`}
                           >
-                            {getCategoryLabel(file.category)}
+                            {getCategoryLabel(mapMimeToCategory(file.type))}
                           </span>
                         </div>
 
                         <div className="mt-2 flex flex-wrap items-center gap-2 sm:gap-4 text-xs sm:text-sm text-gray-500 dark:text-gray-400">
                           <span>{formatFileSize(file.size)}</span>
-                          <span>
+                          {/* <span>
                             {new Date(file.uploadDate).toLocaleDateString()}
-                          </span>
+                          </span> */}
                         </div>
                       </div>
                     </div>

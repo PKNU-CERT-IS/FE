@@ -171,7 +171,10 @@ export default async function StudyDetailPage({
                               {formatFileSize(file.size)}
                             </p>
                           </div>
-                          <DownloadButton fileName={file.name} />
+                          <DownloadButton
+                            fileName={file.name}
+                            fileUrl={file.attachedUrl}
+                          />
                         </div>
                       ))}
                     </div>

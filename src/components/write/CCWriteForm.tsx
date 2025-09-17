@@ -639,7 +639,7 @@ export default function WriteForm({ type }: WriteFormProps) {
               첨부 파일
             </label>
             <FileUpload
-              attachedFiles={attachments}
+              attachments={attachments}
               onAttachmentsChange={setAttachments}
             />
           </div>
