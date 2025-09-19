@@ -45,7 +45,7 @@ export async function middleware(req: NextRequest) {
   } catch (err) {
     // AccessToken 만료 → Refresh 시도
     if (err instanceof errors.JWTExpired) {
-      console.log("🔑 AccessToken 만료됨 → Refresh 시도");
+      console.log("AccessToken 만료됨 → Refresh 시도");
 
       const API_URL = process.env.NEXT_PUBLIC_API_URL;
       try {
@@ -57,32 +57,32 @@ export async function middleware(req: NextRequest) {
         });
 
         if (!refreshRes.ok) {
-          console.error("❌ Refresh 실패:", refreshRes.status);
+          console.error("Refresh 실패:", refreshRes.status);
           return redirectToLogin(req);
         }
 
         const body = await refreshRes.json();
         const newAccessToken = body.data.accessToken;
 
-        // ✅ 새 accessToken 갱신
+        //  새 accessToken 갱신
         const res = NextResponse.next();
         res.cookies.set("accessToken", newAccessToken, {
           httpOnly: false,
           secure: true,
           sameSite: "lax",
           path: "/",
-          maxAge: 60 * 15,
+          maxAge: 60 * 60, // 60초 * 60 = 1시간
         });
 
         return res;
       } catch (refreshErr) {
-        console.error("❌ Refresh 중 예외:", refreshErr);
+        console.error("Refresh 중 예외:", refreshErr);
         return redirectToLogin(req);
       }
     }
 
     // 그 외 검증 실패
-    console.error("❌ JWT 검증 실패:", err);
+    console.error("JWT 검증 실패:", err);
     return redirectToLogin(req);
   }
 }

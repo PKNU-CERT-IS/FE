@@ -43,5 +43,5 @@ export async function loginAction(formData: FormData) {
   }
 
   // 로그인 성공 시 리다이렉트
-  return { success: true };
+  return { success: true, role: data.data.role };
 }

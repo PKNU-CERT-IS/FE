@@ -1,11 +1,23 @@
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
 interface AuthState {
   isLogin: boolean;
-  setIsLogin: (value: boolean) => void;
+  role: string | null;
+  setAuth: (isLogin: boolean, role: string | null) => void;
+  logout: () => void;
 }
 
-export const useAuthStore = create<AuthState>((set) => ({
-  isLogin: false,
-  setIsLogin: (value) => set({ isLogin: value }),
-}));
+export const useAuthStore = create<AuthState>()(
+  persist(
+    (set) => ({
+      isLogin: false,
+      role: null,
+      setAuth: (isLogin, role) => set({ isLogin, role }),
+      logout: () => set({ isLogin: false, role: null }),
+    }),
+    {
+      name: "auth-storage", // 로컬스토리지 키 이름
+    }
+  )
+);

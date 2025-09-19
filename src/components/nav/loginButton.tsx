@@ -8,20 +8,25 @@ import { logoutAction } from "@/actions/auth/LogoutServerAction"; // ✅ 서버 
 interface LoginButtonProps {
   className?: string;
   href?: string;
+  initialIsLogin?: boolean;
 }
 
 export default function LoginButton({
   className = "",
   href = "/login", // 기본값
+  initialIsLogin,
 }: LoginButtonProps) {
-  const { isLogin } = useAuthStore();
+  const { isLogin, logout } = useAuthStore();
 
   async function handleLogout() {
     await logoutAction(); // 서버 로그아웃 실행 (refreshToken 만료 + 쿠키 삭제)
+    logout(); // 클라이언트 상태 초기화
     window.location.href = "/login"; // ✅ 강제 새로고침 + 리다이렉트
   }
 
-  if (isLogin) {
+  const effectiveLogin = isLogin || initialIsLogin;
+
+  if (effectiveLogin) {
     return (
       <button
         onClick={handleLogout}
