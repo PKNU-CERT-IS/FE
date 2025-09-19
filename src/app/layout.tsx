@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { ThemeProvider } from "next-themes";
+import AuthInitializer from "@/components/auth/AuthInitializer";
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL as string),
   title: "CERT-IS",
@@ -18,6 +19,7 @@ export default function RootLayout({
         ) : null}
       </head>
       <body className="overscroll-none">
+        <AuthInitializer />
         <ThemeProvider attribute="class">{children}</ThemeProvider>
         <div id="modal-root"></div>
       </body>

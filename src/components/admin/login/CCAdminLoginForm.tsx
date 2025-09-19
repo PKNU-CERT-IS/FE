@@ -13,7 +13,7 @@ import { useRouter } from "next/navigation";
 export default function CCAdminLoginForm() {
   const { showPassword, setShowPassword, loginFormData, setLoginFormData } =
     useAuth();
-  const setIsLogin = useAuthStore((state) => state.setIsLogin);
+  const setAuth = useAuthStore((state) => state.setAuth);
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
 
@@ -22,7 +22,7 @@ export default function CCAdminLoginForm() {
       try {
         const result = await loginAction(formData);
         if (result.success) {
-          setIsLogin(true);
+          setAuth(true, result.role);
           router.push("/admin");
         } else {
           // 에러 처리 UI 추가 가능

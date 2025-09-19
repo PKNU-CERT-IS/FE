@@ -34,7 +34,7 @@ export async function verifyJwt(token: string): Promise<JwtPayload> {
     return payload as JwtPayload;
   } catch (error) {
     console.error("JWT verification error");
-    throw new Error(`Invalid token: ${error}`);
+    throw error;
   }
 }
 
