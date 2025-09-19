@@ -5,18 +5,26 @@ import { useRouter } from "next/navigation";
 import { X, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import DefaultButton from "@/components/ui/defaultButton";
-import { ScheduleCreateRequest, ScheduleInfo } from "@/types/schedule";
+import {
+  AdminScheduleCreateRequest,
+  ScheduleCreateRequest,
+  ScheduleInfo,
+} from "@/types/schedule";
 import { formatDate, formatTime } from "@/utils/formatDateUtil";
 import { useModal } from "@/hooks/useModal";
 import { useSchedule } from "@/hooks/useSchedule";
 import { getTypeLabel, labelToType } from "@/utils/scheduleUtils";
-import { createSchedule } from "@/actions/admin/schedule/CreateScheduleServerAction";
+import { createSchedule, deleteSchedule } from "@/api/schedule/CCSchedule";
+import { toOffset } from "@/utils/transformRequestValue";
+import {
+  createAdminSchedule,
+  deleteAdminSchedule,
+} from "@/api/schedule/CCAdminSchedule";
 
 interface ScheduleFormModalProps {
   closeModal: () => void;
   schedule?: ScheduleInfo;
   modalRef?: RefObject<HTMLDivElement | null>;
-  onAdd?: (data: ScheduleCreateRequest) => void;
   isAdmin?: boolean;
 }
 
@@ -24,7 +32,6 @@ export default function CCScheduleFormModal({
   closeModal,
   schedule,
   modalRef,
-  onAdd,
   isAdmin,
 }: ScheduleFormModalProps) {
   const router = useRouter();
@@ -45,25 +52,27 @@ export default function CCScheduleFormModal({
     selectedEndTime,
     isEndTimeDropdownOpen,
     handleEndTime,
+    timeError,
   } = useModal();
 
   const { timeOptions } = useSchedule();
   const TYPE_LABELS = ["정기 모임", "회의", "스터디", "컨퍼런스"];
   const [title, setTitle] = useState("");
-  const [place, setPlace] = useState("동아리방");
+  const [place, setPlace] = useState(isAdmin ? "" : "동아리방");
   const [date, setDate] = useState("");
   const [description, setDescription] = useState("");
+  const today = new Date().toISOString().split("T")[0];
 
   useEffect(() => {
     if (!schedule) return;
     if (schedule) {
       setTitle(schedule.title);
       setPlace(schedule.place ?? "동아리방");
-      setDate(formatDate(schedule.started_at, "short"));
+      setDate(formatDate(schedule.startedAt, "short"));
       setDescription(schedule.description ?? "");
       handleType(getTypeLabel(schedule.type));
-      handleStartTime(formatTime(schedule.started_at, "hm"));
-      handleEndTime(formatTime(schedule.ended_at, "hm"));
+      handleStartTime(formatTime(schedule.startedAt, "hm"));
+      handleEndTime(formatTime(schedule.endedAt, "hm"));
     }
   }, [schedule]);
 
@@ -79,29 +88,42 @@ export default function CCScheduleFormModal({
     const typeValue = labelToType(selectedType);
     if (!typeValue || !isValidForm) return;
 
-    const started_at = `${date} ${selectedStartTime}:00+00`;
-    const ended_at = `${date} ${selectedEndTime}:00+00`;
-
-    const submitData: ScheduleCreateRequest = {
-      title,
-      description,
-      type: typeValue,
-      place,
-      started_at,
-      ended_at,
-    };
+    const startedAt = toOffset(`${date}T${selectedStartTime}:00`);
+    const endedAt = toOffset(`${date}T${selectedEndTime}:00`);
 
     try {
       if (isAdmin) {
-        await createSchedule(submitData);
-        closeModal();
-        router.refresh();
+        if (schedule?.scheduleId) {
+          await deleteAdminSchedule(schedule.scheduleId);
+        }
+        const adminData: AdminScheduleCreateRequest = {
+          title,
+          description,
+          type: typeValue,
+          startedAt,
+          endedAt,
+          place,
+        };
+        await createAdminSchedule(adminData);
       } else {
-        onAdd?.(submitData);
-        closeModal();
+        if (schedule?.scheduleId) {
+          await deleteSchedule(schedule.scheduleId);
+        }
+
+        const userData: ScheduleCreateRequest = {
+          title,
+          description,
+          type: typeValue,
+          startedAt,
+          endedAt,
+        };
+        await createSchedule(userData);
       }
-    } catch (e) {
-      console.error(e);
+
+      router.refresh();
+      closeModal();
+    } catch (err) {
+      console.error("스케줄 저장 실패", err);
     }
   };
 
@@ -178,6 +200,7 @@ export default function CCScheduleFormModal({
                 <input
                   type="date"
                   value={date}
+                  min={today}
                   onChange={(e) => setDate(e.target.value)}
                   className="text-sm h-10 w-full rounded-md border px-3 py-2 bg-white text-gray-900 border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 cursor-pointer justify-between"
                   required
@@ -298,11 +321,14 @@ export default function CCScheduleFormModal({
                 )}
               </div>
             </div>
+            {timeError && (
+              <p className="text-cert-red text-sm">⚠️ {timeError}</p>
+            )}
           </div>
 
           <DefaultButton
             type="submit"
-            className="w-full mt-4"
+            className="w-full mt-2"
             disabled={!isValidForm}
             onClick={handleSubmit}
           >

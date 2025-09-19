@@ -4,6 +4,8 @@ import { useRouter } from "next/navigation";
 import DefaultButton from "@/components/ui/defaultButton";
 import { MoreVertical, Edit, Trash2 } from "lucide-react";
 import ConfirmModal from "@/components/ui/defaultConfirmModal";
+import { deleteBoard } from "@/api/board/CCboard";
+import AlertModal from "../ui/defaultAlertModal";
 
 interface KebabMenuProps {
   currentId: number;
@@ -15,6 +17,7 @@ export default function KebabMenu({ currentId, currentUrl }: KebabMenuProps) {
   const [isKebabOpen, setIsKebabOpen] = useState<boolean>(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
   const kebabRef = useRef<HTMLDivElement>(null);
+  const [alertOpen, setAlertOpen] = useState(false);
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -31,10 +34,16 @@ export default function KebabMenu({ currentId, currentUrl }: KebabMenuProps) {
     setIsDeleteModalOpen(true); // 삭제 확인 모달 열기
   };
 
-  const handleDeleteConfirm = () => {
-    // API 호출: await fetch(`/api/posts/${currentId}`, { method: 'DELETE' })
+  const handleDeleteConfirm = async () => {
+    try {
+      await deleteBoard(currentId);
+      router.replace(`/${currentUrl}`);
+      router.refresh();
+    } catch (error) {
+      setAlertOpen(true);
+      throw error;
+    }
     setIsDeleteModalOpen(false);
-    router.push(`/${currentUrl}`);
   };
 
   const handleDeleteCancel = () => {
@@ -88,6 +97,13 @@ export default function KebabMenu({ currentId, currentUrl }: KebabMenuProps) {
         onCancel={handleDeleteCancel}
         confirmText="예"
         cancelText="아니오"
+      />
+      <AlertModal
+        isOpen={alertOpen}
+        message="게시글 삭제에 실패하셨습니다."
+        type="warning"
+        duration={2500}
+        onClose={() => setAlertOpen(false)}
       />
     </>
   );

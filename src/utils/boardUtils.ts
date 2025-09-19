@@ -1,4 +1,10 @@
-import { BoardDataType, BoardCategoryType } from "@/types/board";
+import {
+  BoardDataType,
+  BoardCategoryType,
+  categoryMappingToKO,
+  BoardCategoryTypeEN,
+  toKoreanCategory,
+} from "@/types/board";
 
 // 검색 필터
 const filterBySearch = (board: BoardDataType, search: string) => {
@@ -7,7 +13,7 @@ const filterBySearch = (board: BoardDataType, search: string) => {
   const searchLower = search.toLowerCase();
   return (
     board.title.toLowerCase().includes(searchLower) ||
-    board.author.toLowerCase().includes(searchLower) ||
+    board.authorName.toLowerCase().includes(searchLower) ||
     board.content.toLowerCase().includes(searchLower)
   );
 };
@@ -17,7 +23,12 @@ const filterByCategory = (
   board: BoardDataType,
   category: BoardCategoryType
 ) => {
-  return category === "전체" || board.category === category;
+  if (category === "전체") return true;
+
+  const koreanCategory =
+    categoryMappingToKO[board.category as BoardCategoryTypeEN];
+
+  return koreanCategory === category;
 };
 
 // 통합 필터
@@ -33,8 +44,10 @@ export const filterBoardData = (
 };
 
 // Board Category Util
-export const getBoardCategoryColor = (category: BoardCategoryType) => {
-  switch (category) {
+export const getBoardCategoryColor = (category: BoardCategoryTypeEN) => {
+  const koreanCategory = toKoreanCategory(category);
+
+  switch (koreanCategory) {
     case "공지사항":
       return "badge-red";
     case "보안이슈":
@@ -44,6 +57,8 @@ export const getBoardCategoryColor = (category: BoardCategoryType) => {
     case "활동내용":
       return "badge-green";
     case "질문":
+      return "badge-gray";
+    default:
       return "badge-gray";
   }
 };

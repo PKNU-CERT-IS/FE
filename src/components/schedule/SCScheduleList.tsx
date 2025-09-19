@@ -7,11 +7,10 @@ import { getTypeColor, getTypeLabel } from "@/utils/scheduleUtils";
 import { ScheduleInfo } from "@/types/schedule";
 import { formatDate, formatTime } from "@/utils/formatDateUtil";
 import { MessageSquareText } from "lucide-react";
-import { mockScheduleData } from "@/mocks/mockScheduleData";
-// import * as Sentry from "@sentry/nextjs";
+import { getSchedules } from "@/api/schedule/SCschedule";
 
 interface SCScheduleListProps {
-  date?: string;
+  date: string;
   id?: string;
 }
 
@@ -19,35 +18,13 @@ export default async function SCScheduleList({
   date,
   id = "all-schedule-list",
 }: SCScheduleListProps) {
-  // API 호출 코드 -> 나중에 주석 해제
-  // let schedules: ScheduleInfo[] = [];
-
-  // try {
-  //   const res = await fetch(
-  //     `${process.env.NEXT_PUBLIC_BASE_URL}/api/schedule`,
-  //     {
-  //       next: { revalidate: 60 },
-  //     }
-  //   );
-  //   if (!res.ok) {
-  //     // API 실패를 로그로 기록
-  //     Sentry.logger.fatal("API call failed from frontend", {
-  //       status: res.status,
-  //     });
-  //   }
-  //   schedules = await res.json();
-  // } catch (error) {
-  //   Sentry.logger.error("SCScheduleList error 발생!", { error });
-  //   throw error;
-  // }
-
-  const schedules: ScheduleInfo[] = await mockScheduleData;
+  const schedules: ScheduleInfo[] = await getSchedules(date);
   const baseDate = date ? new Date(date) : new Date();
   const year = baseDate.getFullYear();
   const month = baseDate.getMonth() + 1;
 
   const filteredSchedules = schedules.filter((s) => {
-    const d = new Date(s.started_at);
+    const d = new Date(s.startedAt);
     return d.getFullYear() === year && d.getMonth() + 1 === month;
   });
 
@@ -63,7 +40,7 @@ export default async function SCScheduleList({
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredSchedules.map((schedule) => (
             <div
-              key={schedule.id}
+              key={schedule.scheduleId}
               className="card-list rounded-xl border shadow-sm cursor-default dark:bg-gray-800 dark:border-gray-700"
             >
               <div className="flex flex-col space-y-1.5 p-6">
@@ -75,14 +52,14 @@ export default async function SCScheduleList({
                     <div className="space-y-2 text-sm text-gray-600  dark:text-gray-300">
                       <div className="flex items-center">
                         <ScheduleSVG className="w-4 mr-2 stroke-gray-600  dark:stroke-gray-300" />
-                        {formatDate(schedule.started_at, "dot")}
+                        {formatDate(schedule.startedAt, "dot")}
                       </div>
                       <div className="flex items-center">
                         <TimeSVG className="mr-2" />
                         {`${formatTime(
-                          schedule.started_at,
+                          schedule.startedAt,
                           "hm"
-                        )} - ${formatTime(schedule.ended_at, "hm")}`}
+                        )} - ${formatTime(schedule.endedAt, "hm")}`}
                       </div>
                       <div className="flex items-center">
                         <LocationSVG className="mr-2" />

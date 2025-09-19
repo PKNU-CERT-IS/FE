@@ -18,7 +18,7 @@ export default function BoardCardList({
   return (
     <div className="flex flex-col space-y-4">
       {contents.map((content) => (
-        <BoardCard key={content.id} {...content} />
+        <BoardCard key={content.boardId} {...content} />
       ))}
     </div>
   );

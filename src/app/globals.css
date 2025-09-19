@@ -74,6 +74,7 @@
   --animation-glow: glow 2s ease-in-out infinite;
   --animation-pulse-glow: pulse-glow 2s ease-in-out infinite;
   --animation-pop-in: pop-in 0.2s ease-out;
+  --animation-fade-in-out: fade-in-out 3s ease-in-out forwards;
 
   /* 배경 이미지 */
   --background-gradient-radial: radial-gradient(var(--tw-gradient-stops));
@@ -136,6 +137,25 @@
   }
 }
 
+@keyframes fade-in-out {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  10% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  90% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}
+
 @keyframes slide-in {
   0% {
     transform: translateX(100%);
@@ -185,6 +205,18 @@
   }
 }
 
+@keyframes flyAcross {
+  0% {
+    transform: translateX(0) translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateX(50vw) translateY(-30px) rotate(20deg);
+  }
+  100% {
+    transform: translateX(100vw) translateY(0) rotate(-20deg);
+  }
+}
+
 body {
   background-color: hsl(var(--background));
   color: hsl(var(--foreground));
@@ -202,6 +234,10 @@ body {
 
   .animate-fade-in {
     animation: fade-in 0.6s ease-out;
+  }
+
+  .animate-fade-in-out {
+    animation: fade-in-out 3s ease-in-out forwards;
   }
 
   .animate-slide-in {
@@ -232,7 +268,7 @@ body {
   .bg-gradient-conic {
     background-image: conic-gradient(
       from 180deg at 50% 50%,
-      var(—tw-gradient-stops)
+      var(--tw-gradient-stops)
     );
   }
 }
@@ -322,17 +358,5 @@ body {
   .scrollbar-hide {
     -ms-overflow-style: none; /* IE */
     scrollbar-width: none; /* Firefox */
-  }
-}
-
-@keyframes flyAcross {
-  0% {
-    transform: translateX(0) translateY(0) rotate(0deg);
-  }
-  50% {
-    transform: translateX(50vw) translateY(-30px) rotate(20deg);
-  }
-  100% {
-    transform: translateX(100vw) translateY(0) rotate(-20deg);
   }
 }

@@ -94,7 +94,7 @@ export default function ConfirmModal({
         {isEnd && (
           <div className="space-y-4 pb-6">
             <FileUpload
-              attachedFiles={attachments}
+              attachments={attachments}
               onAttachmentsChange={setAttachments}
               className="py-3"
             />

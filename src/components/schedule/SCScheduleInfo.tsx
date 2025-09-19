@@ -3,21 +3,23 @@
 import ScheduleSVG from "/public/icons/schedule.svg";
 import LocationSVG from "/public/icons/location.svg";
 import TimeSVG from "/public/icons/time.svg";
-import { mockScheduleData } from "@/mocks/mockScheduleData";
 import { ScheduleInfo } from "@/types/schedule";
 import { getTypeColor, getTypeLabel } from "@/utils/scheduleUtils";
 import { formatDate, formatTime } from "@/utils/formatDateUtil";
 import { MessageSquareText } from "lucide-react";
+import { getSchedules } from "@/api/schedule/SCschedule";
 
 interface SCScheduleInfoProps {
-  selectedDate: string | null;
+  selectedDate: string;
 }
 
-export default function SCScheduleInfo({ selectedDate }: SCScheduleInfoProps) {
-  const allSchedules: ScheduleInfo[] = mockScheduleData;
+export default async function SCScheduleInfo({
+  selectedDate,
+}: SCScheduleInfoProps) {
+  const allSchedules: ScheduleInfo[] = await getSchedules(selectedDate);
   const selectedDateSchedules = selectedDate
     ? allSchedules.filter(
-        (sc) => formatDate(sc.started_at, "short") === selectedDate
+        (sc) => formatDate(sc.startedAt, "short") === selectedDate
       )
     : [];
 
@@ -40,7 +42,7 @@ export default function SCScheduleInfo({ selectedDate }: SCScheduleInfoProps) {
           </p>
         ) : (
           selectedDateSchedules.map((schedule) => (
-            <div key={schedule.id} className="text-sm text-gray-700">
+            <div key={schedule.scheduleId} className="text-sm text-gray-700">
               <div className="relative flex items-start border p-3 rounded-lg border-gray-200 bg-gray-50 gap-3 dark:bg-gray-700 dark:border-gray-600">
                 <div className="flex-1 min-w-0">
                   <p className="text-md font-semibold text-gray-700 mb-3 dark:text-gray-200">
@@ -49,12 +51,12 @@ export default function SCScheduleInfo({ selectedDate }: SCScheduleInfoProps) {
                   <div className="space-y-2 text-sm text-gray-600 dark:text-gray-300">
                     <div className="flex flex-row items-center">
                       <ScheduleSVG className="w-4 mr-2 stroke-gray-700 dark:stroke-gray-300" />
-                      {formatDate(schedule.started_at, "dot")}
+                      {formatDate(schedule.startedAt, "dot")}
                     </div>
                     <div className="flex flex-row items-center">
                       <TimeSVG className="mr-2" />
-                      {`${formatTime(schedule.started_at)} - ${formatTime(
-                        schedule.ended_at
+                      {`${formatTime(schedule.startedAt)} - ${formatTime(
+                        schedule.endedAt
                       )}`}
                     </div>
                     <div className="flex flex-row items-center">

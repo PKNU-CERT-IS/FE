@@ -1,4 +1,5 @@
-"use client";
+"server-only";
+
 import { MessageSquareText } from "lucide-react";
 import ScheduleSVG from "/public/icons/schedule.svg";
 import LocationSVG from "/public/icons/location.svg";
@@ -10,31 +11,25 @@ import {
   getTypeLabel,
 } from "@/utils/scheduleUtils";
 import CCDeleteButton from "@/components/admin/schedule/CCDeleteButton";
-import { useMemo } from "react";
 import { ScheduleInfo } from "@/types/schedule";
 import { formatDate, formatTime } from "@/utils/formatDateUtil";
+import { getMySchedules } from "@/api/schedule/SCschedule";
 
-export default function CCScheduleRequestList({
-  requests,
-  onRemove,
-}: {
-  requests: ScheduleInfo[];
-  onRemove: (id: number) => void;
-}) {
-  const count = useMemo(() => requests.length, [requests]);
-
+export default async function SCScheduleRequestList() {
+  const requests: ScheduleInfo[] = await getMySchedules();
+  const pendingRequests = requests.filter((r) => r.status === "PENDING");
   return (
     <div className="mt-6 p-6 rounded-lg border shadow-sm h-min dark-default">
       <p className="text-lg font-semibold mb-4">예약 신청 현황</p>
 
       <div className="space-y-4 max-h-[16rem] overflow-y-auto">
-        {count === 0 ? (
+        {pendingRequests.length === 0 ? (
           <p className="text-gray-500 text-center p-3">
             현재 신청된 예약이 없습니다.
           </p>
         ) : (
-          requests.map((request) => (
-            <div key={request.id} className="text-sm text-gray-700">
+          pendingRequests.map((request) => (
+            <div key={request.scheduleId} className="text-sm text-gray-700">
               <div className="relative flex items-start border p-3 rounded-lg border-gray-200 bg-gray-50 gap-3 dark:bg-gray-700 dark:border-gray-600">
                 <div className="flex-1 min-w-0">
                   <p className="text-md font-semibold text-gray-700 mb-3 dark:text-gray-200">
@@ -43,12 +38,12 @@ export default function CCScheduleRequestList({
                   <div className="space-y-2 text-sm text-gray-600 dark:text-gray-300">
                     <div className="flex flex-row items-center">
                       <ScheduleSVG className="w-4 mr-2 stroke-gray-700 dark:stroke-gray-300" />
-                      {formatDate(request.started_at, "dot")}
+                      {formatDate(request.startedAt, "dot")}
                     </div>
                     <div className="flex flex-row items-center">
                       <TimeSVG className="mr-2" />
-                      {`${formatTime(request.started_at)} - ${formatTime(
-                        request.ended_at
+                      {`${formatTime(request.startedAt)} - ${formatTime(
+                        request.endedAt
                       )}`}
                     </div>
                     <div className="flex flex-row items-center">
@@ -81,7 +76,8 @@ export default function CCScheduleRequestList({
                   </div>
                 </div>
                 <div className="absolute right-3 bottom-3">
-                  <CCDeleteButton schedule={request} onRemove={onRemove} />
+                  {/* <CCDeleteButton schedule={request} onRemove={onRemove} /> */}
+                  <CCDeleteButton schedule={request} />
                 </div>
               </div>
             </div>

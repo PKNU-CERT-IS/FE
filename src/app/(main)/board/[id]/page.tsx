@@ -1,9 +1,9 @@
+"server-only";
+
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import BackToListButton from "@/components/detail/SCBackToListButton";
 import MarkdownRenderer from "@/components/ui/defaultMarkdownRenderer";
-import { mockBoardData } from "@/mocks/mockBoardData";
-import { mockBoardDetailData } from "@/mocks/mockBoardDetailData";
 import DownloadButton from "@/components/detail/SCDownloadButton";
 import { Calendar, Eye, Heart, Pin, Download } from "lucide-react";
 import DefaultBadge from "@/components/ui/defaultBadge";
@@ -13,63 +13,62 @@ import ShareButton from "@/components/detail/CCShareButton";
 import { formatFileSize } from "@/utils/attachedFileUtils";
 import { getFileIcon } from "@/utils/attachedFileUtils";
 import { getBoardCategoryColor } from "@/utils/boardUtils";
+import { getDetailBoard } from "@/api/board/SCBoard";
+import { toKoreanCategory } from "@/types/board";
+import { formatDate } from "@/utils/formatDateUtil";
+import { AttachedFile, getFileKey } from "@/types/attachedFile";
 
-function getDataById(id: string) {
-  const dataId = parseInt(id, 10);
-  // api 요청 ...
-  const baseData = mockBoardData.find((item) => item.id === dataId);
-  const detailData = mockBoardDetailData.find((item) => item.id === dataId);
-
-  if (!baseData || !detailData) {
-    return null;
-  }
-
-  return {
-    ...baseData,
-    ...detailData,
-  };
-}
-
-// 메타데이터 생성
 export async function generateMetadata({
   params,
 }: {
   params: Promise<{ id: string }>;
 }): Promise<Metadata> {
   const { id } = await params;
-  const data = getDataById(id);
+  const boardId = parseInt(id, 10);
 
-  if (!data) {
+  try {
+    const data = await getDetailBoard(boardId);
+    if (!data) {
+      return {
+        title: "게시글을 찾을 수 없습니다",
+        description: "요청하신 게시글을 찾을 수 없습니다.",
+      };
+    }
+
     return {
-      title: "게시글을 찾을 수 없습니다",
-      description: "요청하신 게시글을 찾을 수 없습니다.",
+      title: `${data.title} - CERT-IS Board`,
+      description: data.content.substring(0, 160) + "...",
+      openGraph: {
+        title: data.title,
+        description: data.content.substring(0, 160) + "...",
+        type: "article",
+        authors: [data.author.name],
+        images: ["/logo.svg"],
+      },
+    };
+  } catch {
+    return {
+      title: "게시글을 불러올 수 없습니다",
+      description: "API 호출 실패",
     };
   }
-
-  return {
-    title: `${data.title} - CERT-IS Board`,
-    description: data.content.substring(0, 160) + "...",
-    openGraph: {
-      title: data.title,
-      description: data.content.substring(0, 160) + "...",
-      type: "article",
-      authors: [data.author],
-      images: ["/logo.svg"],
-    },
-  };
 }
-
 export default async function DetailPage({
   params,
 }: {
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const data = getDataById(id);
+  const boardId = parseInt(id, 10);
 
-  if (!data) {
-    notFound();
+  let data;
+  try {
+    data = await getDetailBoard(boardId);
+  } catch (error) {
+    throw error;
   }
+
+  if (!data) notFound();
 
   return (
     <div className="space-y-6">
@@ -81,17 +80,17 @@ export default async function DetailPage({
         <div className="p-6 pb-0">
           <div className="flex items-start justify-between mb-4">
             <div className="flex items-center gap-3">
-              {data.category === "공지사항" && (
+              {data.category === "NOTICE" && (
                 <Pin className="w-4 h-4 text-cert-red" />
               )}
               <DefaultBadge
                 variant="custom"
                 className={getBoardCategoryColor(data.category)}
               >
-                {data.category}
+                {toKoreanCategory(data.category)}
               </DefaultBadge>
             </div>
-            <KebabMenuButton currentUrl={"board"} currentId={data.id} />
+            <KebabMenuButton currentUrl={"board"} currentId={data.boardId} />
           </div>
 
           <h1 className="text-3xl font-bold text-gray-900 mb-6 leading-tight dark:text-gray-200">
@@ -99,24 +98,21 @@ export default async function DetailPage({
           </h1>
 
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center text-gray-600 font-medium">
-                  {data.authorInfo.initials}
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center text-gray-600 font-medium">
+                {data.author.name.charAt(0)}
+              </div>
+              <div>
+                <div className="font-medium text-gray-900 dark:text-gray-200">
+                  {data.author.name}
                 </div>
-                <div>
-                  <div className="flex items-center gap-2">
-                    <span className="font-medium text-gray-900 dark:text-gray-200">
-                      {data.author}
-                    </span>
-                    <DefaultBadge variant="outline" className="text-xs">
-                      {data.authorInfo.role}
-                    </DefaultBadge>
-                  </div>
-                  <div className="flex mt-1 items-center gap-2 text-sm text-gray-500 dark:text-gray-300">
-                    <Calendar className="w-3 h-3" />
-                    {data.date}
-                  </div>
+                {/* role을 나타내는 뱃지 */}
+                {/* <DefaultBadge variant="outline" className="text-xs">
+                  {data.memberId}
+                </DefaultBadge> */}
+                <div className="flex mt-1 items-center gap-2 text-sm text-gray-500 dark:text-gray-300">
+                  <Calendar className="w-3 h-3" />
+                  {formatDate(data.createdAt, "short")}
                 </div>
               </div>
             </div>
@@ -124,11 +120,11 @@ export default async function DetailPage({
             <div className="flex items-center gap-4 text-sm text-cert-red">
               <div className="flex items-center gap-1">
                 <Eye className="w-4 h-4" />
-                {data.views}
+                {data.viewCount}
               </div>
               <div className="flex items-center gap-1">
                 <Heart className="w-4 h-4" />
-                {data.likes}
+                {data.likeCount}
               </div>
             </div>
           </div>
@@ -136,22 +132,21 @@ export default async function DetailPage({
 
         {/* 게시글 본문 */}
         <div className="p-6">
-          {/* React-Markdown으로 렌더링 - Tailwind Typography 사용 */}
           <div className="max-w-none mb-8 pt-6 border-t border-gray-300 dark:border-gray-700">
-            <MarkdownRenderer content={data.detailContent} />
+            <MarkdownRenderer content={data.content} />
           </div>
 
           {/* 첨부파일 */}
-          {data.attachedFiles && data.attachedFiles.length > 0 && (
+          {data.attachments && data.attachments.length > 0 && (
             <div className="border-t border-gray-300 pt-6 mb-6 dark:border-gray-700">
               <h4 className="font-medium text-gray-900 mb-4 flex items-center gap-2 dark:text-gray-200">
                 <Download className="w-4 h-4" />
-                첨부파일 ({data.attachedFiles.length})
+                첨부파일 ({data.attachments.length})
               </h4>
               <div className="space-y-3">
-                {data.attachedFiles.map((file, index) => (
+                {data.attachments.map((file: AttachedFile) => (
                   <div
-                    key={index}
+                    key={getFileKey(file)}
                     className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg dark:bg-gray-700"
                   >
                     <span className="text-2xl">{getFileIcon(file.type)}</span>
@@ -160,11 +155,14 @@ export default async function DetailPage({
                         {file.name}
                       </p>
                       <p className="text-sm text-gray-500 dark:text-gray-400">
-                        {" "}
-                        {formatFileSize(file.size)}
+                        {formatFileSize(Number(file.size))}
                       </p>
                     </div>
-                    <DownloadButton fileName={file.name} />
+                    <DownloadButton
+                      fileName={file.name}
+                      // fileId={file.id}
+                      fileUrl={file.attachedUrl}
+                    />
                   </div>
                 ))}
               </div>
@@ -173,7 +171,11 @@ export default async function DetailPage({
 
           <div className="flex items-center justify-between pt-6 border-t border-gray-300 dark:border-gray-700">
             <div className="flex gap-4">
-              <LikeButton currentLikes={data.likes} />
+              <LikeButton
+                currentLikes={data.likeCount}
+                boardId={boardId}
+                liked={data.likedByCurrentUser}
+              />
             </div>
             <ShareButton />
           </div>

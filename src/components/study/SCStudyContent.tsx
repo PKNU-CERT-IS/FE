@@ -32,14 +32,11 @@ async function getStudyMaterials(): Promise<StudyMaterial[]> {
       semester: "2025-2",
       attachedFiles: [
         {
-          id: "file_1_1",
           name: "해커톤_기획서.pdf",
           size: 2547892,
           type: "application/pdf",
-          category: "document",
-          downloadUrl: "/api/files/download/hackathon_plan.pdf",
-          uploadDate: "2025-01-15T09:30:00Z",
-          description: "해커톤 전체 기획서 및 일정표",
+
+          attachedUrl: "/api/files/download/hackathon_plan.pdf",
         },
       ],
       category: "CTF",
@@ -62,14 +59,10 @@ async function getStudyMaterials(): Promise<StudyMaterial[]> {
       semester: "2025-2",
       attachedFiles: [
         {
-          id: "file_1_1",
           name: "해커톤_기획서.pdf",
           size: 2547892,
           type: "application/pdf",
-          category: "document",
-          downloadUrl: "/api/files/download/hackathon_plan.pdf",
-          uploadDate: "2025-01-15T09:30:00Z",
-          description: "해커톤 전체 기획서 및 일정표",
+          attachedUrl: "/api/files/download/hackathon_plan.pdf",
         },
       ],
       category: "CTF",
@@ -92,14 +85,10 @@ async function getStudyMaterials(): Promise<StudyMaterial[]> {
       semester: "2025-2",
       attachedFiles: [
         {
-          id: "file_1_1",
           name: "해커톤_기획서.pdf",
           size: 2547892,
           type: "application/pdf",
-          category: "document",
-          downloadUrl: "/api/files/download/hackathon_plan.pdf",
-          uploadDate: "2025-01-15T09:30:00Z",
-          description: "해커톤 전체 기획서 및 일정표",
+          attachedUrl: "/api/files/download/hackathon_plan.pdf",
         },
       ],
       category: "CTF",
@@ -121,14 +110,10 @@ async function getStudyMaterials(): Promise<StudyMaterial[]> {
       semester: "2025-2",
       attachedFiles: [
         {
-          id: "file_1_1",
           name: "해커톤_기획서.pdf",
           size: 2547892,
           type: "application/pdf",
-          category: "document",
-          downloadUrl: "/api/files/download/hackathon_plan.pdf",
-          uploadDate: "2025-01-15T09:30:00Z",
-          description: "해커톤 전체 기획서 및 일정표",
+          attachedUrl: "/api/files/download/hackathon_plan.pdf",
         },
       ],
       category: "CTF",
@@ -151,14 +136,10 @@ async function getStudyMaterials(): Promise<StudyMaterial[]> {
       semester: "2025-2",
       attachedFiles: [
         {
-          id: "file_1_1",
           name: "해커톤_기획서.pdf",
           size: 2547892,
           type: "application/pdf",
-          category: "document",
-          downloadUrl: "/api/files/download/hackathon_plan.pdf",
-          uploadDate: "2025-01-15T09:30:00Z",
-          description: "해커톤 전체 기획서 및 일정표",
+          attachedUrl: "/api/files/download/hackathon_plan.pdf",
         },
       ],
       category: "CTF",
@@ -181,14 +162,10 @@ async function getStudyMaterials(): Promise<StudyMaterial[]> {
       semester: "2025-2",
       attachedFiles: [
         {
-          id: "file_1_1",
           name: "해커톤_기획서.pdf",
           size: 2547892,
           type: "application/pdf",
-          category: "document",
-          downloadUrl: "/api/files/download/hackathon_plan.pdf",
-          uploadDate: "2025-01-15T09:30:00Z",
-          description: "해커톤 전체 기획서 및 일정표",
+          attachedUrl: "/api/files/download/hackathon_plan.pdf",
         },
       ],
       category: "BLUE",
@@ -210,14 +187,10 @@ async function getStudyMaterials(): Promise<StudyMaterial[]> {
       semester: "2025-2",
       attachedFiles: [
         {
-          id: "file_1_1",
           name: "해커톤_기획서.pdf",
           size: 2547892,
           type: "application/pdf",
-          category: "document",
-          downloadUrl: "/api/files/download/hackathon_plan.pdf",
-          uploadDate: "2025-01-15T09:30:00Z",
-          description: "해커톤 전체 기획서 및 일정표",
+          attachedUrl: "/api/files/download/hackathon_plan.pdf",
         },
       ],
       category: "CTF",

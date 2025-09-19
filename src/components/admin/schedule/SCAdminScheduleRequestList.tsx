@@ -4,9 +4,9 @@ import {
   approveReservation,
   rejectReservation,
 } from "@/actions/admin/schedule/AdminScheduleRequestServerAction";
+import { getPendingSchedules } from "@/api/schedule/SCAdminSchedule";
 import RequestActionButtons from "@/components/ui/requestActionButtons";
-import { PendingReservationType } from "@/types/admin/adminScheduleReservation";
-import { SCHEDULE_TYPES } from "@/types/schedule";
+import { formatDate, formatTime } from "@/utils/formatDateUtil";
 import {
   CheckCircle,
   Clock,
@@ -15,55 +15,8 @@ import {
   MessageSquareText,
 } from "lucide-react";
 
-const pendingReservations: PendingReservationType[] = [
-  {
-    id: 1,
-    title: "웹 해킹 스터디",
-    date: "2025. 07. 25.",
-    startTime: "14:00",
-    endTime: "17:00",
-    description: "웹 해킹 스터디를 위한 동아리방 예약입니다.",
-    type: SCHEDULE_TYPES.STUDY,
-    applicant: "김철수",
-    status: "PENDING",
-  },
-  {
-    id: 2,
-    title: "암호학 스터디",
-    date: "2025. 07. 28.",
-    startTime: "18:00",
-    endTime: "20:00",
-    description: "암호학 스터디를 위한 동아리방 예약입니다.",
-    type: SCHEDULE_TYPES.STUDY,
-    applicant: "이영희",
-    status: "PENDING",
-  },
-  {
-    id: 3,
-    title: "네트워크 보안 프로젝트 회의",
-    date: "2025. 07. 30.",
-    startTime: "13:00",
-    endTime: "16:00",
-    description: "네트워크 보안 프로젝트 회의를 위한 동아리방 예약입니다.",
-    type: SCHEDULE_TYPES.MEETING,
-    applicant: "박민수",
-    status: "PENDING",
-  },
-  {
-    id: 4,
-    title: "정보보안 회의",
-    date: "2025. 07. 31.",
-    startTime: "10:00",
-    endTime: "12:00",
-    description: "정보보안 회의를 위한 동아리방 예약입니다.",
-    type: SCHEDULE_TYPES.MEETING,
-    applicant: "박민수",
-    status: "PENDING",
-  },
-];
-
-export default function CCAdminScheduleRequestList() {
-  const pending = pendingReservations;
+export default async function CCAdminScheduleRequestList() {
+  const pending = await getPendingSchedules();
 
   return (
     <div className="p-6 rounded-lg border border-gray-200 shadow-sm mt-6">
@@ -78,7 +31,7 @@ export default function CCAdminScheduleRequestList() {
       <div className="pt-0 max-h-[18rem] overflow-y-auto">
         {pending.length === 0 ? (
           <div className="text-center py-8">
-            <CheckCircle className="w-12 h-12 text-green-500 mx-auto mb-3" />
+            <CheckCircle className="w-8 h-8 text-green-600 mx-auto mb-3" />
             <p className="text-sm text-gray-500">
               승인 대기 중인
               <br />
@@ -89,7 +42,7 @@ export default function CCAdminScheduleRequestList() {
           <div className="space-y-4">
             {pending.map((reservation) => (
               <div
-                key={reservation.id}
+                key={reservation.scheduleId}
                 className="border border-gray-200 rounded-lg p-3"
               >
                 <div className="mb-3">
@@ -99,16 +52,17 @@ export default function CCAdminScheduleRequestList() {
                   <div className="text-xs text-gray-500 space-y-1">
                     <div className="flex items-center gap-1">
                       <User className="w-3 h-3" />
-                      <span>{reservation.applicant}</span>
+                      <span>{reservation.memberInfo.memberName}</span>
                     </div>
                     <div className="flex items-center gap-1">
                       <Calendar className="w-3 h-3" />
-                      <span>{reservation.date}</span>
+                      <span>{formatDate(reservation.startedAt, "short")}</span>
                     </div>
                     <div className="flex items-center gap-1">
                       <Clock className="w-3 h-3" />
                       <span>
-                        {reservation.startTime} - {reservation.endTime}
+                        {formatTime(reservation.startedAt)} -{" "}
+                        {formatTime(reservation.endedAt)}
                       </span>
                     </div>
                     <div className="flex items-center gap-1">
@@ -120,7 +74,7 @@ export default function CCAdminScheduleRequestList() {
 
                 <div className="flex gap-2">
                   <RequestActionButtons
-                    id={reservation.id}
+                    id={reservation.scheduleId}
                     approveAction={approveReservation}
                     rejectAction={rejectReservation}
                   />

@@ -5,13 +5,8 @@ import { useModal } from "@/hooks/useModal";
 import CCScheduleFormModal from "@/components/schedule/CCScheduleFormModal";
 import { usePathname } from "next/navigation";
 import { useEffect } from "react";
-import { ScheduleCreateRequest } from "@/types/schedule";
 
-interface CCAddScheduleCardProps {
-  onAdd?: (reservation: ScheduleCreateRequest) => void;
-}
-
-export default function CCAddScheduleCard({ onAdd }: CCAddScheduleCardProps) {
+export default function CCAddScheduleCard() {
   const { isOpenModal, setIsOpenModal, modalOutsideRef } = useModal();
   const pathname = usePathname();
   const isAdmin = pathname.startsWith("/admin");
@@ -54,7 +49,6 @@ export default function CCAddScheduleCard({ onAdd }: CCAddScheduleCardProps) {
         <CCScheduleFormModal
           closeModal={() => setIsOpenModal(false)}
           modalRef={modalOutsideRef}
-          onAdd={onAdd}
           isAdmin={isAdmin}
         />
       )}

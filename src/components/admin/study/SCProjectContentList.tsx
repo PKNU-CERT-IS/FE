@@ -39,14 +39,10 @@ export const projects: Project[] = [
     subCategory: "논리회로",
     attachments: [
       {
-        id: "file_p1_1",
         name: "요구사항_정의서.pdf",
         size: 314572,
         type: "application/pdf",
-        category: "document",
-        downloadUrl: "/api/files/download/requirements-spec.pdf",
-        uploadDate: "2025-08-10T09:00:00Z",
-        description: "핵심 기능/마감 일정 정리",
+        attachedUrl: "/api/files/download/requirements-spec.pdf",
       },
     ],
     startDate: "2025-08-25",
@@ -79,14 +75,10 @@ export const projects: Project[] = [
     subCategory: "포너블",
     attachments: [
       {
-        id: "file_1_1",
         name: "웹 취약점 자동 스캐너 프로젝트_기획서.pdf",
         size: 2547892,
         type: "application/pdf",
-        category: "document",
-        downloadUrl: "/api/files/download/scanner_plan.pdf",
-        uploadDate: "2025-01-15T09:30:00Z",
-        description: "웹 취약점 자동 스캐너 PoC",
+        attachedUrl: "/api/files/download/scanner_plan.pdf",
       },
     ],
     startDate: "2025-09-02",
@@ -118,14 +110,10 @@ export const projects: Project[] = [
     subCategory: "모의해킹",
     attachments: [
       {
-        id: "file_1_1",
         name: "웹 자동 스캐너 프로젝트_기획서.pdf",
         size: 2547892,
         type: "application/pdf",
-        category: "document",
-        downloadUrl: "/api/files/download/scanner_plan.pdf",
-        uploadDate: "2025-01-15T09:30:00Z",
-        description: "웹 취약점 자동 스캐너 PoC",
+        attachedUrl: "/api/files/download/scanner_plan.pdf",
       },
     ],
     startDate: "2025-09-02",
@@ -157,14 +145,10 @@ export const projects: Project[] = [
     subCategory: "취약점 연구",
     attachments: [
       {
-        id: "file_1_1",
         name: "웹 취약점 자동 스캐너 프로젝트_기획서.pdf",
         size: 2547892,
         type: "application/pdf",
-        category: "document",
-        downloadUrl: "/api/files/download/scanner_plan.pdf",
-        uploadDate: "2025-01-15T09:30:00Z",
-        description: "웹 취약점 자동 스캐너 PoC",
+        attachedUrl: "/api/files/download/scanner_plan.pdf",
       },
     ],
     startDate: "2025-09-02",
