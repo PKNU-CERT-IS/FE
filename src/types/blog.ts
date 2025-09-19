@@ -1,3 +1,27 @@
+export interface BlogsKeywordSearch {
+  search?: string;
+  category?: string;
+}
+
+export interface BlogCreateRequest {
+  title: string;
+  description: string;
+  category: string;
+  content: string;
+  referenceType: string;
+  referenceId?: number;
+}
+
+export interface BlogUpdateRequest {
+  blogId: number;
+  title: string;
+  description: string;
+  category: string;
+  content: string;
+  referenceType: string;
+  referenceId?: number;
+}
+
 // 블로그 카테고리 타입
 export const BLOG_CATEGORIES = [
   "전체",
