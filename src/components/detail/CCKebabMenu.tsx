@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import DefaultButton from "@/components/ui/defaultButton";
 import { MoreVertical, Edit, Trash2 } from "lucide-react";
 import ConfirmModal from "@/components/ui/defaultConfirmModal";
+import { deleteBlog } from "@/app/api/blog/CCblogApi";
 
 interface KebabMenuProps {
   currentId: number;
@@ -31,10 +32,16 @@ export default function KebabMenu({ currentId, currentUrl }: KebabMenuProps) {
     setIsDeleteModalOpen(true); // 삭제 확인 모달 열기
   };
 
-  const handleDeleteConfirm = () => {
-    // API 호출: await fetch(`/api/posts/${currentId}`, { method: 'DELETE' })
+  const handleDeleteConfirm = async () => {
     setIsDeleteModalOpen(false);
-    router.push(`/${currentUrl}`);
+    try {
+      await deleteBlog({ blogId: currentId });
+      setIsDeleteModalOpen(false);
+      router.push(`/${currentUrl}`);
+      router.refresh();
+    } catch {
+      setIsDeleteModalOpen(false);
+    }
   };
 
   const handleDeleteCancel = () => {

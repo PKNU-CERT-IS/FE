@@ -19,47 +19,45 @@ import {
   getSubCategories,
 } from "@/utils/newPageFormUtils";
 import { AttachedFile } from "@/types/attachedFile";
-import { Reference } from "@/types/blog";
+import {
+  BlogDetailDataType,
+  BlogReferenceType,
+  BlogUpdateRequest,
+} from "@/types/blog";
+import { updateBlog } from "@/app/api/blog/CCblogApi";
 
 interface EditFormProps {
   type: NewPageCategoryType;
   dataId: number;
+  initialData: BlogDetailDataType;
+  initialReference?: BlogReferenceType[];
 }
 
-// 내가 참여한 활동 리스트 (더미 예시)
-const myActivities: Reference[] = [
-  { referenceId: 1, type: "study", title: "OWASP Top 10 2023 취약점 분석" },
-  {
-    referenceId: 2,
-    type: "study",
-    title: "Metasploit Framework 완전 정복",
-  },
-  {
-    referenceId: 1,
-    type: "project",
-    title: "Social Impact Hackathon 2025",
-  },
-  {
-    referenceId: 2,
-    type: "project",
-    title: "OWASP Top 10 2023 취약점 분석",
-  },
-];
-
-export default function EditForm({ type, dataId }: EditFormProps) {
+export default function EditForm({
+  type,
+  dataId,
+  initialData,
+  initialReference,
+}: EditFormProps) {
   const router = useRouter();
-  const [title, setTitle] = useState<string>("");
-  const [description, setDescription] = useState<string>("");
-  const [content, setContent] = useState<string>("");
-  const [category, setCategory] = useState("");
+  const [title, setTitle] = useState(initialData.title || "");
+  const [description, setDescription] = useState(initialData.description || "");
+  const [content, setContent] = useState(initialData.content || "");
+  const [category, setCategory] = useState(initialData.category || "");
   const [subCategory, setSubCategory] = useState("");
   const [attachments, setAttachments] = useState<AttachedFile[]>([]);
   const [startDate, setStartDate] = useState<string>("");
   const [endDate, setEndDate] = useState<string>("");
   const [maxParticipants, setMaxParticipants] = useState("");
-  const [selectedReference, setSelectedReference] = useState<Reference | null>(
-    null
-  );
+  const [selectedReference, setSelectedReference] =
+    useState<BlogReferenceType | null>(
+      initialData.referenceType
+        ? {
+            referenceType: initialData.referenceType,
+            referenceTitle: initialData.referenceTitle,
+          }
+        : null
+    );
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isCategoryOpen, setIsCategoryOpen] = useState<boolean>(false);
   const [isSubCategoryOpen, setIsSubCategoryOpen] = useState<boolean>(false);
@@ -215,13 +213,13 @@ export default function EditForm({ type, dataId }: EditFormProps) {
       const updateData = {
         id: dataId,
         title,
-        ...(type === "project" && { description }),
+        description,
         content,
         category,
-        subCategory,
         ...((type === "study" || type === "project") && {
           startDate,
           endDate,
+          subCategory,
           maxParticipants: maxParticipants
             ? parseInt(maxParticipants)
             : undefined,
@@ -232,10 +230,29 @@ export default function EditForm({ type, dataId }: EditFormProps) {
           externalLinks: externalLinks.filter((link) => link.label && link.url),
           projectImage,
         }),
-        ...(type === "blog" && { reference: selectedReference ?? null }), // ✅ null 허용
+        ...(type === "blog"
+          ? {
+              referenceId: selectedReference?.referenceId,
+              referenceType: selectedReference?.referenceType,
+              referenceTitle: selectedReference?.referenceTitle,
+            }
+          : {}),
       };
 
-      console.log("수정 데이터:", updateData);
+      if (type === "blog") {
+        const blogUpdateRequest: BlogUpdateRequest = {
+          blogId: dataId,
+          title,
+          description,
+          category,
+          content,
+          referenceType: selectedReference?.referenceType ?? "",
+          referenceTitle: selectedReference?.referenceTitle ?? "",
+          referenceId: selectedReference?.referenceId,
+        };
+        await updateBlog(blogUpdateRequest);
+      }
+
       router.push(`/${type}/${dataId}`);
     } catch (error) {
       console.error("수정 실패:", error);
@@ -320,8 +337,10 @@ export default function EditForm({ type, dataId }: EditFormProps) {
               >
                 {selectedReference
                   ? `${
-                      selectedReference.type === "study" ? "스터디" : "프로젝트"
-                    } - ${selectedReference.title}`
+                      selectedReference.referenceType === "STUDY"
+                        ? "스터디"
+                        : "프로젝트"
+                    } - ${selectedReference.referenceTitle}`
                   : "활동 선택"}
               </span>
               <ChevronDown
@@ -334,20 +353,23 @@ export default function EditForm({ type, dataId }: EditFormProps) {
             {isSelectedReferenceOpen && (
               <div className="absolute z-50 mt-1 w-full rounded-md border border-gray-200 bg-white shadow-lg dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200">
                 <div className="max-h-60 overflow-auto p-1">
-                  {myActivities.map((reference) => (
-                    <button
-                      key={`${reference.type}-${reference.referenceId}`}
-                      type="button"
-                      onClick={() => {
-                        setSelectedReference(reference);
-                        setIsSelecteReferenceOpen(false);
-                      }}
-                      className="relative flex w-full cursor-pointer select-none items-center rounded-sm py-2 px-2 text-sm outline-none transition-colors hover:bg-cert-red hover:text-white focus:bg-cert-red focus:text-white"
-                    >
-                      {reference.type === "study" ? "스터디" : "프로젝트"} -{" "}
-                      {reference.title}
-                    </button>
-                  ))}
+                  {initialReference &&
+                    initialReference.map((reference) => (
+                      <button
+                        key={`${reference.referenceType}-${reference.referenceId}`}
+                        type="button"
+                        onClick={() => {
+                          setSelectedReference(reference);
+                          setIsSelecteReferenceOpen(false);
+                        }}
+                        className="relative flex w-full cursor-pointer select-none items-center rounded-sm py-2 px-2 text-sm outline-none transition-colors hover:bg-cert-red hover:text-white focus:bg-cert-red focus:text-white"
+                      >
+                        {reference.referenceType === "STUDY"
+                          ? "스터디"
+                          : "프로젝트"}{" "}
+                        - {reference.referenceTitle}
+                      </button>
+                    ))}
                 </div>
               </div>
             )}

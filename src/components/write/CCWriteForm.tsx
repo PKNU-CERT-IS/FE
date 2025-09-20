@@ -14,10 +14,12 @@ import {
   getSubCategories,
 } from "@/utils/newPageFormUtils";
 import { AttachedFile } from "@/types/attachedFile";
-import { Reference } from "@/types/blog";
+import { BlogReferenceType, BlogCreateRequest } from "@/types/blog";
+import { createBlog } from "@/app/api/blog/CCblogApi";
 
 interface WriteFormProps {
   type: NewPageCategoryType;
+  initialReferences?: BlogReferenceType[];
 }
 
 // 파일 맨 위 근처에 추가
@@ -26,26 +28,7 @@ const PLAN_SAMPLE = {
   href: "/samples/plan-sample.docx", // public/samples/plan-sample.docx 에 파일 두기
 };
 
-// 내가 참여한 활동 리스트 (더미 예시)
-const myActivities: Reference[] = [
-  { referenceId: 1, type: "study", title: "OWASP Top 10 2023 취약점 분석" },
-  {
-    referenceId: 2,
-    type: "study",
-    title: "Metasploit Framework 완전 정복",
-  },
-  {
-    referenceId: 1,
-    type: "project",
-    title: "Social Impact Hackathon 2025",
-  },
-  {
-    referenceId: 2,
-    type: "project",
-    title: "OWASP Top 10 2023 취약점 분석",
-  },
-];
-export default function WriteForm({ type }: WriteFormProps) {
+export default function WriteForm({ type, initialReferences }: WriteFormProps) {
   const router = useRouter();
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>(""); // 설명란 추가
@@ -60,9 +43,10 @@ export default function WriteForm({ type }: WriteFormProps) {
   const [isSubCategoryOpen, setIsSubCategoryOpen] = useState<boolean>(false);
   const [isSelectedReferenceOpen, setIsSelecteReferenceOpen] =
     useState<boolean>(false);
-  const [selectedReference, setSelectedReference] = useState<Reference | null>(
-    null
-  );
+  const [selectedReference, setSelectedReference] =
+    useState<BlogReferenceType | null>(null);
+
+  console.log(initialReferences);
 
   const categoryRef = useRef<HTMLDivElement>(null);
   const subCategoryRef = useRef<HTMLDivElement>(null);
@@ -126,9 +110,16 @@ export default function WriteForm({ type }: WriteFormProps) {
       description,
       content,
       category,
-      attachments,
-      ...(type === "blog" ? { activity: selectedReference } : {}),
-      ...(type === "study" || type === "project" ? { startDate, endDate } : {}),
+      ...(type === "blog"
+        ? {
+            referenceId: selectedReference?.referenceId,
+            referenceType: selectedReference?.referenceType,
+            referenceTitle: selectedReference?.referenceTitle,
+          }
+        : {}),
+      ...(type === "study" || type === "project"
+        ? { startDate, endDate, attachments }
+        : {}),
       ...(type === "study" || type === "project" ? { maxParticipants } : {}),
       ...(type === "project"
         ? {
@@ -143,10 +134,16 @@ export default function WriteForm({ type }: WriteFormProps) {
         : {}),
     };
 
-    console.log("Submit data:", submitData);
-
-    router.replace(`/${type}`);
-    router.refresh();
+    if ((type = "blog")) {
+      try {
+        await createBlog(submitData as BlogCreateRequest);
+        router.replace("/blog");
+        router.refresh();
+      } catch {}
+    } else {
+      router.replace(`/${type}`);
+      router.refresh();
+    }
     // API 요청 구현
   };
 
@@ -239,10 +236,10 @@ export default function WriteForm({ type }: WriteFormProps) {
                 >
                   {selectedReference
                     ? `${
-                        selectedReference.type === "study"
+                        selectedReference.referenceType === "STUDY"
                           ? "스터디"
                           : "프로젝트"
-                      } - ${selectedReference.title}`
+                      } - ${selectedReference.referenceTitle}`
                     : "활동 선택"}
                 </span>
                 <ChevronDown
@@ -255,9 +252,9 @@ export default function WriteForm({ type }: WriteFormProps) {
               {isSelectedReferenceOpen && (
                 <div className="absolute z-50 mt-1 w-full rounded-md border border-gray-200 bg-white shadow-lg dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200">
                   <div className="max-h-60 overflow-auto p-1">
-                    {myActivities.map((reference) => (
+                    {(initialReferences ?? []).map((reference) => (
                       <button
-                        key={`${reference.type}-${reference.referenceId}`}
+                        key={`${reference.referenceType}-${reference.referenceId}`}
                         type="button"
                         onClick={() => {
                           setSelectedReference(reference);
@@ -265,8 +262,10 @@ export default function WriteForm({ type }: WriteFormProps) {
                         }}
                         className="relative flex w-full cursor-pointer select-none items-center rounded-sm py-2 px-2 text-sm outline-none transition-colors hover:bg-cert-red hover:text-white focus:bg-cert-red focus:text-white"
                       >
-                        {reference.type === "study" ? "스터디" : "프로젝트"} -{" "}
-                        {reference.title}
+                        {reference?.referenceType === "STUDY"
+                          ? "스터디"
+                          : "프로젝트"}
+                        - {reference?.referenceTitle}
                       </button>
                     ))}
                   </div>

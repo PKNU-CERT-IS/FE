@@ -1,3 +1,5 @@
+import { CategoryType, SubCategoryType } from "@/types/category";
+
 export interface BlogsKeywordSearch {
   search?: string;
   category?: string;
@@ -9,6 +11,13 @@ export interface BlogCreateRequest {
   category: string;
   content: string;
   referenceType: string;
+  referenceTitle?: string;
+  referenceId?: number;
+}
+
+export interface BlogReferenceType {
+  referenceType: "STUDY" | "PROJECT";
+  referenceTitle?: string;
   referenceId?: number;
 }
 
@@ -20,6 +29,7 @@ export interface BlogUpdateRequest {
   content: string;
   referenceType: string;
   referenceId?: number;
+  referenceTitle?: string;
 }
 
 // 블로그 카테고리 타입
@@ -36,33 +46,26 @@ export const BLOG_CATEGORIES = [
 export type BlogCategory = (typeof BLOG_CATEGORIES)[number];
 
 // 페이지네이션 설정
-export const ITEMS_PER_PAGE = 6;
+export const ITEMS_PER_PAGE = 10;
 
-export interface Reference {
-  referenceId: number;
-  type: "study" | "project";
-  title: string;
-}
-
-// 블로그 포스트 인터페이스
-export interface BlogPost {
+export interface BlogDataType {
   id: number;
   title: string;
-  content?: string;
-  excerpt: string;
-  author: string;
-  category: BlogCategory;
+  description: string;
+  category: BlogCategory | CategoryType | SubCategoryType;
   createdAt: string;
-  updatedAt?: string;
-  views?: number;
-  likes?: number;
-  featured?: boolean;
-  published: boolean;
-  slug?: string;
-  coverImage?: string;
-  reference: Reference;
+  blogCreatorName: string;
+
+  // 선택적으로 오는 값들
+  referenceType?: "STUDY" | "PROJECT";
+  referenceTitle?: string;
 }
 
+export interface BlogDetailDataType extends BlogDataType {
+  content: string;
+  viewCount: number;
+  creatorName: string;
+}
 // 블로그 필터 인터페이스
 export interface BlogFilter {
   search?: string;
@@ -80,19 +83,4 @@ export interface BlogPagination {
   itemsPerPage: number;
   hasNextPage: boolean;
   hasPrevPage: boolean;
-}
-
-// 블로그 목록 응답 인터페이스
-export interface BlogListResponse {
-  posts: BlogPost[];
-  pagination: BlogPagination;
-  filter: BlogFilter;
-}
-
-// 블로그 검색 결과 인터페이스
-export interface BlogSearchResult {
-  posts: BlogPost[];
-  totalCount: number;
-  searchTerm: string;
-  category?: BlogCategory;
 }

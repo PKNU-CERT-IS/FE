@@ -1,3 +1,4 @@
+import { fetchWithAuth } from "@/lib/serverIntercept";
 import { BlogsKeywordSearch } from "@/types/blog";
 
 export async function searchBlogsByKeyword(
@@ -24,8 +25,8 @@ export async function searchBlogsByKeyword(
     throw new Error(`Failed to fetch blogs: ${response.statusText}`);
   }
 
-  const data = await response.json();
-  return data.data;
+  const { data } = await response.json();
+  return data;
 }
 
 export async function searchBlogDetail(blogId: number) {
@@ -42,6 +43,22 @@ export async function searchBlogDetail(blogId: number) {
     throw new Error(`Failed to fetch blog detail: ${response.statusText}`);
   }
 
-  const data = await response.json();
-  return data.data;
+  const { data } = await response.json();
+  return data;
+}
+
+export async function getBlogReference() {
+  const response = await fetchWithAuth("/blog/blog/reference", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!response.ok) {
+    return [];
+  }
+
+  const { data } = await response.json();
+  return data;
 }

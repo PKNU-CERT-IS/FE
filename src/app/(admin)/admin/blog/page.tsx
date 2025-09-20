@@ -7,10 +7,10 @@ import SCBlogContentList from "@/components/admin/blog/SCBlogContentList";
 import CCBlogPagination from "@/components/blog/CCBlogPagination";
 import { BlogCategory } from "@/types/blog";
 import { blogTabCategoryType } from "@/types/admin/adminBlog";
-import { mockBlogPosts } from "@/mocks/blogData";
 import { isValidCategory } from "@/utils/blogUtils";
 import { isValidTab } from "@/utils/adminBlogUtils";
 import SCSearchResultNotFound from "@/components/ui/SCSearchResultNotFound";
+import { searchBlogsByKeyword } from "@/app/api/blog/SCblogApi";
 
 interface AdminBlogProps {
   searchParams: Promise<{
@@ -25,55 +25,48 @@ export default async function AdminBlogPage({ searchParams }: AdminBlogProps) {
   const resolvedSearchParams = await searchParams;
 
   const searchParam = resolvedSearchParams.search || "";
-  const page = resolvedSearchParams.page;
-  const category = resolvedSearchParams.category;
-  const tab = resolvedSearchParams.tab;
+  const page = Math.max(1, parseInt(resolvedSearchParams.page || "1", 10));
+  const currentCategory: BlogCategory =
+    resolvedSearchParams.category &&
+    isValidCategory(resolvedSearchParams.category)
+      ? resolvedSearchParams.category
+      : "전체";
+  const tab: blogTabCategoryType =
+    resolvedSearchParams.tab && isValidTab(resolvedSearchParams.tab)
+      ? resolvedSearchParams.tab
+      : "allPosts";
 
   const ITEMS_PER_PAGE = 6;
 
-  const currentPage = Math.max(1, parseInt(page || "1", 10));
-  const currentSearch = searchParam.trim() || "";
-  const currentCategory: BlogCategory =
-    category && isValidCategory(category) ? category : "전체";
-  const currentTab: blogTabCategoryType =
-    tab && isValidTab(tab) ? tab : "allPosts";
-
-  const baseFiltered =
-    currentCategory === "전체"
-      ? mockBlogPosts
-      : mockBlogPosts.filter((post) => post.category === currentCategory);
-
-  const tabFiltered =
-    currentTab === "publishedPosts"
-      ? baseFiltered.filter((post) => post.published)
-      : baseFiltered;
-
-  const filteredContents = tabFiltered.filter(
-    (post) =>
-      post.title.includes(currentSearch) ||
-      post.content?.includes(currentSearch) ||
-      post.author.includes(currentSearch)
+  // ✅ 백엔드에서 실제 데이터 조회
+  const data = await searchBlogsByKeyword(
+    {
+      search: searchParam,
+      category: currentCategory === "전체" ? "" : currentCategory,
+    },
+    { page: page, size: ITEMS_PER_PAGE, sort: "createdAt,desc" }
   );
 
-  const totalItems = filteredContents.length;
+  const blogs = data.content;
+  console.log(blogs);
+  // ⚠️ 백엔드 응답 구조에 따라 조정 필요
+  const { totalItems } = data; // 예시: { contents: Blog[], totalItems: number }
+
   const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
-  const validCurrentPage = Math.min(currentPage, Math.max(1, totalPages));
-  const startIndex = (validCurrentPage - 1) * ITEMS_PER_PAGE;
-  const endIndex = startIndex + ITEMS_PER_PAGE;
-  const paginatedContents = filteredContents.slice(startIndex, endIndex);
+  const validCurrentPage = Math.min(page, Math.max(1, totalPages));
 
   return (
     <div className="min-h-screen bg-white">
       <div className="max-w-7xl mx-auto">
-        {/* 검색 및 카테고리 필터 */}
+        {/* 검색 + 카테고리 필터 */}
         <div className="bg-white rounded-lg mb-5">
           <div className="flex flex-col lg:flex-row gap-4 items-center">
             <div className="flex-1 w-full">
-              <BlogSearchBar currentSearch={currentSearch} />
+              <BlogSearchBar currentSearch={searchParam} />
             </div>
             <CCBlogCategoryFilter
               currentCategory={currentCategory}
-              currentSearch={currentSearch}
+              currentSearch={searchParam}
             />
           </div>
         </div>
@@ -83,12 +76,13 @@ export default async function AdminBlogPage({ searchParams }: AdminBlogProps) {
           <CCBlogTabBar />
         </div>
 
-        {paginatedContents.length === 0 ? (
+        {/* 컨텐츠 */}
+        {blogs.length === 0 ? (
           <div className="flex items-center justify-center max-h-screen w-full">
             <SCSearchResultNotFound mode="adminBlog" />
           </div>
         ) : (
-          <SCBlogContentList paginatedContents={paginatedContents} />
+          <SCBlogContentList paginatedContents={blogs} />
         )}
 
         {/* 페이지네이션 */}
@@ -98,7 +92,7 @@ export default async function AdminBlogPage({ searchParams }: AdminBlogProps) {
               currentPage={validCurrentPage}
               totalItems={totalItems}
               itemsPerPage={ITEMS_PER_PAGE}
-              currentSearch={currentSearch}
+              currentSearch={searchParam}
               currentCategory={currentCategory}
             />
           </div>

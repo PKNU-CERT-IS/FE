@@ -1,4 +1,6 @@
+import { getBlogReference, searchBlogDetail } from "@/app/api/blog/SCblogApi";
 import EditForm from "@/components/write/CCEditForm";
+import { BlogDetailDataType } from "@/types/blog";
 import React from "react";
 
 function getId(id: string) {
@@ -13,6 +15,8 @@ export default async function BlogEditPage({
 }) {
   const { id } = await params;
   const dataId = getId(id);
+  const references = await getBlogReference();
+  const blogData: BlogDetailDataType = await searchBlogDetail(dataId);
   return (
     <div className="space-y-6">
       <div className="border border-gray-200 rounded-lg shadow-lg dark:bg-gray-800 dark:border-gray-700">
@@ -21,7 +25,12 @@ export default async function BlogEditPage({
             게시글 수정
           </h1>
           <div className="border-t border-gray-300 mb-5 mt-5 dark:border-gray-600"></div>
-          <EditForm type="blog" dataId={dataId} />
+          <EditForm
+            type="blog"
+            dataId={dataId}
+            initialData={blogData}
+            initialReference={references}
+          />
         </div>
       </div>
     </div>
