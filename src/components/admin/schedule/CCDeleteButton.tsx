@@ -6,7 +6,7 @@ import { ScheduleInfo } from "@/types/schedule";
 import ConfirmModal from "@/components/ui/defaultConfirmModal";
 import { Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { deleteSchedule } from "@/api/schedule/CCSchedule";
+import { deleteSchedule } from "@/app/api/schedule/CCSchedule";
 
 interface CCDeleteButtonProps {
   schedule: ScheduleInfo;

@@ -11,7 +11,7 @@ import {
   toKoreanCategory,
 } from "@/types/board";
 import Link from "next/link";
-import { getBoards } from "@/api/board/SCBoard";
+import { getBoards } from "@/app/api/board/SCBoard";
 
 const ITEMS_PER_PAGE = 5;
 

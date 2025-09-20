@@ -4,7 +4,7 @@ import {
   approveReservation,
   rejectReservation,
 } from "@/actions/admin/schedule/AdminScheduleRequestServerAction";
-import { getPendingSchedules } from "@/api/schedule/SCAdminSchedule";
+import { getPendingSchedules } from "@/app/api/schedule/SCAdminSchedule";
 import RequestActionButtons from "@/components/ui/requestActionButtons";
 import { formatDate, formatTime } from "@/utils/formatDateUtil";
 import {

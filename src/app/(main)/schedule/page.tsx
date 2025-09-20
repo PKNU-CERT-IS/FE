@@ -3,7 +3,7 @@ import SCScheduleList from "@/components/schedule/SCScheduleList";
 import Calendar from "@/components/schedule/calendar";
 import CCScrollScheduleList from "@/components/schedule/CCScrollScheduleList";
 import { Metadata } from "next";
-import { getSchedules } from "@/api/schedule/SCschedule";
+import { getSchedules } from "@/app/api/schedule/SCschedule";
 import { ScheduleInfo } from "@/types/schedule";
 import SCScheduleRequestList from "@/components/schedule/SCScheduleRequestList";
 import CCAddScheduleCard from "@/components/schedule/CCAddScheduleCard";

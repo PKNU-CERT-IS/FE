@@ -67,8 +67,8 @@ export async function updateBoard(
   }
 }
 
-// 디테일 페이지 조회
-export async function getDetailBoard(boardId: number) {
+// 디테일 페이지 조회 -> 수정 위해서 필요
+export async function getCCDetailBoard(boardId: number) {
   try {
     const res = await apiClient.get(`/board/detail/${boardId}`, {
       headers: { "Content-Type": "application/json" },

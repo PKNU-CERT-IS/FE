@@ -14,12 +14,12 @@ import { formatDate, formatTime } from "@/utils/formatDateUtil";
 import { useModal } from "@/hooks/useModal";
 import { useSchedule } from "@/hooks/useSchedule";
 import { getTypeLabel, labelToType } from "@/utils/scheduleUtils";
-import { createSchedule, deleteSchedule } from "@/api/schedule/CCSchedule";
+import { createSchedule, deleteSchedule } from "@/app/api/schedule/CCSchedule";
 import { toOffset } from "@/utils/transformRequestValue";
 import {
   createAdminSchedule,
   deleteAdminSchedule,
-} from "@/api/schedule/CCAdminSchedule";
+} from "@/app/api/schedule/CCAdminSchedule";
 
 interface ScheduleFormModalProps {
   closeModal: () => void;

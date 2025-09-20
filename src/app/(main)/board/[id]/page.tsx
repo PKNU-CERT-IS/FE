@@ -13,10 +13,11 @@ import ShareButton from "@/components/detail/CCShareButton";
 import { formatFileSize } from "@/utils/attachedFileUtils";
 import { getFileIcon } from "@/utils/attachedFileUtils";
 import { getBoardCategoryColor } from "@/utils/boardUtils";
-import { getDetailBoard } from "@/api/board/SCBoard";
+import { getDetailBoard } from "@/app/api/board/SCBoard";
 import { toKoreanCategory } from "@/types/board";
 import { formatDate } from "@/utils/formatDateUtil";
 import { AttachedFile, getFileKey } from "@/types/attachedFile";
+import { translateRoleToKorean } from "@/utils/transformRequestValue";
 
 export async function generateMetadata({
   params,
@@ -103,13 +104,14 @@ export default async function DetailPage({
                 {data.author.name.charAt(0)}
               </div>
               <div>
-                <div className="font-medium text-gray-900 dark:text-gray-200">
-                  {data.author.name}
+                <div className="flex items-center gap-2">
+                  <span className="font-medium text-gray-900 dark:text-gray-200">
+                    {data.author.name}
+                  </span>
+                  <DefaultBadge variant="outline" className="text-xs">
+                    {translateRoleToKorean(data.author.role)}
+                  </DefaultBadge>
                 </div>
-                {/* role을 나타내는 뱃지 */}
-                {/* <DefaultBadge variant="outline" className="text-xs">
-                  {data.memberId}
-                </DefaultBadge> */}
                 <div className="flex mt-1 items-center gap-2 text-sm text-gray-500 dark:text-gray-300">
                   <Calendar className="w-3 h-3" />
                   {formatDate(data.createdAt, "short")}
