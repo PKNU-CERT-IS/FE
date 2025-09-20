@@ -1,16 +1,25 @@
-import { BlogCategory, Reference } from "./blog";
+import { BlogCategory } from "./blog";
 import BookSVG from "/public/icons/book.svg";
 import CommentSVG from "/public/icons/comment.svg";
 import { MembersDataType } from "@/types/members";
 
 export interface ProfileDataType extends MembersDataType {
-  createdAt: string;
+  memberId: number;
+  name: string;
+  description: string;
+  profileImage: string;
+  todaySchedules: string[];
   penaltyCount: number;
-  gracePeriod: number;
-  birthday: string;
-  phoneNumber?: string;
-  gender: string;
-  studentId: string;
+  gracePeriod: string; // ISO Date
+  skills: string[];
+  createdAt: string; // ISO Date
+  major: string;
+  birthday: string; // ISO Date
+  phoneNumber: string;
+  studentNumber: string;
+  email: string;
+  githubUrl: string;
+  linkedinUrl: string;
 }
 
 // tab category

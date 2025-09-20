@@ -2,7 +2,7 @@
 
 import DefaultButton from "@/components/ui/defaultButton";
 import { getRoleBadgeStyle, gradeOptions } from "@/utils/membersUtils";
-import { MembersDataType } from "@/types/members";
+import { MembersDataType, MembersGradeCategoryType } from "@/types/members";
 import Image from "next/image";
 import { RefObject, useCallback, useEffect, useRef, useState } from "react";
 import { X, Upload, Trash2, ChevronDown } from "lucide-react";
@@ -14,7 +14,10 @@ import {
   translateGradeToKorean,
   // fromOffsetDateTime,
 } from "@/utils/transfromResponseValue";
-
+import { updateProfile } from "@/app/api/profile/CCprofileApi";
+import { toOffsetDateTime } from "@/utils/transformRequestValue";
+import { useRouter } from "next/navigation";
+import { translateKoreanToGrade } from "@/utils/transformRequestValue";
 interface ModalProps {
   closeModal: () => void;
   modalRef?: RefObject<HTMLDivElement | null>;
@@ -28,15 +31,20 @@ export default function CCProfileModal({
   onSave,
   initialProfileData,
 }: ModalProps) {
-  const [editedUser, setEditedUser] =
-    useState<ProfileDataType>(initialProfileData);
+  const router = useRouter();
+  const [editedUser, setEditedUser] = useState<ProfileDataType>({
+    ...initialProfileData,
+    studentNumber: initialProfileData.studentNumber ?? "",
+    birthday: initialProfileData.birthday?.split("T")[0] ?? "", // "2025-09-20" 형태
+    phoneNumber: initialProfileData.phoneNumber ?? "",
+    memberGrade: translateGradeToKorean(initialProfileData.memberGrade) ?? "", // ✅ 변환
+  });
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [profileImageFile, setProfileImageFile] = useState<File | null>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(
     initialProfileData.profileImage || null
   );
   const [showGradeDropdown, setShowGradeDropdown] = useState<boolean>(false);
-
   const gradeRef = useRef<HTMLDivElement>(null);
 
   const role = translateMemberRole(editedUser.memberRole);
@@ -109,10 +117,29 @@ export default function CCProfileModal({
     setEditedUser((prev) => ({ ...prev, profileImage: "" }));
   };
 
-  const handleSave = () => {
-    onSave?.(editedUser);
-    console.log("save profile:", editedUser);
-    closeModal();
+  const handleSave = async () => {
+    try {
+      await updateProfile({
+        name: editedUser.name,
+        description: editedUser.description,
+        profileImage: editedUser.profileImage,
+        major: editedUser.major,
+        birthday: toOffsetDateTime(editedUser.birthday), // string
+        phoneNumber: editedUser.phoneNumber,
+        studentNumber: editedUser.studentNumber,
+        skills: editedUser.skills,
+        grade: translateKoreanToGrade(editedUser.memberGrade), // Enum
+        email: editedUser.email,
+        githubUrl: editedUser.githubUrl,
+        linkedinUrl: editedUser.linkedinUrl,
+      });
+      onSave?.(editedUser);
+
+      closeModal();
+      router.refresh();
+    } catch (e) {
+      console.error("프로필 수정 실패:", e);
+    }
   };
   return (
     <div
@@ -230,7 +257,8 @@ export default function CCProfileModal({
                   >
                     <span className="text-gray-900 truncate pr-1 text-sm dark:text-gray-200">
                       {gradeOptions.find(
-                        (option) => option.value === (grade ?? "")
+                        (option) =>
+                          option.value === (editedUser.memberGrade ?? "")
                       )?.label || "선택"}
                     </span>
                     <ChevronDown
@@ -252,7 +280,8 @@ export default function CCProfileModal({
                             onClick={() => {
                               setEditedUser((prev) => ({
                                 ...prev,
-                                grade: option.value as MembersDataType["grade"],
+                                memberGrade:
+                                  option.value as MembersGradeCategoryType,
                               }));
                               closeAllDropdowns();
                             }}
@@ -291,8 +320,8 @@ export default function CCProfileModal({
               <div>
                 <p className="text-sm mb-1.5 dark:text-gray-200">학번</p>
                 <input
-                  value={editedUser.studentId}
-                  onChange={onChange("studentId")}
+                  value={editedUser.studentNumber}
+                  onChange={onChange("studentNumber")}
                   className="text-sm flex h-10 w-full rounded-md border px-3 py-2 bg-white border-gray-300 text-gray-900 focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent dark:bg-gray-800 dark:border-gray-600 dark:text-gray-200"
                 />
               </div>

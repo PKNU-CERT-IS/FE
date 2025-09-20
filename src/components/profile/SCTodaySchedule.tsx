@@ -11,7 +11,6 @@ import { ScheduleInfo } from "@/types/schedule";
 
 export default async function SCTodaySchedule() {
   const profile = await getProfile();
-  console.log(profile);
   return (
     <div className="mt-7">
       <div className="card-list text-card-foreground p-6 cursor-default dark-default">

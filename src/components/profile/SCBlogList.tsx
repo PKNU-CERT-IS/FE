@@ -22,7 +22,6 @@ export default async function SCBlogList({ searchParams }: SCBlogListProps) {
   const { tab } = await searchParams;
   const currentTab = tab || "study";
   const blogs = await getProfileBlog();
-
   if (currentTab !== "blog") return null;
 
   return (
