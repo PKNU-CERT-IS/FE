@@ -1,7 +1,7 @@
 import { CategoryType, SubCategoryType } from "@/types/category";
 
 export interface BlogsKeywordSearch {
-  search?: string;
+  keyword?: string;
   category?: string;
 }
 
@@ -65,6 +65,12 @@ export interface BlogDetailDataType extends BlogDataType {
   content: string;
   viewCount: number;
   creatorName: string;
+}
+
+export interface BlogInPrfoileDataType extends BlogDataType {
+  viewCount: number;
+  blogId: number;
+  blogStartDate: string;
 }
 // 블로그 필터 인터페이스
 export interface BlogFilter {

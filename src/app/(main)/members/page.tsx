@@ -12,7 +12,7 @@ import {
 interface MembersPageProps {
   searchParams: Promise<{
     role?: string;
-    search?: string;
+    keyword?: string;
     grade?: string;
   }>;
 }
@@ -20,18 +20,18 @@ interface MembersPageProps {
 export async function generateMetadata({
   searchParams,
 }: {
-  searchParams: Promise<{ role?: string; search?: string; grade?: string }>;
+  searchParams: Promise<{ role?: string; keyword?: string; grade?: string }>;
 }): Promise<Metadata> {
-  const { role, search, grade } = await searchParams;
+  const { role, keyword, grade } = await searchParams;
 
   const currentRole = role && isValidRole(role) ? role : "";
   const currentGrade = grade && isValidGrade(grade) ? grade : "";
 
   let description = "CERT-IS 동아리의 멋진 멤버들을 소개합니다.";
 
-  if (search || currentRole || currentGrade) {
+  if (keyword || currentRole || currentGrade) {
     const parts = [
-      search ? `'${search}' 이름` : null,
+      keyword ? `'${keyword}' 이름` : null,
       currentGrade || null,
       currentRole || null,
     ].filter(Boolean);
@@ -51,24 +51,24 @@ export async function generateMetadata({
 }
 
 export default async function MembersPage({ searchParams }: MembersPageProps) {
-  const { role, search, grade } = await searchParams;
+  const { role, keyword, grade } = await searchParams;
 
   const currentRole =
     role && isValidRole(role) ? translateKoreanToRole(role) : "전체";
-  const currentSearch = search || "";
+  const currentKeyword = keyword || "";
   const currentGrade =
     grade && isValidGrade(grade) ? translateKoreanToGrade(grade) : "전체";
 
   const members = await getMembers({
     role: currentRole === "전체" ? "" : currentRole,
     grade: currentGrade === "전체" ? "" : currentGrade,
-    search: currentSearch,
+    keyword: currentKeyword,
   });
 
   return (
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row gap-4">
-        <MembersSearchBar currentSearch={currentSearch} />
+        <MembersSearchBar currentKeyword={currentKeyword} />
         <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-row">
           <div className="w-full sm:w-auto">
             <MembersGradeDropdown />

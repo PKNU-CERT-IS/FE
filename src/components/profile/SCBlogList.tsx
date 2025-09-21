@@ -11,7 +11,7 @@ import { getCategoryColor } from "@/utils/badgeUtils";
 import { cn } from "@/lib/utils";
 import { getProfileBlog } from "@/app/api/profile/SCprofileApi";
 import { fromOffsetDateTime } from "@/utils/transfromResponseValue";
-
+import { BlogInPrfoileDataType } from "@/types/blog";
 interface SCBlogListProps {
   searchParams: Promise<{
     tab?: string;
@@ -23,7 +23,6 @@ export default async function SCBlogList({ searchParams }: SCBlogListProps) {
   const currentTab = tab || "study";
   const blogs = await getProfileBlog();
   if (currentTab !== "blog") return null;
-
   return (
     <>
       {currentTab === "blog" && (
@@ -42,19 +41,7 @@ export default async function SCBlogList({ searchParams }: SCBlogListProps) {
             </Link>
           </div>
 
-          {(
-            blogs as Array<{
-              blogId: number;
-              title: string;
-              blogStartDate: string;
-              category: string;
-              reference?: {
-                type: string;
-                title: string;
-              };
-              viewCount?: number;
-            }>
-          ).map((blog) => (
+          {(blogs as BlogInPrfoileDataType[]).map((blog) => (
             <Link href={`/blog/${blog.blogId}`} key={blog.blogId}>
               <div className="card-list text-card-foreground group mb-4 dark-default">
                 <div className="flex flex-col space-y-1.5 p-4 sm:p-6">
@@ -79,19 +66,19 @@ export default async function SCBlogList({ searchParams }: SCBlogListProps) {
                             {blog.category}
                           </DefaultBadge>
 
-                          {blog.reference && (
+                          {blog.referenceType && (
                             <span
                               className={cn(
-                                "rounded-full inline-flex items-center px-2 py-0.5 text-[11px] sm:text-xs font-medium",
-                                blog.reference.type === "study"
-                                  ? "badge-green"
-                                  : "badge-blue"
+                                "rounded-full inline-flex items-center px-2 py-0.5 text-[11px] sm:text-xs font-medium border",
+                                blog.referenceType === "STUDY"
+                                  ? "badge-green border-green-300 dark:border-green-600"
+                                  : "badge-blue border-blue-300 dark:border-blue-600"
                               )}
                             >
-                              {blog.reference.type === "study"
+                              {blog.referenceType === "STUDY"
                                 ? "스터디"
                                 : "프로젝트"}{" "}
-                              · {blog.reference.title}
+                              · {blog.referenceTitle}
                             </span>
                           )}
                         </div>

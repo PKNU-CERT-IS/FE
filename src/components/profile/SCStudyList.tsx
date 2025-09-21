@@ -51,7 +51,6 @@ export default async function SCStudyList({ searchParams }: SCStudyListProps) {
   const currentTab = tab || "study";
   const studydata = await getProfileStudy();
   const projectdata = await getProfileProject();
-  console.log(studydata, projectdata);
 
   const selectedStatus: StudyStatusType =
     status && studyStatus.includes(status as StudyStatusType)

@@ -7,7 +7,7 @@ interface BlogPaginationProps {
   currentPage: number;
   totalItems: number;
   itemsPerPage: number;
-  currentSearch: string;
+  currentKeyword: string;
   currentCategory: BlogCategory;
 }
 
@@ -15,7 +15,7 @@ export default function BlogPagination({
   currentPage,
   totalItems,
   itemsPerPage,
-  currentSearch,
+  currentKeyword,
   currentCategory,
 }: BlogPaginationProps) {
   const router = useRouter();
@@ -34,8 +34,8 @@ export default function BlogPagination({
     }
 
     // 검색어 유지
-    if (currentSearch.trim()) {
-      params.set("search", currentSearch);
+    if (currentKeyword.trim()) {
+      params.set("search", currentKeyword);
     } else {
       params.delete("search");
     }

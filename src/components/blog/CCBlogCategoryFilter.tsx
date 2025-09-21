@@ -6,12 +6,12 @@ import DefaultButton from "@/components/ui/defaultButton";
 
 interface CCBlogCategoryFilterProps {
   currentCategory: BlogCategory;
-  currentSearch: string;
+  currentKeyword: string;
 }
 
 export default function CCBlogCategoryFilter({
   currentCategory,
-  currentSearch,
+  currentKeyword,
 }: CCBlogCategoryFilterProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -26,8 +26,8 @@ export default function CCBlogCategoryFilter({
       params.delete("category");
     }
 
-    if (currentSearch) {
-      params.set("search", currentSearch);
+    if (currentKeyword) {
+      params.set("search", currentKeyword);
     }
 
     // 카테고리 변경 시 첫 페이지로 리셋

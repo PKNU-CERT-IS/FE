@@ -33,3 +33,13 @@ export interface ScheduleInfo extends ScheduleCreateRequest {
   status: ScheduleStatusType;
   created_at: string;
 }
+
+export interface ScheduleInProfileData {
+  id: number;
+  title: string;
+  description?: string;
+  type: ScheduleType;
+  place: string;
+  startTime: string;
+  endTime: string;
+}

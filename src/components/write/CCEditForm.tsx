@@ -210,34 +210,34 @@ export default function EditForm({
   const handleSubmit = async () => {
     try {
       // 수정 API 호출
-      const updateData = {
-        id: dataId,
-        title,
-        description,
-        content,
-        category,
-        ...((type === "study" || type === "project") && {
-          startDate,
-          endDate,
-          subCategory,
-          maxParticipants: maxParticipants
-            ? parseInt(maxParticipants)
-            : undefined,
-        }),
-        ...(type === "project" && {
-          githubUrl,
-          demoUrl,
-          externalLinks: externalLinks.filter((link) => link.label && link.url),
-          projectImage,
-        }),
-        ...(type === "blog"
-          ? {
-              referenceId: selectedReference?.referenceId,
-              referenceType: selectedReference?.referenceType,
-              referenceTitle: selectedReference?.referenceTitle,
-            }
-          : {}),
-      };
+      // const updateData = {
+      //   id: dataId,
+      //   title,
+      //   description,
+      //   content,
+      //   category,
+      //   ...((type === "study" || type === "project") && {
+      //     startDate,
+      //     endDate,
+      //     subCategory,
+      //     maxParticipants: maxParticipants
+      //       ? parseInt(maxParticipants)
+      //       : undefined,
+      //   }),
+      //   ...(type === "project" && {
+      //     githubUrl,
+      //     demoUrl,
+      //     externalLinks: externalLinks.filter((link) => link.label && link.url),
+      //     projectImage,
+      //   }),
+      //   ...(type === "blog"
+      //     ? {
+      //         referenceId: selectedReference?.referenceId,
+      //         referenceType: selectedReference?.referenceType,
+      //         referenceTitle: selectedReference?.referenceTitle,
+      //       }
+      //     : {}),
+      // };
 
       if (type === "blog") {
         const blogUpdateRequest: BlogUpdateRequest = {

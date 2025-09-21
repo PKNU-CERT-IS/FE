@@ -15,7 +15,7 @@ import { BlogDataType } from "@/types/blog";
 interface BlogPageProps {
   searchParams: Promise<{
     page?: string;
-    search?: string;
+    keyword?: string;
     category?: string;
   }>;
 }
@@ -23,9 +23,9 @@ interface BlogPageProps {
 export async function generateMetadata({
   searchParams,
 }: {
-  searchParams: Promise<{ search?: string; category?: string }>;
+  searchParams: Promise<{ keyword?: string; category?: string }>;
 }): Promise<Metadata> {
-  const { search, category } = await searchParams;
+  const { keyword, category } = await searchParams;
 
   const validCategory =
     category && isValidCategory(category) ? category : "전체";
@@ -33,12 +33,12 @@ export async function generateMetadata({
   return {
     title: `CERT-IS Blog${
       validCategory !== "전체" ? ` - ${validCategory}` : ""
-    }${search ? ` | ${search}` : ""}`,
+    }${keyword ? ` | ${keyword}` : ""}`,
     description:
-      search && validCategory !== "전체"
-        ? `'${search}', '${validCategory}' 관련 블로그 글 목록입니다.`
-        : search
-        ? `'${search}' 관련 블로그 글 목록입니다.`
+      keyword && validCategory !== "전체"
+        ? `'${keyword}', '${validCategory}' 관련 블로그 글 목록입니다.`
+        : keyword
+        ? `'${keyword}' 관련 블로그 글 목록입니다.`
         : validCategory !== "전체"
         ? `'${validCategory}' 관련 블로그 글 목록입니다.`
         : "CERT-IS 동아리 블로그 글 목록입니다.",
@@ -52,16 +52,16 @@ export async function generateMetadata({
 
 // children 매개변수 제거
 export default async function BlogPage({ searchParams }: BlogPageProps) {
-  const { page, search, category } = await searchParams;
+  const { page, keyword, category } = await searchParams;
 
   const currentPage = Math.max(1, parseInt(page || "1", 10));
-  const currentSearch = search?.trim() || "";
+  const currentKeyword = keyword?.trim() || "";
   const currentCategory: BlogCategory =
     category && isValidCategory(category) ? category : "전체";
 
   const response = await searchBlogsByKeyword(
     {
-      search: currentSearch,
+      keyword: currentKeyword,
       category: currentCategory === "전체" ? "" : currentCategory,
     },
     {
@@ -90,12 +90,12 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
           <div className="flex flex-col lg:flex-row gap-4 items-center">
             {/* 검색바 */}
             <div className="flex-1 w-full">
-              <BlogSearchBar currentSearch={currentSearch} />
+              <BlogSearchBar currentKeyword={currentKeyword} />
             </div>
             {/* 카테고리 필터 - 클라이언트 컴포넌트로 분리 */}
             <CCBlogCategoryFilter
               currentCategory={currentCategory}
-              currentSearch={currentSearch}
+              currentKeyword={currentKeyword}
             />
 
             {/* 새 글 작성 버튼 */}
@@ -178,7 +178,7 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
               currentPage={validCurrentPage}
               totalItems={totalItems}
               itemsPerPage={ITEMS_PER_PAGE}
-              currentSearch={currentSearch}
+              currentKeyword={currentKeyword}
               currentCategory={currentCategory}
             />
           </div>
