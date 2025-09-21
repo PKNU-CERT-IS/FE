@@ -11,6 +11,7 @@ import SCSearchResultNotFound from "@/components/ui/SCSearchResultNotFound";
 import { getCategoryColor } from "@/utils/badgeUtils";
 import { searchBlogsByKeyword } from "@/app/api/blog/SCblogApi";
 import { BlogDataType } from "@/types/blog";
+import { sign } from "crypto";
 
 interface BlogPageProps {
   searchParams: Promise<{
@@ -65,7 +66,7 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
       category: currentCategory === "전체" ? "" : currentCategory,
     },
     {
-      page: currentPage,
+      page: currentPage - 1,
       size: ITEMS_PER_PAGE,
       sort: "createdAt,desc",
     }

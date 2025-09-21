@@ -14,7 +14,7 @@ import { searchBlogsByKeyword } from "@/app/api/blog/SCblogApi";
 
 interface AdminBlogProps {
   searchParams: Promise<{
-    search?: string;
+    keyword?: string;
     page?: string;
     category?: string;
     tab?: string;
@@ -24,7 +24,7 @@ interface AdminBlogProps {
 export default async function AdminBlogPage({ searchParams }: AdminBlogProps) {
   const resolvedSearchParams = await searchParams;
 
-  const searchParam = resolvedSearchParams.search || "";
+  const searchParam = resolvedSearchParams.keyword || "";
   const page = Math.max(1, parseInt(resolvedSearchParams.page || "1", 10));
   const currentCategory: BlogCategory =
     resolvedSearchParams.category &&
@@ -41,10 +41,10 @@ export default async function AdminBlogPage({ searchParams }: AdminBlogProps) {
   // ✅ 백엔드에서 실제 데이터 조회
   const data = await searchBlogsByKeyword(
     {
-      search: searchParam,
+      keyword: searchParam,
       category: currentCategory === "전체" ? "" : currentCategory,
     },
-    { page: page, size: ITEMS_PER_PAGE, sort: "createdAt,desc" }
+    { page: page - 1, size: ITEMS_PER_PAGE, sort: "createdAt,desc" }
   );
 
   const blogs = data.content;
@@ -62,11 +62,11 @@ export default async function AdminBlogPage({ searchParams }: AdminBlogProps) {
         <div className="bg-white rounded-lg mb-5">
           <div className="flex flex-col lg:flex-row gap-4 items-center">
             <div className="flex-1 w-full">
-              <BlogSearchBar currentSearch={searchParam} />
+              <BlogSearchBar currentKeyword={searchParam} />
             </div>
             <CCBlogCategoryFilter
               currentCategory={currentCategory}
-              currentSearch={searchParam}
+              currentKeyword={searchParam}
             />
           </div>
         </div>
@@ -92,7 +92,7 @@ export default async function AdminBlogPage({ searchParams }: AdminBlogProps) {
               currentPage={validCurrentPage}
               totalItems={totalItems}
               itemsPerPage={ITEMS_PER_PAGE}
-              currentSearch={searchParam}
+              currentKeyword={searchParam}
               currentCategory={currentCategory}
             />
           </div>
