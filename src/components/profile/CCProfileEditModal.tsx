@@ -48,8 +48,6 @@ export default function CCProfileModal({
   const gradeRef = useRef<HTMLDivElement>(null);
 
   const role = translateMemberRole(editedUser.memberRole);
-  const grade = translateGradeToKorean(editedUser.memberGrade);
-  // const createdAt = fromOffsetDateTime(editedUser.createdAt);
 
   const closeAllDropdowns = useCallback(() => {
     setShowGradeDropdown(false);
@@ -442,7 +440,7 @@ export default function CCProfileModal({
               </div>
               <div className="text-xs text-center text-gray-500 mt-2 dark:text-gray-300">
                 <p>
-                  {grade} • {editedUser.major}
+                  {editedUser.memberGrade} • {editedUser.major}
                 </p>
               </div>
               <div className="text-xs text-center text-gray-600 mt-3 dark:text-gray-300">
