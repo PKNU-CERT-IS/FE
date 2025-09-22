@@ -5,6 +5,10 @@ export interface BlogsKeywordSearch {
   category?: string;
 }
 
+export interface BlogsSearchByAdmin extends BlogsKeywordSearch {
+  isPublic: "true" | "false";
+}
+
 export interface BlogCreateRequest {
   title: string;
   description: string;

@@ -10,14 +10,14 @@ import { blogTabCategoryType } from "@/types/admin/adminBlog";
 import { isValidCategory } from "@/utils/blogUtils";
 import { isValidTab } from "@/utils/adminBlogUtils";
 import SCSearchResultNotFound from "@/components/ui/SCSearchResultNotFound";
-import { searchBlogsByKeyword } from "@/app/api/blog/SCblogApi";
+import { searchBlogsByAdmin } from "@/app/api/blog/SCblogApi";
 
 interface AdminBlogProps {
   searchParams: Promise<{
     keyword?: string;
     page?: string;
     category?: string;
-    tab?: string;
+    isPublic?: string;
   }>;
 }
 
@@ -31,24 +31,24 @@ export default async function AdminBlogPage({ searchParams }: AdminBlogProps) {
     isValidCategory(resolvedSearchParams.category)
       ? resolvedSearchParams.category
       : "전체";
-  const tab: blogTabCategoryType =
-    resolvedSearchParams.tab && isValidTab(resolvedSearchParams.tab)
-      ? resolvedSearchParams.tab
-      : "allPosts";
+  const isPublic: blogTabCategoryType =
+    resolvedSearchParams.isPublic && isValidTab(resolvedSearchParams.isPublic)
+      ? resolvedSearchParams.isPublic
+      : "true";
 
   const ITEMS_PER_PAGE = 6;
 
   // ✅ 백엔드에서 실제 데이터 조회
-  const data = await searchBlogsByKeyword(
+  const data = await searchBlogsByAdmin(
     {
       keyword: searchParam,
       category: currentCategory === "전체" ? "" : currentCategory,
+      isPublic: isPublic,
     },
     { page: page - 1, size: ITEMS_PER_PAGE, sort: "createdAt,desc" }
   );
 
   const blogs = data.content;
-  console.log(blogs);
   // ⚠️ 백엔드 응답 구조에 따라 조정 필요
   const { totalItems } = data; // 예시: { contents: Blog[], totalItems: number }
 

@@ -42,7 +42,11 @@ export default function KebabMenu({
     try {
       await deleteBlog({ blogId: currentId });
       setIsDeleteModalOpen(false);
-      router.push(`/${currentUrl}`);
+      if (isAdmin) {
+        router.push(`/admin/${currentUrl}`);
+      } else {
+        router.push(`/${currentUrl}`);
+      }
       router.refresh();
     } catch {
       setIsDeleteModalOpen(false);

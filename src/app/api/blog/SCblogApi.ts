@@ -1,5 +1,5 @@
 import { fetchWithAuth } from "@/lib/serverIntercept";
-import { BlogsKeywordSearch } from "@/types/blog";
+import { BlogsKeywordSearch, BlogsSearchByAdmin } from "@/types/blog";
 
 export async function searchBlogsByKeyword(
   filters: BlogsKeywordSearch,
@@ -20,7 +20,32 @@ export async function searchBlogsByKeyword(
       cache: "no-store",
     }
   );
-  console.log(response);
+  if (!response.ok) {
+    throw new Error(`Failed to fetch blogs: ${response.statusText}`);
+  }
+
+  const { data } = await response.json();
+  return data;
+}
+
+export async function searchBlogsByAdmin(
+  filters: BlogsSearchByAdmin,
+  options: { page?: number; size?: number; sort?: string }
+) {
+  const params = new URLSearchParams();
+  if (filters.keyword) params.append("keyword", filters.keyword);
+  if (filters.category) params.append("category", filters.category);
+  if (filters.isPublic !== undefined)
+    params.append("isPublic", String(filters.isPublic));
+  params.append("page", String(options?.page ?? 0));
+  params.append("size", String(options?.size ?? 10));
+  params.append("sort", options?.sort ?? "createdAt,desc");
+
+  const response = await fetchWithAuth(`/blog/public?${params.toString()}`, {
+    method: "GET",
+    headers: { "Content-Type": "application/json" },
+    cache: "no-store",
+  });
   if (!response.ok) {
     throw new Error(`Failed to fetch blogs: ${response.statusText}`);
   }
@@ -39,6 +64,7 @@ export async function searchBlogDetail(blogId: number) {
     }
   );
 
+  console.log(response);
   if (!response.ok) {
     throw new Error(`Failed to fetch blog detail: ${response.statusText}`);
   }

@@ -15,7 +15,6 @@ interface SCBlogContentListProps {
 export default function SCBlogContentList({
   paginatedContents,
 }: SCBlogContentListProps) {
-  console.log(paginatedContents);
   return (
     <>
       {paginatedContents.map((blog) => (

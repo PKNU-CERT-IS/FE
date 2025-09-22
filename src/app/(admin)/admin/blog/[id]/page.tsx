@@ -28,7 +28,6 @@ export async function generateMetadata({
   const resolvedParams = await params;
   const blogId = parseInt(resolvedParams.id, 10);
   const post: BlogDetailDataType = await searchBlogDetail(blogId);
-  console.log(post);
   if (!post) {
     return {
       title: "게시글을 찾을 수 없습니다",
@@ -54,6 +53,7 @@ export default async function AdminBlogDetailPage({
 }: BlogDetailPageProps) {
   const resolvedParams = await params;
   const blogId = parseInt(resolvedParams.id, 10);
+  console.log(blogId);
   const post: BlogDetailDataType = await searchBlogDetail(blogId);
 
   if (!post) {
@@ -79,13 +79,21 @@ export default async function AdminBlogDetailPage({
                 {post.category}
               </DefaultBadge>
 
-              {post.isPublic && (
+              {post.isPublic ? (
+                <DefaultBadge
+                  variant="outline"
+                  className="bg-blue-200 text-blue-600 border-blue-300"
+                >
+                  <ExternalLink className="w-3 h-3 mr-1" />
+                  외부 공개
+                </DefaultBadge>
+              ) : (
                 <DefaultBadge
                   variant="outline"
                   className="bg-cert-red/20 text-red-700 border-red-300"
                 >
                   <ExternalLink className="w-3 h-3 mr-1" />
-                  외부 공개
+                  외부 비공개
                 </DefaultBadge>
               )}
             </div>
