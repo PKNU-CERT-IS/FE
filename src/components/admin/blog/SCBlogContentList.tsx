@@ -4,7 +4,7 @@ import DefaultBadge from "@/components/ui/defaultBadge";
 import { ExternalLink, Eye, FileText, BookOpen, Code } from "lucide-react";
 import Link from "next/link";
 import CCBlogDeleteButton from "@/components/admin/blog/CCBlogDeleteButton";
-import CCPublishedCheckbox from "@/components/admin/blog/CCPublishedCheckbox";
+// import CCPublishedCheckbox from "@/components/admin/blog/CCPublishedCheckbox";
 import { getCategoryColor } from "@/utils/badgeUtils";
 import { BlogDetailDataType } from "@/types/blog";
 
@@ -15,6 +15,7 @@ interface SCBlogContentListProps {
 export default function SCBlogContentList({
   paginatedContents,
 }: SCBlogContentListProps) {
+  console.log(paginatedContents);
   return (
     <>
       {paginatedContents.map((blog) => (
@@ -62,7 +63,7 @@ export default function SCBlogContentList({
                   {blog.isPublic && (
                     <DefaultBadge
                       variant="outline"
-                      className="bg-gray-200 text-gray-700 border-gray-300"
+                      className="bg-cert-red text-red-700 border-red-300"
                     >
                       <ExternalLink className="w-3 h-3 mr-1" />
                       외부 공개
@@ -109,12 +110,12 @@ export default function SCBlogContentList({
                   마지막 수정: {blog.createdAt}
                 </Link>
 
-                <div className="shrink-0">
+                {/* <div className="shrink-0"> 개선의 여지가 있어 남겨둠
                   <CCPublishedCheckbox
                     postId={blog.id}
                     published={blog.isPublic}
                   />
-                </div>
+                </div> */}
               </div>
             </div>
           </div>

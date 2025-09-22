@@ -107,6 +107,7 @@ export default async function StudyDetailPage({
                   <KebabMenu
                     currentId={studyData.id}
                     currentUrl={"study"}
+                    isAdmin={true}
                   ></KebabMenu>
                 </div>
               </div>

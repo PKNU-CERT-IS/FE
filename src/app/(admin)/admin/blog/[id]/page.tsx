@@ -82,14 +82,18 @@ export default async function AdminBlogDetailPage({
               {post.isPublic && (
                 <DefaultBadge
                   variant="outline"
-                  className="bg-gray-200 text-gray-700 border-gray-300"
+                  className="bg-cert-red/20 text-red-700 border-red-300"
                 >
                   <ExternalLink className="w-3 h-3 mr-1" />
                   외부 공개
                 </DefaultBadge>
               )}
             </div>
-            <KebabMenuButton currentUrl={"blog"} currentId={blogId} />
+            <KebabMenuButton
+              currentUrl={"blog"}
+              currentId={blogId}
+              isAdmin={true}
+            />
           </div>
 
           {/* 제목 */}

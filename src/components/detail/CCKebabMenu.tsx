@@ -9,9 +9,14 @@ import { deleteBlog } from "@/app/api/blog/CCblogApi";
 interface KebabMenuProps {
   currentId: number;
   currentUrl: string;
+  isAdmin?: boolean; // 수정후 어드민 페이지리다이렉팅을 위한 boolean값
 }
 
-export default function KebabMenu({ currentId, currentUrl }: KebabMenuProps) {
+export default function KebabMenu({
+  currentId,
+  currentUrl,
+  isAdmin,
+}: KebabMenuProps) {
   const router = useRouter();
   const [isKebabOpen, setIsKebabOpen] = useState<boolean>(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
@@ -49,7 +54,11 @@ export default function KebabMenu({ currentId, currentUrl }: KebabMenuProps) {
   };
 
   const handleEdit = () => {
-    router.push(`/${currentUrl}/${currentId}/edit`);
+    if (isAdmin) {
+      router.push(`/${currentUrl}/${currentId}/edit?from=admin`);
+    } else {
+      router.push(`/${currentUrl}/${currentId}/edit`);
+    }
   };
 
   return (

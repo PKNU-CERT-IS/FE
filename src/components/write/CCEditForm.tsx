@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect, useRef, useCallback } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import DefaultButton from "@/components/ui/defaultButton";
 import { Info, ChevronDown } from "lucide-react";
 import FileUpload from "@/components/write/CCFileUpload";
@@ -59,8 +59,6 @@ export default function EditForm({
           }
         : null
     );
-
-  console.log(initialData);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isCategoryOpen, setIsCategoryOpen] = useState<boolean>(false);
   const [isSubCategoryOpen, setIsSubCategoryOpen] = useState<boolean>(false);
@@ -83,6 +81,8 @@ export default function EditForm({
   }, []);
   // 초기 데이터 로드
   const [isPublic, setIsPublic] = useState<boolean>(initialData.isPublic);
+  const searchParams = useSearchParams();
+  const from = searchParams.get("from");
   useEffect(() => {
     const loadInitialData = async () => {
       try {
@@ -257,15 +257,22 @@ export default function EditForm({
         };
         await updateBlog(blogUpdateRequest);
       }
-
-      router.push(`/${type}/${dataId}`);
+      if (from === "admin") {
+        router.push(`/admin/${type}/${dataId}`);
+      } else {
+        router.push(`/${type}/${dataId}`);
+      }
     } catch (error) {
       console.error("수정 실패:", error);
     }
   };
 
   const handleCancel = () => {
-    router.push(`/${type}/${dataId}`);
+    if (from === "admin") {
+      router.push(`/admin/${type}/${dataId}`);
+    } else {
+      router.push(`/${type}/${dataId}`);
+    }
   };
 
   // 로딩 중일 때 표시
