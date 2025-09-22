@@ -10,15 +10,16 @@ export interface BlogCreateRequest {
   description: string;
   category: string;
   content: string;
-  referenceType: string;
+  referenceType?: string;
   referenceTitle?: string;
   referenceId?: number;
+  isPublic: boolean;
 }
 
 export interface BlogReferenceType {
   referenceType: "STUDY" | "PROJECT";
-  referenceTitle?: string;
-  referenceId?: number;
+  referenceTitle: string;
+  referenceId: number;
 }
 
 export interface BlogUpdateRequest {
@@ -30,6 +31,7 @@ export interface BlogUpdateRequest {
   referenceType: string;
   referenceId?: number;
   referenceTitle?: string;
+  isPublic: boolean;
 }
 
 // 블로그 카테고리 타입
@@ -57,8 +59,10 @@ export interface BlogDataType {
   blogCreatorName: string;
 
   // 선택적으로 오는 값들
-  referenceType?: "STUDY" | "PROJECT";
-  referenceTitle?: string;
+  referenceType: "STUDY" | "PROJECT";
+  referenceTitle: string;
+  referenceId: number;
+  isPublic: boolean;
 }
 
 export interface BlogDetailDataType extends BlogDataType {

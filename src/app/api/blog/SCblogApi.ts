@@ -48,7 +48,7 @@ export async function searchBlogDetail(blogId: number) {
 }
 
 export async function getBlogReference() {
-  const response = await fetchWithAuth("/blog/blog/reference", {
+  const response = await fetchWithAuth("/blog/reference", {
     method: "GET",
     headers: {
       "Content-Type": "application/json",

@@ -51,13 +51,16 @@ export default function EditForm({
   const [maxParticipants, setMaxParticipants] = useState("");
   const [selectedReference, setSelectedReference] =
     useState<BlogReferenceType | null>(
-      initialData.referenceType
+      initialData.referenceType || null
         ? {
-            referenceType: initialData.referenceType,
-            referenceTitle: initialData.referenceTitle,
+            referenceType: initialData?.referenceType,
+            referenceTitle: initialData?.referenceTitle,
+            referenceId: initialData?.referenceId,
           }
         : null
     );
+
+  console.log(initialData);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isCategoryOpen, setIsCategoryOpen] = useState<boolean>(false);
   const [isSubCategoryOpen, setIsSubCategoryOpen] = useState<boolean>(false);
@@ -79,6 +82,7 @@ export default function EditForm({
     setIsSelecteReferenceOpen(false);
   }, []);
   // 초기 데이터 로드
+  const [isPublic, setIsPublic] = useState<boolean>(initialData.isPublic);
   useEffect(() => {
     const loadInitialData = async () => {
       try {
@@ -246,6 +250,7 @@ export default function EditForm({
           description,
           category,
           content,
+          isPublic,
           referenceType: selectedReference?.referenceType ?? "",
           referenceTitle: selectedReference?.referenceTitle ?? "",
           referenceId: selectedReference?.referenceId,
@@ -687,26 +692,57 @@ export default function EditForm({
       </div>
 
       {/* 액션 버튼 */}
-      <div className="flex items-center justify-end gap-3 pt-6 border-t border-gray-200 dark:border-gray-700">
-        <DefaultButton variant="outline" onClick={handleCancel}>
-          취소
-        </DefaultButton>
-        <DefaultButton
-          onClick={handleSubmit}
-          disabled={
-            !isFormValid(
-              title,
-              content,
-              category,
-              type,
-              maxParticipants,
-              startDate,
-              endDate
-            )
-          }
-        >
-          수정하기
-        </DefaultButton>
+      <div className="flex items-center justify-between pt-6 border-t border-gray-200 dark:border-gray-700">
+        {/* 블로그 공개 설정 토글 - blog일 때만 표시 */}
+        {type === "blog" && (
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={() => setIsPublic(!isPublic)}
+              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-200 ease-in-out focus:outline-none ${
+                isPublic ? "bg-cert-red" : "bg-gray-300 dark:bg-gray-600"
+              }`}
+            >
+              <span
+                className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform duration-200 ease-in-out ${
+                  isPublic ? "translate-x-6" : "translate-x-1"
+                }`}
+              />
+            </button>
+            <div className="flex flex-col">
+              <span className="text-sm font-medium text-gray-900 dark:text-gray-200">
+                {isPublic ? "외부 공개" : "외부 비공개"}
+              </span>
+              <span className="text-xs text-gray-500 dark:text-gray-400">
+                {isPublic
+                  ? "모든 사용자가 열람할 수 있습니다"
+                  : "CERT-IS에 가입한 회원만 열람할 수 있습니다"}
+              </span>
+            </div>
+          </div>
+        )}
+
+        <div className="flex items-center gap-3">
+          <DefaultButton variant="outline" onClick={handleCancel}>
+            취소
+          </DefaultButton>
+          <DefaultButton
+            onClick={handleSubmit}
+            disabled={
+              !isFormValid(
+                title,
+                content,
+                category,
+                type,
+                maxParticipants,
+                startDate,
+                endDate
+              )
+            }
+          >
+            수정하기
+          </DefaultButton>
+        </div>
       </div>
     </div>
   );
