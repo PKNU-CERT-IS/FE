@@ -1,6 +1,6 @@
 "use client";
 
-import { AttachedFile } from "@/types/attachedFile";
+import { AttachedFile, getFileKey } from "@/types/attachedFile";
 import DefaultButton from "@/components/ui/defaultButton";
 import { Upload, Trash2 } from "lucide-react";
 import {
@@ -11,13 +11,13 @@ import {
 import { cn } from "@/lib/utils";
 
 interface FileUploadProps {
-  attachedFiles: AttachedFile[];
+  attachments: AttachedFile[];
   onAttachmentsChange: (files: AttachedFile[]) => void;
   className?: string;
 }
 
 export default function FileUpload({
-  attachedFiles,
+  attachments,
   onAttachmentsChange,
   className,
 }: FileUploadProps) {
@@ -26,12 +26,12 @@ export default function FileUpload({
     if (!files) return;
 
     const newAttachedFiles = Array.from(files).map(convertFileToAttachedFile);
-    onAttachmentsChange([...attachedFiles, ...newAttachedFiles]);
+    onAttachmentsChange([...attachments, ...newAttachedFiles]);
     e.target.value = "";
   };
 
   const handleRemoveFile = (index: number) => {
-    onAttachmentsChange(attachedFiles.filter((_, i) => i !== index));
+    onAttachmentsChange(attachments.filter((_, i) => i !== index));
   };
 
   return (
@@ -64,14 +64,14 @@ export default function FileUpload({
         </label>
       </div>
 
-      {attachedFiles.length > 0 && (
+      {attachments.length > 0 && (
         <div className="space-y-2">
           <h4 className="text-sm font-medium text-gray-700">
-            첨부파일 ({attachedFiles.length})
+            첨부파일 ({attachments.length})
           </h4>
-          {attachedFiles.map((file, index) => (
+          {attachments.map((file, index) => (
             <div
-              key={file.id}
+              key={getFileKey(file)}
               className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg"
             >
               <span className="text-lg">{getFileIcon(file.type)}</span>

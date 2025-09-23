@@ -5,6 +5,8 @@ import DefaultButton from "@/components/ui/defaultButton";
 import { MoreVertical, Edit, Trash2 } from "lucide-react";
 import ConfirmModal from "@/components/ui/defaultConfirmModal";
 import { deleteBlog } from "@/app/api/blog/CCblogApi";
+import { deleteBoard } from "@/api/board/CCboard";
+import AlertModal from "@/components/ui/defaultAlertModal";
 
 interface KebabMenuProps {
   currentId: number;
@@ -21,6 +23,7 @@ export default function KebabMenu({
   const [isKebabOpen, setIsKebabOpen] = useState<boolean>(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
   const kebabRef = useRef<HTMLDivElement>(null);
+  const [alertOpen, setAlertOpen] = useState(false);
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -38,18 +41,26 @@ export default function KebabMenu({
   };
 
   const handleDeleteConfirm = async () => {
-    setIsDeleteModalOpen(false);
     try {
-      await deleteBlog({ blogId: currentId });
-      setIsDeleteModalOpen(false);
+      if (currentUrl === "blog") {
+        //  blog 삭제
+        await deleteBlog({ blogId: currentId });
+      } else if (currentUrl === "board") {
+        //  board 삭제
+        await deleteBoard(currentId);
+      }
+      //  admin 여부에 따라 분기
       if (isAdmin) {
         router.push(`/admin/${currentUrl}`);
       } else {
         router.push(`/${currentUrl}`);
       }
       router.refresh();
-    } catch {
-      setIsDeleteModalOpen(false);
+    } catch (error) {
+      setAlertOpen(true); //  실패 시 알림
+      throw error;
+    } finally {
+      setIsDeleteModalOpen(false); //  성공/실패 모두 모달 닫기
     }
   };
 
@@ -108,6 +119,13 @@ export default function KebabMenu({
         onCancel={handleDeleteCancel}
         confirmText="예"
         cancelText="아니오"
+      />
+      <AlertModal
+        isOpen={alertOpen}
+        message="게시글 삭제에 실패하셨습니다."
+        type="warning"
+        duration={2500}
+        onClose={() => setAlertOpen(false)}
       />
     </>
   );

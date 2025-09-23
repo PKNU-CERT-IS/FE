@@ -3,12 +3,14 @@ import { Download } from "lucide-react";
 export default function DownloadButton({
   fileName,
   fileId,
+  fileUrl,
 }: {
   fileName: string;
   fileId?: string;
+  fileUrl: string;
 }) {
   return (
-    <a href={`/api/download/${fileId || fileName}`} download>
+    <a href={`/api/download/${fileId || fileName || fileUrl}`} download>
       <DefaultButton
         variant="outline"
         size="sm"

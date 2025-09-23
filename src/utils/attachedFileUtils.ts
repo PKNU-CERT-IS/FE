@@ -22,11 +22,10 @@ export function getFileIcon(type: string) {
 
 // 파일을 AttachedFile 타입으로 변환
 export const convertFileToAttachedFile = (file: File): AttachedFile => ({
-  id: crypto.randomUUID(),
   name: file.name,
   size: file.size,
   type: file.type,
-  category: "other",
-  downloadUrl: "",
-  uploadDate: new Date().toISOString(),
+  attachedUrl: `https://www.cert-is.com/uploads/${encodeURIComponent(
+    file.name
+  )}`,
 });

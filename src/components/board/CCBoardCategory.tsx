@@ -2,7 +2,11 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import DefaultButton from "@/components/ui/defaultButton";
-import { boardCategories, BoardCategoryType } from "@/types/board";
+import {
+  boardCategories,
+  BoardCategoryType,
+  toEnglishCategory,
+} from "@/types/board";
 
 interface BoardCategoryProps {
   selectedCategory: BoardCategoryType;
@@ -20,15 +24,14 @@ export default function BoardCategory({
     if (category === "전체") {
       params.delete("category");
     } else {
-      params.set("category", category);
+      params.set("category", toEnglishCategory(category));
     }
-    params.delete("page"); // 카테고리 변경 시 첫 페이지로
+    params.delete("page");
 
     const queryString = params.toString();
     const newUrl = queryString ? `/board?${queryString}` : "/board";
     router.push(newUrl);
   };
-
   return (
     <div className="sm:w-auto w-full overflow-x-auto scrollbar-hide">
       <div className="inline-flex gap-2 sm:flex-wrap">

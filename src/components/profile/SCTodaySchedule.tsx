@@ -23,7 +23,7 @@ export default async function SCTodaySchedule() {
             <div className="space-y-3">
               {profile.todaySchedules.map((schedule: ScheduleInProfileData) => (
                 <div
-                  key={schedule.id}
+                  key={schedule.scheduleId}
                   className="card-list bg-gray-50 flex items-center justify-between p-3 group cursor-default"
                 >
                   <div>

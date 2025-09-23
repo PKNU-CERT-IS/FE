@@ -5,8 +5,6 @@ import DefaultButton from "@/components/ui/defaultButton";
 import { Info, ChevronDown } from "lucide-react";
 import FileUpload from "@/components/write/CCFileUpload";
 import MarkdownEditor from "@/components/write/CCMarkdownEditor";
-import { mockBoardData } from "@/mocks/mockBoardData";
-import { mockBoardDetailData } from "@/mocks/mockBoardDetailData";
 import { mockStudyDetailData } from "@/mocks/mockStudyDetailData";
 import { getProjectMaterials } from "@/mocks/mockProjectData";
 import { NewPageCategoryType } from "@/types/newPageForm";
@@ -24,6 +22,8 @@ import {
   BlogUpdateRequest,
 } from "@/types/blog";
 import { updateBlog } from "@/app/api/blog/CCblogApi";
+import { updateBoard, getDetailBoard } from "@/api/board/CCboard";
+import { BoardCategoryTypeEN, categoryMappingToKO } from "@/types/board";
 
 interface EditFormProps {
   type: NewPageCategoryType;
@@ -47,7 +47,6 @@ export default function EditForm({
   const [attachments, setAttachments] = useState<AttachedFile[]>([]);
   const [startDate, setStartDate] = useState<string>("");
   const [endDate, setEndDate] = useState<string>("");
-  const [maxParticipants, setMaxParticipants] = useState("");
   const [selectedReference, setSelectedReference] =
     useState<BlogReferenceType | null>(
       initialData.referenceType || null
@@ -58,6 +57,7 @@ export default function EditForm({
           }
         : null
     );
+  const [maxParticipants, setMaxParticipants] = useState<string>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isCategoryOpen, setIsCategoryOpen] = useState<boolean>(false);
   const [isSubCategoryOpen, setIsSubCategoryOpen] = useState<boolean>(false);
@@ -78,6 +78,7 @@ export default function EditForm({
     setIsSubCategoryOpen(false);
     setIsSelecteReferenceOpen(false);
   }, []);
+
   // 초기 데이터 로드
   const [isPublic, setIsPublic] = useState<boolean>(initialData.isPublic);
   const searchParams = useSearchParams();
@@ -86,27 +87,26 @@ export default function EditForm({
     const loadInitialData = async () => {
       try {
         setIsLoading(true);
-
         let initialData;
 
         if (type === "board") {
-          const boardData = mockBoardData.find((item) => item.id === dataId);
-          const boardDetailData = mockBoardDetailData.find(
-            (item) => item.id === dataId
-          );
+          const response = await getDetailBoard(dataId);
+          const data = response?.data;
 
-          if (boardData && boardDetailData) {
+          if (data) {
             initialData = {
-              title: boardData.title,
-              content: boardDetailData.detailContent,
-              category: boardData.category,
-              attachedFiles: boardDetailData.attachedFiles || [],
+              title: data.title || "",
+              description: data.description || "",
+              content: data.content || "",
+              category: data.category || "",
+              attachedFiles: data.attachments || [],
             };
           }
         } else if (type === "study") {
           const studyData = mockStudyDetailData.find(
             (item) => item.id === dataId
           );
+
           if (studyData) {
             initialData = {
               title: studyData.title,
@@ -119,14 +119,16 @@ export default function EditForm({
             };
           }
         } else if (type === "project") {
-          const projectData = getProjectMaterials().find(
+          const projectMaterials = getProjectMaterials();
+          const projectData = projectMaterials.find(
             (item) => item.id === dataId.toString()
           );
+
           if (projectData) {
             initialData = {
               title: projectData.title,
               description: projectData.description,
-              content: projectData.description, // 프로젝트는 description을 content로 사용
+              content: projectData.description,
               category: projectData.category,
               subCategory: projectData.subCategory,
               attachedFiles: projectData.attachedFiles || [],
@@ -140,7 +142,6 @@ export default function EditForm({
           }
         }
 
-        // 초기 데이터가 존재하면 state 설정
         if (initialData) {
           setTitle(initialData.title || "");
           setDescription(initialData.description || "");
@@ -155,6 +156,8 @@ export default function EditForm({
           setDemoUrl(initialData.demoUrl || "");
           setExternalLinks(initialData.externalLinks || []);
           setSelectedReference(initialData.reference || null);
+        } else {
+          console.warn("Initial data가 없습니다!");
         }
       } catch (error) {
         console.error("데이터 로드 실패:", error);
@@ -163,8 +166,10 @@ export default function EditForm({
       }
     };
 
-    if (dataId) {
+    if (dataId && type) {
       loadInitialData();
+    } else {
+      console.warn("dataId 또는 type이 없습니다:", { dataId, type });
     }
   }, [dataId, type]);
 
@@ -201,57 +206,74 @@ export default function EditForm({
 
   const handleSubmit = async () => {
     try {
-      // 수정 API 호출
-      // const updateData = {
-      //   id: dataId,
-      //   title,
-      //   description,
-      //   content,
-      //   category,
-      //   ...((type === "study" || type === "project") && {
-      //     startDate,
-      //     endDate,
-      //     subCategory,
-      //     maxParticipants: maxParticipants
-      //       ? parseInt(maxParticipants)
-      //       : undefined,
-      //   }),
-      //   ...(type === "project" && {
-      //     githubUrl,
-      //     demoUrl,
-      //     externalLinks: externalLinks.filter((link) => link.label && link.url),
-      //     projectImage,
-      //   }),
-      //   ...(type === "blog"
-      //     ? {
-      //         referenceId: selectedReference?.referenceId,
-      //         referenceType: selectedReference?.referenceType,
-      //         referenceTitle: selectedReference?.referenceTitle,
-      //       }
-      //     : {}),
-      // };
+      // 타입별 데이터 구조 반영
+      const updateData = {
+        id: dataId,
+        title,
+        ...(type === "project" && { description }),
+        content,
+        category,
+        subCategory,
+        ...((type === "study" || type === "project") && {
+          startDate,
+          endDate,
+          maxParticipants: maxParticipants
+            ? parseInt(maxParticipants, 10)
+            : undefined,
+        }),
+        ...(type === "project" && {
+          githubUrl,
+          demoUrl,
+          externalLinks: externalLinks.filter((link) => link.label && link.url),
+          projectImage,
+        }),
+        ...(type === "blog" && { reference: selectedReference ?? null }), // ✅ null 허용
+      };
 
-      if (type === "blog") {
-        const blogUpdateRequest: BlogUpdateRequest = {
-          blogId: dataId,
-          title,
-          description,
-          category,
-          content,
-          isPublic,
-          referenceType: selectedReference?.referenceType ?? "",
-          referenceTitle: selectedReference?.referenceTitle ?? "",
-          referenceId: selectedReference?.referenceId,
-        };
-        await updateBlog(blogUpdateRequest);
-      }
-      if (from === "admin") {
-        router.push(`/admin/${type}/${dataId}`);
-      } else {
-        router.push(`/${type}/${dataId}`);
+      switch (type) {
+        case "board": {
+          const response = await updateBoard(dataId, updateData);
+          if (response?.statusCode === 200) {
+            // 성공 처리
+            router.push(`/board/${dataId}`);
+            router.refresh();
+          }
+          break;
+        }
+
+        case "blog":
+          const blogUpdateRequest: BlogUpdateRequest = {
+            blogId: dataId,
+            title,
+            description,
+            category,
+            content,
+            isPublic,
+            referenceType: selectedReference?.referenceType ?? "",
+            referenceTitle: selectedReference?.referenceTitle ?? "",
+            referenceId: selectedReference?.referenceId,
+          };
+          await updateBlog(blogUpdateRequest);
+          if (from === "admin") {
+            router.push(`/admin/${type}/${dataId}`);
+          } else {
+            router.push(`/${type}/${dataId}`);
+          }
+          break;
+
+        case "study":
+          // TODO: 스터디 수정 API 연동 필요
+          break;
+
+        case "project":
+          // TODO: 프로젝트 수정 API 연동 필요
+          break;
+
+        default:
+          throw new Error(`Unknown type: ${type}`);
       }
     } catch (error) {
-      console.error("수정 실패:", error);
+      console.error(`${type} 수정 중 오류 발생:`, error);
     }
   };
 
@@ -308,79 +330,75 @@ export default function EditForm({
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div
-          className={`relative ${
-            type === "blog" || type === "board" ? "md:col-span-3" : ""
-          }`}
-          ref={selectedReferenceRef}
-        >
-          <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-gray-200">
-            내가 참여한 스터디 / 프로젝트 목록 *
-          </label>
-          <div className="relative">
-            <button
-              type="button"
-              onClick={() => {
-                setIsSelecteReferenceOpen((prev) => !prev);
-                setIsCategoryOpen(false);
-                setIsSubCategoryOpen(false);
-              }}
-              className="flex w-full items-center justify-between rounded-md border border-gray-300 bg-white px-3 py-2 text-sm cursor-pointer dark:border-gray-600 dark:bg-gray-800"
-            >
-              <span
-                className={
-                  selectedReference
-                    ? "text-gray-900 dark:text-gray-200"
-                    : "text-gray-500 dark:text-gray-400"
-                }
+      {type === "blog" && (
+        <div className="grid grid-cols-1 gap-4">
+          <div ref={selectedReferenceRef}>
+            <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-gray-200">
+              내가 참여한 스터디 / 프로젝트 목록 *
+            </label>
+            <div className="relative">
+              <button
+                type="button"
+                onClick={() => {
+                  setIsSelecteReferenceOpen((prev) => !prev);
+                  setIsCategoryOpen(false);
+                  setIsSubCategoryOpen(false);
+                }}
+                className="flex w-full items-center justify-between rounded-md border border-gray-300 bg-white px-3 py-2 text-sm cursor-pointer dark:border-gray-600 dark:bg-gray-800"
               >
-                {selectedReference
-                  ? `${
-                      selectedReference.referenceType === "STUDY"
-                        ? "스터디"
-                        : "프로젝트"
-                    } - ${selectedReference.referenceTitle}`
-                  : "활동 선택"}
-              </span>
-              <ChevronDown
-                className={`h-4 w-4 transition-transform ${
-                  isSelectedReferenceOpen ? "rotate-180" : ""
-                }`}
-              />
-            </button>
-
-            {isSelectedReferenceOpen && (
-              <div className="absolute z-50 mt-1 w-full rounded-md border border-gray-200 bg-white shadow-lg dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200">
-                <div className="max-h-60 overflow-auto p-1">
-                  {initialReference &&
-                    initialReference.map((reference) => (
-                      <button
-                        key={`${reference.referenceType}-${reference.referenceId}`}
-                        type="button"
-                        onClick={() => {
-                          setSelectedReference(reference);
-                          setIsSelecteReferenceOpen(false);
-                        }}
-                        className="relative flex w-full cursor-pointer select-none items-center rounded-sm py-2 px-2 text-sm outline-none transition-colors hover:bg-cert-red hover:text-white focus:bg-cert-red focus:text-white"
-                      >
-                        {reference.referenceType === "STUDY"
+                <span
+                  className={
+                    selectedReference
+                      ? "text-gray-900 dark:text-gray-200"
+                      : "text-gray-500 dark:text-gray-400"
+                  }
+                >
+                  {selectedReference
+                    ? `${
+                        selectedReference.referenceType === "STUDY"
                           ? "스터디"
-                          : "프로젝트"}{" "}
-                        - {reference.referenceTitle}
-                      </button>
-                    ))}
-                </div>
-              </div>
-            )}
+                          : "프로젝트"
+                      } - ${selectedReference.referenceTitle}`
+                    : "활동 선택"}
+                </span>
+                <ChevronDown
+                  className={`h-4 w-4 transition-transform ${
+                    isSelectedReferenceOpen ? "rotate-180" : ""
+                  }`}
+                />
+              </button>
 
-            <p className="text-xs text-gray-500 mt-2 dark:text-gray-400">
-              블로그를 작성하고자 하는 스터디, 프로젝트를 선택해주세요. (최대
-              1개)
-            </p>
+              {isSelectedReferenceOpen && (
+                <div className="absolute z-50 mt-1 w-full rounded-md border border-gray-200 bg-white shadow-lg dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200">
+                  <div className="max-h-60 overflow-auto p-1">
+                    {initialReference &&
+                      initialReference.map((reference) => (
+                        <button
+                          key={`${reference.referenceType}-${reference.referenceId}`}
+                          type="button"
+                          onClick={() => {
+                            setSelectedReference(reference);
+                            setIsSelecteReferenceOpen(false);
+                          }}
+                          className="relative flex w-full cursor-pointer select-none items-center rounded-sm py-2 px-2 text-sm outline-none transition-colors hover:bg-cert-red hover:text-white focus:bg-cert-red focus:text-white"
+                        >
+                          {reference.referenceType === "STUDY"
+                            ? "스터디"
+                            : "프로젝트"}{" "}
+                          - {reference.referenceTitle}
+                        </button>
+                      ))}
+                  </div>
+                </div>
+              )}
+              <p className="text-xs text-gray-500 mt-2 dark:text-gray-400">
+                블로그를 작성하고자 하는 스터디, 프로젝트를 선택해주세요. (최대
+                1개)
+              </p>
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
       {/* 카테고리 및 최대 참가자 수 */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -409,7 +427,12 @@ export default function EditForm({
                     : "text-gray-500 dark:text-gray-400"
                 }
               >
-                {category || "카테고리 선택"}
+                {/* {category || "카테고리 선택"} */}
+                {category
+                  ? type === "board"
+                    ? categoryMappingToKO[category as BoardCategoryTypeEN]
+                    : category
+                  : "카테고리 선택"}
               </span>
               <ChevronDown
                 className={`h-4 w-4 transition-transform duration-200 ${
@@ -431,7 +454,14 @@ export default function EditForm({
                       }}
                       className="relative flex w-full cursor-pointer select-none items-center rounded-sm py-2 px-2 text-sm outline-none transition-colors hover:bg-cert-red hover:text-white focus:bg-cert-red focus:text-white"
                     >
-                      <span className="truncate">{categoryItem}</span>
+                      <span className="truncate">
+                        {/* {categoryItem} */}
+                        {type === "board"
+                          ? categoryMappingToKO[
+                              categoryItem as BoardCategoryTypeEN
+                            ]
+                          : categoryItem}
+                      </span>
                     </button>
                   ))}
                 </div>
@@ -672,7 +702,7 @@ export default function EditForm({
             첨부 파일
           </label>
           <FileUpload
-            attachedFiles={attachments}
+            attachments={attachments}
             onAttachmentsChange={setAttachments}
           />
         </div>
