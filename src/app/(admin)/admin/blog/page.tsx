@@ -49,7 +49,6 @@ export default async function AdminBlogPage({ searchParams }: AdminBlogProps) {
   );
   const blogs = data.content;
   // ⚠️ 백엔드 응답 구조에 따라 조정 필요
-  const { totalItems } = data; // 예시: { contents: Blog[], totalItems: number }
 
   const totalPages = Math.ceil(data.totalElements / ITEMS_PER_PAGE);
   const validCurrentPage = Math.min(page, Math.max(1, totalPages));

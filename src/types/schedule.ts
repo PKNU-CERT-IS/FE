@@ -53,4 +53,5 @@ export interface ScheduleInProfileData {
   place: string;
   startTime: string;
   endTime: string;
+  scheduleId: number;
 }

@@ -70,6 +70,7 @@ export interface BlogDetailDataType extends BlogDataType {
   content: string;
   viewCount: number;
   creatorName: string;
+  views?: number;
 }
 
 export interface BlogInPrfoileDataType extends BlogDataType {

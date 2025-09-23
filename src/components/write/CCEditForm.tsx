@@ -28,7 +28,7 @@ import { BoardCategoryTypeEN, categoryMappingToKO } from "@/types/board";
 interface EditFormProps {
   type: NewPageCategoryType;
   dataId: number;
-  initialData: BlogDetailDataType;
+  initialData?: BlogDetailDataType; // 타입 수정 필요 모든 도메인 타입 || 로 추가 예: BoardDetailDataType, StudyDetailDataType, ProjectDetailDataType
   initialReference?: BlogReferenceType[];
 }
 
@@ -39,21 +39,23 @@ export default function EditForm({
   initialReference,
 }: EditFormProps) {
   const router = useRouter();
-  const [title, setTitle] = useState(initialData.title || "");
-  const [description, setDescription] = useState(initialData.description || "");
-  const [content, setContent] = useState(initialData.content || "");
-  const [category, setCategory] = useState(initialData.category || "");
+  const [title, setTitle] = useState(initialData?.title || "");
+  const [description, setDescription] = useState(
+    initialData?.description || ""
+  );
+  const [content, setContent] = useState(initialData?.content || "");
+  const [category, setCategory] = useState(initialData?.category || "");
   const [subCategory, setSubCategory] = useState("");
   const [attachments, setAttachments] = useState<AttachedFile[]>([]);
   const [startDate, setStartDate] = useState<string>("");
   const [endDate, setEndDate] = useState<string>("");
   const [selectedReference, setSelectedReference] =
     useState<BlogReferenceType | null>(
-      initialData.referenceType || null
+      initialData?.referenceType
         ? {
-            referenceType: initialData?.referenceType,
-            referenceTitle: initialData?.referenceTitle,
-            referenceId: initialData?.referenceId,
+            referenceType: initialData.referenceType,
+            referenceTitle: initialData.referenceTitle ?? "",
+            referenceId: initialData.referenceId,
           }
         : null
     );
@@ -80,7 +82,9 @@ export default function EditForm({
   }, []);
 
   // 초기 데이터 로드
-  const [isPublic, setIsPublic] = useState<boolean>(initialData.isPublic);
+  const [isPublic, setIsPublic] = useState<boolean>(
+    initialData?.isPublic ?? false
+  );
   const searchParams = useSearchParams();
   const from = searchParams.get("from");
   useEffect(() => {
@@ -155,7 +159,6 @@ export default function EditForm({
           setGithubUrl(initialData.githubUrl || "");
           setDemoUrl(initialData.demoUrl || "");
           setExternalLinks(initialData.externalLinks || []);
-          setSelectedReference(initialData.reference || null);
         } else {
           console.warn("Initial data가 없습니다!");
         }

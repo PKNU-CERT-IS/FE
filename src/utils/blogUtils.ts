@@ -1,45 +1,5 @@
-import { BlogPost, BlogCategory, BLOG_CATEGORIES } from "@/types/blog";
+import { BlogCategory, BLOG_CATEGORIES } from "@/types/blog";
 import { formatDate } from "@/utils/formatDateUtil";
-
-const filterByBlogSearch = (post: BlogPost, search: string) => {
-  if (search === "") return true;
-
-  const searchLower = search.toLowerCase();
-  return (
-    post.title.toLowerCase().includes(searchLower) ||
-    (post.author ?? "").toLowerCase().includes(searchLower) ||
-    (post.content ?? "").toLowerCase().includes(searchLower) ||
-    (post.excerpt ?? "").toLowerCase().includes(searchLower)
-  );
-};
-
-/**
- * 카테고리 필터
- */
-const filterByBlogCategory = (post: BlogPost, category: BlogCategory) => {
-  return category === "전체" || post.category === category;
-};
-
-/**
- * 블로그 포스트를 검색어와 카테고리로 필터링하는 함수
- */
-export const filterBlogPosts = (
-  posts: BlogPost[],
-  search: string,
-  category: BlogCategory
-): BlogPost[] => {
-  return posts
-    .filter(
-      (post) =>
-        post.published !== false &&
-        filterByBlogSearch(post, search) &&
-        filterByBlogCategory(post, category)
-    )
-    .sort(
-      (a, b) =>
-        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-    );
-};
 
 /**
  * 상대적인 시간을 반환하는 함수 (예: "3일 전", "1주 전")
@@ -91,13 +51,6 @@ export const calculateReadingTime = (content: string): number => {
 
   const readingTime = Math.ceil(wordCount / wordsPerMinute);
   return Math.max(1, readingTime); // 최소 1분
-};
-
-/**
- * 블로그 포스트 URL 생성 함수
- */
-export const generateBlogPostUrl = (post: BlogPost): string => {
-  return `/blog/${post.slug || post.id}`;
 };
 
 /**

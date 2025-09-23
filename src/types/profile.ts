@@ -87,5 +87,4 @@ export interface ProfileBlogDataType {
   published: boolean;
   slug?: string;
   coverImage?: string;
-  reference: Reference;
 }
