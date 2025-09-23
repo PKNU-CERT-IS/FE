@@ -7,7 +7,6 @@ import FileUpload from "@/components/write/CCFileUpload";
 import MarkdownEditor from "@/components/write/CCMarkdownEditor";
 import { mockBoardData } from "@/mocks/mockBoardData";
 import { mockBoardDetailData } from "@/mocks/mockBoardDetailData";
-import { mockBlogPosts } from "@/mocks/blogData";
 import { mockStudyDetailData } from "@/mocks/mockStudyDetailData";
 import { getProjectMaterials } from "@/mocks/mockProjectData";
 import { NewPageCategoryType } from "@/types/newPageForm";
@@ -102,17 +101,6 @@ export default function EditForm({
               content: boardDetailData.detailContent,
               category: boardData.category,
               attachedFiles: boardDetailData.attachedFiles || [],
-            };
-          }
-        } else if (type === "blog") {
-          const blogData = mockBlogPosts.find((item) => item.id === dataId);
-          if (blogData) {
-            initialData = {
-              title: blogData.title,
-              content: blogData.content,
-              category: blogData.category,
-              description: blogData.excerpt || "",
-              reference: blogData.reference || null, // ✅ 이미 title 포함되어 있음
             };
           }
         } else if (type === "study") {

@@ -47,12 +47,11 @@ export default async function AdminBlogPage({ searchParams }: AdminBlogProps) {
     },
     { page: page - 1, size: ITEMS_PER_PAGE, sort: "createdAt,desc" }
   );
-
   const blogs = data.content;
   // ⚠️ 백엔드 응답 구조에 따라 조정 필요
   const { totalItems } = data; // 예시: { contents: Blog[], totalItems: number }
 
-  const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
+  const totalPages = Math.ceil(data.totalElements / ITEMS_PER_PAGE);
   const validCurrentPage = Math.min(page, Math.max(1, totalPages));
 
   return (
@@ -86,11 +85,11 @@ export default async function AdminBlogPage({ searchParams }: AdminBlogProps) {
         )}
 
         {/* 페이지네이션 */}
-        {totalItems > 0 && (
+        {data.totalElements > 0 && (
           <div className="flex justify-center">
             <CCBlogPagination
               currentPage={validCurrentPage}
-              totalItems={totalItems}
+              totalItems={data.totalElements}
               itemsPerPage={ITEMS_PER_PAGE}
               currentKeyword={searchParam}
               currentCategory={currentCategory}

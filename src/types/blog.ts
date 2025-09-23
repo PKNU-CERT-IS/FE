@@ -51,9 +51,6 @@ export const BLOG_CATEGORIES = [
 ] as const;
 export type BlogCategory = (typeof BLOG_CATEGORIES)[number];
 
-// 페이지네이션 설정
-export const ITEMS_PER_PAGE = 10;
-
 export interface BlogDataType {
   id: number;
   title: string;

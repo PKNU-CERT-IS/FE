@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import CCBlogPagination from "@/components/blog/CCBlogPagination";
 import CCBlogCategoryFilter from "@/components/blog/CCBlogCategoryFilter";
 import { Plus } from "lucide-react";
-import { BlogCategory, ITEMS_PER_PAGE } from "@/types/blog";
+import { BlogCategory } from "@/types/blog";
 import { isValidCategory } from "@/utils/blogUtils";
 import Link from "next/link";
 import BlogSearchBar from "@/components/blog/CCBlogSearchBar";
@@ -11,7 +11,6 @@ import SCSearchResultNotFound from "@/components/ui/SCSearchResultNotFound";
 import { getCategoryColor } from "@/utils/badgeUtils";
 import { searchBlogsByKeyword } from "@/app/api/blog/SCblogApi";
 import { BlogDataType } from "@/types/blog";
-import { sign } from "crypto";
 
 interface BlogPageProps {
   searchParams: Promise<{
@@ -20,6 +19,7 @@ interface BlogPageProps {
     category?: string;
   }>;
 }
+const ITEMS_PER_PAGE = 9;
 
 export async function generateMetadata({
   searchParams,
@@ -55,7 +55,7 @@ export async function generateMetadata({
 export default async function BlogPage({ searchParams }: BlogPageProps) {
   const { page, keyword, category } = await searchParams;
 
-  const currentPage = Math.max(1, parseInt(page || "1", 10));
+  const currentPage = Math.max(1, parseInt(page || "0", 10));
   const currentKeyword = keyword?.trim() || "";
   const currentCategory: BlogCategory =
     category && isValidCategory(category) ? category : "전체";
@@ -72,15 +72,9 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
     }
   );
   const blogs = response.content;
-
-  const totalItems = blogs.length;
+  const totalItems = response.totalElements;
   const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
   const validCurrentPage = Math.min(currentPage, Math.max(1, totalPages));
-
-  const startIndex = (validCurrentPage - 1) * ITEMS_PER_PAGE;
-  const endIndex = startIndex + ITEMS_PER_PAGE;
-  const paginatedContents = blogs.slice(startIndex, endIndex);
-
   return (
     <div className="min-h-screen">
       <div className="max-w-7xl mx-auto">
@@ -110,9 +104,9 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
         </div>
 
         {/* 블로그 카드 목록 */}
-        {paginatedContents.length > 0 ? (
+        {blogs.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-            {paginatedContents.map((blog: BlogDataType) => (
+            {blogs.map((blog: BlogDataType) => (
               <Link
                 key={blog.id}
                 href={`/blog/${blog.id}`}

@@ -35,9 +35,9 @@ export default function BlogPagination({
 
     // 검색어 유지
     if (currentKeyword.trim()) {
-      params.set("search", currentKeyword);
+      params.set("keyword", currentKeyword);
     } else {
-      params.delete("search");
+      params.delete("keyword");
     }
 
     // 카테고리 유지 (전체가 아닌 경우만)

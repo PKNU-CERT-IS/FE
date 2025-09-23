@@ -1,6 +1,5 @@
 "use client";
 
-import { mockBlogPosts } from "@/mocks/blogData";
 import {
   blogTabCategory,
   blogTabCategoryType,
@@ -34,9 +33,6 @@ export default function CCBlogTabBar() {
             }`}
           >
             {label}
-            {label === "외부 공개"
-              ? `(${mockBlogPosts.length})`
-              : `(${mockBlogPosts.filter((post) => post.published).length})`}
           </button>
         );
       })}
