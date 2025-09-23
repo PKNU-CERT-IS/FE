@@ -1,24 +1,25 @@
 import { apiClient } from "@/lib/clientIntercept";
-import { CreateMeeting, UpdateMeeting } from "@/types/meeting";
+import { CreateProjectMeeting, UpdateMeeting } from "@/types/meeting";
 
 // 회의록 디테일 페이지 조회 -> 수정 위해서 필요
-export async function getStudyDetailMeeting(meetingId: number) {
+export async function getProjectDetailMeeting(meetingId: number) {
   try {
-    const res = await apiClient.get(`/study/meeting/detail`, {
+    const res = await apiClient.get(`/project/meeting/detail`, {
       params: { meetingId },
       headers: { "Content-Type": "application/json" },
     });
 
-    return res.data;
+    console.log("회의록 디테일", res.data.data);
+    return res.data.data;
   } catch (error) {
     throw error;
   }
 }
 
 // 생성
-export async function createStudyMeeting(body: CreateMeeting) {
+export async function createProjectMeeting(body: CreateProjectMeeting) {
   try {
-    const res = await apiClient.post("/study/meeting/create", body, {
+    const res = await apiClient.post("/project/meeting/create", body, {
       headers: { "Content-Type": "application/json" },
     });
     return res.data;
@@ -28,9 +29,9 @@ export async function createStudyMeeting(body: CreateMeeting) {
 }
 
 // 수정
-export async function updateStudyMeeting(body: UpdateMeeting) {
+export async function updateProjectMeeting(body: UpdateMeeting) {
   try {
-    const res = await apiClient.post("/study/meeting/update", body, {
+    const res = await apiClient.put("/project/meeting/edit", body, {
       headers: { "Content-Type": "application/json" },
     });
     return res.data;
@@ -40,9 +41,9 @@ export async function updateStudyMeeting(body: UpdateMeeting) {
 }
 
 // 스터디 회의록 삭제
-export async function deleteStudyMeeting(meetingId: number) {
+export async function deleteProjectMeeting(meetingId: number) {
   try {
-    const res = await apiClient.delete(`/study/meeting/delete`, {
+    const res = await apiClient.delete(`/project/meeting/delete`, {
       data: { meetingId },
       headers: { "Content-Type": "application/json" },
     });

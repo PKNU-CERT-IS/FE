@@ -3,13 +3,19 @@
 import { apiClient } from "@/lib/clientIntercept";
 import { NewBoardFormData } from "@/types/board";
 import { AttachedFile } from "@/types/attachedFile";
-
+// board 전용
+export interface BoardAttachedFile {
+  name: string;
+  size: string;
+  type: string;
+  attachedUrl: string;
+}
 interface UpdateBoardPayload {
   title: string;
   content: string;
   description?: string;
   category: string;
-  attachments?: AttachedFile[];
+  attachments: AttachedFile[]; // FIXME: 될지 말지 모르겠다...
 }
 
 // 게시글 생성
