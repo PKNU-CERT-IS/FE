@@ -6,7 +6,7 @@ import SCAdminScheduleInfo from "@/components/admin/schedule/SCAdminScheduleInfo
 import SCAdminScheduleRequestList from "@/components/admin/schedule/SCAdminScheduleRequestList";
 import CCScrollScheduleList from "@/components/schedule/CCScrollScheduleList";
 import { ScheduleInfo } from "@/types/schedule";
-import { getSchedules } from "@/app/api/schedule/SCschedule";
+import { getSchedules } from "@/app/api/schedule/SCscheduleApi";
 import CCAddScheduleCard from "@/components/schedule/CCAddScheduleCard";
 
 interface SearchPageProps {

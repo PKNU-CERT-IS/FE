@@ -8,7 +8,7 @@ import { getTypeColor, getTypeLabel } from "@/utils/scheduleUtils";
 import { formatDate, formatTime } from "@/utils/formatDateUtil";
 import { MessageSquareText } from "lucide-react";
 import CCEditDeleteButtonsWrapper from "@/components/admin/schedule/CCEditDeleteButtonsWrapper";
-import { getSchedules } from "@/app/api/schedule/SCschedule";
+import { getSchedules } from "@/app/api/schedule/SCscheduleApi";
 
 interface SCAdminScheduleInfoProps {
   selectedDate: string | null;
