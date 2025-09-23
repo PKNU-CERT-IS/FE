@@ -29,9 +29,9 @@ export default function BoardSearchBar({ currentSearch }: BoardSearchBarProps) {
       const params = new URLSearchParams(searchParams);
 
       if (searchInput) {
-        params.set("search", searchInput);
+        params.set("keyword", searchInput);
       } else {
-        params.delete("search");
+        params.delete("keyword");
       }
       params.delete("page"); // 검색 시 첫 페이지로
 

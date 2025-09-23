@@ -1,11 +1,10 @@
-import { boardCategoriesEN } from "@/types/board";
 import { NewPageCategoryType } from "@/types/newPageForm";
 
 // type에 따라 목록을 반환하는 함수
 export const getCategories = (type: NewPageCategoryType) => {
   switch (type) {
     case "board":
-      return boardCategoriesEN.filter((c) => c !== "ALL"); // ALL 제외
+      return ["공지사항", "활동내용", "보안이슈", "기술자료", "질문"];
     case "blog":
       return ["CTF", "CS", "RED", "BLUE", "GRC", "MISC", "기타"];
     case "study":
@@ -216,14 +215,16 @@ export const getDescriptionPlaceholder = (type: NewPageCategoryType) => {
 // 추후 가능하면 매개변수를 줄일 수 있도록
 export const isFormValid = (
   title: string,
+  description: string,
   content: string,
   category: string,
   type: NewPageCategoryType,
-  maxParticipants?: string,
+  maxParticipants?: number,
   startDate?: string,
   endDate?: string
 ) => {
-  const baseValid = title.trim() && content.trim() && category;
+  const baseValid =
+    title.trim() && description.trim() && content.trim() && category;
   const dateValid =
     type === "study" || type === "project"
       ? startDate && endDate && maxParticipants

@@ -13,7 +13,7 @@ import ShareButton from "@/components/detail/CCShareButton";
 import { formatFileSize } from "@/utils/attachedFileUtils";
 import { getFileIcon } from "@/utils/attachedFileUtils";
 import { getBoardCategoryColor } from "@/utils/boardUtils";
-import { getDetailBoard } from "@/app/api/board/SCBoard";
+import { getDetailBoard } from "@/app/api/board/SCBoardApi";
 import { toKoreanCategory } from "@/types/board";
 import { formatDate } from "@/utils/formatDateUtil";
 import { AttachedFile, getFileKey } from "@/types/attachedFile";
@@ -160,11 +160,7 @@ export default async function DetailPage({
                         {formatFileSize(Number(file.size))}
                       </p>
                     </div>
-                    <DownloadButton
-                      fileName={file.name}
-                      // fileId={file.id}
-                      fileUrl={file.attachedUrl}
-                    />
+                    <DownloadButton file={file} />
                   </div>
                 ))}
               </div>

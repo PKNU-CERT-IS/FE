@@ -1,24 +1,30 @@
+"use client";
+
 import DefaultButton from "@/components/ui/defaultButton";
+import { AttachedFile } from "@/types/attachedFile";
 import { Download } from "lucide-react";
-export default function DownloadButton({
-  fileName,
-  fileId,
-  fileUrl,
-}: {
-  fileName: string;
-  fileId?: string;
-  fileUrl: string;
-}) {
+
+export default function DownloadButton({ file }: { file: AttachedFile }) {
+  const handleDownload = () => {
+    if (!file) return;
+
+    const link = document.createElement("a");
+    link.href = file.attachedUrl;
+    link.download = file.name;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
-    <a href={`/api/download/${fileId || fileName || fileUrl}`} download>
-      <DefaultButton
-        variant="outline"
-        size="sm"
-        className="dark:bg-gray-800 dark:border-gray-600"
-      >
-        <Download className="w-4 h-4 mr-2" />
-        다운로드
-      </DefaultButton>
-    </a>
+    <DefaultButton
+      variant="outline"
+      size="sm"
+      className="dark:bg-gray-800 dark:border-gray-600"
+      onClick={handleDownload}
+    >
+      <Download className="w-4 h-4 mr-2" />
+      다운로드
+    </DefaultButton>
   );
 }

@@ -74,7 +74,7 @@ export interface BoardDataType {
 export interface NewBoardFormData {
   title: string;
   description: string;
-  category: string;
+  category: BoardCategoryTypeEN;
   content: string;
   attachments?: AttachedFile[];
 }
