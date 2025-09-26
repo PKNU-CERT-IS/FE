@@ -2,97 +2,26 @@
 
 import DefaultBadge from "@/components/ui/defaultBadge";
 import { Calendar, User, Users, Target } from "lucide-react";
-import RequestActionButtons from "@/components/ui/requestActionButtons";
 import { MainTab, SubTab } from "@/types/admin/adminStudyTab";
-import { Study, isApprovedStudy } from "@/types/admin/adminCreateFormData";
-import {
-  approveRequest,
-  rejectRequest,
-} from "@/actions/admin/study/AdminRequestServerAction";
 import Link from "next/link";
 import PdfSVG from "/public/icons/pdf.svg";
-import DownloadGraySVG from "/public/icons/download-gray.svg";
 import { downloadFile } from "@/actions/study/StudyDownloadFileServerAction";
 import CCAdminStudyPagination from "@/components/admin/study/CCAdminStudyPagination";
 import SCSearchResultNotFound from "@/components/ui/SCSearchResultNotFound";
 import { formatFileSize } from "@/utils/attachedFileUtils";
-import { CurrentFilters } from "@/types/study";
-
-export const studies: Study[] = [
-  {
-    id: 1,
-    isPending: true,
-    title: "OWASP Top 10 스터디",
-    description: "최신 OWASP Top 10을 주차별로 읽고 실습합니다.",
-    content: "상세 소개...",
-    semester: "2025-2",
-    category: "CTF",
-    subCategory: "AI",
-    attachments: [
-      {
-        name: "해커톤_기획서.pdf",
-        size: 2547892,
-        type: "application/pdf",
-        attachedUrl: "/api/files/download/hackathon_plan.pdf",
-      },
-    ],
-    startDate: "2025-09-01",
-    endDate: "2025-11-30",
-    maxParticipants: "12",
-    author: "김보안",
-    status: "not_started",
-  },
-  {
-    id: 2,
-    isPending: false,
-    title: "프론트엔드 성능 최적화 스터디",
-    description: "렌더링 최적화/번들 분석 등 실무 중심",
-    content: "상세 소개...",
-    semester: "2025-2",
-    category: "CS",
-    subCategory: "정수론",
-    attachments: [
-      {
-        name: "해커톤_기획서.pdf",
-        size: 2547892,
-        type: "application/pdf",
-        attachedUrl: "/api/files/download/hackathon_plan.pdf",
-      },
-    ],
-    startDate: "2025-08-20",
-    endDate: "2025-10-08",
-    maxParticipants: "8",
-    author: "강찬희",
-    currentParticipants: 5,
-    progress: 70,
-    status: "in_progress",
-  },
-  {
-    id: 3,
-    isPending: false,
-    title: "웹 최적화 스터디",
-    description: "렌더링 최적화/번들 분석 등 실무 중심",
-    content: "상세 소개...",
-    semester: "2025-2",
-    category: "CS",
-    subCategory: "선형대수학",
-    attachments: [
-      {
-        name: "해커톤_기획서.pdf",
-        size: 2547892,
-        type: "application/pdf",
-        attachedUrl: "/api/files/download/hackathon_plan.pdf",
-      },
-    ],
-    startDate: "2025-08-20",
-    endDate: "2025-10-08",
-    maxParticipants: "8",
-    author: "강찬희",
-    currentParticipants: 5,
-    progress: 70,
-    status: "in_progress",
-  },
-];
+import { CurrentFilters, MEMBER_GRADE_LABELS, StudyList } from "@/types/study";
+import { SUBCATEGORY_FROM_EN, SUBCATEGORY_TO_EN } from "@/types/category";
+import { getStudies, searchStudies } from "@/app/api/study/SCStudyApi";
+import { calculateProgress } from "@/utils/adminProgressUtil";
+import { formatDate } from "@/utils/formatDateUtil";
+import {
+  getStudyAllEndRequest,
+  StudyEndRequest,
+} from "@/app/api/admin/study/SCAdminStudyEndGetApi";
+import { getStatusColor } from "@/utils/badgeUtils";
+import { STATUS_LABELS } from "@/types/progressStatus";
+import DownloadButton from "@/components/detail/SCDownloadButton";
+import CCAdminStudyProjectActionButtons from "@/components/ui/CCAdminActionButtons";
 
 interface SCStudyContentListProps {
   currentTab: MainTab;
@@ -109,64 +38,57 @@ export default async function SCStudyContentList({
   currentPage = 1,
   currentFilters,
 }: SCStudyContentListProps) {
-  const viewFiltered =
-    currentView === "pending"
-      ? studies.filter((s) => s.isPending)
+  const statusByView =
+    !currentView || currentView === "pending"
+      ? "READY"
       : currentView === "list"
-      ? studies.filter((s) => !s.isPending)
-      : studies;
+      ? "ALL"
+      : "";
 
-  const filteredStudyMaterials = viewFiltered.filter((item) => {
-    const matchesSearch =
-      !currentSearch ||
-      item.title?.toLowerCase().includes(currentSearch.toLowerCase()) ||
-      item.description?.toLowerCase().includes(currentSearch.toLowerCase()) ||
-      item.author?.toLowerCase().includes(currentSearch.toLowerCase());
+  const isDefaultFilters =
+    (!currentSearch || currentSearch === "ALL") &&
+    (currentFilters.category === "ALL" || !currentFilters.category) &&
+    (currentFilters.subCategory === "ALL" || !currentFilters.subCategory) &&
+    (currentFilters.semester === "ALL" || !currentFilters.semester) &&
+    (currentFilters.status === "ALL" || !currentFilters.status) &&
+    (statusByView === "ALL" || !statusByView);
 
-    const matchesSemester =
-      currentFilters.semester === "all" ||
-      item.semester === currentFilters.semester;
+  let studyMaterials: StudyList[] = [];
+  let studyEndRequests: StudyEndRequest[] = [];
+  let totalItems = 0;
+  let totalPages = 1;
+  let currentValidPage = 1;
 
-    const matchesCategory =
-      currentFilters.category === "all" ||
-      item.category === currentFilters.category;
+  if (currentView === "end") {
+    studyEndRequests = await getStudyAllEndRequest();
+    totalItems = studyEndRequests.length;
+    totalPages = 1;
+    currentValidPage = 1;
+  } else if (isDefaultFilters && currentView === "list") {
+    const listData = await getStudies((currentPage ?? 1) - 1);
+    studyMaterials = listData.content ?? [];
+    totalItems = studyMaterials.length;
+    totalPages = listData.totalPages ?? 1;
+    currentValidPage = (listData.number ?? 0) + 1;
+  } else {
+    const searchData = await searchStudies({
+      keyword: currentFilters.search,
+      category: currentFilters.category,
+      subcategory: SUBCATEGORY_TO_EN[currentFilters.subCategory],
+      status:
+        currentView === "pending" ? "READY" : currentFilters.status || "ALL",
+      semester: currentFilters.semester,
+    });
+    studyMaterials = searchData.content ?? [];
+    totalItems = studyMaterials.length;
+    totalPages = searchData.totalPages ?? 1;
+    currentValidPage = (searchData.number ?? 0) + 1;
+  }
 
-    const matchesSubCategory =
-      currentFilters.subCategory === "all" ||
-      item.subCategory === currentFilters.subCategory;
-
-    const matchesStatus =
-      currentFilters.status === "all" || item.status === currentFilters.status;
-
-    return (
-      matchesSearch &&
-      matchesSemester &&
-      matchesCategory &&
-      matchesSubCategory &&
-      matchesStatus
-    );
-  });
-
-  // 🔹 페이지네이션
-  const ITEMS_PER_PAGE = 3;
-  const totalItems = filteredStudyMaterials.length;
-  const totalPages = Math.max(1, Math.ceil(totalItems / ITEMS_PER_PAGE));
-  const validPage = Math.min(currentPage, totalPages);
-  const startIndex = (validPage - 1) * ITEMS_PER_PAGE;
-  const endIndex = startIndex + ITEMS_PER_PAGE;
-  const paginatedContents = filteredStudyMaterials.slice(startIndex, endIndex);
-
-  const totalPending = studies.filter((s) => s.isPending).length;
-  const totalProgress = studies.filter((s) => !s.isPending).length;
-  const pendingUntilCurrentPage = studies
-    .filter((p) => p.isPending)
-    .slice(0, currentPage * ITEMS_PER_PAGE).length;
-
-  const progressUntilCurrentPage = studies
-    .filter((p) => !p.isPending)
-    .slice(0, currentPage * ITEMS_PER_PAGE).length;
-
-  if (paginatedContents.length === 0) {
+  if (
+    (currentView === "end" && studyEndRequests.length === 0) ||
+    (currentView !== "end" && studyMaterials.length === 0)
+  ) {
     return (
       <div className="flex items-center justify-center max-h-screen w-full">
         <SCSearchResultNotFound mode="adminStudy" />
@@ -179,32 +101,181 @@ export default async function SCStudyContentList({
       {currentTab === "study" && currentView === "pending" && (
         <>
           <div className="mt-4 text-lg text-gray-600">
-            ✔️ 스터디 승인 대기 목록 ({pendingUntilCurrentPage}/{totalPending})
+            ✔️ 스터디 개설 승인 대기 목록
           </div>
 
-          {paginatedContents.map((study) => (
-            <Link key={study.id} href={`/admin/study/${study.id}?tab=study`}>
-              <div key={study.id} className="mt-4 card-list">
+          {studyMaterials.map((study) => {
+            const displayStatus =
+              study.status === "APPROVED" ? "READY" : study.status;
+
+            return (
+              <Link key={study.id} href={`/admin/study/${study.id}?tab=study`}>
+                <div className="mt-4 card-list">
+                  <div className="pb-4 flex flex-col space-y-1.5 p-6">
+                    <div className="flex justify-between items-start">
+                      <div className="space-y-3">
+                        <div className="flex gap-3 sm:flex-row sm:items-center flex-col items-start">
+                          <div className="text-xl font-medium">
+                            {study.title}
+                          </div>
+
+                          <div className="flex items-center gap-2">
+                            <DefaultBadge
+                              variant="custom"
+                              className={getStatusColor(displayStatus)}
+                            >
+                              {
+                                STATUS_LABELS[
+                                  displayStatus as keyof typeof STATUS_LABELS
+                                ]
+                              }
+                            </DefaultBadge>
+
+                            <DefaultBadge className="bg-gray-100 h-6 border border-gray-200 text-gray-700 dark:bg-gray-600 dark:border-gray-500 dark:text-gray-200">
+                              {study.category}
+                            </DefaultBadge>
+
+                            <DefaultBadge className="bg-gray-100 h-6 border border-gray-200 text-gray-700 dark:bg-gray-600 dark:border-gray-500 dark:text-gray-200">
+                              {SUBCATEGORY_FROM_EN[study.subcategory] ??
+                                study.subcategory}
+                            </DefaultBadge>
+                          </div>
+                        </div>
+                        <div className="text-base text-gray-600">
+                          {study.description}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* 본문 */}
+                  <div className="p-6 pt-0">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 items-stretch">
+                      <div className="grid grid-cols-1 md:grid-cols-2">
+                        <div className="space-y-1">
+                          <div className="flex items-center gap-2">
+                            <User className="w-4 h-4 text-gray-500" />
+                            <span className="text-sm">
+                              스터디장: {study.studyCreatorName} (
+                              {MEMBER_GRADE_LABELS[study.studyCreatorGrade]})
+                            </span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <Users className="w-4 h-4 text-gray-500" />
+                            <span className="text-sm">
+                              현재 인원: {study.currentParticipantNumber}/
+                              {study.maxParticipantNumber}명
+                            </span>
+                          </div>
+                        </div>
+
+                        <div className="space-y-1">
+                          <div className="flex items-center gap-2">
+                            <Calendar className="w-4 h-4 text-gray-500" />
+                            <span className="text-sm">
+                              {formatDate(study.startDate, "dot")} ~{" "}
+                              {formatDate(study.endDate, "dot")}
+                            </span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <Target className="w-4 h-4 text-gray-500" />
+                            <span className="text-sm">
+                              진행률:{" "}
+                              {calculateProgress(
+                                study.startDate,
+                                study.endDate
+                              )}
+                              %
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="space-y-0 mt-4 flex flex-col md:flex-row gap-5">
+                      <div className="w-full overflow-x-auto">
+                        <div className="flex gap-5 min-w-max">
+                          {study.attachments?.map((file, index) => (
+                            <div
+                              key={index}
+                              className="flex items-center justify-between bg-gray-50 rounded-lg p-3 w-78 sm:w-[25rem] flex-shrink-0"
+                            >
+                              <div className="flex items-center gap-3">
+                                <PdfSVG className="w-5 h-5 text-red-500" />
+                                <div>
+                                  <p className="text-sm font-medium text-gray-900">
+                                    {file.name}
+                                  </p>
+                                  <p className="text-xs text-gray-500">
+                                    {formatFileSize(file.size)}
+                                  </p>
+                                </div>
+                              </div>
+                              <form action={downloadFile}>
+                                <input
+                                  type="hidden"
+                                  name="fileName"
+                                  value={file.name}
+                                />
+                                <input
+                                  type="hidden"
+                                  name="studyId"
+                                  value={study.id}
+                                />
+                                <DownloadButton file={file} />
+                              </form>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      {study.status === "READY" && (
+                        <div className="flex flex-row gap-2 w-full sm:w-[20rem] h-full justify-end items-end self-end z-30">
+                          <CCAdminStudyProjectActionButtons id={study.id} />
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </Link>
+            );
+          })}
+        </>
+      )}
+      {currentTab === "study" && currentView === "end" && (
+        <>
+          <div className="mt-4 text-lg text-gray-600">
+            ✔️ 스터디 종료 승인 대기 목록
+          </div>
+
+          {studyEndRequests.map((study) => (
+            <Link
+              key={study.studyId}
+              href={`/admin/study/${study.studyId}?tab=study`}
+            >
+              <div key={study.studyId} className="mt-4 card-list">
                 <div className="pb-4 flex flex-col space-y-1.5 p-6">
                   <div className="flex justify-between items-start">
                     <div className="space-y-3">
                       <div className="flex gap-3 sm:flex-row sm:items-center flex-col items-start">
                         <div className="text-xl font-medium">{study.title}</div>
                         <div className="flex items-center gap-2">
-                          {study.isPending ? (
-                            <DefaultBadge className="bg-red-100 text-red-800">
-                              승인 대기
-                            </DefaultBadge>
-                          ) : (
-                            <DefaultBadge className="bg-yellow-100 text-yellow-800">
-                              승인됨
-                            </DefaultBadge>
-                          )}
-                          <DefaultBadge className="bg-green-100 text-green-800">
+                          <DefaultBadge
+                            variant="custom"
+                            className={getStatusColor(study.status)}
+                          >
+                            {
+                              STATUS_LABELS[
+                                study.status as keyof typeof STATUS_LABELS
+                              ]
+                            }
+                          </DefaultBadge>
+                          <DefaultBadge className="bg-gray-100 h-6 border border-gray-200 text-gray-700 dark:bg-gray-600 dark:border-gray-500 dark:text-gray-200">
                             {study.category}
                           </DefaultBadge>
-                          <DefaultBadge className="bg-green-100 text-green-800">
-                            {study.subCategory}
+                          <DefaultBadge className="bg-gray-100 h-6 border border-gray-200 text-gray-700 dark:bg-gray-600 dark:border-gray-500 dark:text-gray-200">
+                            {SUBCATEGORY_FROM_EN[study.subCategory] ??
+                              study.subCategory}
                           </DefaultBadge>
                         </div>
                       </div>
@@ -223,13 +294,15 @@ export default async function SCStudyContentList({
                         <div className="flex items-center gap-2">
                           <User className="w-4 h-4 text-gray-500" />
                           <span className="text-sm">
-                            스터디장: {study.author}
+                            스터디장: {study.studyCreatorName} (
+                            {MEMBER_GRADE_LABELS[study.studyCreatorGrade]})
                           </span>
                         </div>
                         <div className="flex items-center gap-2">
                           <Users className="w-4 h-4 text-gray-500" />
                           <span className="text-sm">
-                            최대 인원: {study.maxParticipants}명
+                            현재 인원: {study.currentParticipantNumber}/
+                            {study.maxParticipantNumber}명
                           </span>
                         </div>
                       </div>
@@ -238,52 +311,53 @@ export default async function SCStudyContentList({
                         <div className="flex items-center gap-2">
                           <Calendar className="w-4 h-4 text-gray-500" />
                           <span className="text-sm">
-                            {study.startDate} ~ {study.endDate}
+                            {formatDate(study.startedAt, "dot")} ~{" "}
+                            {formatDate(study.endedAt, "dot")}
                           </span>
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div className="space-y-0 mt-4 flex justify-between flex-col md:flex-row gap-5">
-                    {study.attachments?.map((file, index) => (
-                      <div
-                        key={index}
-                        className="flex items-center justify-between bg-gray-50 rounded-lg p-3 w-full sm:w-[35rem]"
-                      >
-                        <div className="flex items-center gap-3">
-                          <PdfSVG className="w-5 h-5 text-red-500" />
-                          <div>
-                            <p className="text-sm font-medium text-gray-900">
-                              {file.name}
-                            </p>
-                            <p className="text-xs text-gray-500">
-                              {formatFileSize(file.size)}
-                            </p>
+
+                  <div className="space-y-0 mt-4 flex flex-col md:flex-row gap-5">
+                    <div className="w-full overflow-x-auto">
+                      <div className="flex gap-5 min-w-max">
+                        {study.attachment && (
+                          <div
+                            key={study.attachment.id}
+                            className="flex items-center justify-between bg-gray-50 rounded-lg p-3 w-78 sm:w-[25rem] flex-shrink-0"
+                          >
+                            <div className="flex items-center gap-3">
+                              <PdfSVG className="w-5 h-5 text-red-500" />
+                              <div>
+                                <p className="text-sm font-medium text-gray-900">
+                                  {study.attachment.name}
+                                </p>
+                                <p className="text-xs text-gray-500">
+                                  {formatFileSize(study.attachment.size)}
+                                </p>
+                              </div>
+                            </div>
+                            <form action={downloadFile}>
+                              <input
+                                type="hidden"
+                                name="fileName"
+                                value={study.attachment.name}
+                              />
+                              <input
+                                type="hidden"
+                                name="projectId"
+                                value={study.studyId}
+                              />
+                              <DownloadButton file={study.attachment} />
+                            </form>
                           </div>
-                        </div>
-                        <form action={downloadFile}>
-                          <input
-                            type="hidden"
-                            name="fileName"
-                            value={file.name}
-                          />
-                          <input
-                            type="hidden"
-                            name="studyId"
-                            value={study.id}
-                          />
-                          <button type="submit">
-                            <DownloadGraySVG className="text-gray-400 hover:text-gray-600" />
-                          </button>
-                        </form>
+                        )}
                       </div>
-                    ))}
-                    <div className="flex flex-row gap-2 w-full sm:w-[20rem] h-full justify-end items-end self-end justify-self-en">
-                      <RequestActionButtons
-                        id={study.id}
-                        approveAction={approveRequest}
-                        rejectAction={rejectRequest}
-                      />
+                    </div>
+
+                    <div className="flex flex-row gap-2 w-full sm:w-[20rem] h-full justify-end items-end self-end">
+                      <CCAdminStudyProjectActionButtons id={study.studyId} />
                     </div>
                   </div>
                 </div>
@@ -295,11 +369,9 @@ export default async function SCStudyContentList({
 
       {currentTab === "study" && currentView === "list" && (
         <>
-          <div className="mt-4 text-lg text-gray-600">
-            📁 스터디 목록 ({progressUntilCurrentPage}/{totalProgress})
-          </div>
+          <div className="mt-4 text-lg text-gray-600">📁 스터디 목록</div>
 
-          {paginatedContents.map((study) => (
+          {studyMaterials.map((study) => (
             <Link key={study.id} href={`/admin/study/${study.id}?tab=study`}>
               <div key={study.id} className="mt-4 card-list">
                 <div className="pb-4 flex flex-col space-y-1.5 p-6">
@@ -307,21 +379,24 @@ export default async function SCStudyContentList({
                     <div className="space-y-3">
                       <div className="flex gap-3 sm:flex-row sm:items-center flex-col items-start">
                         <div className="text-xl font-medium">{study.title}</div>
+
                         <div className="flex items-center gap-2">
-                          {study.isPending ? (
-                            <DefaultBadge className="bg-red-100 text-red-800">
-                              승인 대기
-                            </DefaultBadge>
-                          ) : (
-                            <DefaultBadge className="bg-yellow-100 text-yellow-800">
-                              승인됨
-                            </DefaultBadge>
-                          )}
-                          <DefaultBadge className="bg-green-100 text-green-800">
+                          <DefaultBadge
+                            variant="custom"
+                            className={getStatusColor(study.status)}
+                          >
+                            {
+                              STATUS_LABELS[
+                                study.status as keyof typeof STATUS_LABELS
+                              ]
+                            }
+                          </DefaultBadge>
+                          <DefaultBadge className="bg-gray-100 h-6 border border-gray-200 text-gray-700 dark:bg-gray-600 dark:border-gray-500 dark:text-gray-200">
                             {study.category}
                           </DefaultBadge>
-                          <DefaultBadge className="bg-green-100 text-green-800">
-                            {study.subCategory}
+                          <DefaultBadge className="bg-gray-100 h-6 border border-gray-200 text-gray-700 dark:bg-gray-600 dark:border-gray-500 dark:text-gray-200">
+                            {SUBCATEGORY_FROM_EN[study.subcategory] ??
+                              study.subcategory}
                           </DefaultBadge>
                         </div>
                       </div>
@@ -340,21 +415,16 @@ export default async function SCStudyContentList({
                         <div className="flex items-center gap-2">
                           <User className="w-4 h-4 text-gray-500" />
                           <span className="text-sm">
-                            스터디장: {study.author}
+                            스터디장 (학년): {study.studyCreatorName} (
+                            {MEMBER_GRADE_LABELS[study.studyCreatorGrade]})
                           </span>
                         </div>
                         <div className="flex items-center gap-2">
                           <Users className="w-4 h-4 text-gray-500" />
-                          {isApprovedStudy(study) ? (
-                            <span className="text-sm">
-                              현재 인원: {study.currentParticipants}/
-                              {study.maxParticipants}명
-                            </span>
-                          ) : (
-                            <span className="text-sm">
-                              최대 인원: {study.maxParticipants}명
-                            </span>
-                          )}
+                          <span className="text-sm">
+                            현재 인원: {study.currentParticipantNumber}/
+                            {study.maxParticipantNumber}명
+                          </span>
                         </div>
                       </div>
 
@@ -362,52 +432,56 @@ export default async function SCStudyContentList({
                         <div className="flex items-center gap-2">
                           <Calendar className="w-4 h-4 text-gray-500" />
                           <span className="text-sm">
-                            {study.startDate} ~ {study.endDate}
+                            {formatDate(study.startDate, "dot")} ~{" "}
+                            {formatDate(study.endDate, "dot")}
                           </span>
                         </div>
                         <div className="flex items-center gap-2">
                           <Target className="w-4 h-4 text-gray-500" />
-                          {isApprovedStudy(study) && (
-                            <span className="text-sm">
-                              진행률: {study.progress}%
-                            </span>
-                          )}
+                          <span className="text-sm">
+                            진행률:{" "}
+                            {calculateProgress(study.startDate, study.endDate)}%
+                          </span>
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div className="space-y-2 mt-4 ">
-                    {study.attachments?.map((file, index) => (
-                      <div
-                        key={index}
-                        className="flex items-center justify-between bg-gray-50 rounded-lg p-3"
-                      >
-                        <div className="flex items-center gap-3">
-                          <PdfSVG className="w-5 h-5 text-red-500" />
-                          <div>
-                            <p className="text-sm font-medium text-gray-900">
-                              {file.name}
-                            </p>
-                            <p className="text-xs text-gray-500">{file.size}</p>
+                  <div className="space-y-0 mt-4 flex flex-col md:flex-row gap-5">
+                    <div className="w-full overflow-x-auto">
+                      <div className="flex gap-5 min-w-max">
+                        {study.attachments?.map((file, index) => (
+                          <div
+                            key={index}
+                            className="flex items-center justify-between bg-gray-50 rounded-lg p-3 w-78 sm:w-[25rem] flex-shrink-0"
+                          >
+                            <div className="flex items-center gap-3">
+                              <PdfSVG className="w-5 h-5 text-red-500" />
+                              <div>
+                                <p className="text-sm font-medium text-gray-900">
+                                  {file.name}
+                                </p>
+                                <p className="text-xs text-gray-500">
+                                  {formatFileSize(file.size)}
+                                </p>
+                              </div>
+                            </div>
+                            <form action={downloadFile}>
+                              <input
+                                type="hidden"
+                                name="fileName"
+                                value={file.name}
+                              />
+                              <input
+                                type="hidden"
+                                name="studyId"
+                                value={study.id}
+                              />
+                              <DownloadButton file={file} />
+                            </form>
                           </div>
-                        </div>
-                        <form action={downloadFile}>
-                          <input
-                            type="hidden"
-                            name="fileName"
-                            value={file.name}
-                          />
-                          <input
-                            type="hidden"
-                            name="studyId"
-                            value={study.id}
-                          />
-                          <button type="submit">
-                            <DownloadGraySVG className="text-gray-400 hover:text-gray-600" />
-                          </button>
-                        </form>
+                        ))}
                       </div>
-                    ))}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -417,7 +491,7 @@ export default async function SCStudyContentList({
       )}
       {totalItems > 0 && (
         <CCAdminStudyPagination
-          currentPage={validPage}
+          currentPage={currentValidPage}
           totalPages={totalPages}
           currentSearch={currentSearch}
           currentTab={currentTab}

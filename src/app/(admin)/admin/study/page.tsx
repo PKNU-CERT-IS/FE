@@ -11,7 +11,6 @@ import {
 } from "@/types/admin/adminStudyTab";
 import CCStudyFilter from "@/components/study/CCStudyFilter";
 import { parseSearchParams } from "@/utils/studyHelper";
-import { CurrentFilters } from "@/types/study";
 
 interface AdminStudyProps {
   searchParams: Promise<{
@@ -36,9 +35,9 @@ export default async function AdminStudyPage({
   const currentTab: MainTab =
     tabParam && isValidMainTab(tabParam) ? tabParam : "study";
   const currentView: SubTab =
-    viewParam && isValidSubTab(viewParam) ? viewParam : "pending";
+    viewParam && isValidSubTab(viewParam) ? viewParam : "list";
 
-  const filters: CurrentFilters = parseSearchParams(resolvedSearchParams);
+  const filters = parseSearchParams(resolvedSearchParams);
 
   return (
     <div>

@@ -23,7 +23,7 @@ export default function CCStudyTabBar({
   const handleMainTabClick = (tab: MainTab) => {
     const params = new URLSearchParams();
     params.set("tab", tab);
-    params.set("view", "pending"); // 메인 탭 변경 시 서브 탭 초기화
+    params.set("view", "list");
     router.replace(`?${params.toString()}`, { scroll: false });
   };
 
@@ -56,7 +56,7 @@ export default function CCStudyTabBar({
         })}
       </div>
 
-      <div className="mt-5 grid grid-cols-2 w-full h-10 rounded-md p-1 bg-gray-100">
+      <div className="mt-5 grid grid-cols-3 w-full h-10 rounded-md p-1 bg-gray-100">
         {SUB_TABS.map((view) => {
           const isActive = currentView === view;
           return (
