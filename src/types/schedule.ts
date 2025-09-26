@@ -44,3 +44,14 @@ export interface AdminScheduleInfo extends ScheduleInfo {
     memberName: string;
   };
 }
+
+export interface ScheduleInProfileData {
+  id: number;
+  title: string;
+  description?: string;
+  type: ScheduleType;
+  place: string;
+  startTime: string;
+  endTime: string;
+  scheduleId: number;
+}

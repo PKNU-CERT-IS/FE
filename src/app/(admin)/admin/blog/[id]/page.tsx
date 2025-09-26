@@ -1,14 +1,14 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Calendar, User, Eye, ExternalLink } from "lucide-react";
-import { mockBlogPosts } from "@/mocks/blogData";
 import BackToListButton from "@/components/detail/SCBackToListButton";
 import KebabMenuButton from "@/components/detail/CCKebabMenu";
 import ShareButton from "@/components/detail/CCShareButton";
 import DefaultBadge from "@/components/ui/defaultBadge";
 import { formatDate } from "@/utils/formatDateUtil";
 import { getCategoryColor } from "@/utils/badgeUtils";
-import Link from "next/link";
+import { searchBlogDetail } from "@/app/api/blog/SCblogApi";
+import { BlogDetailDataType } from "@/types/blog";
 
 interface BlogDetailPageProps {
   params: Promise<{
@@ -27,8 +27,7 @@ export async function generateMetadata({
 }: GenerateMetadataProps): Promise<Metadata> {
   const resolvedParams = await params;
   const blogId = parseInt(resolvedParams.id, 10);
-  const post = mockBlogPosts.find((p) => p.id === blogId);
-
+  const post: BlogDetailDataType = await searchBlogDetail(blogId);
   if (!post) {
     return {
       title: "게시글을 찾을 수 없습니다",
@@ -38,13 +37,13 @@ export async function generateMetadata({
 
   return {
     title: `${post.title} - Security Blog`,
-    description: post.excerpt || post.content?.slice(0, 150) || "",
+    description: post.description || post.content?.slice(0, 150) || "",
     openGraph: {
       title: post.title,
-      description: post.excerpt || post.content?.slice(0, 150) || "",
+      description: post.description || post.content?.slice(0, 150) || "",
       type: "article",
       publishedTime: post.createdAt,
-      authors: [post.author],
+      authors: [post.creatorName],
     },
   };
 }
@@ -54,7 +53,8 @@ export default async function AdminBlogDetailPage({
 }: BlogDetailPageProps) {
   const resolvedParams = await params;
   const blogId = parseInt(resolvedParams.id, 10);
-  const post = mockBlogPosts.find((p) => p.id === blogId);
+  console.log(blogId);
+  const post: BlogDetailDataType = await searchBlogDetail(blogId);
 
   if (!post) {
     notFound();
@@ -66,7 +66,7 @@ export default async function AdminBlogDetailPage({
       <BackToListButton currentUrl={"admin/blog"} />
 
       {/* 메인 콘텐츠 */}
-      <article className="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-lg p-4  mt-6">
+      <article className="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-lg p-4 mt-6">
         {/* 헤더 */}
         <header className="p-8 border-b border-gray-200">
           {/* 카테고리와 케밥 메뉴 */}
@@ -79,58 +79,74 @@ export default async function AdminBlogDetailPage({
                 {post.category}
               </DefaultBadge>
 
-              {post.published && (
+              {post.isPublic ? (
                 <DefaultBadge
                   variant="outline"
-                  className="bg-gray-200 text-gray-700 border-gray-300"
+                  className="bg-blue-200 text-blue-600 border-blue-300"
                 >
                   <ExternalLink className="w-3 h-3 mr-1" />
                   외부 공개
                 </DefaultBadge>
+              ) : (
+                <DefaultBadge
+                  variant="outline"
+                  className="bg-cert-red/20 text-red-700 border-red-300"
+                >
+                  <ExternalLink className="w-3 h-3 mr-1" />
+                  외부 비공개
+                </DefaultBadge>
               )}
             </div>
-            <KebabMenuButton currentUrl={"blog"} currentId={blogId} />
+            <KebabMenuButton
+              currentUrl={"blog"}
+              currentId={blogId}
+              isAdmin={true}
+            />
           </div>
+
           {/* 제목 */}
           <h1 className="text-3xl font-bold text-gray-900 mb-4 leading-tight">
             {post.title}
           </h1>
+
           {/* 요약 */}
-          {post.excerpt && (
+          {post.description && (
             <p className="text-lg text-gray-600 mb-3 leading-relaxed">
-              {post.excerpt}
+              {post.description}
             </p>
           )}
-          {post.reference && (
+
+          {/* 참조 (스터디/프로젝트) */}
+          {post.referenceType && post.referenceTitle && (
             <div className="mb-3">
-              <Link
-                href={`/${post.reference.type}/${post.reference.referenceId}`}
+              <div
                 className={`inline-flex items-center px-3 py-1 text-sm font-medium rounded-md transition-colors
         ${
-          post.reference.type === "study"
+          post.referenceType === "STUDY"
             ? "text-green-700 bg-green-50 border border-green-200 hover:bg-green-100 hover:text-green-800"
             : "text-blue-700 bg-blue-50 border border-blue-200 hover:bg-blue-100 hover:text-blue-800"
         }`}
               >
-                {post.reference.type === "study" ? "스터디" : "프로젝트"} ·{" "}
-                {post.reference.title}
-              </Link>
+                {post.referenceType === "STUDY" ? "스터디" : "프로젝트"} ·{" "}
+                {post.referenceTitle}
+              </div>
             </div>
           )}
+
           {/* 메타 정보 */}
           <div className="flex flex-wrap items-center gap-6 text-sm text-gray-600">
             <div className="flex items-center gap-2">
               <User className="w-4 h-4" />
-              <span>{post.author}</span>
+              <span>{post.creatorName}</span>
             </div>
             <div className="flex items-center gap-2">
               <Calendar className="w-4 h-4" />
               <span>{formatDate(post.createdAt)}</span>
             </div>
-            {post.views && (
+            {post.viewCount !== null && (
               <div className="flex items-center gap-2">
                 <Eye className="w-4 h-4" />
-                <span>{post.views.toLocaleString()}</span>
+                <span>{post.viewCount.toLocaleString()}</span>
               </div>
             )}
           </div>
@@ -146,39 +162,13 @@ export default async function AdminBlogDetailPage({
               />
             ) : (
               <div className="text-gray-800 leading-relaxed whitespace-pre-wrap">
-                {post.excerpt || "게시글 내용이 없습니다."}
-
-                {/* 예시 내용 (실제로는 post.content에서 가져와야 함) */}
-                <div className="mt-8">
-                  <h2 className="text-2xl font-bold mb-4">게시글 내용</h2>
-                  <p className="mb-4">
-                    이 게시글은 {post.category} 카테고리의 내용을 다루고
-                    있습니다. 실제 블로그 시스템에서는 이 부분에 마크다운이나
-                    리치 텍스트로 작성된 전체 내용이 표시됩니다.
-                  </p>
-
-                  <h3 className="text-xl font-semibold mb-3">주요 내용</h3>
-                  <ul className="list-disc list-inside mb-4 space-y-2">
-                    <li>상세한 기술적 설명</li>
-                    <li>실제 구현 예제</li>
-                    <li>베스트 프랙티스</li>
-                    <li>주의사항 및 팁</li>
-                  </ul>
-
-                  <div className="bg-gray-50 p-4 rounded-lg mb-4">
-                    <p className="text-sm text-gray-600">
-                      💡 <strong>참고:</strong> 실제 운영 환경에서는
-                      post.content 필드에 마크다운이나 HTML 형태의 전체 게시글
-                      내용이 저장되어 여기에 표시됩니다.
-                    </p>
-                  </div>
-                </div>
+                {post.description || "게시글 내용이 없습니다."}
               </div>
             )}
           </div>
 
           <div className="pt-6 border-t border-gray-200 flex justify-end">
-            <ShareButton></ShareButton>
+            <ShareButton />
           </div>
         </div>
       </article>

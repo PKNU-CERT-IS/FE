@@ -5,7 +5,7 @@ import SCMembersContentWrapper from "@/components/admin/members/SCMembersContent
 
 interface AdminMembersProps {
   searchParams: Promise<{
-    search?: string;
+    keyword?: string;
   }>;
 }
 
@@ -13,13 +13,13 @@ export default async function AdminMembersPage({
   searchParams,
 }: AdminMembersProps) {
   const resolvedSearchParams = await searchParams;
-  const currentSearch = resolvedSearchParams.search || "";
+  const currentKeyword = resolvedSearchParams.keyword || "";
 
   return (
     <>
-      <MembersSearchBar currentSearch={currentSearch} />
+      <MembersSearchBar currentKeyword={currentKeyword} />
       <div className="flex gap-8 mt-4">
-        <SCMembersContentWrapper currentSearch={currentSearch} />
+        <SCMembersContentWrapper currentKeyword={currentKeyword} />
       </div>
     </>
   );

@@ -8,13 +8,19 @@ import { deleteBoard } from "@/app/api/board/CCboardApi";
 import AlertModal from "@/components/ui/defaultAlertModal";
 import { deleteStudy } from "@/app/api/study/CCStudyApi";
 import { deleteProject } from "@/app/api/project/CCProjectApi";
+import { deleteBlog } from "@/app/api/blog/CCblogApi";
 
 interface KebabMenuProps {
   currentId: number;
   currentUrl: string;
+  isAdmin?: boolean; // 수정후 어드민 페이지리다이렉팅을 위한 boolean값
 }
 
-export default function KebabMenu({ currentId, currentUrl }: KebabMenuProps) {
+export default function KebabMenu({
+  currentId,
+  currentUrl,
+  isAdmin,
+}: KebabMenuProps) {
   const router = useRouter();
   const pathname = usePathname();
   const [isKebabOpen, setIsKebabOpen] = useState<boolean>(false);
@@ -55,10 +61,19 @@ export default function KebabMenu({ currentId, currentUrl }: KebabMenuProps) {
           throw new Error("알 수 없는 도메인입니다.");
       }
 
-      router.replace(`/${currentUrl}`);
+      if (currentUrl === "blog") {
+        //  blog 삭제
+        await deleteBlog({ blogId: currentId });
+      }
+      //  admin 여부에 따라 분기
+      if (isAdmin) {
+        router.push(`/admin/${currentUrl}`);
+      } else {
+        router.push(`/${currentUrl}`);
+      }
       router.refresh();
     } catch (error) {
-      setAlertOpen(true);
+      setAlertOpen(true); //  실패 시 알림
       throw error;
     } finally {
       setIsDeleteModalOpen(false);
@@ -72,17 +87,19 @@ export default function KebabMenu({ currentId, currentUrl }: KebabMenuProps) {
   const handleEdit = () => {
     const isAdmin = pathname.startsWith("/admin");
 
-    // Admin study 도메인 내 study, project tab 분기처리
     if (isAdmin) {
+      router.push(`/${currentUrl}/${currentId}/edit?from=admin`);
       if (currentUrl === "study") {
-        router.push(`/admin/study/${currentId}/edit?tab=${currentUrl}`);
+        router.push(`/study/${currentId}/edit?tab=${currentUrl}`);
       } else if (currentUrl === "project") {
-        router.push(`/admin/study/${currentId}/edit?tab=${currentUrl}`);
+        router.push(`/study/${currentId}/edit?tab=${currentUrl}`);
       }
     } else {
       router.push(`/${currentUrl}/${currentId}/edit`);
     }
   };
+  // };
+
   return (
     <>
       <div className="relative" ref={kebabRef}>

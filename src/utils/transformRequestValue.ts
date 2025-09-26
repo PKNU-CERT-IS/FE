@@ -6,7 +6,7 @@
  */
 export function toOffsetDateTime(
   date: string,
-  offset: string = "+09:00"
+  offset: string = "+00:00"
 ): string {
   if (!date) return "";
   return `${date}T00:00:00${offset}`;

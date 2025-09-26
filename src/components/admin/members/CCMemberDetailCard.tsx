@@ -18,6 +18,7 @@ import {
   grantGracePeriod,
   deleteMember,
 } from "@/app/api/member/CCadminMemberApi";
+import { translateGenderToKorean } from "@/utils/transfromResponseValue";
 
 interface CCMemberDetailCardProps {
   selectedMember: AdminMemberDetailInfoType | null;
@@ -103,7 +104,7 @@ export default function CCMemberDetailCard({
             <User className="w-3 h-3 mr-1" />
             {translateGradeToKorean(selectedMember.grade) ||
               selectedMember.grade}
-            , {selectedMember.gender}자
+            , {translateGenderToKorean(selectedMember.gender)}자
           </div>
 
           <div className="text-xs flex flex-row items-center text-gray-600">

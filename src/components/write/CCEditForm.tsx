@@ -1,11 +1,11 @@
 "use client";
 import { useState, useEffect, useRef, useCallback } from "react";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+
 import DefaultButton from "@/components/ui/defaultButton";
 import { Info, ChevronDown, X } from "lucide-react";
 import FileUpload from "@/components/write/CCFileUpload";
 import MarkdownEditor from "@/components/write/CCMarkdownEditor";
-import { mockBlogPosts } from "@/mocks/blogData";
 import { NewPageCategoryType } from "@/types/newPageForm";
 import {
   getCategories,
@@ -37,47 +37,58 @@ import {
   getCCDetailProject,
   updateProject,
 } from "@/app/api/project/CCProjectApi";
+import {
+  BlogDetailDataType,
+  BlogReferenceType,
+  BlogUpdateRequest,
+} from "@/types/blog";
+import { updateBlog } from "@/app/api/blog/CCblogApi";
 
 interface EditFormProps {
   type: NewPageCategoryType;
   dataId: number;
+  initialData?: BlogDetailDataType; // 타입 수정 필요 모든 도메인 타입 || 로 추가 예: BoardDetailDataType, StudyDetailDataType, ProjectDetailDataType
+  initialReference?: BlogReferenceType[];
 }
 
-// 내가 참여한 활동 리스트 (더미 예시)
-const myActivities: Reference[] = [
-  { referenceId: 1, type: "study", title: "OWASP Top 10 2023 취약점 분석" },
-  {
-    referenceId: 2,
-    type: "study",
-    title: "Metasploit Framework 완전 정복",
-  },
-  {
-    referenceId: 1,
-    type: "project",
-    title: "Social Impact Hackathon 2025",
-  },
-  {
-    referenceId: 2,
-    type: "project",
-    title: "OWASP Top 10 2023 취약점 분석",
-  },
-];
-
-export default function EditForm({ type, dataId }: EditFormProps) {
+export default function EditForm({
+  type,
+  dataId,
+  initialData,
+  initialReference,
+}: EditFormProps) {
   const router = useRouter();
   const pathname = usePathname();
-  const [title, setTitle] = useState<string>("");
-  const [description, setDescription] = useState<string>("");
-  const [content, setContent] = useState<string>("");
-  const [category, setCategory] = useState("");
+  // const [title, setTitle] = useState<string>("");
+  // const [description, setDescription] = useState<string>("");
+  // const [content, setContent] = useState<string>("");
+  // const [category, setCategory] = useState("");
+  const [title, setTitle] = useState(initialData?.title || "");
+  const [description, setDescription] = useState(
+    initialData?.description || ""
+  );
+  const [content, setContent] = useState(initialData?.content || "");
+  const [category, setCategory] = useState(initialData?.category || "");
+
   const [subCategory, setSubCategory] = useState("");
   const [attachments, setAttachments] = useState<AttachedFile[]>([]);
   const [startDate, setStartDate] = useState<string>("");
   const [endDate, setEndDate] = useState<string>("");
   const [maxParticipants, setMaxParticipants] = useState<number>();
-  const [selectedReference, setSelectedReference] = useState<Reference | null>(
-    null
-  );
+  // const [selectedReference, setSelectedReference] = useState<Reference | null>(
+  //   null
+  // );
+  const [selectedReference, setSelectedReference] =
+    useState<BlogReferenceType | null>(
+      initialData?.referenceType
+        ? {
+            referenceType: initialData.referenceType,
+            referenceTitle: initialData.referenceTitle ?? "",
+            referenceId: initialData.referenceId,
+          }
+        : null
+    );
+  // const [maxParticipants, setMaxParticipants] = useState<string>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isCategoryOpen, setIsCategoryOpen] = useState<boolean>(false);
   const [isSubCategoryOpen, setIsSubCategoryOpen] = useState<boolean>(false);
@@ -122,6 +133,11 @@ export default function EditForm({ type, dataId }: EditFormProps) {
   }, []);
 
   // 초기 데이터 로드
+  const [isPublic, setIsPublic] = useState<boolean>(
+    initialData?.isPublic ?? false
+  );
+  const searchParams = useSearchParams();
+  const from = searchParams.get("from");
   useEffect(() => {
     const loadInitialData = async () => {
       try {
@@ -142,18 +158,6 @@ export default function EditForm({ type, dataId }: EditFormProps) {
                   boardData.category as BoardCategoryTypeEN
                 ] || "",
               attachments: boardData.attachments || [],
-            };
-          }
-        } else if (type === "blog") {
-          const blogData = mockBlogPosts.find((item) => item.id === dataId);
-
-          if (blogData) {
-            initialData = {
-              title: blogData.title,
-              content: blogData.content,
-              category: blogData.category,
-              description: blogData.excerpt || "",
-              reference: blogData.reference || null,
             };
           }
         } else if (type === "study") {
@@ -215,6 +219,10 @@ export default function EditForm({ type, dataId }: EditFormProps) {
           setExternalUrl(initialData.externalUrl ?? { title: "", url: "" });
           setThumbnailUrl(initialData.thumbnailUrl || "");
           setSelectedReference(initialData.reference || null);
+
+          // setExternalLinks(initialData.externalLinks || []);
+        } else {
+          console.warn("Initial data가 없습니다!");
         }
       } catch (error) {
         throw error;
@@ -275,14 +283,33 @@ export default function EditForm({ type, dataId }: EditFormProps) {
           break;
         }
 
-        case "blog": {
-          const updateData = {
-            ...baseData,
-            description: description ?? "",
-            reference: selectedReference ?? null,
+        // case "blog": {
+        //   const updateData = {
+        //     ...baseData,
+        //     description: description ?? "",
+        //     reference: selectedReference ?? null,
+        //   };
+
+        case "blog":
+          const blogUpdateRequest: BlogUpdateRequest = {
+            blogId: dataId,
+            title,
+            description,
+            category,
+            content,
+            isPublic,
+            referenceType: selectedReference?.referenceType ?? "",
+            referenceTitle: selectedReference?.referenceTitle ?? "",
+            referenceId: selectedReference?.referenceId,
           };
+          await updateBlog(blogUpdateRequest);
+          if (from === "admin") {
+            router.push(`/admin/${type}/${dataId}`);
+          } else {
+            router.push(`/${type}/${dataId}`);
+          }
           break;
-        }
+        // }
 
         case "study": {
           const updateData = {
@@ -346,7 +373,11 @@ export default function EditForm({ type, dataId }: EditFormProps) {
   };
 
   const handleCancel = () => {
-    router.push(`/${type}/${dataId}`);
+    if (from === "admin") {
+      router.push(`/admin/${type}/${dataId}`);
+    } else {
+      router.push(`/${type}/${dataId}`);
+    }
   };
 
   // handleFileChange 수정
@@ -441,10 +472,10 @@ export default function EditForm({ type, dataId }: EditFormProps) {
                 >
                   {selectedReference
                     ? `${
-                        selectedReference.type === "study"
+                        selectedReference.referenceType === "STUDY"
                           ? "스터디"
                           : "프로젝트"
-                      } - ${selectedReference.title}`
+                      } - ${selectedReference.referenceTitle}`
                     : "활동 선택"}
                 </span>
                 <ChevronDown
@@ -457,20 +488,23 @@ export default function EditForm({ type, dataId }: EditFormProps) {
               {isSelectedReferenceOpen && (
                 <div className="absolute z-50 mt-1 w-full rounded-md border border-gray-200 bg-white shadow-lg dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200">
                   <div className="max-h-60 overflow-auto p-1">
-                    {myActivities.map((reference) => (
-                      <button
-                        key={`${reference.type}-${reference.referenceId}`}
-                        type="button"
-                        onClick={() => {
-                          setSelectedReference(reference);
-                          setIsSelecteReferenceOpen(false);
-                        }}
-                        className="relative flex w-full cursor-pointer select-none items-center rounded-sm py-2 px-2 text-sm outline-none transition-colors hover:bg-cert-red hover:text-white focus:bg-cert-red focus:text-white"
-                      >
-                        {reference.type === "study" ? "스터디" : "프로젝트"} -{" "}
-                        {reference.title}
-                      </button>
-                    ))}
+                    {initialReference &&
+                      initialReference.map((reference) => (
+                        <button
+                          key={`${reference.referenceType}-${reference.referenceId}`}
+                          type="button"
+                          onClick={() => {
+                            setSelectedReference(reference);
+                            setIsSelecteReferenceOpen(false);
+                          }}
+                          className="relative flex w-full cursor-pointer select-none items-center rounded-sm py-2 px-2 text-sm outline-none transition-colors hover:bg-cert-red hover:text-white focus:bg-cert-red focus:text-white"
+                        >
+                          {reference.referenceType === "STUDY"
+                            ? "스터디"
+                            : "프로젝트"}{" "}
+                          - {reference.referenceTitle}
+                        </button>
+                      ))}
                   </div>
                 </div>
               )}
@@ -812,7 +846,8 @@ export default function EditForm({ type, dataId }: EditFormProps) {
       </div>
 
       {/* 액션 버튼 */}
-      <div className="flex items-center justify-end gap-3 pt-6 border-t border-gray-200 dark:border-gray-700">
+
+      {/* <div className="flex items-center justify-end gap-3 pt-6 border-t border-gray-200 dark:border-gray-700">
         <DefaultButton variant="outline" onClick={handleCancel}>
           취소
         </DefaultButton>
@@ -832,7 +867,60 @@ export default function EditForm({ type, dataId }: EditFormProps) {
           }
         >
           수정하기
-        </DefaultButton>
+        </DefaultButton> */}
+
+      <div className="flex items-center justify-between pt-6 border-t border-gray-200 dark:border-gray-700">
+        {/* 블로그 공개 설정 토글 - blog일 때만 표시 */}
+        {type === "blog" && (
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={() => setIsPublic(!isPublic)}
+              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-200 ease-in-out focus:outline-none ${
+                isPublic ? "bg-cert-red" : "bg-gray-300 dark:bg-gray-600"
+              }`}
+            >
+              <span
+                className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform duration-200 ease-in-out ${
+                  isPublic ? "translate-x-6" : "translate-x-1"
+                }`}
+              />
+            </button>
+            <div className="flex flex-col">
+              <span className="text-sm font-medium text-gray-900 dark:text-gray-200">
+                {isPublic ? "외부 공개" : "외부 비공개"}
+              </span>
+              <span className="text-xs text-gray-500 dark:text-gray-400">
+                {isPublic
+                  ? "모든 사용자가 열람할 수 있습니다"
+                  : "CERT-IS에 가입한 회원만 열람할 수 있습니다"}
+              </span>
+            </div>
+          </div>
+        )}
+
+        <div className="flex items-center justify-end gap-3 pt-6 border-t border-gray-200 dark:border-gray-700">
+          <DefaultButton variant="outline" onClick={handleCancel}>
+            취소
+          </DefaultButton>
+          <DefaultButton
+            onClick={handleSubmit}
+            disabled={
+              !isFormValid(
+                title,
+                description,
+                content,
+                category,
+                type,
+                maxParticipants,
+                startDate,
+                endDate
+              )
+            }
+          >
+            수정하기
+          </DefaultButton>
+        </div>
       </div>
     </div>
   );

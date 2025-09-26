@@ -4,9 +4,9 @@ import { fetchWithAuth } from "@/lib/serverIntercept";
 export async function getMembersForStaff(
   search?: string
 ): Promise<AdminMemberDetailInfoType[]> {
-  const query = search ? `?search=${encodeURIComponent(search)}` : "";
+  const query = search ? `?keyword=${encodeURIComponent(search)}` : "";
 
-  const res = await fetchWithAuth(`/admin/member/keyword${query}`, {
+  const res = await fetchWithAuth(`/admin/member/search${query}`, {
     method: "GET",
     headers: { "Content-Type": "application/json" },
   });

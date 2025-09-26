@@ -1,6 +1,8 @@
+import { getBlogReference } from "@/app/api/blog/SCblogApi";
 import WriteForm from "@/components/write/CCWriteForm";
 
-export default function BlogWritePage() {
+export default async function BlogWritePage() {
+  const references = await getBlogReference();
   return (
     <div className="space-y-6">
       <div className="border border-gray-200 rounded-lg shadow-lg dark:bg-gray-800 dark:border-gray-700">
@@ -12,7 +14,7 @@ export default function BlogWritePage() {
             경험과 지식을 블로그로 공유해주세요.
           </p>
           <div className="border-t border-gray-300 mb-5 mt-5 dark:border-gray-600"></div>
-          <WriteForm type="blog" />
+          <WriteForm type="blog" initialReferences={references} />
         </div>
       </div>
     </div>

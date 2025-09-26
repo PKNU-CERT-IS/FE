@@ -88,7 +88,11 @@ export default async function StudyDetailPage({
                 </div>
                 <div className="flex items-center gap-2">
                   {/* 케밥 메뉴 */}
-                  <KebabMenu currentId={studyData.id} currentUrl={"study"} />
+                  <KebabMenu
+                    currentId={studyData.id}
+                    currentUrl={"study"}
+                    isAdmin={true}
+                  />
                 </div>
               </div>
             </div>

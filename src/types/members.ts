@@ -29,7 +29,7 @@ export interface MembersDataType {
   id: number;
   name: string;
   memberRole: MembersRoleCategoryType;
-  memberGrade: MembersGradeCategoryType;
+  memberGrade: MembersGradeCategoryType | string;
   major: string;
   profileImage?: string; // 프로필 이미지가 없을 수도 있으므로 선택적
   email?: string; // 이메일이 없을 수도 있으므로 선택적

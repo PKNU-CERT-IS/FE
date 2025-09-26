@@ -4,7 +4,7 @@ import { AdminMemberDetailInfoType } from "@/types/admin/adminMembers";
 interface MemberSearchParams {
   grade?: string;
   role?: string;
-  search?: string;
+  keyword?: string;
 }
 
 export async function getMembers(
@@ -17,7 +17,7 @@ export async function getMembers(
     )
   ).toString();
 
-  const res = await fetchWithAuth(`/member/keyword?${queryString}`, {
+  const res = await fetchWithAuth(`/member/search?${queryString}`, {
     method: "GET",
     headers: { "Content-Type": "application/json" },
   });
