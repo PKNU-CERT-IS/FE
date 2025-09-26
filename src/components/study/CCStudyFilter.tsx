@@ -16,11 +16,7 @@ import {
   SUBCATEGORY_MAP,
   SubCategoryKey,
 } from "@/types/category";
-import {
-  STATUS_OPTIONS,
-  STATUS_LABELS,
-  STATUS_FILTER_OPTIONS,
-} from "@/types/progressStatus";
+import { STATUS_LABELS, STATUS_FILTER_OPTIONS } from "@/types/progressStatus";
 
 interface CCStudyFilterProps extends StudyFilterProps {
   isAdmin?: boolean;
@@ -406,7 +402,7 @@ export default function CCStudyFilter({
       </div>
 
       {/* 활성 필터 태그 */}
-      <div className="flex flex-wrap gap-2 mt-2">
+      <div className="flex flex-wrap gap-2 mt-4">
         {currentFilters.search && (
           <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800 mb-3 sm:mb-0">
             검색: {currentFilters.search}

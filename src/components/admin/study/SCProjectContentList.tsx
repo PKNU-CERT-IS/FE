@@ -1,7 +1,7 @@
 "server-only";
 
 import DefaultBadge from "@/components/ui/defaultBadge";
-import { Calendar, Target, User, Users } from "lucide-react";
+import { AlertCircle, Calendar, Target, User, Users } from "lucide-react";
 import { MainTab, SubTab } from "@/types/admin/adminStudyTab";
 import Link from "next/link";
 import PdfSVG from "/public/icons/pdf.svg";
@@ -85,13 +85,26 @@ export default async function SCProjectContentList({
     totalPages = searchData.totalPages ?? 1;
     currentValidPage = (searchData.number ?? 0) + 1;
   }
-  if (
-    (currentView === "end" && projectEndRequests.length === 0) ||
-    (currentView !== "end" && projectMaterials.length === 0)
-  ) {
+  if (currentView !== "end" && projectMaterials.length === 0) {
     return (
       <div className="flex items-center justify-center max-h-screen w-full">
         <SCSearchResultNotFound mode="adminStudy" />
+      </div>
+    );
+  }
+
+  if (
+    (currentView === "end" && projectEndRequests.length === 0) ||
+    (currentView === "pending" && projectMaterials.length === 0)
+  ) {
+    return (
+      <div className="flex flex-col items-center justify-center w-full h-[40vh] text-center p-6 ">
+        <div className="flex items-center justify-center w-16 h-16 mb-4 rounded-full bg-gray-100 dark:bg-gray-700">
+          <AlertCircle className="w-7 h-7 text-gray-500 dark:text-gray-400" />
+        </div>
+        <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-2">
+          현재 대기 중인 요청이 없습니다
+        </h2>
       </div>
     );
   }

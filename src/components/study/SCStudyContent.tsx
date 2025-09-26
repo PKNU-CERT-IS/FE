@@ -6,7 +6,6 @@ import CCStudyPagination from "@/components/study/CCStudyPagination";
 import SCSearchResultNotFound from "@/components/ui/SCSearchResultNotFound";
 import { getProgressColor, parseSearchParams } from "@/utils/studyHelper";
 import { downloadFile } from "@/actions/study/StudyDownloadFileServerAction";
-import DownloadGraySVG from "/public/icons/download-gray.svg";
 import PdfSVG from "/public/icons/pdf.svg";
 import Link from "next/link";
 import DefaultBadge from "@/components/ui/defaultBadge";

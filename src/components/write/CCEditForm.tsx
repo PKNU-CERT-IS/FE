@@ -15,7 +15,7 @@ import {
   getSubCategories,
 } from "@/utils/newPageFormUtils";
 import { AttachedFile } from "@/types/attachedFile";
-import { Reference } from "@/types/blog";
+// import { Reference } from "@/types/blog";
 import { updateBoard, getCCDetailBoard } from "@/app/api/board/CCboardApi";
 import {
   BoardCategoryType,
@@ -111,7 +111,7 @@ export default function EditForm({
   const [dateError, setDateError] = useState<string>("");
   const today = new Date().toISOString().split("T")[0]; // 지난 날짜 선택 방지 변수
   const fileInputRef = useRef<HTMLInputElement>(null);
-
+  const [status, setStatus] = useState<string>("");
   const validateDates = useCallback((start: string, end: string) => {
     if (!start || !end) return;
 
@@ -177,6 +177,7 @@ export default function EditForm({
               startDate: studyData.startDate,
               endDate: studyData.endDate,
               maxParticipants: studyData.maxParticipantNumber,
+              status: studyData.status,
             };
           }
         } else if (type === "project") {
@@ -200,6 +201,7 @@ export default function EditForm({
               demoUrl: projectData.demoUrl,
               externalUrl: projectData.externalUrl,
               thumbnailUrl: projectData.thumbnailUrl,
+              status: projectData.status,
             };
           }
         }
@@ -218,9 +220,11 @@ export default function EditForm({
           setDemoUrl(initialData.demoUrl || "");
           setExternalUrl(initialData.externalUrl ?? { title: "", url: "" });
           setThumbnailUrl(initialData.thumbnailUrl || "");
-          setSelectedReference(initialData.reference || null);
+          setSelectedReference(initialData.reference || null); // FIXME:
+          setStatus(initialData.status || "");
 
           // setExternalLinks(initialData.externalLinks || []);
+          console.log("현재 status", status, initialData.status);
         } else {
           console.warn("Initial data가 없습니다!");
         }
@@ -782,8 +786,14 @@ export default function EditForm({
                 min={today}
                 onChange={(e) => setStartDate(e.target.value)}
                 className={`w-full text-sm px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent cursor-pointer dark:border-gray-600
-                    ${dateError ? "border-cert-red" : "border-gray-300"}`}
+            ${dateError ? "border-cert-red" : "border-gray-300"}
+            ${
+              status !== "READY"
+                ? "bg-gray-100 text-gray-500 cursor-not-allowed"
+                : ""
+            }`}
                 required
+                disabled={status !== "READY"}
               />
             </div>
             <div>

@@ -36,7 +36,7 @@ export default function CCStudyTabBar({
 
   return (
     <div className="grid grid-cols-2 gap-10">
-      <div className="mt-5 grid grid-cols-2 w-full h-10 rounded-md p-1 bg-gray-100 text-muted-foreground">
+      <div className="grid grid-cols-2 w-full h-10 rounded-md p-1 bg-gray-100 text-muted-foreground">
         {MAIN_TABS.map((tab) => {
           const isActive = currentTab === tab;
           return (
@@ -56,7 +56,7 @@ export default function CCStudyTabBar({
         })}
       </div>
 
-      <div className="mt-5 grid grid-cols-3 w-full h-10 rounded-md p-1 bg-gray-100">
+      <div className="grid grid-cols-3 w-full h-10 rounded-md p-1 bg-gray-100">
         {SUB_TABS.map((view) => {
           const isActive = currentView === view;
           return (

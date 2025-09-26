@@ -158,49 +158,6 @@ export function isStatusType(value: string): value is StatusType {
   return validStatuses.includes(value as StatusType);
 }
 
-// export function filterStudyMaterials(
-//   materials: StudyMaterial[],
-//   filters: CurrentFilters
-// ) {
-//   return materials.filter((material) => {
-//     // 검색 조건
-//     const matchesSearch =
-//       !filters.search ||
-//       material.title.toLowerCase().includes(filters.search.toLowerCase()) ||
-//       material.description
-//         .toLowerCase()
-//         .includes(filters.search.toLowerCase()) ||
-//       material.studyCreatorName
-//         .toLowerCase()
-//         .includes(filters.search.toLowerCase());
-
-//     // 학기 조건 (startDate 기준 자동 계산)
-//     const materialSemester = getSemesterFromStartDate(material.startDate);
-//     const matchesSemester =
-//       filters.semester === "ALL" || materialSemester === filters.semester;
-
-//     // 카테고리 조건
-//     const matchesCategory =
-//       filters.category === "ALL" || material.category === filters.category;
-
-//     const matchesSubCategory =
-//       filters.subCategory === "ALL" ||
-//       material.subcategory === filters.subCategory;
-
-//     // 상태 조건 (startDate, endDate 기반 계산)
-//     const { status } = getStatusDateInfo(material.startDate, material.endDate);
-//     const matchesStatus = filters.status === "ALL" || status === filters.status;
-
-//     return (
-//       matchesSearch &&
-//       matchesSemester &&
-//       matchesCategory &&
-//       matchesSubCategory &&
-//       matchesStatus
-//     );
-//   });
-// }
-
 // 상수 정의
 export const PARTICIPATION_THRESHOLDS = {
   GRAY_ZONE: 33,

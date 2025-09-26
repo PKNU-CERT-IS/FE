@@ -69,8 +69,8 @@ export default function CCAdminStudyProjectActionButtons({
         }
       }
       router.refresh();
-    } catch (err) {
-      console.error("거절 실패:", err);
+    } catch (error) {
+      throw error;
     }
   };
 
@@ -78,17 +78,17 @@ export default function CCAdminStudyProjectActionButtons({
     <div className="flex gap-2">
       <button
         onClick={handleApprove}
-        className="w-full flex items-center justify-center px-3 py-1 bg-green-600 hover:bg-green-700 text-white text-xs rounded h-7 transition-colors cursor-pointer"
+        className="flex items-center justify-center gap-1 px-10 py-1 bg-green-600 hover:bg-green-700 text-white text-xs rounded transition-colors cursor-pointer"
       >
-        <CheckCircle className="w-3 h-3 mr-1" />
-        승인
+        <CheckCircle className="w-3 h-3" />
+        <span>승인</span>
       </button>
       <button
         onClick={handleReject}
-        className="w-full flex items-center justify-center px-3 py-1 border border-red-500 text-cert-red hover:text-red-700 hover:bg-red-50 text-xs rounded h-7 transition-colors cursor-pointer"
+        className="flex items-center justify-center gap-1 px-10 py-1 border border-red-500 text-cert-red hover:text-red-700 hover:bg-red-50 text-xs rounded transition-colors cursor-pointer"
       >
-        <XCircle className="w-3 h-3 mr-1" />
-        거절
+        <XCircle className="w-3 h-3" />
+        <span>거절</span>
       </button>
     </div>
   );
