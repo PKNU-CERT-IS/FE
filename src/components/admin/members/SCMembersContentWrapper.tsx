@@ -6,13 +6,13 @@ import CCMembersList from "@/components/admin/members/CCMembersList";
 import { getMembersForStaff } from "@/app/api/member/SCadminMemberApi";
 
 interface SCMembersContentWrapperProps {
-  currentSearch: string;
+  currentKeyword: string;
 }
 
 export default async function SCMembersContentWrapper({
-  currentSearch,
+  currentKeyword,
 }: SCMembersContentWrapperProps) {
-  const members = await getMembersForStaff(currentSearch);
+  const members = await getMembersForStaff(currentKeyword);
 
   const sortKorean = (a: string, b: string) => a.localeCompare(b, "ko-KR");
   const sortedMembers = [...(await members)].sort((a, b) =>

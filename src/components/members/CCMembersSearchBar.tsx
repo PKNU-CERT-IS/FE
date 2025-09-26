@@ -8,16 +8,16 @@ import SearchSVG from "/public/icons/search.svg";
 const DEBOUNCE_DELAY = 200;
 
 interface MembersSearchBarProps {
-  currentSearch: string;
+  currentKeyword: string;
 }
 
 export default function MembersSearchBar({
-  currentSearch,
+  currentKeyword,
 }: MembersSearchBarProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathname = usePathname();
-  const [searchInput, setSearchInput] = useState<string>(currentSearch);
+  const [searchInput, setSearchInput] = useState<string>(currentKeyword);
   const prevSearchInput = useRef<string>(searchInput);
 
   const isAdmin = pathname.startsWith("/admin");
@@ -26,8 +26,8 @@ export default function MembersSearchBar({
     : "이름, 전공, 기술 스택으로 검색하세요...";
 
   useEffect(() => {
-    setSearchInput(currentSearch);
-  }, [currentSearch]);
+    setSearchInput(currentKeyword);
+  }, [currentKeyword]);
 
   useEffect(() => {
     if (prevSearchInput.current === searchInput) return;
@@ -37,9 +37,9 @@ export default function MembersSearchBar({
       const params = new URLSearchParams(searchParams);
 
       if (searchInput) {
-        params.set("search", searchInput);
+        params.set("keyword", searchInput);
       } else {
-        params.delete("search");
+        params.delete("keyword");
       }
 
       const queryString = params.toString();

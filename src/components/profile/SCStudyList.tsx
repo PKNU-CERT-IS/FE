@@ -31,6 +31,8 @@ interface StudyType {
   studyStartDate: string; // ISO DateTime (e.g., "2025-09-02T08:59:22.933095425Z")
   studyEndDate: string; // ISO DateTime
   tags: string[];
+  category: CategoryType;
+  subcategory: SubCategoryType;
 }
 interface ProjectType {
   projectId: number;
@@ -40,6 +42,8 @@ interface ProjectType {
   projectStartDate: string; // ISO DateTime
   projectEndDate: string; // ISO DateTime
   tags: string[];
+  category: CategoryType;
+  subcategory: SubCategoryType;
 }
 
 export default async function SCStudyList({ searchParams }: SCStudyListProps) {
@@ -58,10 +62,11 @@ export default async function SCStudyList({ searchParams }: SCStudyListProps) {
       ...m,
       tab: "Study" as const,
       id: m.studyId,
-
       status: m.studyStatus, // 공통 status 필드로 맞추기
       startDate: fromOffsetDateTime(m.studyStartDate),
       endDate: fromOffsetDateTime(m.studyEndDate),
+      category: m.category,
+      subCategory: m.subcategory,
     })),
     ...projectdata.map((m: ProjectType) => ({
       ...m,
@@ -70,6 +75,8 @@ export default async function SCStudyList({ searchParams }: SCStudyListProps) {
       status: m.projectStatus, // 공통 status 필드로 맞추기
       startDate: fromOffsetDateTime(m.projectStartDate),
       endDate: fromOffsetDateTime(m.projectEndDate),
+      category: m.category,
+      subCategory: m.subcategory,
     })),
   ];
 

@@ -177,7 +177,7 @@ export default async function ProjectDetailPage({
         <div className="mt-16  max-w-none mb-8">
           <div className="flex items-center justify-between mb-4  ">
             <h2 className="text-3xl font-bold">프로젝트 소개</h2>
-            <KebabMenu currentId={id} currentUrl="project" />
+            <KebabMenu currentId={id} currentUrl="project" isAdmin={true} />
           </div>
           <p className="text-lg leading-relaxed">{project.description}</p>
         </div>

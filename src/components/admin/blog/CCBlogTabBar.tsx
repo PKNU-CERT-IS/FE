@@ -1,6 +1,5 @@
 "use client";
 
-import { mockBlogPosts } from "@/mocks/blogData";
 import {
   blogTabCategory,
   blogTabCategoryType,
@@ -11,14 +10,13 @@ import { useRouter, useSearchParams } from "next/navigation";
 
 export default function CCBlogTabBar() {
   const searchParams = useSearchParams();
-  const tab = searchParams.get("tab");
-  const currentTab: blogTabCategoryType =
-    tab && isValidTab(tab) ? tab : "allPosts";
+  const tab = searchParams.get("isPublic");
+  const currentTab: blogTabCategoryType = tab && isValidTab(tab) ? tab : "true";
 
   const router = useRouter();
   const handleTabClick = (tab: string) => {
     const params = new URLSearchParams(searchParams);
-    params.set("tab", tab);
+    params.set("isPublic", tab);
     router.replace(`?${params.toString()}`, { scroll: false });
   };
   return (
@@ -35,9 +33,6 @@ export default function CCBlogTabBar() {
             }`}
           >
             {label}
-            {label === "전체 게시글"
-              ? `(${mockBlogPosts.length})`
-              : `(${mockBlogPosts.filter((post) => post.published).length})`}
           </button>
         );
       })}

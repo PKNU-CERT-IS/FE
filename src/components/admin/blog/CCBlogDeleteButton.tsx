@@ -4,7 +4,8 @@ import DefaultButton from "@/components/ui/defaultButton";
 import ConfirmModal from "@/components/ui/defaultConfirmModal";
 import { Trash2 } from "lucide-react";
 import { useState } from "react";
-
+import { deleteBlog } from "@/app/api/blog/CCblogApi";
+import { useRouter } from "next/navigation";
 interface CCBlogDeleteButtonProps {
   postId: number;
 }
@@ -13,6 +14,7 @@ export default function CCBlogDeleteButton({
   postId,
 }: CCBlogDeleteButtonProps) {
   const [isOpenModal, setIsOpenModal] = useState(false);
+  const router = useRouter();
 
   const openModal = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -24,6 +26,8 @@ export default function CCBlogDeleteButton({
 
   const handleConfirmDelete = async () => {
     // 삭제 API 호출
+    await deleteBlog({ blogId: postId });
+    router.refresh();
     setIsOpenModal(false);
     console.log(postId, "삭제");
   };

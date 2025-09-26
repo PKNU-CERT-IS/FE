@@ -14,13 +14,14 @@ import {
   getSubCategories,
 } from "@/utils/newPageFormUtils";
 import { AttachedFile } from "@/types/attachedFile";
-import { Reference } from "@/types/blog";
+import { BlogReferenceType, BlogCreateRequest } from "@/types/blog";
+import { createBlog } from "@/app/api/blog/CCblogApi";
 import { createBoard } from "@/api/board/CCboard";
-import { BoardCategoryTypeEN, categoryMappingToKO } from "@/types/board";
 import AlertModal from "@/components/ui/defaultAlertModal";
 
 interface WriteFormProps {
   type: NewPageCategoryType;
+  initialReferences?: BlogReferenceType[];
 }
 
 // 파일 맨 위 근처에 추가
@@ -29,26 +30,7 @@ const PLAN_SAMPLE = {
   href: "/samples/plan-sample.docx", // public/samples/plan-sample.docx 에 파일 두기
 };
 
-// 내가 참여한 활동 리스트 (더미 예시)
-const myActivities: Reference[] = [
-  { referenceId: 1, type: "study", title: "OWASP Top 10 2023 취약점 분석" },
-  {
-    referenceId: 2,
-    type: "study",
-    title: "Metasploit Framework 완전 정복",
-  },
-  {
-    referenceId: 1,
-    type: "project",
-    title: "Social Impact Hackathon 2025",
-  },
-  {
-    referenceId: 2,
-    type: "project",
-    title: "OWASP Top 10 2023 취약점 분석",
-  },
-];
-export default function WriteForm({ type }: WriteFormProps) {
+export default function WriteForm({ type, initialReferences }: WriteFormProps) {
   const router = useRouter();
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>(""); // 설명란 추가
@@ -63,9 +45,9 @@ export default function WriteForm({ type }: WriteFormProps) {
   const [isSubCategoryOpen, setIsSubCategoryOpen] = useState<boolean>(false);
   const [isSelectedReferenceOpen, setIsSelecteReferenceOpen] =
     useState<boolean>(false);
-  const [selectedReference, setSelectedReference] = useState<Reference | null>(
-    null
-  );
+  const [selectedReference, setSelectedReference] =
+    useState<BlogReferenceType | null>(null);
+  const [isPublic, setIsPublic] = useState<boolean>(false);
   const [alertOpen, setAlertOpen] = useState(false);
 
   const categoryRef = useRef<HTMLDivElement>(null);
@@ -125,7 +107,6 @@ export default function WriteForm({ type }: WriteFormProps) {
 
   const handleSubmit = async () => {
     try {
-      // 공통 데이터 구성
       const baseData = {
         title,
         description,
@@ -137,31 +118,29 @@ export default function WriteForm({ type }: WriteFormProps) {
       let submitData;
 
       switch (type) {
-        case "board":
-          submitData = {
-            ...baseData,
-          };
-
+        case "board": {
+          submitData = { ...baseData };
           const apiResponse = await createBoard(baseData);
-
           if (apiResponse?.statusCode === 201) {
             router.back();
-            setTimeout(() => {
-              router.refresh();
-            }, 100);
+            setTimeout(() => router.refresh(), 100);
           }
           break;
-        case "blog":
-          submitData = {
+        }
+        case "blog": {
+          const submitData: BlogCreateRequest = {
             ...baseData,
-            activity: selectedReference,
+            isPublic,
+            referenceId: selectedReference?.referenceId,
+            referenceType: selectedReference?.referenceType,
+            referenceTitle: selectedReference?.referenceTitle,
           };
-          // FIXME: 블로그 생성 API 호출 (구현 필요)
-          // apiResponse = await createNewBlog(submitData);
-          console.log("Blog creation not implemented yet:", submitData);
+          await createBlog(submitData);
+          router.replace("/blog");
+          router.refresh();
           break;
-
-        case "study":
+        }
+        case "study": {
           submitData = {
             ...baseData,
             subCategory,
@@ -169,12 +148,10 @@ export default function WriteForm({ type }: WriteFormProps) {
             endDate,
             maxParticipants,
           };
-          // FIXME:  스터디 생성 API 호출 (구현 필요)
-          // apiResponse = await createNewStudy(submitData);
           console.log("Study creation not implemented yet:", submitData);
           break;
-
-        case "project":
+        }
+        case "project": {
           submitData = {
             ...baseData,
             subCategory,
@@ -183,17 +160,13 @@ export default function WriteForm({ type }: WriteFormProps) {
             maxParticipants,
             githubUrl,
             demoUrl,
-            externalLinks: externalLinks.filter(
-              (link) => link.label && link.url
-            ),
+            externalLinks: externalLinks.filter((l) => l.label && l.url),
             projectImage,
             semester,
           };
-          // FIXME:  프로젝트 생성 API 호출 (구현 필요)
-          // apiResponse = await createNewProject(submitData);
           console.log("Project creation not implemented yet:", submitData);
           break;
-
+        }
         default:
           throw new Error(`Unknown type: ${type}`);
       }
@@ -294,10 +267,10 @@ export default function WriteForm({ type }: WriteFormProps) {
                   >
                     {selectedReference
                       ? `${
-                          selectedReference.type === "study"
+                          selectedReference.referenceType === "STUDY"
                             ? "스터디"
                             : "프로젝트"
-                        } - ${selectedReference.title}`
+                        } - ${selectedReference.referenceTitle}`
                       : "활동 선택"}
                   </span>
                   <ChevronDown
@@ -310,9 +283,9 @@ export default function WriteForm({ type }: WriteFormProps) {
                 {isSelectedReferenceOpen && (
                   <div className="absolute z-50 mt-1 w-full rounded-md border border-gray-200 bg-white shadow-lg dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200">
                     <div className="max-h-60 overflow-auto p-1">
-                      {myActivities.map((reference) => (
+                      {(initialReferences ?? []).map((reference) => (
                         <button
-                          key={`${reference.type}-${reference.referenceId}`}
+                          key={`${reference.referenceType}-${reference.referenceId}`}
                           type="button"
                           onClick={() => {
                             setSelectedReference(reference);
@@ -320,8 +293,10 @@ export default function WriteForm({ type }: WriteFormProps) {
                           }}
                           className="relative flex w-full cursor-pointer select-none items-center rounded-sm py-2 px-2 text-sm outline-none transition-colors hover:bg-cert-red hover:text-white focus:bg-cert-red focus:text-white"
                         >
-                          {reference.type === "study" ? "스터디" : "프로젝트"} -{" "}
-                          {reference.title}
+                          {reference.referenceType === "STUDY"
+                            ? "스터디"
+                            : "프로젝트"}{" "}
+                          - {reference.referenceTitle}
                         </button>
                       ))}
                     </div>
@@ -363,12 +338,7 @@ export default function WriteForm({ type }: WriteFormProps) {
                       : "text-gray-500 dark:text-gray-400"
                   }
                 >
-                  {/* {category || "카테고리 선택"} */}
-                  {category
-                    ? type === "board"
-                      ? categoryMappingToKO[category as BoardCategoryTypeEN]
-                      : category
-                    : "카테고리 선택"}
+                  {category || "카테고리 선택"}
                 </span>
                 <ChevronDown
                   className={`h-4 w-4 transition-transform duration-200 ${
@@ -391,14 +361,7 @@ export default function WriteForm({ type }: WriteFormProps) {
                         }}
                         className="relative flex w-full cursor-pointer select-none items-center rounded-sm py-2 px-2 text-sm outline-none transition-colors hover:bg-cert-red hover:text-white focus:bg-cert-red focus:text-white"
                       >
-                        {/* <span className="truncate">{categoryItem}</span> */}
-                        <span className="truncate">
-                          {type === "board"
-                            ? categoryMappingToKO[
-                                categoryItem as BoardCategoryTypeEN
-                              ]
-                            : categoryItem}
-                        </span>
+                        <span className="truncate">{categoryItem}</span>
                       </button>
                     ))}
                   </div>
@@ -654,30 +617,88 @@ export default function WriteForm({ type }: WriteFormProps) {
         </div>
 
         {/* 액션 버튼 */}
-        <div className="flex items-center justify-end gap-3 pt-6 border-t border-gray-200 dark:border-gray-600">
-          <DefaultButton variant="outline" onClick={handleCancel}>
-            취소
-          </DefaultButton>
-          <DefaultButton
-            onClick={handleSubmit}
-            disabled={
-              !isFormValid(
-                title,
-                content,
-                category,
-                type,
-                maxParticipants,
-                startDate,
-                endDate
-              )
-            }
-          >
-            {type === "study"
-              ? "스터디 개설"
-              : type === "project"
-              ? "프로젝트 생성"
-              : "게시하기"}
-          </DefaultButton>
+        <div className="pt-6 border-t border-gray-200 dark:border-gray-600">
+          {type === "blog" ? (
+            // 블로그일 때: 좌측 토글 + 우측 버튼
+            <div className="flex items-center justify-between">
+              {/* 공개 설정 토글 */}
+              <div className="flex items-center gap-3">
+                <button
+                  type="button"
+                  onClick={() => setIsPublic(!isPublic)}
+                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                    isPublic ? "bg-cert-red" : "bg-gray-300 dark:bg-gray-600"
+                  }`}
+                >
+                  <span
+                    className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                      isPublic ? "translate-x-6" : "translate-x-1"
+                    }`}
+                  />
+                </button>
+                <div className="flex flex-col">
+                  <span className="text-sm font-medium text-gray-900 dark:text-gray-200">
+                    {isPublic ? "외부 공개" : "외부 비공개"}
+                  </span>
+                  <span className="text-xs text-gray-500 dark:text-gray-400">
+                    {isPublic
+                      ? "모든 사용자가 열람할 수 있습니다"
+                      : "CERT-IS 회원만 열람할 수 있습니다"}
+                  </span>
+                </div>
+              </div>
+
+              {/* 버튼 그룹 */}
+              <div className="flex items-center gap-3">
+                <DefaultButton variant="outline" onClick={handleCancel}>
+                  취소
+                </DefaultButton>
+                <DefaultButton
+                  onClick={handleSubmit}
+                  disabled={
+                    !isFormValid(
+                      title,
+                      content,
+                      category,
+                      type,
+                      maxParticipants,
+                      startDate,
+                      endDate
+                    )
+                  }
+                >
+                  게시하기
+                </DefaultButton>
+              </div>
+            </div>
+          ) : (
+            // 블로그가 아닐 때: 버튼만 오른쪽
+            <div className="flex items-center justify-end gap-3">
+              <DefaultButton variant="outline" onClick={handleCancel}>
+                취소
+              </DefaultButton>
+              <DefaultButton
+                onClick={handleSubmit}
+                disabled={
+                  !isFormValid(
+                    title,
+                    content,
+                    category,
+                    type,
+                    maxParticipants,
+                    startDate,
+                    endDate
+                  )
+                }
+              >
+                {type === "study"
+                  ? "스터디 개설"
+                  : type === "project"
+                  ? "프로젝트 생성"
+                  : "게시하기"}
+              </DefaultButton>
+            </div>
+          )}
         </div>
       </div>
       <AlertModal

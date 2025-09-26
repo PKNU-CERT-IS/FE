@@ -1,17 +1,15 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Calendar, User, Eye } from "lucide-react";
-import { mockBlogPosts } from "@/mocks/blogData";
 import BackToListButton from "@/components/detail/SCBackToListButton";
 import KebabMenuButton from "@/components/detail/CCKebabMenu";
 import ShareButton from "@/components/detail/CCShareButton";
 import { formatDate } from "@/utils/formatDateUtil";
 import { getCategoryColor } from "@/utils/badgeUtils";
 import DefaultBadge from "@/components/ui/defaultBadge";
-import CCPublishedCheckbox from "@/components/admin/blog/CCPublishedCheckbox";
-import Link from "next/link";
 import MarkdownRenderer from "@/components/ui/defaultMarkdownRenderer";
-
+import { searchBlogDetail } from "@/app/api/blog/SCblogApi";
+import { BlogDetailDataType } from "@/types/blog";
 interface BlogDetailPageProps {
   params: Promise<{
     id: string;
@@ -29,7 +27,7 @@ export async function generateMetadata({
 }: GenerateMetadataProps): Promise<Metadata> {
   const resolvedParams = await params;
   const blogId = parseInt(resolvedParams.id, 10);
-  const post = mockBlogPosts.find((p) => p.id === blogId);
+  const post = await searchBlogDetail(blogId);
 
   if (!post) {
     return {
@@ -55,9 +53,9 @@ export async function generateMetadata({
 export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
   const resolvedParams = await params;
   const blogId = parseInt(resolvedParams.id, 10);
-  const post = mockBlogPosts.find((p) => p.id === blogId);
-
-  if (!post) {
+  const blogData: BlogDetailDataType = await searchBlogDetail(blogId);
+  console.log(blogData);
+  if (!blogData) {
     notFound();
   }
 
@@ -75,37 +73,38 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
             <div>
               <DefaultBadge
                 variant="custom"
-                className={`${getCategoryColor(post.category)} cursor-default`}
+                className={`${getCategoryColor(
+                  blogData.category
+                )} cursor-default`}
               >
-                {post.category}
+                {blogData.category}
               </DefaultBadge>
             </div>
             <KebabMenuButton currentUrl={"blog"} currentId={blogId} />
           </div>
           {/* 제목 */}
           <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-6 leading-tight dark:text-gray-200">
-            {post.title}
+            {blogData.title}
           </h1>
           {/* 요약 */}
-          {post.excerpt && (
+          {blogData.description && (
             <p className="text-base sm:text-lg text-gray-600 mb-3 leading-relaxed dark:text-gray-300">
-              {post.excerpt}
+              {blogData.description}
             </p>
           )}
-          {post.reference && (
+          {blogData.referenceType && (
             <div className="mb-3">
-              <Link
-                href={`/${post.reference.type}/${post.reference.referenceId}`}
+              <div
                 className={`inline-flex items-center px-2.5 sm:px-3 py-1 text-xs sm:text-sm font-medium rounded-md transition-colors
         ${
-          post.reference.type === "study"
+          blogData.referenceType === "STUDY"
             ? "badge-green hover:bg-green-100 hover:text-green-800"
             : "badge-blue hover:bg-blue-100 hover:text-blue-800"
         }`}
               >
-                {post.reference.type === "study" ? "스터디" : "프로젝트"} ·{" "}
-                {post.reference.title}
-              </Link>
+                {blogData.referenceType === "STUDY" ? "스터디" : "프로젝트"} ·{" "}
+                {blogData.referenceTitle}
+              </div>
             </div>
           )}
 
@@ -114,36 +113,36 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
             <div className="flex flex-row gap-4 sm:gap-6">
               <div className="flex items-center gap-1.5 sm:gap-2">
                 <User className="w-4 h-4" />
-                <span>{post.author}</span>
+
+                <span>{blogData.creatorName}</span>
               </div>
               <div className="flex items-center gap-1.5 sm:gap-2">
                 <Calendar className="w-4 h-4" />
-                <span>{formatDate(post.createdAt)}</span>
+                <span>{formatDate(blogData.createdAt)}</span>
               </div>
-              {post.views && (
+              {blogData.viewCount != null && (
                 <div className="flex items-center gap-1.5 sm:gap-2">
                   <Eye className="w-4 h-4" />
-                  <span>{post.views.toLocaleString()}</span>
+                  <span>{blogData.viewCount.toLocaleString()}</span>
                 </div>
               )}
             </div>
-            <CCPublishedCheckbox postId={post.id} published={post.published} />
           </div>
         </header>
 
         {/* 본문 */}
         <div className="p-8">
           <div className="prose prose-lg max-w-none">
-            {post.content ? (
+            {blogData.content ? (
               <>
                 {/* 실제 마크다운 내용이 들어갈 곳 */}
                 <div className="max-w-none mb-8 pt-6 border-gray-300 dark:border-gray-700">
-                  <MarkdownRenderer content={post.content} />
+                  <MarkdownRenderer content={blogData.content} />
                 </div>
               </>
             ) : (
               <div className="text-gray-800 leading-relaxed whitespace-pre-wrap">
-                {post.excerpt || "게시글 내용이 없습니다."}
+                {blogData.description || "게시글 내용이 없습니다."}
               </div>
             )}
           </div>

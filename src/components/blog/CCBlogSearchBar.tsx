@@ -7,19 +7,19 @@ import SearchSVG from "/public/icons/search.svg";
 
 const DEBOUNCE_DELAY = 200;
 interface BlogSearchBarProps {
-  currentSearch: string;
+  currentKeyword: string;
 }
 
-export default function BlogSearchBar({ currentSearch }: BlogSearchBarProps) {
+export default function BlogSearchBar({ currentKeyword }: BlogSearchBarProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathname = usePathname();
-  const [searchInput, setSearchInput] = useState<string>(currentSearch);
+  const [searchInput, setSearchInput] = useState<string>(currentKeyword);
   const prevSearchInput = useRef<string>(searchInput);
 
   useEffect(() => {
-    setSearchInput(currentSearch);
-  }, [currentSearch]);
+    setSearchInput(currentKeyword);
+  }, [currentKeyword]);
 
   // 디바운싱 처리
   useEffect(() => {
@@ -30,9 +30,9 @@ export default function BlogSearchBar({ currentSearch }: BlogSearchBarProps) {
       const params = new URLSearchParams(searchParams);
 
       if (searchInput) {
-        params.set("search", searchInput);
+        params.set("keyword", searchInput);
       } else {
-        params.delete("search");
+        params.delete("keyword");
       }
       params.delete("page"); // 검색 시 첫 페이지로
 

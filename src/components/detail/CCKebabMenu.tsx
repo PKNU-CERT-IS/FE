@@ -4,15 +4,21 @@ import { useRouter } from "next/navigation";
 import DefaultButton from "@/components/ui/defaultButton";
 import { MoreVertical, Edit, Trash2 } from "lucide-react";
 import ConfirmModal from "@/components/ui/defaultConfirmModal";
+import { deleteBlog } from "@/app/api/blog/CCblogApi";
 import { deleteBoard } from "@/api/board/CCboard";
-import AlertModal from "../ui/defaultAlertModal";
+import AlertModal from "@/components/ui/defaultAlertModal";
 
 interface KebabMenuProps {
   currentId: number;
   currentUrl: string;
+  isAdmin?: boolean; // 수정후 어드민 페이지리다이렉팅을 위한 boolean값
 }
 
-export default function KebabMenu({ currentId, currentUrl }: KebabMenuProps) {
+export default function KebabMenu({
+  currentId,
+  currentUrl,
+  isAdmin,
+}: KebabMenuProps) {
   const router = useRouter();
   const [isKebabOpen, setIsKebabOpen] = useState<boolean>(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
@@ -36,14 +42,26 @@ export default function KebabMenu({ currentId, currentUrl }: KebabMenuProps) {
 
   const handleDeleteConfirm = async () => {
     try {
-      await deleteBoard(currentId);
-      router.replace(`/${currentUrl}`);
+      if (currentUrl === "blog") {
+        //  blog 삭제
+        await deleteBlog({ blogId: currentId });
+      } else if (currentUrl === "board") {
+        //  board 삭제
+        await deleteBoard(currentId);
+      }
+      //  admin 여부에 따라 분기
+      if (isAdmin) {
+        router.push(`/admin/${currentUrl}`);
+      } else {
+        router.push(`/${currentUrl}`);
+      }
       router.refresh();
     } catch (error) {
-      setAlertOpen(true);
+      setAlertOpen(true); //  실패 시 알림
       throw error;
+    } finally {
+      setIsDeleteModalOpen(false); //  성공/실패 모두 모달 닫기
     }
-    setIsDeleteModalOpen(false);
   };
 
   const handleDeleteCancel = () => {
@@ -51,7 +69,11 @@ export default function KebabMenu({ currentId, currentUrl }: KebabMenuProps) {
   };
 
   const handleEdit = () => {
-    router.push(`/${currentUrl}/${currentId}/edit`);
+    if (isAdmin) {
+      router.push(`/${currentUrl}/${currentId}/edit?from=admin`);
+    } else {
+      router.push(`/${currentUrl}/${currentId}/edit`);
+    }
   };
 
   return (

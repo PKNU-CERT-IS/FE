@@ -43,3 +43,13 @@ export function translateGradeToKorean(grade: string): string {
 
   return gradeToKoreanMap[grade];
 }
+
+//남 여 대응
+export function translateGenderToKorean(gender: string): string {
+  const genderToKoreanMap: Record<string, string> = {
+    FEMALE: "여",
+    MALE: "남",
+  };
+
+  return genderToKoreanMap[gender];
+}

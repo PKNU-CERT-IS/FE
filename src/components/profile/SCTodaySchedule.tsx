@@ -7,11 +7,10 @@ import { getTypeColor, getTypeLabel } from "@/utils/scheduleUtils";
 import { formatTime } from "@/utils/formatDateUtil";
 import { getProfile } from "@/app/api/profile/SCprofileApi";
 
-import { ScheduleInfo } from "@/types/schedule";
+import { ScheduleInProfileData } from "@/types/schedule";
 
 export default async function SCTodaySchedule() {
   const profile = await getProfile();
-  console.log(profile);
   return (
     <div className="mt-7">
       <div className="card-list text-card-foreground p-6 cursor-default dark-default">
@@ -22,7 +21,7 @@ export default async function SCTodaySchedule() {
         <div>
           {profile.todaySchedules.length > 0 ? (
             <div className="space-y-3">
-              {profile.todaySchedules.map((schedule: ScheduleInfo) => (
+              {profile.todaySchedules.map((schedule: ScheduleInProfileData) => (
                 <div
                   key={schedule.scheduleId}
                   className="card-list bg-gray-50 flex items-center justify-between p-3 group cursor-default"
@@ -33,8 +32,8 @@ export default async function SCTodaySchedule() {
                     </div>
                     <div className="text-xs text-gray-600 dark:text-gray-400 flex items-center gap-1 transition-colors duration-300">
                       <Clock className="w-3 h-3" />
-                      {`${formatTime(schedule.startedAt)} - ${formatTime(
-                        schedule.endedAt
+                      {`${formatTime(schedule.startTime)} - ${formatTime(
+                        schedule.endTime
                       )}`}
                     </div>
                     <div className="text-xs text-gray-600 dark:text-gray-400 flex items-center gap-1 transition-colors duration-300">
