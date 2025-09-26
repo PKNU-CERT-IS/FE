@@ -17,10 +17,10 @@ export function parseSearchParams(searchParams: {
 }): CurrentFilters {
   return {
     search: searchParams.search || "",
-    semester: (searchParams.semester as SemesterType) || "all",
-    category: (searchParams.category as CategoryType) || "all",
-    subCategory: (searchParams.subCategory as SubCategoryType) || "all",
-    status: (searchParams.status as StatusType) || "all",
+    semester: (searchParams.semester as SemesterType) || "ALL",
+    category: (searchParams.category as CategoryType) || "ALL",
+    subCategory: (searchParams.subCategory as SubCategoryType) || "ALL",
+    status: (searchParams.status as StatusType) || "ALL",
     page: parseInt(searchParams.page || "1", 10),
   };
 }
@@ -35,14 +35,16 @@ export function filterProjectData(
 ): ProjectMaterial[] {
   return projects.filter((project) => {
     // 카테고리 필터링
-    const categoryMatch = category === "all" || project.category === category;
+    const categoryMatch = category === "ALL" || project.category === category;
 
     // 검색어 필터링 (제목, 설명, 작성자, 태그에서 검색)
     const searchMatch =
       searchTerm === "" ||
       project.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       project.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      project.author.toLowerCase().includes(searchTerm.toLowerCase());
+      project.projectCreatorName
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase());
     return categoryMatch && searchMatch;
   });
 }

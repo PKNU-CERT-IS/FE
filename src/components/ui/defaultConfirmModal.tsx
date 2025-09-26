@@ -10,7 +10,8 @@ interface ConfirmModalProps {
   isOpen: boolean;
   title?: string;
   message: string;
-  onConfirm: (attachments: AttachedFile[], link: string) => void;
+  onConfirm?: () => void;
+  onEndConfirm?: (attachment: AttachedFile) => void;
   onCancel: () => void;
   confirmText: string;
   cancelText: string;
@@ -23,15 +24,14 @@ export default function ConfirmModal({
   title = "확인",
   message,
   onConfirm,
+  onEndConfirm,
   onCancel,
   confirmText = "예",
   cancelText = "아니오",
   type = "confirm",
   pageLabel,
 }: ConfirmModalProps) {
-  const [attachments, setAttachments] = useState<AttachedFile[]>([]);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [link, setLink] = useState<string>("");
+  const [attachment, setAttachment] = useState<AttachedFile | null>(null);
 
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
@@ -94,8 +94,8 @@ export default function ConfirmModal({
         {isEnd && (
           <div className="space-y-4 pb-6">
             <FileUpload
-              attachments={attachments}
-              onAttachmentsChange={setAttachments}
+              attachments={attachment ? [attachment] : []}
+              onAttachmentsChange={(files) => setAttachment(files[0])}
               className="py-3"
             />
             <p className="text-sm text-gray-700 text-center">
@@ -122,7 +122,17 @@ export default function ConfirmModal({
           </DefaultButton>
           <DefaultButton
             variant="default"
-            onClick={() => onConfirm(attachments, link)}
+            onClick={() => {
+              if (isEnd && onEndConfirm) {
+                if (!attachment) {
+                  alert("파일을 업로드해야 합니다.");
+                  return;
+                }
+                onEndConfirm(attachment);
+              } else if (onConfirm) {
+                onConfirm();
+              }
+            }}
             className="px-4 py-2 min-w-[80px]"
           >
             {confirmText}

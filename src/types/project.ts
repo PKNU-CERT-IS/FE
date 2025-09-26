@@ -1,8 +1,7 @@
-// types/project.ts
-
-import { AttachedFile } from "@/types/attachedFile";
+import { AttachedFile } from "./attachedFile";
 import { CategoryType, SubCategoryType } from "./category";
 import { StatusType } from "./progressStatus";
+import { MemberGrade } from "./study";
 
 export type FileCategory =
   | "document"
@@ -18,31 +17,29 @@ export type FileCategory =
 
 export interface ExternalLink {
   url: string;
-  label: string;
-  type?: "notion" | "gdocs" | "drive" | "figma" | "web";
+  title: string;
 }
 
-export interface ProjectMaterial {
-  id: string;
+export interface ProjectList {
+  id: number;
   title: string;
   description: string;
-  image?: string; // 프로젝트 대표 이미지
-  author: string;
-  authorStatus: "student" | "graduate" | "organization";
-  semester: string;
   category: CategoryType;
-  subCategory: SubCategoryType;
-  hackingTechnique: CategoryType;
-  status: StatusType;
+  subcategory: SubCategoryType;
   startDate: string;
-  endDate?: string;
-  currentParticipants: number;
-  maxParticipants: number;
-  githubUrl?: string; // GitHub 저장소 URL
-  demoUrl?: string; // 데모/배포 URL
-  stars?: number; // GitHub 스타 수
-  attachedFiles?: AttachedFile[]; // 첨부파일 배열 추가
-  externalLinks?: ExternalLink[]; // 외부 문서/링크 배열 추가
+  endDate: string;
+  projectCreatorName: string;
+  projectCreatorGrade: MemberGrade;
+  githubUrl?: string;
+  thumbnailUrl?: string;
+  participantable: boolean;
+  demoUrl?: string;
+  MemberGrade: string;
+  maxParticipantNumber: number;
+  currentParticipantNumber: number;
+  semester: SemesterType;
+  status: StatusType;
+  attachments: AttachedFile[];
 }
 
 export interface CurrentFilters {
@@ -65,36 +62,26 @@ export type FilterKey =
   | "subCategory"
   | "status";
 
-export type SemesterType =
-  | "all"
-  | "2025-1"
-  | "2025-2"
-  | "2024-2"
-  | "2024-1"
-  | "2023-2"
-  | "2023-1";
+export type SemesterType = "ALL" | `${number}-01` | `${number}-02`;
+export function getCurrentSemester(): SemesterType {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = now.getMonth() + 1;
+  const semester = month <= 6 ? 1 : 2;
+  return `${year}-${semester}` as SemesterType;
+}
 
-// 옵션 배열들
-export const SEMESTER_OPTIONS: SemesterType[] = [
-  "all",
-  "2025-2",
-  "2025-1",
-  "2024-2",
-  "2024-1",
-  "2023-2",
-  "2023-1",
-];
+// 옵션: ALL + 현재 학기만
+export const SEMESTER_OPTIONS: readonly SemesterType[] = [
+  "ALL",
+  getCurrentSemester(),
+] as const;
 
-// 한글 라벨 맵핑
+// Label: ALL + 현재 학기만
 export const SEMESTER_LABELS: Record<SemesterType, string> = {
-  all: "전체",
-  "2025-2": "2025-2학기",
-  "2025-1": "2025-1학기",
-  "2024-2": "2024-2학기",
-  "2024-1": "2024-1학기",
-  "2023-2": "2023-2학기",
-  "2023-1": "2023-1학기",
-};
+  ALL: "전체",
+  [getCurrentSemester()]: `${getCurrentSemester()}학기`,
+} as const;
 
 export const AUTHOR_STATUS_LABELS: Record<
   "student" | "graduate" | "organization",
@@ -104,3 +91,58 @@ export const AUTHOR_STATUS_LABELS: Record<
   graduate: "대학원생",
   organization: "기관/단체",
 };
+
+// 외부 링크
+export interface ExternalLink {
+  title: string;
+  url: string;
+}
+
+// 미팅 요약
+export interface MeetingSummary {
+  id: number;
+  title: string;
+  content: string;
+  participantNumber: number;
+  creatorName: string;
+  createdAt: string; // ISO date
+  links: ExternalLink[];
+  editable: boolean;
+}
+
+// 참여자 요약
+export interface ParticipantSummary {
+  id: number;
+  memberId: number;
+  memberName: string;
+  memberGrade: "FRESHMAN" | "SOPHOMORE" | "JUNIOR" | "SENIOR" | string; // enum 확장 가능
+  status: "PENDING" | "APPROVED" | "REJECTED" | string;
+  createdAt: string;
+}
+
+// 메인 타입
+export interface ProjectMaterial {
+  id: number;
+  title: string;
+  content: string;
+  description: string;
+  category: CategoryType;
+  subCategory: SubCategoryType;
+  startDate: string; // ISO 날짜
+  endDate: string; // ISO 날짜
+  creatorId: number;
+  projectCreatorName: string;
+  projectCreatorGrade: MemberGrade;
+  semester: SemesterType;
+  status: StatusType; // 서버에서 string
+  githubUrl?: string;
+  externalUrl?: ExternalLink;
+  demoUrl?: string;
+  thumbnailUrl?: string;
+  attachments: AttachedFile[];
+  meetingSummaries: MeetingSummary[];
+  participantSummaries: ParticipantSummary[];
+  maxParticipantNumber: number;
+  currentParticipantNumber: number;
+  participantable: boolean;
+}

@@ -14,70 +14,58 @@ import {
 } from "lucide-react";
 import DefaultButton from "@/components/ui/defaultButton";
 import ConfirmModal from "@/components/ui/defaultConfirmModal";
-import type { LinkItem, MeetingMinute } from "@/types/study";
 import { formatDate } from "@/utils/formatDateUtil";
-import { usePathname } from "next/navigation";
-
-// Mock data for meeting minutes
-const mockMeetingMinutes: MeetingMinute[] = [
-  {
-    id: 1,
-    // week: 1,
-    title: "웹 기초 및 HTTP 프로토콜",
-    created_at: "2024-10-24 10:37:29+00",
-    updated_at: "2025-07-26 05:52:55+00",
-    content:
-      "HTTP 프로토콜의 기본 구조와 요청/응답 메커니즘에 대해 학습했습니다. Burp Suite를 이용한 HTTP 트래픽 분석 실습을 진행했습니다.",
-    participants: 4,
-    author: "김보안",
-    links: [
-      { title: "HTTP 기본 자료", url: "https://example.com/web-basics" },
-      { title: "Burp Suite 가이드", url: "https://example.com/burp-guide" },
-    ],
-  },
-  {
-    id: 2,
-    // week: 2,
-    title: "SQL Injection 이론 및 실습",
-    created_at: "2024-10-24 10:37:29+00",
-    updated_at: "2025-07-26 05:52:55+00",
-    content:
-      "SQL Injection의 원리와 다양한 공격 기법에 대해 학습했습니다. DVWA를 이용한 실습을 통해 Union-based, Boolean-based, Time-based SQL Injection을 실습했습니다.",
-    participants: 7,
-    author: "김보안",
-    links: [
-      {
-        title: "회의록 링크",
-        url: "https://example.com/sql-injection",
-      },
-    ],
-  },
-];
+import { usePathname, useRouter } from "next/navigation";
+import {
+  createStudyMeeting,
+  deleteStudyMeeting,
+  getStudyDetailMeeting,
+  updateStudyMeeting,
+} from "@/app/api/CCStudyMeetingApi";
+import {
+  CreateProjectMeeting,
+  CreateStudyMeeting,
+  LinkItem,
+  MeetingResponse,
+  UpdateMeeting,
+} from "@/types/meeting";
+import {
+  createProjectMeeting,
+  deleteProjectMeeting,
+  getProjectDetailMeeting,
+  updateProjectMeeting,
+} from "@/app/api/CCProjectMeetingApi";
 
 interface MeetingMinutesProps {
-  studyId: string;
+  dataId: number;
   currentUserId: number;
-  studyLeaderId: number;
+  leaderId: number;
+  initialData: MeetingResponse[];
 }
 
 export default function MeetingMinutes({
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  studyId,
+  dataId,
   currentUserId,
-  studyLeaderId,
+  leaderId,
+  initialData,
 }: MeetingMinutesProps) {
+  const router = useRouter();
   const pathname = usePathname();
-  const pageType = pathname.startsWith("/study") ? "스터디" : "프로젝트";
-  const [meetingMinutes, setMeetingMinutes] =
-    useState<MeetingMinute[]>(mockMeetingMinutes);
+  const pageType: "study" | "project" = pathname.startsWith("/study")
+    ? "study"
+    : "project";
+  const pageTypeLabel = pageType === "study" ? "스터디" : "프로젝트";
+
+  const [meetingMinutes, setMeetingMinutes] = useState(initialData);
+
   const [showAddModal, setShowAddModal] = useState<boolean>(false);
-  const [editingMinute, setEditingMinute] = useState<MeetingMinute | null>(
+  const [editingMinute, setEditingMinute] = useState<MeetingResponse | null>(
     null
   );
   const [newMinute, setNewMinute] = useState({
     title: "",
     content: "",
-    participants: 0,
+    participantNumber: 0,
     links: [] as LinkItem[],
   });
   const [deleteMinuteId, setDeleteMinuteId] = useState<number | null>(null);
@@ -86,10 +74,8 @@ export default function MeetingMinutes({
 
   const [expandedIds, setExpandedIds] = useState<Set<number>>(new Set());
 
-  // 스터디 장인지 확인
-  const isStudyLeader = currentUserId === studyLeaderId;
+  const isLeader = currentUserId === leaderId;
 
-  // 모달 열기 함수 (트랜지션을 위해 약간의 지연 추가)
   const openModal = () => {
     setIsModalMounted(true);
     setTimeout(() => setShowAddModal(true), 10);
@@ -103,8 +89,7 @@ export default function MeetingMinutes({
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
-        setIsModalMounted(false);
-        setShowAddModal(false);
+        closeModal();
       }
     };
 
@@ -127,7 +112,10 @@ export default function MeetingMinutes({
     };
   }, [showAddModal]);
 
-  // 링크 추가 함수
+  useEffect(() => {
+    setMeetingMinutes(initialData);
+  }, [initialData]);
+
   const addLink = () => {
     setNewMinute({
       ...newMinute,
@@ -135,7 +123,6 @@ export default function MeetingMinutes({
     });
   };
 
-  // 링크 제거 함수
   const removeLink = (index: number) => {
     setNewMinute({
       ...newMinute,
@@ -143,120 +130,198 @@ export default function MeetingMinutes({
     });
   };
 
-  // 링크 업데이트 함수
   const updateLink = (index: number, field: "title" | "url", value: string) => {
-    const updatedLinks = newMinute.links.map((link, i) =>
-      i === index ? { ...link, [field]: value } : link
-    );
-    setNewMinute({
-      ...newMinute,
-      links: updatedLinks,
+    setNewMinute((prev) => {
+      const updatedLinks = prev.links.map((link, i) =>
+        i === index ? { ...link, [field]: value } : link
+      );
+      return { ...prev, links: updatedLinks };
     });
   };
 
-  const handleAddMinute = () => {
+  const handleAddMinute = async () => {
     if (!newMinute.title.trim() || !newMinute.content.trim()) return;
 
-    // 빈 링크 제거 (제목과 URL이 모두 있는 것만 유지)
-    const validLinks = newMinute.links.filter(
-      (link) => link.title.trim() && link.url.trim()
-    );
-
-    const minute: MeetingMinute = {
-      id: Date.now(),
+    const studyBody: CreateStudyMeeting = {
+      studyId: dataId,
       title: newMinute.title,
       content: newMinute.content,
-      links: validLinks,
-      author: "현재 사용자", // TODO: 실제 사용자 이름으로 변경
-      created_at: formatDate(new Date(), "dot"),
-      updated_at: formatDate(new Date(), "dot"),
-      participants: newMinute.participants,
+      participantNumber: newMinute.participantNumber,
+      links: newMinute.links,
     };
 
-    setMeetingMinutes([...meetingMinutes, minute]);
-    setNewMinute({
-      title: "",
-      content: "",
-      participants: 0,
-      links: [],
-    });
-    // setShowAddModal(false);
-    closeModal();
+    const projectBody: CreateProjectMeeting = {
+      projectId: dataId,
+      title: newMinute.title,
+      content: newMinute.content,
+      participantNumber: newMinute.participantNumber,
+      links: newMinute.links,
+    };
+
+    try {
+      if (pageType === "study") {
+        await createStudyMeeting(studyBody);
+      }
+      if (pageType === "project") {
+        await createProjectMeeting(projectBody);
+      }
+      setNewMinute({
+        title: "",
+        content: "",
+        participantNumber: 0,
+        links: [],
+      });
+
+      router.refresh();
+      closeModal();
+    } catch (error) {
+      throw error;
+    }
   };
 
-  const handleEditMinute = (minute: MeetingMinute) => {
+  const handleEditMinute = async (minute: MeetingResponse) => {
     setEditingMinute(minute);
-    setNewMinute({
-      title: minute.title,
-      content: minute.content,
-      participants: minute.participants,
-      links: minute.links || [],
-    });
-    openModal();
+
+    try {
+      let detailData = minute;
+      if (!minute.content || minute.content.trim() === "") {
+        detailData =
+          pageType === "study"
+            ? await getStudyDetailMeeting(minute.id)
+            : await getProjectDetailMeeting(minute.id);
+
+        setMeetingMinutes((prev) =>
+          prev.map((m) => (m.id === minute.id ? { ...m, ...detailData } : m))
+        );
+      }
+      setNewMinute({
+        title: detailData.title,
+        content: detailData.content || "",
+        participantNumber: detailData.participantNumber,
+        links: detailData.links
+          ? [...detailData.links.map((link) => ({ ...link }))]
+          : [],
+      });
+      openModal();
+    } catch (error) {
+      alert("회의록 정보를 불러오는데 실패했습니다.");
+      throw error;
+    }
   };
 
-  const handleUpdateMinute = () => {
+  const handleUpdateMinute = async () => {
     if (!editingMinute) return;
 
-    // 빈 링크 제거
     const validLinks = newMinute.links.filter(
       (link) => link.title.trim() && link.url.trim()
     );
 
-    const updated = meetingMinutes.map((minute) =>
-      minute.id === editingMinute.id
-        ? {
-            ...minute,
-            title: newMinute.title,
-            content: newMinute.content,
-            participants: newMinute.participants,
-            links: validLinks,
-          }
-        : minute
-    );
+    const body: UpdateMeeting = {
+      meetingId: editingMinute.id,
+      requesterId: currentUserId,
+      title: newMinute.title,
+      content: newMinute.content,
+      participantNumber: newMinute.participantNumber,
+      links: validLinks,
+    };
 
-    setMeetingMinutes(updated);
-    setEditingMinute(null);
-    setNewMinute({ title: "", content: "", participants: 0, links: [] });
-    setShowAddModal(false);
+    try {
+      let response;
+      if (pageType === "study") {
+        response = await updateStudyMeeting(body);
+      } else if (pageType === "project") {
+        response = await updateProjectMeeting(body);
+      }
+
+      setMeetingMinutes((prev) =>
+        prev.map((minute) =>
+          minute.id === editingMinute.id
+            ? {
+                ...minute,
+                title: body.title,
+                content: body.content,
+                participantNumber: body.participantNumber,
+                links: validLinks,
+              }
+            : minute
+        )
+      );
+
+      closeModal();
+      setEditingMinute(null);
+      setNewMinute({
+        title: "",
+        content: "",
+        participantNumber: 0,
+        links: [],
+      });
+    } catch (err) {
+      console.error("회의록 수정 실패:", err);
+      alert("회의록 수정에 실패했습니다.");
+    }
   };
 
-  const handleDeleteMinute = () => {
-    if (deleteMinuteId) {
+  const handleDeleteMinute = async () => {
+    if (!deleteMinuteId) return;
+
+    try {
+      if (pageType === "study") {
+        await deleteStudyMeeting(deleteMinuteId);
+      }
+      if (pageType === "project") {
+        await deleteProjectMeeting(deleteMinuteId);
+      }
+
       setMeetingMinutes(
         meetingMinutes.filter((minute) => minute.id !== deleteMinuteId)
       );
+      setDeleteMinuteId(null);
+    } catch (error) {
+      throw error;
     }
-    setDeleteMinuteId(null);
   };
 
   const handleDeleteCancel = () => {
     setDeleteMinuteId(null);
   };
 
-  const toggleExpand = (id: number) => {
+  const toggleExpand = async (meetingId: number, type: "study" | "project") => {
     setExpandedIds((prev) => {
       const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
+      if (next.has(meetingId)) {
+        next.delete(meetingId);
+      } else {
+        next.add(meetingId);
+      }
       return next;
     });
+    const target = meetingMinutes.find((m) => m.id === meetingId);
+    if (target && (!target.content || target.content.trim() === "")) {
+      try {
+        const detail =
+          type === "study"
+            ? await getStudyDetailMeeting(meetingId)
+            : await getProjectDetailMeeting(meetingId);
+
+        setMeetingMinutes((prev) =>
+          prev.map((m) => (m.id === meetingId ? { ...m, ...detail } : m))
+        );
+      } catch (error) {
+        throw error;
+      }
+    }
   };
-
-  const getPreview = (text: string, limit = 20) =>
-    text.length > limit ? `${text.slice(0, limit)}…` : text;
-
   return (
-    <div className="rounded-lg border border-gray-200 shadow-lg mt-6 dark-default dark:border-gray-700">
+    <div className="rounded-lg border border-gray-200 shadow-lg dark-default dark:border-gray-700">
       <div className="p-6 border-b border-gray-200 dark:border-gray-700">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
           <div>
             <div className="flex items-center justify-between sm:block">
               <h2 className="text-xl font-bold text-cert-black dark:text-gray-200">
-                {pageType} 회의록
+                {pageTypeLabel} 회의록
               </h2>
               {/* 모바일 전용 */}
-              {isStudyLeader && (
+              {isLeader && (
                 <div className="sm:hidden">
                   <DefaultButton size="sm" onClick={openModal}>
                     <Plus className="w-4 h-4 mr-2" />
@@ -268,15 +333,15 @@ export default function MeetingMinutes({
 
             <div className="mt-2 space-y-1 text-sm text-gray-500 dark:text-gray-400">
               <p>
-                • {pageType} 회의록을 작성하고 관리합니다.
-                <br /> • {pageType} 장만 회의록을 추가할 수 있습니다.
+                • {pageTypeLabel} 회의록을 작성하고 관리합니다.
+                <br /> • {pageTypeLabel} 장만 회의록을 추가할 수 있습니다.
                 <br /> • 회의록은 회차별로 관리되며 주에 1회 이상 결과물을
                 작성해주시기 바랍니다.
               </p>
             </div>
           </div>
           {/* 데스크톱 전용 */}
-          {isStudyLeader && (
+          {isLeader && (
             <div className="hidden sm:block">
               <DefaultButton size="sm" onClick={openModal}>
                 <Plus className="w-4 h-4 mr-2" />
@@ -296,13 +361,12 @@ export default function MeetingMinutes({
             </div>
           ) : (
             meetingMinutes.map((minute) => {
-              const isLong = (minute.content || "").length > 30;
+              // const isLong = (minute.content || "").length > 30;
+              const needsDetail = !minute.content;
               const expanded = expandedIds.has(minute.id);
-              const textToShow =
-                isLong && !expanded
-                  ? getPreview(minute.content)
-                  : minute.content;
+              const textToShow = expanded ? minute.content : "";
 
+              const shouldShowButton = needsDetail || minute.content;
               return (
                 <div
                   key={minute.id}
@@ -313,7 +377,7 @@ export default function MeetingMinutes({
                     <h4 className="font-medium text-gray-900 leading-tight dark:text-gray-200">
                       {minute.title}
                     </h4>
-                    {isStudyLeader && (
+                    {isLeader && (
                       <div className="flex gap-0 shrink-0">
                         <DefaultButton
                           variant="ghost"
@@ -337,28 +401,29 @@ export default function MeetingMinutes({
                   <div className="mt-1 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-gray-600 dark:text-gray-400">
                     <span className="inline-flex items-center gap-1">
                       <Calendar className="w-3.5 h-3.5 text-gray-400" />
-                      {formatDate(minute.created_at)}
+                      {formatDate(minute.createdAt, "short")}
                     </span>
                     <span className="inline-flex items-center gap-1">
                       <Users className="w-3.5 h-3.5 text-gray-400" />
-                      참석: {minute.participants}명
+                      참석: {minute.participantNumber}명
                     </span>
                     <span className="inline-flex items-center gap-1">
                       <User className="w-3.5 h-3.5 text-gray-400" />
-                      작성자: {minute.author}
+                      작성자: {minute.creatorName}
                     </span>
                   </div>
 
                   {/* content: 더보기/접기 대상 영역 */}
-                  <div className="mt-2 flex flex-row gap-2">
-                    <p className="text-sm text-gray-800 leading-relaxed dark:text-gray-300">
+                  <div className="mt-2 flex flex-row">
+                    <p className="text-sm text-gray-800 leading-relaxed dark:text-gray-300 break-all whitespace-normal">
                       {textToShow}
                     </p>
-                    {isLong && (
+
+                    {shouldShowButton && (
                       <button
                         type="button"
-                        onClick={() => toggleExpand(minute.id)}
-                        className="inline-flex items-center whitespace-nowrap text-xs text-gray-500 hover:underline cursor-pointer"
+                        onClick={() => toggleExpand(minute.id, pageType)}
+                        className="ml-1 inline-flex flex-row items-center whitespace-nowrap text-xs text-gray-500 hover:underline cursor-pointer"
                       >
                         {expanded ? (
                           <>
@@ -366,7 +431,7 @@ export default function MeetingMinutes({
                           </>
                         ) : (
                           <>
-                            더보기{" "}
+                            세부 내용 더보기{" "}
                             <ChevronDown className="w-3.5 h-3.5 ml-0.5" />
                           </>
                         )}
@@ -417,7 +482,7 @@ export default function MeetingMinutes({
                   setNewMinute({
                     title: "",
                     content: "",
-                    participants: 0,
+                    participantNumber: 0,
                     links: [],
                   });
                 }}
@@ -430,7 +495,7 @@ export default function MeetingMinutes({
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-gray-200">
-                  제목
+                  제목 *
                 </label>
                 <input
                   type="text"
@@ -444,17 +509,19 @@ export default function MeetingMinutes({
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-gray-200">
-                  참석 인원
+                  참석 인원 *
                 </label>
                 <input
                   type="number"
                   value={
-                    newMinute.participants === 0 ? "" : newMinute.participants
+                    newMinute.participantNumber === 0
+                      ? ""
+                      : newMinute.participantNumber
                   }
                   onChange={(e) =>
                     setNewMinute({
                       ...newMinute,
-                      participants:
+                      participantNumber:
                         e.target.value === "" ? 0 : Number(e.target.value),
                     })
                   }
@@ -464,7 +531,7 @@ export default function MeetingMinutes({
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-gray-200">
-                  회의록 내용
+                  회의록 내용 *
                 </label>
                 <p className="text-xs text-gray-500 mb-2 dark:text-gray-400">
                   해당 회의록은 회의 내용을 간추려 5줄 이내로 적어주시기
@@ -550,7 +617,7 @@ export default function MeetingMinutes({
                     setNewMinute({
                       title: "",
                       content: "",
-                      participants: 0,
+                      participantNumber: 0,
                       links: [],
                     });
                   }}
@@ -561,9 +628,7 @@ export default function MeetingMinutes({
                 <DefaultButton
                   onClick={editingMinute ? handleUpdateMinute : handleAddMinute}
                   disabled={
-                    !newMinute.title.trim() ||
-                    !newMinute.participants ||
-                    !newMinute.content.trim()
+                    !newMinute.title.trim() || !newMinute.participantNumber
                   }
                   className="flex-1"
                 >

@@ -16,7 +16,11 @@ import {
   SUBCATEGORY_MAP,
   SubCategoryKey,
 } from "@/types/category";
-import { STATUS_OPTIONS, STATUS_LABELS } from "@/types/progressStatus";
+import {
+  STATUS_OPTIONS,
+  STATUS_LABELS,
+  STATUS_FILTER_OPTIONS,
+} from "@/types/progressStatus";
 
 interface CCStudyFilterProps extends StudyFilterProps {
   isAdmin?: boolean;
@@ -61,7 +65,7 @@ export default function CCStudyFilter({
     (key: FilterKey, value: string): void => {
       const params = new URLSearchParams(searchParams);
 
-      if (value === "all" || value === "") {
+      if (value === "ALL" || value === "") {
         params.delete(key);
       } else {
         params.set(key, value);
@@ -82,12 +86,13 @@ export default function CCStudyFilter({
     },
     [searchParams, router, isAdmin]
   );
+
   // 메인카테고리에서 다른 카테고리 선택 시 서브 카테고리 리셋
   const resetSubCategory = useCallback(
     (newCategory: string) => {
       const params = new URLSearchParams(searchParams);
 
-      if (newCategory === "all" || newCategory === "") {
+      if (newCategory === "ALL" || newCategory === "") {
         params.delete("category");
       } else {
         params.set("category", newCategory);
@@ -163,7 +168,7 @@ export default function CCStudyFilter({
   return (
     <div className="mb-1 sm:mb-4">
       {/* 검색바와 필터들을 한 줄로 배치 */}
-      <div className="flex flex-col sm:flex-row gap-3 mb-4">
+      <div className="flex flex-col sm:flex-row gap-3 ">
         {/* 검색바 */}
         <div className="flex-1 relative">
           <SearchSVG className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
@@ -308,7 +313,16 @@ export default function CCStudyFilter({
                 setShowStatusDropdown(false);
               }}
             >
-              <span className="text-gray-700 truncate pr-1 dark:text-gray-200">
+              <span
+                className="block w-20 truncate pr-1 text-gray-700 dark:text-gray-200"
+                title={
+                  currentFilters.subCategory
+                    ? SUBCATEGORY_LABELS[
+                        currentFilters.subCategory as SubCategoryKey
+                      ]
+                    : ""
+                }
+              >
                 {currentFilters.subCategory
                   ? SUBCATEGORY_LABELS[
                       currentFilters.subCategory as SubCategoryKey
@@ -316,7 +330,7 @@ export default function CCStudyFilter({
                   : ""}
               </span>
               <ChevronDown
-                className={`h-4 w-4 transition-transform duration-300 text-gray-400 ${
+                className={`h-4 w-4 flex-shrink-0 transition-transform duration-300 text-gray-400 ${
                   showSubCategoryDropdown ? "rotate-180" : ""
                 }`}
               />
@@ -372,7 +386,7 @@ export default function CCStudyFilter({
             </DefaultButton>
             {showStatusDropdown && (
               <div className="absolute top-full mt-1 w-full rounded-lg border border-gray-300 bg-white shadow-lg z-20 max-h-48 overflow-y-auto dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200">
-                {STATUS_OPTIONS.map((option) => (
+                {STATUS_FILTER_OPTIONS.map((option) => (
                   <button
                     key={option}
                     type="button"
@@ -405,12 +419,12 @@ export default function CCStudyFilter({
             </button>
           </span>
         )}
-        {currentFilters.semester !== "all" && (
+        {currentFilters.semester !== "ALL" && (
           <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800 mb-3 sm:mb-0">
             {SEMESTER_LABELS[currentFilters.semester]}
             <button
               type="button"
-              onClick={() => updateFilter("semester", "all")}
+              onClick={() => updateFilter("semester", "ALL")}
               className="ml-2 inline-flex items-center justify-center w-4 h-4 rounded-full hover:bg-red-200"
             >
               <X className="w-3" />
@@ -418,12 +432,12 @@ export default function CCStudyFilter({
           </span>
         )}
 
-        {currentFilters.category !== "all" && (
+        {currentFilters.category !== "ALL" && (
           <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 mb-3 sm:mb-0">
             {currentFilters.category}
             <button
               type="button"
-              onClick={() => updateFilter("category", "all")}
+              onClick={() => updateFilter("category", "ALL")}
               className="ml-2 inline-flex items-center justify-center w-4 h-4 rounded-full hover:bg-blue-200"
             >
               <X className="w-3" />
@@ -431,24 +445,24 @@ export default function CCStudyFilter({
           </span>
         )}
 
-        {currentFilters.subCategory !== "all" && (
+        {currentFilters.subCategory !== "ALL" && (
           <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 mb-3 sm:mb-0">
             {currentFilters.subCategory}
             <button
               type="button"
-              onClick={() => updateFilter("subCategory", "all")}
+              onClick={() => updateFilter("subCategory", "ALL")}
               className="ml-2 inline-flex items-center justify-center w-4 h-4 rounded-full hover:bg-blue-200"
             >
               <X className="w-3" />
             </button>
           </span>
         )}
-        {currentFilters.status !== "all" && (
+        {currentFilters.status !== "ALL" && (
           <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 mb-3 sm:mb-0">
             {STATUS_LABELS[currentFilters.status]}
             <button
               type="button"
-              onClick={() => updateFilter("status", "all")}
+              onClick={() => updateFilter("status", "ALL")}
               className="ml-2 inline-flex items-center justify-center w-4 h-4 rounded-full hover:bg-green-200"
             >
               <X className="w-3" />

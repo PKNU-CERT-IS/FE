@@ -2,17 +2,13 @@ import { fetchWithAuth } from "@/lib/serverIntercept";
 import { normalizeSemester } from "@/types/study";
 
 // 스터디 조회
-export async function getStudies(
-  page: number,
-  size: number = 20,
-  sort: string
-) {
+export async function getStudies(page: number = 0, size?: number) {
   try {
     const params = new URLSearchParams();
     params.append("page", page.toString());
-    params.append("size", size.toString());
-    params.append("sort", sort);
-
+    if (size) {
+      params.append("size", size.toString());
+    }
     const res = await fetchWithAuth(`/study?${params.toString()}`, {
       method: "GET",
       headers: { "Content-Type": "application/json" },
@@ -23,7 +19,6 @@ export async function getStudies(
     }
 
     const json = await res.json();
-    console.log("getStudies 조회", json);
     return json.data;
   } catch (error) {
     throw error;
@@ -35,7 +30,7 @@ export async function searchStudies(
   filters: {
     keyword?: string;
     category?: string;
-    subCategory?: string;
+    subcategory?: string;
     status?: string;
     semester?: string;
   } = {},
@@ -47,19 +42,13 @@ export async function searchStudies(
     if (filters.keyword?.trim()) params.append("keyword", filters.keyword);
     if (filters.category && filters.category !== "ALL")
       params.append("category", filters.category);
-    if (filters.subCategory && filters.subCategory !== "ALL")
-      params.append("subcategory", filters.subCategory);
+    if (filters.subcategory && filters.subcategory !== "ALL")
+      params.append("subcategory", filters.subcategory);
     if (filters.status && filters.status !== "ALL")
       params.append("status", filters.status);
     if (filters.semester && filters.semester !== "ALL") {
       params.append("semester", normalizeSemester(filters.semester));
     }
-
-    params.append("page", String((options.page ?? 1) - 1)); // 0부터 시작
-    params.append("size", String(options.size ?? 10));
-    (options.sort ?? ["createdAt,desc"]).forEach((s) =>
-      params.append("sort", s)
-    );
 
     const res = await fetchWithAuth(`/study/search?${params.toString()}`, {
       method: "GET",
@@ -71,7 +60,6 @@ export async function searchStudies(
     }
 
     const json = await res.json();
-    console.log("searchStudies 조회", json);
     return json.data;
   } catch (error) {
     throw error;
@@ -88,7 +76,6 @@ export async function getDetailStudy(studyId: number) {
       throw new Error(`스터디 디테일 조회 실패: ${res.status}`);
     }
     const json = await res.json();
-    console.log("study 디테일 조회", json);
     return json.data;
   } catch (error) {
     throw error;

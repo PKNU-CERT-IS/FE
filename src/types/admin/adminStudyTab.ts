@@ -1,7 +1,7 @@
 export const MAIN_TABS = ["study", "project"] as const;
 export type MainTab = (typeof MAIN_TABS)[number];
 
-export const SUB_TABS = ["pending", "list"] as const;
+export const SUB_TABS = ["list", "pending", "end"] as const;
 export type SubTab = (typeof SUB_TABS)[number];
 
 export const TAB_CONFIG: Record<MainTab, { label: string }> = {
@@ -10,8 +10,9 @@ export const TAB_CONFIG: Record<MainTab, { label: string }> = {
 };
 
 export const SUBTAB_CONFIG: Record<SubTab, { label: string }> = {
-  pending: { label: "승인 대기" },
   list: { label: "목록" },
+  pending: { label: "개설 승인 대기" },
+  end: { label: "종료 승인 대기" },
 };
 
 export const isValidMainTab = (t: string): t is MainTab =>

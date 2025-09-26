@@ -1,28 +1,33 @@
+"server-only";
+
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Calendar, Users, Download } from "lucide-react";
 import DefaultBadge from "@/components/ui/defaultBadge";
 import MarkdownRenderer from "@/components/ui/defaultMarkdownRenderer";
-import {
-  mockStudyDetailData,
-  StudyDetailData,
-} from "@/mocks/mockStudyDetailData";
 import BackToListButton from "@/components/detail/SCBackToListButton";
 import KebabMenu from "@/components/detail/CCKebabMenu";
 import CCShareButton from "@/components/detail/CCShareButton";
-import MeetingMinutes from "@/components/study/CCMeetingMinutes";
 import DownloadButton from "@/components/detail/SCDownloadButton";
 import { formatFileSize } from "@/utils/attachedFileUtils";
 import { getFileIcon } from "@/utils/attachedFileUtils";
-import { calculateDDay } from "@/utils/studyHelper";
+import { getStatusDateInfo, getStudyPeriodLabel } from "@/utils/studyHelper";
 import EndRequestButton from "@/components/ui/endRequestButton";
 import { getStatusColor } from "@/utils/badgeUtils";
 import { STATUS_LABELS } from "@/types/progressStatus";
-
-function getStudyDataById(id: string): StudyDetailData | null {
-  const parsedId = parseInt(id, 10);
-  return mockStudyDetailData.find((data) => data.id === parsedId) || null;
-}
+import { getDetailStudy } from "@/app/api/study/SCStudyApi";
+import { formatDate } from "@/utils/formatDateUtil";
+import { SUBCATEGORY_FROM_EN } from "@/types/category";
+import {
+  getApprovedParticipants,
+  getPendingParticipants,
+} from "@/app/api/study/SCStudyParticipantApi";
+import { CCJoinButton } from "@/components/ui/CCJoinButton";
+import { getCurrentUser } from "@/lib/auth/currentUser";
+import CCParticipantActionButtons from "@/components/ui/CCParticipantActionButtons";
+import MeetingMinutes from "@/components/study/SCStudyMeetingMinutes";
+import { AttachedFile } from "@/types/attachedFile";
+import { MEMBER_GRADE_LABELS, MemberGrade, StudyMaterial } from "@/types/study";
 
 // 메타데이터 생성
 export async function generateMetadata({
@@ -31,26 +36,34 @@ export async function generateMetadata({
   params: Promise<{ id: string }>;
 }): Promise<Metadata> {
   const { id } = await params;
-  const studyData = getStudyDataById(id);
+  const studyId = parseInt(id, 10);
 
-  if (!studyData) {
+  try {
+    const studyData = await getDetailStudy(studyId);
+    if (!studyData) {
+      return {
+        title: "스터디를 찾을 수 없습니다",
+        description: "요청하신 스터디를 찾을 수 없습니다.",
+      };
+    }
+
     return {
-      title: "스터디를 찾을 수 없습니다",
-      description: "요청하신 스터디를 찾을 수 없습니다.",
+      title: `${studyData.title} - CERT-IS Study`,
+      description: studyData.description.substring(0, 160) + "...",
+      openGraph: {
+        title: studyData.title,
+        description: studyData.description.substring(0, 160) + "...",
+        type: "article",
+        authors: [studyData.author],
+        images: ["/logo.svg"],
+      },
+    };
+  } catch (error) {
+    return {
+      title: "에러 발생",
+      description: "스터디 데이터를 불러오는 중 오류가 발생했습니다.",
     };
   }
-
-  return {
-    title: `${studyData.title} - CERT-IS Study`,
-    description: studyData.description.substring(0, 160) + "...",
-    openGraph: {
-      title: studyData.title,
-      description: studyData.description.substring(0, 160) + "...",
-      type: "article",
-      authors: [studyData.author],
-      images: ["/logo.svg"],
-    },
-  };
 }
 
 export default async function StudyMaterialDetailPage({
@@ -59,14 +72,42 @@ export default async function StudyMaterialDetailPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const studyData = getStudyDataById(id);
+  const studyId = parseInt(id, 10);
 
+  const studyData: StudyMaterial = await getDetailStudy(studyId);
   if (!studyData) {
     notFound();
   }
 
-  // D-Day 계산
-  const dDay = studyData.endDate ? calculateDDay(studyData.endDate) : null;
+  // 현재 유저 판별
+  const currentUser = await getCurrentUser();
+
+  const { status } = getStatusDateInfo(studyData.startDate, studyData.endDate);
+
+  // 스터디장가 참가자 승인/거절 가능
+  const canApproveOrReject =
+    currentUser && currentUser.sub === String(studyData.creatorId);
+
+  // 승인된 스터디원
+  const approvedData = await getApprovedParticipants(studyId, 0, 10);
+  const approvedMember = approvedData.content ?? [];
+
+  // 대기 중인 스터디원
+  const pendingData = await getPendingParticipants(studyId, 0, 10);
+  const pendingMember = pendingData.content ?? [];
+  const isAlreadyApproved = approvedMember.some(
+    (m: { memberId: number }) => String(m.memberId) === String(currentUser?.sub)
+  );
+
+  const isPending = pendingMember.some(
+    (m: { memberId: number }) => String(m.memberId) === String(currentUser?.sub)
+  );
+  // 참가 버튼 렌더 조건
+  const showJoinButton =
+    currentUser &&
+    currentUser.sub !== String(studyData.creatorId) &&
+    !isAlreadyApproved &&
+    status !== "COMPLETED";
 
   return (
     <div>
@@ -74,8 +115,9 @@ export default async function StudyMaterialDetailPage({
         <BackToListButton currentUrl={"study"} />
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8  mt-6">
-        <div className="lg:col-span-2  space-y-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-6">
+        {/* 메인 콘텐츠 */}
+        <div className="lg:col-span-2 space-y-6">
           <div className="bg-white dark:bg-gray-800 p-1 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
             <div className="p-6 pb-0">
               <div className="flex items-start justify-between mb-4">
@@ -88,52 +130,64 @@ export default async function StudyMaterialDetailPage({
                   <div className="flex items-center gap-2">
                     <DefaultBadge
                       variant="custom"
-                      className={getStatusColor(studyData.status)}
+                      className={getStatusColor(status)}
                     >
-                      {STATUS_LABELS[studyData.status]}
+                      {STATUS_LABELS[status]}
                     </DefaultBadge>
-                    {dDay !== null && (
-                      <DefaultBadge
-                        variant="outline"
-                        className="text-cert-red border-cert-red"
-                      >
-                        {dDay > 0
-                          ? `D-${dDay}`
-                          : dDay === 0
-                          ? "D-Day"
-                          : `D+${Math.abs(dDay)}`}
-                      </DefaultBadge>
+                    <DefaultBadge
+                      variant="outline"
+                      className="text-cert-red border-cert-red"
+                    >
+                      {getStudyPeriodLabel(studyData.endDate)}
+                    </DefaultBadge>
+
+                    {/* 모바일 참가 버튼 */}
+                    {showJoinButton && (
+                      <CCJoinButton
+                        dataId={studyData.id}
+                        initialState={
+                          isAlreadyApproved
+                            ? "APPROVED"
+                            : isPending
+                            ? "PENDING"
+                            : "NONE"
+                        }
+                        className="px-4 py-2 sm:hidden ml-auto"
+                      />
                     )}
-                    {/* 모바일일때 참가 버튼 */}
-                    <button className="px-4 py-2 action-button sm:hidden ml-auto">
-                      참가하기
-                    </button>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
-                  {/* 데스크톱 버튼*/}
-                  <button className="hidden sm:inline-block px-4 py-2 action-button">
-                    스터디 참가하기
-                  </button>
-
-                  {/* 케밥은 항상 표시 */}
+                  {/* 데스크탑 참가 버튼 */}
+                  {showJoinButton && (
+                    <CCJoinButton
+                      dataId={studyData.id}
+                      initialState={
+                        isAlreadyApproved
+                          ? "APPROVED"
+                          : isPending
+                          ? "PENDING"
+                          : "NONE"
+                      }
+                      className="px-4 py-2 hidden sm:inline-block"
+                    />
+                  )}
+                  {/* 케밥 메뉴 */}
                   <KebabMenu currentId={studyData.id} currentUrl={"study"} />
                 </div>
               </div>
             </div>
 
             <div className="p-6 space-y-6">
-              {/* Basic Description + Detail Content */}
               <div className="space-y-4">
                 <p className="text-black dark:text-gray-300 leading-relaxed border-b border-gray-200 pb-6 dark:border-gray-700">
                   {studyData.description}
                 </p>
-                <MarkdownRenderer content={studyData.detailContent} />
+                <MarkdownRenderer content={studyData.content} />
               </div>
 
               <div className="w-full h-px bg-gray-200 dark:bg-gray-700"></div>
 
-              {/* Study Details */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="flex items-center gap-3">
                   <Users className="w-5 h-5 text-cert-red" />
@@ -142,8 +196,8 @@ export default async function StudyMaterialDetailPage({
                       참여 인원
                     </p>
                     <p className="font-medium text-black dark:text-white">
-                      {studyData.currentParticipants}/
-                      {studyData.maxParticipants}명
+                      {studyData.currentParticipantNumber}/
+                      {studyData.maxParticipantNumber}명
                     </p>
                   </div>
                 </div>
@@ -154,20 +208,23 @@ export default async function StudyMaterialDetailPage({
                       기간
                     </p>
                     <p className="font-medium text-black dark:text-white">
-                      {studyData.period}
+                      {formatDate(studyData.startDate, "dot")} ~{" "}
+                      {formatDate(studyData.endDate, "dot")}
                     </p>
                   </div>
                 </div>
               </div>
-              {studyData.attachedFiles &&
-                studyData.attachedFiles.length > 0 && (
-                  <div className="border-t border-gray-300 pt-6 mb-6 dark:border-gray-700">
-                    <h4 className="font-medium text-gray-900 mb-4 flex items-center gap-2 dark:text-gray-200">
-                      <Download className="w-4 h-4" />
-                      첨부파일 ({studyData.attachedFiles.length})
-                    </h4>
-                    <div className="space-y-3">
-                      {studyData.attachedFiles.map((file, index) => (
+
+              {/* 첨부파일 */}
+              {studyData.attachments && studyData.attachments.length > 0 && (
+                <div className="border-t border-gray-300 pt-6 mb-6 dark:border-gray-700">
+                  <h4 className="font-medium text-gray-900 mb-4 flex items-center gap-2 dark:text-gray-200">
+                    <Download className="w-4 h-4" />
+                    첨부파일 ({studyData.attachments.length})
+                  </h4>
+                  <div className="space-y-3">
+                    {studyData.attachments.map(
+                      (file: AttachedFile, index: number) => (
                         <div
                           key={index}
                           className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg dark:bg-gray-700"
@@ -183,39 +240,41 @@ export default async function StudyMaterialDetailPage({
                               {formatFileSize(file.size)}
                             </p>
                           </div>
-                          <DownloadButton
-                            fileName={file.name}
-                            fileUrl={file.attachedUrl}
-                          />
+                          <DownloadButton file={file} />
                         </div>
-                      ))}
-                    </div>
+                      )
+                    )}
                   </div>
-                )}
-              {/* 공유하기 버튼 */}
-              <div className="flex justify-between p-1  pt-6 border-t border-gray-300 dark:border-gray-700">
+                </div>
+              )}
+
+              {/* 카테고리 + 공유 */}
+              <div className="flex justify-between p-1 pt-6 border-t border-gray-300 dark:border-gray-700">
                 <div className="flex flex-wrap gap-2 justify-center items-center">
                   <DefaultBadge className="bg-gray-100 h-6 border border-gray-200 text-gray-700 dark:bg-gray-600 dark:border-gray-500 dark:text-gray-200">
                     {studyData.category}
                   </DefaultBadge>
                   <DefaultBadge className="bg-gray-100 h-6 border border-gray-200 text-gray-700 dark:bg-gray-600 dark:border-gray-500 dark:text-gray-200">
-                    {studyData.subCategory}
+                    {SUBCATEGORY_FROM_EN[studyData.subCategory] ??
+                      studyData.subCategory}
                   </DefaultBadge>
                 </div>
                 <CCShareButton />
               </div>
             </div>
           </div>
+
+          {/* 회의록 */}
           <MeetingMinutes
-            studyId={"1"} // 임시로 ID 설정, 실제로는 params에서 받아와야 함 현재 스터디 ID를 나타내는 ID
-            currentUserId={1} // 임시로 현재 사용자 ID 설정, 실제로는 로그인 정보에서 받아와야 함
-            studyLeaderId={1} // 임시로 스터디 리더 ID 설정, 실제로는 스터디 데이터에서 받아와야 함
+            studyId={studyData.id}
+            currentUserId={Number(currentUser?.sub)} // 로그인 유저 ID 연결
+            studyLeaderId={studyData.creatorId} // 스터디장 ID 연결 (creator 정보 기반)
           />
         </div>
 
-        {/* Sidebar */}
+        {/* 사이드바 */}
         <div className="space-y-6">
-          {/* Study Leader */}
+          {/* 스터디 리더 */}
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700">
             <div className="p-6">
               <h3 className="text-lg font-bold text-black dark:text-white mb-4">
@@ -223,75 +282,124 @@ export default async function StudyMaterialDetailPage({
               </h3>
               <div className="flex items-center gap-3">
                 <div className="w-12 h-12 bg-cert-red rounded-full flex items-center justify-center text-white font-medium">
-                  {studyData.leader.name[0]}
+                  {studyData.studyCreatorName[0]}
                 </div>
                 <div>
                   <p className="font-medium text-black dark:text-white">
-                    {studyData.leader.name}
+                    {studyData.studyCreatorName}
                   </p>
                   <p className="text-sm text-gray-500 dark:text-gray-400">
-                    {studyData.leader.role}
+                    {MEMBER_GRADE_LABELS[studyData.studyCreatorGrade]}
                   </p>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Participants */}
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700">
             <div className="p-6">
               <h3 className="text-lg font-bold text-black dark:text-white mb-4">
-                참여자
+                스터디원 ({approvedMember.length})
               </h3>
-              <div className="space-y-3">
-                {studyData.participants.length > 0 ? (
-                  studyData.participants.map((participant, index) => (
-                    <div key={index} className="flex items-center gap-3">
-                      <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center text-black text-xs font-medium">
-                        {participant.name[0]}
-                      </div>
-                      <div>
-                        <p className="text-sm font-medium text-black dark:text-white">
-                          {participant.name}
-                        </p>
-                        <p className="text-xs text-gray-500 dark:text-gray-400">
-                          {participant.role}
-                        </p>
-                      </div>
-                    </div>
-                  ))
-                ) : (
-                  <p className="text-sm text-gray-500 dark:text-gray-400">
-                    아직 참여자가 없습니다.
-                  </p>
-                )}
+
+              <div className="mb-6">
+                <div className="space-y-3">
+                  {approvedMember.length > 0 ? (
+                    approvedMember.map(
+                      (participant: {
+                        id: number;
+                        memberName: string;
+                        memberGrade: MemberGrade;
+                      }) => (
+                        <div
+                          key={participant.id}
+                          className="flex items-center gap-3"
+                        >
+                          <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center text-black text-xs font-medium">
+                            {participant.memberName[0]}
+                          </div>
+                          <p className="text-sm font-medium text-black dark:text-white">
+                            {participant.memberName}
+                          </p>
+                          <p className="text-xs text-gray-500 dark:text-gray-400">
+                            {MEMBER_GRADE_LABELS[participant.memberGrade]}
+                          </p>
+                        </div>
+                      )
+                    )
+                  ) : (
+                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                      참여 중인 멤버가 없습니다.
+                    </p>
+                  )}
+                </div>
               </div>
+
+              {canApproveOrReject && (
+                <div>
+                  <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                    대기중 멤버 ({pendingMember.length})
+                  </h4>
+                  <div className="space-y-3">
+                    {pendingMember.length > 0 ? (
+                      pendingMember.map(
+                        (participant: {
+                          id: number;
+                          memberName: string;
+                          memberGrade: string;
+                        }) => (
+                          <div
+                            key={participant.id}
+                            className="flex items-center gap-3"
+                          >
+                            <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center text-black text-xs font-medium">
+                              {participant.memberName[0]}
+                            </div>
+                            <p className="text-sm font-medium text-black dark:text-white">
+                              {participant.memberName}
+                            </p>
+                            <p className="text-xs text-gray-500 dark:text-gray-400">
+                              {participant.memberGrade}
+                            </p>
+
+                            {canApproveOrReject && (
+                              <div className="flex gap-2">
+                                <CCParticipantActionButtons
+                                  participantId={participant.id}
+                                />
+                              </div>
+                            )}
+                          </div>
+                        )
+                      )
+                    ) : (
+                      <p className="text-sm text-gray-500 dark:text-gray-400">
+                        대기중인 멤버가 없습니다.
+                      </p>
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
 
-          {/* Study Period */}
+          {/* 스터디 기간 */}
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700">
-            <div className="p-6">
+            <div className="p-6 text-center">
               <h3 className="text-lg font-bold text-black dark:text-white mb-4">
                 스터디 기간
               </h3>
-              <div className="text-center">
-                {dDay !== null && (
-                  <p className="text-2xl font-bold text-cert-red mb-2">
-                    {dDay > 0
-                      ? `D-${dDay}`
-                      : dDay === 0
-                      ? "D-Day"
-                      : `D+${Math.abs(dDay)}`}
-                  </p>
-                )}
-                <p className="text-sm text-gray-600 dark:text-gray-400">
-                  {studyData.period}
-                </p>
-              </div>
+              <p className="text-2xl font-bold text-cert-red mb-2">
+                {getStudyPeriodLabel(studyData.endDate)}
+              </p>
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                {formatDate(studyData.startDate, "dot")} ~{" "}
+                {formatDate(studyData.endDate, "dot")}
+              </p>
             </div>
           </div>
-          {/* 종료 모달 */}
+
+          {/* 종료 요청 버튼 */}
           <EndRequestButton id={studyData.id} />
         </div>
       </div>

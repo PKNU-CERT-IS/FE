@@ -1,11 +1,13 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import DefaultButton from "@/components/ui/defaultButton";
 import { MoreVertical, Edit, Trash2 } from "lucide-react";
 import ConfirmModal from "@/components/ui/defaultConfirmModal";
-import { deleteBoard } from "@/api/board/CCboard";
-import AlertModal from "../ui/defaultAlertModal";
+import { deleteBoard } from "@/app/api/board/CCboardApi";
+import AlertModal from "@/components/ui/defaultAlertModal";
+import { deleteStudy } from "@/app/api/study/CCStudyApi";
+import { deleteProject } from "@/app/api/project/CCProjectApi";
 
 interface KebabMenuProps {
   currentId: number;
@@ -14,6 +16,7 @@ interface KebabMenuProps {
 
 export default function KebabMenu({ currentId, currentUrl }: KebabMenuProps) {
   const router = useRouter();
+  const pathname = usePathname();
   const [isKebabOpen, setIsKebabOpen] = useState<boolean>(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
   const kebabRef = useRef<HTMLDivElement>(null);
@@ -33,17 +36,33 @@ export default function KebabMenu({ currentId, currentUrl }: KebabMenuProps) {
     setIsKebabOpen(false); // 케밥 메뉴 닫기
     setIsDeleteModalOpen(true); // 삭제 확인 모달 열기
   };
-
   const handleDeleteConfirm = async () => {
     try {
-      await deleteBoard(currentId);
+      switch (true) {
+        case currentUrl.startsWith("board"):
+          await deleteBoard(currentId);
+          break;
+        // case currentUrl.startsWith("blog"):
+        //   await deleteBlog(currentId);
+        //   break;
+        case currentUrl.startsWith("study"):
+          await deleteStudy(currentId);
+          break;
+        case currentUrl.startsWith("project"):
+          await deleteProject(currentId);
+          break;
+        default:
+          throw new Error("알 수 없는 도메인입니다.");
+      }
+
       router.replace(`/${currentUrl}`);
       router.refresh();
     } catch (error) {
       setAlertOpen(true);
       throw error;
+    } finally {
+      setIsDeleteModalOpen(false);
     }
-    setIsDeleteModalOpen(false);
   };
 
   const handleDeleteCancel = () => {
@@ -51,9 +70,19 @@ export default function KebabMenu({ currentId, currentUrl }: KebabMenuProps) {
   };
 
   const handleEdit = () => {
-    router.push(`/${currentUrl}/${currentId}/edit`);
-  };
+    const isAdmin = pathname.startsWith("/admin");
 
+    // Admin study 도메인 내 study, project tab 분기처리
+    if (isAdmin) {
+      if (currentUrl === "study") {
+        router.push(`/admin/study/${currentId}/edit?tab=${currentUrl}`);
+      } else if (currentUrl === "project") {
+        router.push(`/admin/study/${currentId}/edit?tab=${currentUrl}`);
+      }
+    } else {
+      router.push(`/${currentUrl}/${currentId}/edit`);
+    }
+  };
   return (
     <>
       <div className="relative" ref={kebabRef}>

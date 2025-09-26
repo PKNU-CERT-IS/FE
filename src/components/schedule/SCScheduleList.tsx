@@ -7,7 +7,7 @@ import { getTypeColor, getTypeLabel } from "@/utils/scheduleUtils";
 import { ScheduleInfo } from "@/types/schedule";
 import { formatDate, formatTime } from "@/utils/formatDateUtil";
 import { MessageSquareText } from "lucide-react";
-import { getSchedules } from "@/app/api/schedule/SCschedule";
+import { getSchedules } from "@/app/api/schedule/SCscheduleApi";
 
 interface SCScheduleListProps {
   date: string;

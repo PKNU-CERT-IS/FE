@@ -1,13 +1,11 @@
 "use client";
 import { useState, useEffect, useRef, useCallback } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import DefaultButton from "@/components/ui/defaultButton";
-import { Info, ChevronDown } from "lucide-react";
+import { Info, ChevronDown, X } from "lucide-react";
 import FileUpload from "@/components/write/CCFileUpload";
 import MarkdownEditor from "@/components/write/CCMarkdownEditor";
 import { mockBlogPosts } from "@/mocks/blogData";
-import { mockStudyDetailData } from "@/mocks/mockStudyDetailData";
-import { getProjectMaterials } from "@/mocks/mockProjectData";
 import { NewPageCategoryType } from "@/types/newPageForm";
 import {
   getCategories,
@@ -18,8 +16,27 @@ import {
 } from "@/utils/newPageFormUtils";
 import { AttachedFile } from "@/types/attachedFile";
 import { Reference } from "@/types/blog";
-import { updateBoard, getDetailBoard } from "@/api/board/CCboard";
-import { BoardCategoryTypeEN, categoryMappingToKO } from "@/types/board";
+import { updateBoard, getCCDetailBoard } from "@/app/api/board/CCboardApi";
+import {
+  BoardCategoryType,
+  BoardCategoryTypeEN,
+  categoryMappingToEN,
+  categoryMappingToKO,
+} from "@/types/board";
+import { getCCDetailStudy, updateStudy } from "@/app/api/study/CCStudyApi";
+import { formatDate } from "@/utils/formatDateUtil";
+import { toOffset } from "@/utils/transformRequestValue";
+import {
+  CATEGORY_TO_EN,
+  CategoryType,
+  SUBCATEGORY_FROM_EN,
+  SUBCATEGORY_TO_EN,
+  SubCategoryType,
+} from "@/types/category";
+import {
+  getCCDetailProject,
+  updateProject,
+} from "@/app/api/project/CCProjectApi";
 
 interface EditFormProps {
   type: NewPageCategoryType;
@@ -48,6 +65,7 @@ const myActivities: Reference[] = [
 
 export default function EditForm({ type, dataId }: EditFormProps) {
   const router = useRouter();
+  const pathname = usePathname();
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [content, setContent] = useState<string>("");
@@ -56,7 +74,7 @@ export default function EditForm({ type, dataId }: EditFormProps) {
   const [attachments, setAttachments] = useState<AttachedFile[]>([]);
   const [startDate, setStartDate] = useState<string>("");
   const [endDate, setEndDate] = useState<string>("");
-  const [maxParticipants, setMaxParticipants] = useState<string>();
+  const [maxParticipants, setMaxParticipants] = useState<number>();
   const [selectedReference, setSelectedReference] = useState<Reference | null>(
     null
   );
@@ -71,10 +89,32 @@ export default function EditForm({ type, dataId }: EditFormProps) {
   // 프로젝트 전용 필드들
   const [githubUrl, setGithubUrl] = useState<string>("");
   const [demoUrl, setDemoUrl] = useState<string>("");
-  const [externalLinks, setExternalLinks] = useState<
-    { label: string; url: string }[]
-  >([]);
-  const [projectImage, setProjectImage] = useState<File | null>(null);
+  const [externalUrl, setExternalUrl] = useState<{
+    title: string;
+    url: string;
+  }>({
+    title: "",
+    url: "",
+  });
+  const [thumbnailUrl, setThumbnailUrl] = useState<string>(""); // 최종 서버 전송용
+  const [dateError, setDateError] = useState<string>("");
+  const today = new Date().toISOString().split("T")[0]; // 지난 날짜 선택 방지 변수
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const validateDates = useCallback((start: string, end: string) => {
+    if (!start || !end) return;
+
+    if (new Date(end) < new Date(start)) {
+      setDateError("종료일은 시작일보다 늦어야 합니다.");
+    } else {
+      setDateError("");
+    }
+  }, []);
+
+  useEffect(() => {
+    validateDates(startDate, endDate);
+  }, [startDate, endDate, validateDates]);
+
   const closeAllDropdowns = useCallback(() => {
     setIsCategoryOpen(false);
     setIsSubCategoryOpen(false);
@@ -89,16 +129,19 @@ export default function EditForm({ type, dataId }: EditFormProps) {
         let initialData;
 
         if (type === "board") {
-          const response = await getDetailBoard(dataId);
-          const data = response?.data;
+          const response = await getCCDetailBoard(dataId);
+          const boardData = response?.data;
 
-          if (data) {
+          if (boardData) {
             initialData = {
-              title: data.title || "",
-              description: data.description || "",
-              content: data.content || "",
-              category: data.category || "",
-              attachedFiles: data.attachments || [],
+              title: boardData.title || "",
+              description: boardData.description || "",
+              content: boardData.content || "",
+              category:
+                categoryMappingToKO[
+                  boardData.category as BoardCategoryTypeEN
+                ] || "",
+              attachments: boardData.attachments || [],
             };
           }
         } else if (type === "blog") {
@@ -114,41 +157,45 @@ export default function EditForm({ type, dataId }: EditFormProps) {
             };
           }
         } else if (type === "study") {
-          const studyData = mockStudyDetailData.find(
-            (item) => item.id === dataId
-          );
+          const response = await getCCDetailStudy(dataId);
+          const studyData = response?.data;
 
           if (studyData) {
             initialData = {
               title: studyData.title,
-              content: studyData.detailContent,
+              description: studyData.description,
+              content: studyData.content,
               category: studyData.category,
-              attachedFiles: studyData.attachedFiles || [],
+              subCategory:
+                SUBCATEGORY_FROM_EN[studyData.subCategory] ??
+                studyData.subCategory,
+              attachments: studyData.attachments || [],
               startDate: studyData.startDate,
-              endDate: studyData.endDate || "",
-              maxParticipants: String(studyData.maxParticipants || ""),
+              endDate: studyData.endDate,
+              maxParticipants: studyData.maxParticipantNumber,
             };
           }
         } else if (type === "project") {
-          const projectMaterials = getProjectMaterials();
-          const projectData = projectMaterials.find(
-            (item) => item.id === dataId.toString()
-          );
+          const response = await getCCDetailProject(dataId);
+          const projectData = response?.data;
 
           if (projectData) {
             initialData = {
               title: projectData.title,
               description: projectData.description,
-              content: projectData.description,
+              content: projectData.content,
               category: projectData.category,
-              subCategory: projectData.subCategory,
-              attachedFiles: projectData.attachedFiles || [],
+              subCategory:
+                SUBCATEGORY_FROM_EN[projectData.subCategory] ??
+                projectData.subCategory,
+              attachments: projectData.attachments || [],
               startDate: projectData.startDate,
-              endDate: projectData.endDate || "",
-              maxParticipants: String(projectData.maxParticipants || ""),
-              githubUrl: projectData.githubUrl || "",
-              demoUrl: projectData.demoUrl || "",
-              externalLinks: projectData.externalLinks || [],
+              endDate: projectData.endDate,
+              maxParticipants: projectData.maxParticipantNumber,
+              githubUrl: projectData.githubUrl,
+              demoUrl: projectData.demoUrl,
+              externalUrl: projectData.externalUrl,
+              thumbnailUrl: projectData.thumbnailUrl,
             };
           }
         }
@@ -159,19 +206,18 @@ export default function EditForm({ type, dataId }: EditFormProps) {
           setContent(initialData.content || "");
           setCategory(initialData.category || "");
           setSubCategory(initialData.subCategory || "");
-          setAttachments(initialData.attachedFiles || []);
-          setStartDate(initialData.startDate || "");
-          setEndDate(initialData.endDate || "");
+          setAttachments(initialData.attachments || []);
+          setStartDate(formatDate(initialData.startDate, "short") || "");
+          setEndDate(formatDate(initialData.endDate, "short") || "");
           setMaxParticipants(initialData.maxParticipants || "");
           setGithubUrl(initialData.githubUrl || "");
           setDemoUrl(initialData.demoUrl || "");
-          setExternalLinks(initialData.externalLinks || []);
+          setExternalUrl(initialData.externalUrl ?? { title: "", url: "" });
+          setThumbnailUrl(initialData.thumbnailUrl || "");
           setSelectedReference(initialData.reference || null);
-        } else {
-          console.warn("Initial data가 없습니다!");
         }
       } catch (error) {
-        console.error("데이터 로드 실패:", error);
+        throw error;
       } finally {
         setIsLoading(false);
       }
@@ -200,69 +246,96 @@ export default function EditForm({ type, dataId }: EditFormProps) {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [closeAllDropdowns]);
 
-  const addExternalLink = () => {
-    setExternalLinks([...externalLinks, { label: "", url: "" }]);
-  };
-
-  const updateExternalLink = (index: number, field: string, value: string) => {
-    const updated = externalLinks.map((link, i) =>
-      i === index ? { ...link, [field]: value } : link
-    );
-    setExternalLinks(updated);
-  };
-
-  const removeExternalLink = (index: number) => {
-    setExternalLinks(externalLinks.filter((_, i) => i !== index));
+  const updateExternalLink = (field: "title" | "url", value: string) => {
+    setExternalUrl((prev) => ({ ...prev, [field]: value }));
   };
 
   const handleSubmit = async () => {
     try {
-      // 타입별 데이터 구조 반영
-      const updateData = {
-        id: dataId,
+      const baseData = {
         title,
-        ...(type === "project" && { description }),
         content,
-        category,
-        subCategory,
-        ...((type === "study" || type === "project") && {
-          startDate,
-          endDate,
-          maxParticipants: maxParticipants
-            ? parseInt(maxParticipants, 10)
-            : undefined,
-        }),
-        ...(type === "project" && {
-          githubUrl,
-          demoUrl,
-          externalLinks: externalLinks.filter((link) => link.label && link.url),
-          projectImage,
-        }),
-        ...(type === "blog" && { reference: selectedReference ?? null }), // ✅ null 허용
+        description,
       };
 
+      let response;
+      const isAdmin = pathname.startsWith("/admin");
       switch (type) {
         case "board": {
-          const response = await updateBoard(dataId, updateData);
+          const updateData = {
+            ...baseData,
+            category: categoryMappingToEN[category as BoardCategoryType],
+            attachments,
+          };
+          response = await updateBoard(dataId, updateData);
           if (response?.statusCode === 200) {
-            // 성공 처리
             router.push(`/board/${dataId}`);
             router.refresh();
           }
           break;
         }
 
-        case "blog":
-          // TODO: 블로그 수정 API 연동 필요
+        case "blog": {
+          const updateData = {
+            ...baseData,
+            description: description ?? "",
+            reference: selectedReference ?? null,
+          };
           break;
+        }
 
-        case "study":
-          // TODO: 스터디 수정 API 연동 필요
-          break;
+        case "study": {
+          const updateData = {
+            ...baseData,
+            category: CATEGORY_TO_EN[category as CategoryType],
+            subCategory: SUBCATEGORY_TO_EN[subCategory as SubCategoryType],
+            studyId: dataId,
+            description: description ?? "",
+            startDate: toOffset(startDate),
+            endDate: toOffset(endDate),
+            maxParticipants: maxParticipants ?? 0,
+            attachments: attachments,
+          };
 
-        case "project":
-          // TODO: 프로젝트 수정 API 연동 필요
+          response = await updateStudy(dataId, updateData);
+          if (response?.statusCode === 200) {
+            router.push(
+              isAdmin ? `/admin/study/${dataId}?tab=study` : `/study/${dataId}`
+            );
+            router.refresh();
+          }
           break;
+        }
+
+        case "project": {
+          const updateData = {
+            ...baseData,
+            projectId: dataId,
+            category: CATEGORY_TO_EN[category as CategoryType],
+            subCategory: SUBCATEGORY_TO_EN[subCategory as SubCategoryType],
+            startDate: toOffset(startDate),
+            endDate: toOffset(endDate),
+            maxParticipants: maxParticipants ?? 0,
+            githubUrl,
+            demoUrl,
+            externalUrl:
+              externalUrl.title && externalUrl.url ? externalUrl : undefined,
+            // thumbnailUrl: thumbnailUrl || undefined,
+            thumbnailUrl: thumbnailUrl,
+            attachments: attachments,
+          };
+
+          response = await updateProject(dataId, updateData);
+          if (response?.statusCode === 200) {
+            router.push(
+              isAdmin
+                ? `/admin/study/${dataId}?tab=project`
+                : `/project/${dataId}`
+            );
+            router.refresh();
+          }
+          break;
+        }
 
         default:
           throw new Error(`Unknown type: ${type}`);
@@ -276,6 +349,28 @@ export default function EditForm({ type, dataId }: EditFormProps) {
     router.push(`/${type}/${dataId}`);
   };
 
+  // handleFileChange 수정
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) {
+      setThumbnailUrl("");
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setThumbnailUrl(reader.result as string);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  // 초기화 함수 추가
+  const clearThumbnail = () => {
+    setThumbnailUrl("");
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
   // 로딩 중일 때 표시
   if (isLoading) {
     return (
@@ -388,7 +483,7 @@ export default function EditForm({ type, dataId }: EditFormProps) {
         </div>
       )}
 
-      {/* 카테고리 및 최대 참가자 수 */}
+      {/* 카테고리 및 참가자 수 */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div
           className={`relative ${
@@ -415,12 +510,7 @@ export default function EditForm({ type, dataId }: EditFormProps) {
                     : "text-gray-500 dark:text-gray-400"
                 }
               >
-                {/* {category || "카테고리 선택"} */}
-                {category
-                  ? type === "board"
-                    ? categoryMappingToKO[category as BoardCategoryTypeEN]
-                    : category
-                  : "카테고리 선택"}
+                {category || "카테고리 선택"}
               </span>
               <ChevronDown
                 className={`h-4 w-4 transition-transform duration-200 ${
@@ -442,14 +532,7 @@ export default function EditForm({ type, dataId }: EditFormProps) {
                       }}
                       className="relative flex w-full cursor-pointer select-none items-center rounded-sm py-2 px-2 text-sm outline-none transition-colors hover:bg-cert-red hover:text-white focus:bg-cert-red focus:text-white"
                     >
-                      <span className="truncate">
-                        {/* {categoryItem} */}
-                        {type === "board"
-                          ? categoryMappingToKO[
-                              categoryItem as BoardCategoryTypeEN
-                            ]
-                          : categoryItem}
-                      </span>
+                      <span className="truncate">{categoryItem}</span>
                     </button>
                   ))}
                 </div>
@@ -480,10 +563,11 @@ export default function EditForm({ type, dataId }: EditFormProps) {
                       : "text-gray-500 dark:text-gray-400"
                   }
                 >
-                  {subCategory ||
-                    (category
-                      ? "하위 카테고리 선택"
-                      : "상위 카테고리 선택 필수")}
+                  {subCategory
+                    ? SUBCATEGORY_FROM_EN[subCategory] ?? subCategory
+                    : category
+                    ? "하위 카테고리 선택"
+                    : "상위 카테고리 선택 필수"}
                 </span>
                 <ChevronDown
                   className={`h-4 w-4 transition-transform duration-200 ${
@@ -521,10 +605,13 @@ export default function EditForm({ type, dataId }: EditFormProps) {
             </label>
             <input
               type="number"
-              value={maxParticipants}
-              onChange={(e) => setMaxParticipants(e.target.value)}
+              value={maxParticipants ?? ""}
+              onChange={(e) =>
+                setMaxParticipants(
+                  e.target.value ? Number(e.target.value) : undefined
+                )
+              }
               className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent dark:border-gray-600"
-              placeholder="최대 참가자 수"
               min="1"
               max={type === "study" ? "20" : "10"}
               required
@@ -539,18 +626,42 @@ export default function EditForm({ type, dataId }: EditFormProps) {
           <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-gray-200">
             프로젝트 대표 이미지
           </label>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={(e) => setProjectImage(e.target.files?.[0] || null)}
-            className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent dark:border-gray-600"
-          />
-          <p className="text-xs text-gray-500 mt-1 dark:text-gray-400">
-            새 이미지를 선택하지 않으면 기존 이미지가 유지됩니다.
-          </p>
+          <div className="space-y-2">
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              onChange={handleFileChange}
+              className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md 
+          focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent 
+          dark:border-gray-600"
+            />
+            {thumbnailUrl && (
+              <div className="relative mt-2">
+                <div className="relative group inline-block">
+                  <img
+                    src={thumbnailUrl}
+                    alt="Thumbnail preview"
+                    className="max-h-24 rounded-md"
+                  />
+                  <button
+                    type="button"
+                    onClick={clearThumbnail}
+                    className="absolute top-1 right-1 p-1 bg-gray-800/70 hover:bg-gray-900/70 
+                   rounded-full text-white opacity-0 group-hover:opacity-100 
+                   transition-opacity"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+            )}
+            <p className="text-xs text-gray-500 dark:text-gray-400">
+              새 이미지를 선택하지 않으면 기존 이미지가 유지됩니다.
+            </p>
+          </div>
         </div>
       )}
-
       {/* GitHub URL 및 Demo URL (프로젝트 전용) */}
       {type === "project" && (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -586,50 +697,39 @@ export default function EditForm({ type, dataId }: EditFormProps) {
         <div>
           <div className="flex items-center justify-between mb-2">
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">
-              외부 문서/링크
+              프로젝트 소개 페이지
             </label>
-            <DefaultButton type="button" size="sm" onClick={addExternalLink}>
-              + 링크 추가
-            </DefaultButton>
           </div>
+
           <div className="space-y-3">
-            {externalLinks.map((link, index) => (
-              <div key={index} className="flex gap-2 items-end">
-                <div className="flex-1">
-                  <input
-                    type="text"
-                    value={link.label}
-                    onChange={(e) =>
-                      updateExternalLink(index, "label", e.target.value)
-                    }
-                    className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent dark:border-gray-600"
-                    placeholder="링크 제목"
-                  />
-                </div>
-                <div className="flex-1">
-                  <input
-                    type="url"
-                    value={link.url}
-                    onChange={(e) =>
-                      updateExternalLink(index, "url", e.target.value)
-                    }
-                    className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent dark:border-gray-600"
-                    placeholder="https://..."
-                  />
-                </div>
-                <button
-                  type="button"
-                  onClick={() => removeExternalLink(index)}
-                  className="px-3 py-2 text-cert-red hover:text-red-800"
-                >
-                  ✕
-                </button>
+            <div className="flex gap-2 items-end">
+              <div className="flex-1">
+                <input
+                  type="text"
+                  value={externalUrl?.title}
+                  onChange={(e) => updateExternalLink("title", e.target.value)}
+                  className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md 
+                       focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent
+                       dark:border-gray-600"
+                  placeholder="CERT-IS 프로젝트 소개"
+                />
               </div>
-            ))}
+              <div className="flex-1">
+                <input
+                  type="url"
+                  value={externalUrl?.url}
+                  onChange={(e) => updateExternalLink("url", e.target.value)}
+                  className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md 
+                       focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent
+                       dark:border-gray-600"
+                  placeholder="https://project-introducing-site.com"
+                />
+              </div>
+            </div>
           </div>
-          <p className="text-xs text-gray-500 mt-1 dark:text-gray-400">
-            노션, 구글 독스, 피그마 등의 외부 문서나 관련 링크를 추가할 수
-            있습니다.
+
+          <p className="text-xs text-gray-500 mt-1">
+            해당 프로젝트를 설명할 수 있는 링크를 추가할 수 있습니다.
           </p>
         </div>
       )}
@@ -645,8 +745,10 @@ export default function EditForm({ type, dataId }: EditFormProps) {
               <input
                 type="date"
                 value={startDate}
+                min={today}
                 onChange={(e) => setStartDate(e.target.value)}
-                className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent dark:border-gray-600"
+                className={`w-full text-sm px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent cursor-pointer dark:border-gray-600
+                    ${dateError ? "border-cert-red" : "border-gray-300"}`}
                 required
               />
             </div>
@@ -657,11 +759,16 @@ export default function EditForm({ type, dataId }: EditFormProps) {
               <input
                 type="date"
                 value={endDate}
+                min={today}
                 onChange={(e) => setEndDate(e.target.value)}
-                className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent dark:border-gray-600"
+                className={`w-full text-sm px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent cursor-pointer dark:border-gray-600
+                    ${dateError ? "border-cert-red" : "border-gray-300"}`}
                 required
               />
             </div>
+            {dateError && (
+              <p className="text-cert-red text-sm">⚠️ {dateError}</p>
+            )}
           </div>
 
           {/* 기간 정책 안내 */}
@@ -714,6 +821,7 @@ export default function EditForm({ type, dataId }: EditFormProps) {
           disabled={
             !isFormValid(
               title,
+              description,
               content,
               category,
               type,

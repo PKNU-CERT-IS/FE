@@ -23,10 +23,8 @@ export async function getProjects(
     }
 
     const json = await res.json();
-    console.log("project 조회", json);
     return json.data;
   } catch (error) {
-    console.error("getProjects error:", error);
     throw error;
   }
 }
@@ -36,7 +34,7 @@ export async function searchProjects(
   filters: {
     keyword?: string;
     category?: string;
-    subCategory?: string;
+    subcategory?: string;
     status?: string;
     semester?: string;
   } = {},
@@ -52,8 +50,8 @@ export async function searchProjects(
     if (filters.category && filters.category !== "ALL") {
       params.append("category", filters.category);
     }
-    if (filters.subCategory && filters.subCategory !== "ALL") {
-      params.append("subCategory", filters.subCategory);
+    if (filters.subcategory && filters.subcategory !== "ALL") {
+      params.append("subcategory", filters.subcategory);
     }
     if (filters.status && filters.status !== "ALL") {
       params.append("status", filters.status);
@@ -74,7 +72,6 @@ export async function searchProjects(
     }
 
     const json = await res.json();
-    console.log("searchProjects 조회", json);
     return json.data;
   } catch (error) {
     throw error;
@@ -90,7 +87,6 @@ export async function getDetailProject(projectId: number) {
       throw new Error(`project 디테일 조회 실패: ${res.status}`);
     }
     const json = await res.json();
-    console.log("project 디테일 조회", json);
     return json.data;
   } catch (error) {
     throw error;

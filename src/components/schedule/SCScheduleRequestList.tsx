@@ -13,7 +13,7 @@ import {
 import CCDeleteButton from "@/components/admin/schedule/CCDeleteButton";
 import { ScheduleInfo } from "@/types/schedule";
 import { formatDate, formatTime } from "@/utils/formatDateUtil";
-import { getMySchedules } from "@/app/api/schedule/SCschedule";
+import { getMySchedules } from "@/app/api/schedule/SCscheduleApi";
 
 export default async function SCScheduleRequestList() {
   const requests: ScheduleInfo[] = await getMySchedules();

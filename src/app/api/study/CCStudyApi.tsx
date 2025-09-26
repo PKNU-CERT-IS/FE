@@ -10,7 +10,6 @@ export async function updateStudy(
     const res = await apiClient.put(`/study/update`, payload, {
       headers: { "Content-Type": "application/json" },
     });
-    console.log("studyId", studyId);
     return res.data;
   } catch (error) {
     throw error;
@@ -50,6 +49,33 @@ export async function getCCDetailStudy(studyId: number) {
       headers: { "Content-Type": "application/json" },
     });
 
+    return res.data;
+  } catch (error) {
+    throw error;
+  }
+}
+// 스터디 종료 요청
+export async function endStudy(
+  studyId: number,
+  attachment: {
+    id: number;
+    name: string;
+    type: string;
+    attachedUrl: string;
+    size: number;
+  }
+) {
+  try {
+    const res = await apiClient.post(
+      "/study/end",
+      {
+        studyId,
+        attachment,
+      },
+      {
+        headers: { "Content-Type": "application/json" },
+      }
+    );
     return res.data;
   } catch (error) {
     throw error;

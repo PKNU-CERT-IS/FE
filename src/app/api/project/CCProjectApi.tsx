@@ -1,6 +1,5 @@
 import { apiClient } from "@/lib/clientIntercept";
 import { AttachedFile } from "@/types/attachedFile";
-import { CategoryType, SubCategoryType } from "@/types/category";
 import { SemesterType } from "@/types/project";
 
 export interface CreateProjectFormData {
@@ -14,7 +13,7 @@ export interface CreateProjectFormData {
   githubUrl?: string;
   thumbnailUrl?: string;
   maxParticipants: number;
-  externalUrl?: { title?: string; url?: string }; // FIXME: title, url 추가 필요
+  externalUrl?: { title?: string; url?: string };
   demoUrl?: string; // 데모/배포 URL
   semester?: SemesterType;
   attachments?: AttachedFile[];
@@ -57,7 +56,6 @@ export async function updateProject(
     const res = await apiClient.put(`/project/update`, payload, {
       headers: { "Content-Type": "application/json" },
     });
-    console.log("projectId", projectId);
     return res.data;
   } catch (error) {
     throw error;
@@ -70,6 +68,34 @@ export async function deleteProject(projectId: number) {
       data: { projectId },
       headers: { "Content-Type": "application/json" },
     });
+    return res.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+// 프로젝트 종료 요청
+export async function endProject(
+  projectId: number,
+  attachment: {
+    id: number;
+    name: string;
+    type: string;
+    attachedUrl: string;
+    size: number;
+  }
+) {
+  try {
+    const res = await apiClient.post(
+      "/project/end",
+      {
+        projectId,
+        attachment,
+      },
+      {
+        headers: { "Content-Type": "application/json" },
+      }
+    );
     return res.data;
   } catch (error) {
     throw error;

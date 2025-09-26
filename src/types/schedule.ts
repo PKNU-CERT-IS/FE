@@ -1,6 +1,6 @@
 // 상수 타입 정의
 export const SCHEDULE_TYPES = {
-  MEETING: "ADVERTISE", // FIXME:L 타입 변경 시 수정
+  MEETING: "MEETING",
   WORKSHOP: "WORKSHOP",
   STUDY: "STUDY",
   CONFERENCE: "CONFERENCE",
