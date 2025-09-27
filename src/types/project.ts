@@ -146,3 +146,11 @@ export interface ProjectMaterial {
   currentParticipantNumber: number;
   participantable: boolean;
 }
+export interface ProjectSearchParams {
+  search?: string;
+  semester?: string;
+  category?: string;
+  subCategory?: string;
+  projectStatus?: string;
+  page?: string;
+}

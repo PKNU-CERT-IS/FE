@@ -44,7 +44,6 @@ export interface StudySearchParams {
   category?: string;
   subCategory?: string;
   studyStatus?: string;
-
   page?: string;
 }
 
@@ -55,16 +54,6 @@ export interface StudyCurrentFilters {
   category: CategoryType;
   subCategory: SubCategoryType;
   studyStatus: StatusType;
-  resultSubmitStatus?: string; // 개설, 종료 요청에 따른 추가 상태
-  page: number;
-}
-// 현재 필터 상태
-export interface ProjectCurrentFilters {
-  search: string;
-  semester: SemesterType;
-  category: CategoryType;
-  subCategory: SubCategoryType;
-  status: StatusType;
   resultSubmitStatus?: string; // 개설, 종료 요청에 따른 추가 상태
   page: number;
 }

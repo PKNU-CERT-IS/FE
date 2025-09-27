@@ -8,7 +8,7 @@ import MeetingMinutes from "@/components/study/SCStudyMeetingMinutes";
 import DownloadButton from "@/components/detail/SCDownloadButton";
 import { formatFileSize } from "@/utils/attachedFileUtils";
 import { getFileIcon } from "@/utils/attachedFileUtils";
-import { getStatusDateInfo, getStudyPeriodLabel } from "@/utils/studyHelper";
+import { getStudyPeriodLabel } from "@/utils/studyHelper";
 import EndRequestButton from "@/components/ui/endRequestButton";
 import { getStatusColor } from "@/utils/badgeUtils";
 import { STATUS_LABELS } from "@/types/progressStatus";
@@ -43,8 +43,6 @@ export default async function StudyDetailPage({
   // 현재 유저 판별
   const currentUser = await getCurrentUser();
 
-  const { status } = getStatusDateInfo(studyData.startDate, studyData.endDate);
-
   // 승인된 스터디원
   const approvedData = await getApprovedParticipants(studyId, 0, 10);
   const approvedMember = approvedData.content ?? [];
@@ -74,9 +72,9 @@ export default async function StudyDetailPage({
                   <div className="flex items-center gap-2">
                     <DefaultBadge
                       variant="custom"
-                      className={getStatusColor(status)}
+                      className={getStatusColor(studyData.status)}
                     >
-                      {STATUS_LABELS[status]}
+                      {STATUS_LABELS[studyData.status]}
                     </DefaultBadge>{" "}
                     <DefaultBadge
                       variant="outline"

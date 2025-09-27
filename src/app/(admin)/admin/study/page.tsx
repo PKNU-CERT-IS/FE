@@ -19,6 +19,8 @@ interface AdminStudyProps {
     page?: string;
     tab?: string;
     view?: string;
+    category?: string;
+    subCategory?: string;
   }>;
 }
 
@@ -38,22 +40,15 @@ export default async function AdminStudyPage({
   const currentView: SubTab =
     viewParam && isValidSubTab(viewParam) ? viewParam : "list";
 
-  // const filters = parseSearchParams(resolvedSearchParams);
-
   const baseFilters = parseSearchParams(resolvedSearchParams);
 
-  // 각 컴포넌트에 맞는 필터 타입으로 변환
   const studyFilters = {
     ...baseFilters,
     studyStatus: baseFilters.studyStatus,
   };
-
   const projectFilters = {
-    search: baseFilters.search || "",
-    semester: baseFilters.semester || "ALL",
-    category: baseFilters.category || "ALL",
-    subCategory: baseFilters.subCategory || "ALL",
-    projectStatus: baseFilters.projectStatus || "ALL",
+    ...baseFilters,
+    projectStatus: baseFilters.projectStatus,
   };
 
   return (
@@ -65,11 +60,7 @@ export default async function AdminStudyPage({
       {currentTab === "project" && (
         <CCProjectFilter projectCurrentFilters={projectFilters} isAdmin />
       )}
-      {/* <CCStudyFilter
-        studyCurrentFilters={studyFilters}
-        // projectCurrentFilters={projectFilters}
-        isAdmin
-      /> */}
+
       <CCStudyTabBar currentTab={currentTab} currentView={currentView} />
 
       {currentTab === "study" && (

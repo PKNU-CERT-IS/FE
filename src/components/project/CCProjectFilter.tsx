@@ -5,10 +5,10 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { ChevronDown, X } from "lucide-react";
 import CCProjectSearchBar from "@/components/project/CCProjectSearchBar";
 import {
-  ProjectCurrentFilters,
   SEMESTER_OPTIONS,
   SEMESTER_LABELS,
   FilterKey,
+  ProjectCurrentFilters,
 } from "@/types/project";
 import DefaultButton from "@/components/ui/defaultButton";
 import { cn } from "@/lib/utils";
@@ -32,7 +32,7 @@ export default function CCProjectFilter({
 }: ProjectCategoryProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
-
+  const view = searchParams.get("view");
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isPending, startTransition] = useTransition();
 
@@ -57,8 +57,6 @@ export default function CCProjectFilter({
       } else {
         params.set(key, value);
       }
-
-      // 필터 변경 시 페이지를 1로 리셋
       params.delete("page");
 
       startTransition(() => {
@@ -295,12 +293,20 @@ export default function CCProjectFilter({
               variant="outline"
               size="default"
               className={cn(
-                "w-full justify-between text-left font-normal transition-all duration-200 cursor-pointer",
-                "bg-white border-gray-300 hover:border-cert-red hover:bg-white hover:text-cert-black",
-                "focus:border-cert-red focus:ring-2 focus:ring-cert-red/20",
-                "dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-800"
+                "w-full justify-between text-left font-normal transition-all duration-200",
+                (isAdmin && view === "pending") || (isAdmin && view === "end")
+                  ? "bg-gray-100 text-gray-400 cursor-not-allowed dark:bg-gray-700 dark:text-gray-500"
+                  : "cursor-pointer border-gray-300 bg-white hover:border-cert-red hover:text-cert-black hover:bg-white focus:border-cert-red focus:ring-2 focus:ring-cert-red/20 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-800"
               )}
+              disabled={
+                (isAdmin && view === "pending") || (isAdmin && view === "end")
+              }
               onClick={() => {
+                if (
+                  (isAdmin && view === "pending") ||
+                  (isAdmin && view === "end")
+                )
+                  return;
                 setShowStatusDropdown(!showStatusDropdown);
                 setShowSemesterDropdown(false);
                 setShowCategoryDropdown(false);
@@ -317,23 +323,27 @@ export default function CCProjectFilter({
               />
             </DefaultButton>
 
-            {showStatusDropdown && (
-              <div className="absolute top-full mt-1 w-full rounded-lg border border-gray-300 bg-white shadow-lg z-20 max-h-48 overflow-y-auto dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200">
-                {STATUS_FILTER_OPTIONS.map((option) => (
-                  <button
-                    key={option}
-                    type="button"
-                    className="w-full px-4 py-2 text-left text-gray-900 dark:text-gray-200 cursor-pointer first:rounded-t-lg last:rounded-b-lg text-sm hover:bg-cert-red hover:text-white dark:hover:bg-cert-red duration-100"
-                    onClick={() => {
-                      updateFilter("projectStatus", option);
-                      closeAllDropdowns();
-                    }}
-                  >
-                    {STATUS_LABELS[option]}
-                  </button>
-                ))}
-              </div>
-            )}
+            {!(
+              (isAdmin && view === "pending") ||
+              (isAdmin && view === "end")
+            ) &&
+              showStatusDropdown && (
+                <div className="absolute top-full mt-1 w-full rounded-lg border border-gray-300 bg-white shadow-lg z-20 max-h-48 overflow-y-auto dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200">
+                  {STATUS_FILTER_OPTIONS.map((option) => (
+                    <button
+                      key={option}
+                      type="button"
+                      className="w-full px-4 py-2 text-left text-gray-900 dark:text-gray-200 cursor-pointer first:rounded-t-lg last:rounded-b-lg text-sm hover:bg-cert-red hover:text-white dark:hover:bg-cert-red duration-100"
+                      onClick={() => {
+                        updateFilter("projectStatus", option);
+                        closeAllDropdowns();
+                      }}
+                    >
+                      {STATUS_LABELS[option]}
+                    </button>
+                  ))}
+                </div>
+              )}
           </div>
         </div>
       </div>

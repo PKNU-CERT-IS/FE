@@ -33,6 +33,10 @@ export async function searchStudies(
     subcategory?: string;
     studyStatus?: string;
     semester?: string;
+  } = {},
+  pagination: {
+    page?: number;
+    size?: number;
   } = {}
 ) {
   try {
@@ -48,7 +52,12 @@ export async function searchStudies(
     if (filters.semester && filters.semester !== "ALL") {
       params.append("semester", normalizeSemester(filters.semester));
     }
-
+    if (pagination.page !== undefined) {
+      params.append("page", String(pagination.page));
+    }
+    if (pagination.size !== undefined) {
+      params.append("size", String(pagination.size));
+    }
     const res = await fetchWithAuth(`/study/search?${params.toString()}`, {
       method: "GET",
       headers: { "Content-Type": "application/json" },

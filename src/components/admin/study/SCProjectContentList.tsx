@@ -36,12 +36,12 @@ export default async function SCProjectContentList({
   currentTab,
   currentView,
   currentSearch = "",
-  currentPage = 1,
+  currentPage,
   projectCurrentFilters,
 }: SCProjectContentListProps) {
   const statusByView =
     !currentView || currentView === "pending"
-      ? "PENDING"
+      ? "READY"
       : currentView === "list"
       ? "ALL"
       : "";
@@ -72,19 +72,28 @@ export default async function SCProjectContentList({
   } else if (isDefaultFilters && currentView === "list") {
     const listData = await getProjects((currentPage ?? 1) - 1);
     projectMaterials = listData.content ?? [];
-    totalItems = projectMaterials.length;
+    totalItems = listData.totalElements ?? 0;
     totalPages = listData.totalPages ?? 1;
     currentValidPage = (listData.number ?? 0) + 1;
   } else {
-    const searchData = await searchProjects({
-      keyword: projectCurrentFilters.search,
-      category: projectCurrentFilters.category,
-      subcategory: SUBCATEGORY_TO_EN[projectCurrentFilters.subCategory],
-      projectStatus: projectCurrentFilters.projectStatus || "READY",
-      semester: projectCurrentFilters.semester,
-    });
+    const searchData = await searchProjects(
+      {
+        keyword: projectCurrentFilters.search,
+        category: projectCurrentFilters.category,
+        subcategory: SUBCATEGORY_TO_EN[projectCurrentFilters.subCategory],
+        projectStatus:
+          currentView === "pending"
+            ? "READY"
+            : projectCurrentFilters.projectStatus,
+        semester: projectCurrentFilters.semester,
+      },
+      {
+        page: (currentPage ?? 1) - 1,
+      }
+    );
     projectMaterials = searchData.content ?? [];
-    totalItems = projectMaterials.length;
+
+    totalItems = searchData.totalElements ?? 0;
     totalPages = searchData.totalPages ?? 1;
     currentValidPage = (searchData.number ?? 0) + 1;
   }
@@ -244,7 +253,7 @@ export default async function SCProjectContentList({
                         </div>
                       </div>
                       {project.status === "READY" && (
-                        <div className="flex flex-row gap-2 w-full sm:w-[20rem] h-full justify-end items-end self-end z-30">
+                        <div className="flex flex-row gap-2 w-full sm:w-[20rem] h-full justify-end items-end self-end">
                           <CCAdminStudyProjectActionButtons id={project.id} />
                         </div>
                       )}

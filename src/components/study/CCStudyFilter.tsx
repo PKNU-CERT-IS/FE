@@ -28,6 +28,7 @@ export default function CCStudyFilter({
 }: CCStudyFilterProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const view = searchParams.get("view");
   const [isPending, startTransition] = useTransition();
 
   // 검색 디바운스를 위한 ref
@@ -43,11 +44,9 @@ export default function CCStudyFilter({
     useState<boolean>(false);
   const [showStatusDropdown, setShowStatusDropdown] = useState<boolean>(false);
 
-  // 검색어 로컬 상태 추가
   const [searchValue, setSearchValue] = useState<string>(
     studyCurrentFilters.search || ""
   );
-  // currentFilters.search가 변경될 때 로컬 상태 동기화
   useEffect(() => {
     setSearchValue(studyCurrentFilters.search || "");
   }, [studyCurrentFilters.search]);
@@ -67,7 +66,6 @@ export default function CCStudyFilter({
         params.set(key, value);
       }
 
-      // 필터 변경 시 페이지를 1로 리셋
       params.delete("page");
 
       startTransition(() => {
@@ -161,6 +159,7 @@ export default function CCStudyFilter({
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [closeAllDropdowns]);
+
   return (
     <div className="mb-1 sm:mb-4">
       {/* 검색바와 필터들을 한 줄로 배치 */}
@@ -358,13 +357,21 @@ export default function CCStudyFilter({
             <DefaultButton
               variant="outline"
               size="default"
+              disabled={
+                (isAdmin && view === "pending") || (isAdmin && view === "end")
+              }
               className={cn(
-                "w-full justify-between text-left font-normal transition-all duration-200 cursor-pointer",
-                "border-gray-300 bg-white hover:border-cert-red hover:text-cert-black hover:bg-white",
-                "focus:border-cert-red focus:ring-2 focus:ring-cert-red/20",
-                "dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-800"
+                "w-full justify-between text-left font-normal transition-all duration-200",
+                (isAdmin && view === "pending") || (isAdmin && view === "end")
+                  ? "bg-gray-100 text-gray-400 cursor-not-allowed dark:bg-gray-700 dark:text-gray-500"
+                  : "cursor-pointer border-gray-300 bg-white hover:border-cert-red hover:text-cert-black hover:bg-white focus:border-cert-red focus:ring-2 focus:ring-cert-red/20 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-800"
               )}
               onClick={() => {
+                if (
+                  (isAdmin && view === "pending") ||
+                  (isAdmin && view === "end")
+                )
+                  return;
                 setShowStatusDropdown(!showStatusDropdown);
                 setShowSemesterDropdown(false);
                 setShowCategoryDropdown(false);
@@ -380,23 +387,27 @@ export default function CCStudyFilter({
                 }`}
               />
             </DefaultButton>
-            {showStatusDropdown && (
-              <div className="absolute top-full mt-1 w-full rounded-lg border border-gray-300 bg-white shadow-lg z-20 max-h-48 overflow-y-auto dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200">
-                {STATUS_FILTER_OPTIONS.map((option) => (
-                  <button
-                    key={option}
-                    type="button"
-                    className="w-full px-4 py-2 text-left text-gray-900 dark:text-gray-200 first:rounded-t-lg last:rounded-b-lg text-sm hover:bg-cert-red hover:text-white duration-100"
-                    onClick={() => {
-                      updateFilter("studyStatus", option);
-                      closeAllDropdowns();
-                    }}
-                  >
-                    {STATUS_LABELS[option]}
-                  </button>
-                ))}
-              </div>
-            )}
+            {!(
+              (isAdmin && view === "pending") ||
+              (isAdmin && view === "end")
+            ) &&
+              showStatusDropdown && (
+                <div className="absolute top-full mt-1 w-full rounded-lg border border-gray-300 bg-white shadow-lg z-20 max-h-48 overflow-y-auto dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200">
+                  {STATUS_FILTER_OPTIONS.map((option) => (
+                    <button
+                      key={option}
+                      type="button"
+                      className="w-full px-4 py-2 text-left text-gray-900 dark:text-gray-200 first:rounded-t-lg last:rounded-b-lg text-sm hover:bg-cert-red hover:text-white duration-100"
+                      onClick={() => {
+                        updateFilter("studyStatus", option);
+                        closeAllDropdowns();
+                      }}
+                    >
+                      {STATUS_LABELS[option]}
+                    </button>
+                  ))}
+                </div>
+              )}
           </div>
         </div>
       </div>

@@ -39,7 +39,7 @@ export default async function SCStudyContentList({
   currentTab,
   currentView,
   currentSearch = "",
-  currentPage = 1,
+  currentPage,
   studyCurrentFilters,
 }: SCStudyContentListProps) {
   const statusByView =
@@ -73,23 +73,26 @@ export default async function SCStudyContentList({
   } else if (isDefaultFilters && currentView === "list") {
     const listData = await getStudies((currentPage ?? 1) - 1);
     studyMaterials = listData.content ?? [];
-    totalItems = studyMaterials.length;
+    totalItems = listData.totalElements ?? 0;
     totalPages = listData.totalPages ?? 1;
     currentValidPage = (listData.number ?? 0) + 1;
   } else {
-    const searchData = await searchStudies({
-      keyword: studyCurrentFilters.search,
-      category: studyCurrentFilters.category,
-      subcategory: SUBCATEGORY_TO_EN[studyCurrentFilters.subCategory],
-      studyStatus: studyCurrentFilters.studyStatus || "READY",
-      // studyStatus:
-      //   currentView === "pending"
-      //     ? "READY"
-      //     : studyCurrentFilters.studyStatus || "ALL",
-      semester: studyCurrentFilters.semester,
-    });
+    const searchData = await searchStudies(
+      {
+        keyword: studyCurrentFilters.search,
+        category: studyCurrentFilters.category,
+        subcategory: SUBCATEGORY_TO_EN[studyCurrentFilters.subCategory],
+        studyStatus:
+          currentView === "pending" ? "READY" : studyCurrentFilters.studyStatus,
+        semester: studyCurrentFilters.semester,
+      },
+      {
+        page: (currentPage ?? 1) - 1,
+      }
+    );
     studyMaterials = searchData.content ?? [];
-    totalItems = studyMaterials.length;
+
+    totalItems = searchData.totalElements ?? 0;
     totalPages = searchData.totalPages ?? 1;
     currentValidPage = (searchData.number ?? 0) + 1;
   }
@@ -249,7 +252,7 @@ export default async function SCStudyContentList({
                       </div>
 
                       {study.status === "READY" && (
-                        <div className="flex flex-row gap-2 w-full sm:w-[20rem] h-full justify-end items-end self-end z-30">
+                        <div className="flex flex-row gap-2 w-full sm:w-[20rem] h-full justify-end items-end self-end">
                           <CCAdminStudyProjectActionButtons id={study.id} />
                         </div>
                       )}

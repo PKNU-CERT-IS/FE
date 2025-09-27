@@ -1,18 +1,20 @@
-import {
-  AlertTriangle,
-  Award,
-  BookOpen,
-  TrendingUp,
-  Users,
-} from "lucide-react";
+import { searchProjects } from "@/app/api/project/SCProjectApi";
+import { searchStudies } from "@/app/api/study/SCStudyApi";
+import { AlertTriangle, BookOpen, TrendingUp, Users } from "lucide-react";
 import Link from "next/link";
 import { getMembersForStaff } from "@/app/api/member/SCadminMemberApi";
 import { groupMembersByPenalty } from "@/utils/membersUtils";
 
 export default async function SCTotalDashBoard() {
+  const studyData = await searchStudies({ studyStatus: "INPROGRESS" });
+  const studyCount = studyData?.content?.length ?? 0;
+  const projectData = await searchProjects({ projectStatus: "INPROGRESS" });
+  const projectCount = projectData?.content?.length ?? 0;
+
   const members = await getMembersForStaff();
   const membersByPenalty = groupMembersByPenalty(members);
   // const memberWithMoreThan4Penalty =
+
   return (
     <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6">
       <Link href={"/admin/members"}>
@@ -53,10 +55,8 @@ export default async function SCTotalDashBoard() {
             </div>
           </div>
           <div className="p-6 pt-0">
-            <div className="text-2xl font-semibold text-gray-900">18개</div>
-            <div className="flex items-center mt-2">
-              <Award className="h-4 w-4 text-blue-500 mr-1" />
-              <p className="text-sm text-blue-600">+3개 신규 개설</p>
+            <div className="text-2xl font-semibold text-gray-900">
+              {studyCount}개
             </div>
           </div>
         </div>
@@ -78,10 +78,8 @@ export default async function SCTotalDashBoard() {
             </div>
           </div>
           <div className="p-6 pt-0">
-            <div className="text-2xl font-semibold text-gray-900">7개</div>
-            <div className="flex items-center mt-2">
-              <TrendingUp className="h-4 w-4 text-green-500 mr-1" />
-              <p className="text-sm text-green-600">+1개 신규 개설</p>
+            <div className="text-2xl font-semibold text-gray-900">
+              {projectCount}개
             </div>
           </div>
         </div>

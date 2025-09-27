@@ -10,7 +10,7 @@ export interface ProjectSearchParams {
   semester?: string;
   category?: string;
   subCategory?: string;
-  status?: string;
+  projectStatus?: string;
   page?: string;
 }
 
