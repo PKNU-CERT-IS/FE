@@ -30,11 +30,8 @@ const nextConfig: NextConfig = {
 };
 
 module.exports = withSentryConfig(nextConfig, {
-  org: "example-org",
-  project: "example-project",
-  // Only print logs for uploading source maps in CI
-  // Set to `true` to suppress logs
+  org: process.env.SENTRY_ORG,
+  project: process.env.SENTRY_PROJECT,
   silent: !process.env.CI,
-  // Automatically tree-shake Sentry logger statements to reduce bundle size
   disableLogger: true,
 });
