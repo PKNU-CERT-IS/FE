@@ -256,6 +256,7 @@ export default function WriteForm({ type, initialReferences }: WriteFormProps) {
       }
     } catch (error) {
       setAlertOpen(true);
+      throw error;
     }
   };
 

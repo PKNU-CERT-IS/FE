@@ -1,12 +1,6 @@
 import { searchProjects } from "@/app/api/project/SCProjectApi";
 import { searchStudies } from "@/app/api/study/SCStudyApi";
-import {
-  AlertTriangle,
-  Award,
-  BookOpen,
-  TrendingUp,
-  Users,
-} from "lucide-react";
+import { AlertTriangle, BookOpen, TrendingUp, Users } from "lucide-react";
 import Link from "next/link";
 
 export default async function SCTotalDashBoard() {

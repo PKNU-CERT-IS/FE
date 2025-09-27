@@ -8,7 +8,7 @@ import MeetingMinutes from "@/components/study/SCStudyMeetingMinutes";
 import DownloadButton from "@/components/detail/SCDownloadButton";
 import { formatFileSize } from "@/utils/attachedFileUtils";
 import { getFileIcon } from "@/utils/attachedFileUtils";
-import { getStatusDateInfo, getStudyPeriodLabel } from "@/utils/studyHelper";
+import { getStudyPeriodLabel } from "@/utils/studyHelper";
 import EndRequestButton from "@/components/ui/endRequestButton";
 import { getStatusColor } from "@/utils/badgeUtils";
 import { STATUS_LABELS } from "@/types/progressStatus";
