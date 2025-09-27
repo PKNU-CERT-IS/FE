@@ -49,13 +49,18 @@ export default async function SCStudyContent({
     if (isDefaultFilters) {
       data = await getStudies((currentFilters.page ?? 1) - 1);
     } else {
-      data = await searchStudies({
-        keyword: currentFilters.search,
-        category: currentFilters.category,
-        subcategory: SUBCATEGORY_TO_EN[currentFilters.subCategory],
-        studyStatus: currentFilters.studyStatus,
-        semester: currentFilters.semester,
-      });
+      data = await searchStudies(
+        {
+          keyword: currentFilters.search,
+          category: currentFilters.category,
+          subcategory: SUBCATEGORY_TO_EN[currentFilters.subCategory],
+          studyStatus: currentFilters.studyStatus,
+          semester: currentFilters.semester,
+        },
+        {
+          page: (currentFilters.page ?? 1) - 1,
+        }
+      );
     }
 
     const studyMaterials: StudyList[] = data.content;

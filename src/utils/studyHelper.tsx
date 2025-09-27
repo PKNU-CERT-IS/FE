@@ -1,3 +1,4 @@
+import { ProjectSearchParams } from "@/components/project/CCProjectPagination";
 import { CategoryType, SubCategoryType } from "@/types/category";
 import { StatusType } from "@/types/progressStatus";
 import type { SemesterType, StudySearchParams } from "@/types/study";
@@ -296,7 +297,9 @@ export const calculateParticipationRate = (
   return Math.round((current / max) * 100);
 };
 
-export function parseSearchParams(searchParams?: StudySearchParams | null) {
+export function parseSearchParams(
+  searchParams?: StudySearchParams | ProjectSearchParams
+) {
   if (!searchParams) {
     return {
       search: "",
@@ -314,7 +317,15 @@ export function parseSearchParams(searchParams?: StudySearchParams | null) {
     semester: (searchParams.semester as SemesterType) || "ALL",
     category: (searchParams.category as CategoryType) || "ALL",
     subCategory: (searchParams.subCategory as SubCategoryType) || "ALL",
-    studyStatus: (searchParams.studyStatus as StatusType) || "ALL",
+    studyStatus:
+      "studyStatus" in searchParams
+        ? (searchParams.studyStatus as StatusType) || "ALL"
+        : "ALL",
+
+    projectStatus:
+      "status" in searchParams
+        ? (searchParams.status as StatusType) || "ALL"
+        : "ALL",
     page: parseInt(searchParams.page || "1", 10),
   };
 }

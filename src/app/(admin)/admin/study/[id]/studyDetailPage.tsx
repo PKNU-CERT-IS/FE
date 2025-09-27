@@ -43,8 +43,6 @@ export default async function StudyDetailPage({
   // 현재 유저 판별
   const currentUser = await getCurrentUser();
 
-  const { status } = getStatusDateInfo(studyData.startDate, studyData.endDate);
-
   // 승인된 스터디원
   const approvedData = await getApprovedParticipants(studyId, 0, 10);
   const approvedMember = approvedData.content ?? [];
@@ -74,9 +72,9 @@ export default async function StudyDetailPage({
                   <div className="flex items-center gap-2">
                     <DefaultBadge
                       variant="custom"
-                      className={getStatusColor(status)}
+                      className={getStatusColor(studyData.status)}
                     >
-                      {STATUS_LABELS[status]}
+                      {STATUS_LABELS[studyData.status]}
                     </DefaultBadge>{" "}
                     <DefaultBadge
                       variant="outline"
