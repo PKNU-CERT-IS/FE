@@ -4,7 +4,7 @@ import { getRoleBadgeStyle, getRoleBorderStyle } from "@/utils/membersUtils";
 import Image from "next/image";
 import GithubSVG from "/public/icons/github.svg";
 import EmailSVG from "/public/icons/email.svg";
-import LinkedinSVG from "/public/icons/linkedin.svg";
+import LinkedinSVG from "/public/icons/linkedIn.svg";
 import { translateMemberRole } from "@/utils/transfromResponseValue";
 import { AdminMemberDetailInfoType } from "@/types/admin/adminMembers";
 import ClipboardButton from "@/components/ui/CCClipboardButton";
