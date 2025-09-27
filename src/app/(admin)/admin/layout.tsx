@@ -1,4 +1,3 @@
-import CCThemeSwitch from "@/components/ui/CCThemeSwitch";
 import CCTopButton from "@/components/ui/CCTopButton";
 import AdminNavigationBar from "@/layouts/admin/adminNavigationBar";
 import Footer from "@/layouts/footer";
@@ -20,7 +19,6 @@ export default function AdminLayout({
       <footer>
         <Footer />
       </footer>
-      <CCThemeSwitch />
       <CCTopButton />
     </div>
   );

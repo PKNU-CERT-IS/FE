@@ -14,13 +14,9 @@ import {
   getSubCategories,
 } from "@/utils/newPageFormUtils";
 import { AttachedFile } from "@/types/attachedFile";
-
-// import { Reference } from "@/types/blog";
 import { createBoard } from "@/app/api/board/CCboardApi";
-
 import { BlogReferenceType, BlogCreateRequest } from "@/types/blog";
 import { createBlog } from "@/app/api/blog/CCblogApi";
-
 import AlertModal from "@/components/ui/defaultAlertModal";
 import { createStudy } from "@/app/api/study/CCStudyApi";
 import { toOffset } from "@/utils/transformRequestValue";
@@ -44,28 +40,6 @@ const PLAN_SAMPLE = {
   label: "계획서 샘플 (DOCX)",
   href: "/samples/plan-sample.docx", // public/samples/plan-sample.docx 에 파일 두기
 };
-
-// 내가 참여한 활동 리스트 (더미 예시)
-// const myActivities: Reference[] = [
-//   { referenceId: 1, type: "study", title: "OWASP Top 10 2023 취약점 분석" },
-//   {
-//     referenceId: 2,
-//     type: "study",
-//     title: "Metasploit Framework 완전 정복",
-//   },
-//   {
-//     referenceId: 1,
-//     type: "project",
-//     title: "Social Impact Hackathon 2025",
-//   },
-//   {
-//     referenceId: 2,
-//     type: "project",
-//     title: "OWASP Top 10 2023 취약점 분석",
-//   },
-// ];
-
-// export default function WriteForm({ type }: WriteFormProps) {
 
 export default function WriteForm({ type, initialReferences }: WriteFormProps) {
   const router = useRouter();
@@ -275,18 +249,12 @@ export default function WriteForm({ type, initialReferences }: WriteFormProps) {
               router.refresh();
             }, 100);
           }
-
-          //   externalLinks: externalLinks.filter((l) => l.label && l.url),
-          //   projectImage,
-          //   semester,
-          // };
           break;
         }
         default:
           throw new Error(`Unknown type: ${type}`);
       }
     } catch (error) {
-      console.error(`${type} 생성 중 오류 발생:`, error);
       setAlertOpen(true);
     }
   };
@@ -301,7 +269,7 @@ export default function WriteForm({ type, initialReferences }: WriteFormProps) {
 
     const reader = new FileReader();
     reader.onloadend = () => {
-      setThumbnailUrl(reader.result as string); // base64 string
+      setThumbnailUrl(reader.result as string);
     };
     reader.readAsDataURL(file);
   };
@@ -322,7 +290,6 @@ export default function WriteForm({ type, initialReferences }: WriteFormProps) {
                 </p>
               </div>
 
-              {/* 다운로드 버튼 */}
               <a
                 href={PLAN_SAMPLE.href}
                 download

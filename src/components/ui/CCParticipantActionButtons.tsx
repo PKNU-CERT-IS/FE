@@ -48,7 +48,7 @@ export default function CCParticipantActionButtons({
       }
       router.refresh();
     } catch (err) {
-      console.error("승인 실패:", err);
+      throw err;
     }
   };
 
@@ -69,7 +69,7 @@ export default function CCParticipantActionButtons({
       }
       router.refresh();
     } catch (err) {
-      console.error("거절 실패:", err);
+      throw err;
     }
   };
 
