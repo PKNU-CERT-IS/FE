@@ -323,8 +323,8 @@ export function parseSearchParams(
         : "ALL",
 
     projectStatus:
-      "status" in searchParams
-        ? (searchParams.status as StatusType) || "ALL"
+      "projectStatus" in searchParams
+        ? (searchParams.projectStatus as StatusType) || "ALL"
         : "ALL",
     page: parseInt(searchParams.page || "1", 10),
   };

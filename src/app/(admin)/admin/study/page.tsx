@@ -21,7 +21,6 @@ interface AdminStudyProps {
     view?: string;
     category?: string;
     subCategory?: string;
-    projectStatus?: string;
   }>;
 }
 
@@ -41,15 +40,12 @@ export default async function AdminStudyPage({
   const currentView: SubTab =
     viewParam && isValidSubTab(viewParam) ? viewParam : "list";
 
-  // const filters = parseSearchParams(resolvedSearchParams);
-
   const baseFilters = parseSearchParams(resolvedSearchParams);
 
   const studyFilters = {
     ...baseFilters,
     studyStatus: baseFilters.studyStatus,
   };
-
   const projectFilters = {
     ...baseFilters,
     projectStatus: baseFilters.projectStatus,

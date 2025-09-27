@@ -68,7 +68,6 @@ export async function searchStudies(
     }
 
     const json = await res.json();
-    console.log(json);
     return json.data;
   } catch (error) {
     throw error;

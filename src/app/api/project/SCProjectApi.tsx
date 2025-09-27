@@ -56,8 +56,12 @@ export async function searchProjects(
     if (filters.projectStatus && filters.projectStatus !== "ALL") {
       params.append("projectStatus", filters.projectStatus);
     }
-    params.append("page", String((options.page ?? 1) - 1));
-    params.append("size", String(options.size ?? 10));
+    if (options.page !== undefined) {
+      params.append("page", String(options.page));
+    }
+    if (options.size !== undefined) {
+      params.append("size", String(options.size));
+    }
     (options.sort ?? ["createdAt,desc"]).forEach((s) =>
       params.append("sort", s)
     );
