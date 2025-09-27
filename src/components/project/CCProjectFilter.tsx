@@ -314,7 +314,7 @@ export default function CCProjectFilter({
               }}
             >
               <span className="text-gray-700 truncate pr-1 dark:text-gray-200">
-                {STATUS_LABELS[projectCurrentFilters.projectStatus]}
+                {STATUS_LABELS[projectCurrentFilters.projectStatus ?? "ALL"]}
               </span>
               <ChevronDown
                 className={`h-4 w-4 transition-transform duration-300 text-gray-400 ${

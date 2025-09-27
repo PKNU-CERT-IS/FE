@@ -21,6 +21,8 @@ interface AdminStudyProps {
     view?: string;
     category?: string;
     subCategory?: string;
+    projectStatus?: string;
+    studyStatus?: string;
   }>;
 }
 
