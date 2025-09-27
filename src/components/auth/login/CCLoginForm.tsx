@@ -9,7 +9,7 @@ import { Eye, EyeOff, LockOpen, Loader2 } from "lucide-react";
 import { useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/store/authStore";
-
+import { useEffect } from "react";
 export default function CCLoginInput() {
   const { showPassword, setShowPassword, loginFormData, setLoginFormData } =
     useAuth();
@@ -17,12 +17,26 @@ export default function CCLoginInput() {
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
 
+  useEffect(() => {
+    const savedId = localStorage.getItem("savedId");
+    if (savedId) {
+      setLoginFormData({ ...loginFormData, id: savedId, rememberId: true });
+    }
+  }, []);
+
   async function handleSubmit(formData: FormData) {
     startTransition(async () => {
       try {
         const result = await loginAction(formData);
         if (result.success) {
           setAuth(true, result.role);
+
+          if (loginFormData.rememberId) {
+            localStorage.setItem("savedId", loginFormData.id);
+          } else {
+            localStorage.removeItem("savedId");
+          }
+
           router.push("/");
         } else {
           console.log(result.message);
@@ -100,10 +114,11 @@ export default function CCLoginInput() {
 
       {/* 추가 옵션 */}
       <div className="space-y-3">
-        <label className="flex items-center space-x-2 cursor-pointer">
+        <label className="flex items-center space-x-2 pt-1 pb-1 pl-1 cursor-pointer">
           <input
             type="checkbox"
             name="rememberId"
+            className="accent-cert-dark-red w-4 h-4 rounded"
             checked={loginFormData.rememberId}
             onChange={(e) =>
               setLoginFormData({
@@ -114,22 +129,6 @@ export default function CCLoginInput() {
           />
           <span className="text-sm text-gray-700 dark:text-gray-300">
             아이디 기억하기
-          </span>
-        </label>
-        <label className="flex items-center space-x-2 cursor-pointer">
-          <input
-            type="checkbox"
-            name="autoLogin"
-            checked={loginFormData.autoLogin}
-            onChange={(e) =>
-              setLoginFormData({
-                ...loginFormData,
-                autoLogin: e.target.checked,
-              })
-            }
-          />
-          <span className="text-sm text-gray-700 dark:text-gray-300">
-            자동 로그인
           </span>
         </label>
       </div>
