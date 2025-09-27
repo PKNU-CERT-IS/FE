@@ -5,6 +5,7 @@ import Image from "next/image";
 import GithubSVG from "/public/icons/github.svg";
 import EmailSVG from "/public/icons/email.svg";
 import LinkedinSVG from "/public/icons/linkedIn.svg";
+import LogoSVG from "/public/icons/logo.svg";
 import {
   translateMemberRole,
   translateGradeToKorean,
@@ -40,7 +41,7 @@ export default function MembersCard({
                 className="rounded-full object-cover dark:text-gray-200"
               />
             ) : (
-              <div>{members.name}</div>
+              <LogoSVG className="w-22 h-22 text-gray-400" />
             )}
           </div>
 
