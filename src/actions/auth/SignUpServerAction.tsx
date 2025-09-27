@@ -37,9 +37,9 @@ export async function signupAction(formData: FormData) {
       gender,
     }),
   });
-
   if (!res.ok) {
-    return { success: false, message: "회원가입 실패" };
+    const data = await res.json();
+    return { success: false, message: data?.message || "회원가입 실패" };
   }
 
   return { success: true };

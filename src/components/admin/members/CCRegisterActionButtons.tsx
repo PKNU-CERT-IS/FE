@@ -12,7 +12,7 @@ interface RequestActionButtonsProps {
   fieldName?: string;
 }
 
-export default function RequestActionButtons({
+export default function RegisterActionButtons({
   id,
   grade,
 }: RequestActionButtonsProps) {

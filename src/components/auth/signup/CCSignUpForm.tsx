@@ -43,9 +43,9 @@ export default function CCSignUpForm() {
     genderDropdownRef,
   } = useAuth();
 
-  const [alertOpen, setAlertOpen] = useState(false);
-  const [formattedPhone, setFormattedPhone] = useState("");
-
+  const [alertOpen, setAlertOpen] = useState<boolean>(false);
+  const [formattedPhone, setFormattedPhone] = useState<string>("");
+  const [alertMessage, setAlertMessage] = useState<string>("");
   const [isPending, startTransition] = useTransition();
 
   // signupFormData.phone이 변경될 때 formattedPhone 업데이트
@@ -106,7 +106,11 @@ export default function CCSignUpForm() {
       if (result.success) {
         router.push("/login");
       } else {
-        setAlertOpen(true);
+        setAlertOpen(false);
+        setTimeout(() => {
+          setAlertMessage(result.message);
+          setAlertOpen(true);
+        }, 100);
       }
     });
   }
@@ -522,8 +526,9 @@ export default function CCSignUpForm() {
         </DefaultButton>
       </form>
       <AlertModal
+        key={alertMessage}
         isOpen={alertOpen}
-        message={"회원가입에 실패하였습니다."}
+        message={alertMessage}
         type="error"
         duration={6000}
         onClose={() => setAlertOpen(false)}
