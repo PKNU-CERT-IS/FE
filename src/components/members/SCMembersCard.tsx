@@ -4,14 +4,17 @@ import { getRoleBadgeStyle, getRoleBorderStyle } from "@/utils/membersUtils";
 import Image from "next/image";
 import GithubSVG from "/public/icons/github.svg";
 import EmailSVG from "/public/icons/email.svg";
+import LinkedinSVG from "/public/icons/linkedin.svg";
 import { translateMemberRole } from "@/utils/transfromResponseValue";
 import { AdminMemberDetailInfoType } from "@/types/admin/adminMembers";
+import ClipboardButton from "@/components/ui/CCClipboardButton";
 export default function MembersCard({
   members,
 }: {
   members: AdminMemberDetailInfoType;
 }) {
   const role = translateMemberRole(members.role);
+  console.log(members);
   return (
     <div
       className={`card-list p-6 group transform hover:-translate-y-2 hover:shadow-2xl hover:shadow-gray-300/50 shadow-sm cursor-default dark:bg-gray-800 dark:border-gray-700 ${getRoleBorderStyle(
@@ -77,15 +80,50 @@ export default function MembersCard({
       </div>
 
       <div className="flex justify-center gap-3 pt-4 border-t border-gray-100 mt-auto dark:border-gray-700">
-        <button
-          className={`h-8 w-8 flex items-center justify-center text-gray-400 hover:text-cert-black transition-colors duration-300 cursor-pointer`}
-        >
-          <EmailSVG className="w-4 h-4" />
-        </button>
+        {members.email && (
+          <ClipboardButton
+            text={members.email}
+            tooltip="이메일 복사"
+            className="text-gray-400 hover:text-red-500"
+          >
+            <EmailSVG className="w-4 h-4" />
+          </ClipboardButton>
+        )}
+
+        {/* GitHub → 이동 */}
         {members.githubUrl && (
-          <button className="h-8 w-8 flex items-center justify-center text-gray-400 hover:text-cert-black  transition-colors duration-300 cursor-pointer">
-            <GithubSVG className="w-4 h-4" />
-          </button>
+          <div className="relative flex items-center justify-center group/github">
+            <a
+              href={members.githubUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="h-8 w-8 flex items-center justify-center text-gray-400 hover:text-gray-900 transition-colors duration-300 cursor-pointer"
+            >
+              <GithubSVG className="w-4 h-4" />
+            </a>
+            <span
+              className="
+        absolute bottom-full left-1/2 -translate-x-1/2 mb-2
+        px-2 py-1 text-xs whitespace-nowrap
+        rounded bg-gray-800 text-white shadow
+        opacity-0 group-hover/github:opacity-100
+        transition-opacity duration-200 pointer-events-none z-10
+      "
+            >
+              GitHub 이동
+            </span>
+          </div>
+        )}
+
+        {/* LinkedIn 복사 */}
+        {members.linkedinUrl && (
+          <ClipboardButton
+            text={members.linkedinUrl}
+            tooltip="LinkedIn 복사"
+            className="text-gray-400 hover:text-blue-600"
+          >
+            <LinkedinSVG className="w-6 h-6" />
+          </ClipboardButton>
         )}
       </div>
     </div>
