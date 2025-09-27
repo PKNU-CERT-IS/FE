@@ -10,12 +10,11 @@ import {
   ResponsiveContainer,
   Cell,
 } from "recharts";
-
-const penaltyData = [
-  { score: "3점", count: 2 },
-  { score: "2점", count: 4 },
-  { score: "1점", count: 8 },
-];
+import { groupMembersByPenalty } from "@/utils/membersUtils";
+import { AdminMemberDetailInfoType } from "@/types/admin/adminMembers";
+interface CCPenaltyBarChartProps {
+  members: AdminMemberDetailInfoType[];
+}
 
 const scoreColorMap: Record<string, string> = {
   "3점": "#7f0000",
@@ -23,7 +22,17 @@ const scoreColorMap: Record<string, string> = {
   "1점": "#ef5350",
 };
 
-export default function CCPenaltyBarChart() {
+export default function CCPenaltyBarChart({ members }: CCPenaltyBarChartProps) {
+  const membersByPenalty = groupMembersByPenalty(members);
+  const penaltyData = [
+    {
+      score: "3점",
+      count: membersByPenalty.three.length,
+    },
+    { score: "2점", count: membersByPenalty.two.length },
+    { score: "1점", count: membersByPenalty.one.length },
+  ];
+
   return (
     <div className="w-full">
       <ResponsiveContainer width="100%" height={350}>
