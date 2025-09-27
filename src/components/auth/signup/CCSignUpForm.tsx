@@ -22,7 +22,7 @@ import { signupAction } from "@/actions/auth/SignUpServerAction";
 import { GENDER_OPTIONS } from "@/types/login";
 import { membersGradeCategories } from "@/types/members";
 import AlertModal from "@/components/ui/defaultAlertModal";
-import { use, useState, useTransition } from "react";
+import { useState, useTransition } from "react";
 
 export default function CCSignUpForm() {
   const {

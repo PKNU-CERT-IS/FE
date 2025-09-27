@@ -145,3 +145,20 @@ export const filterMembers = (
       return a.name.localeCompare(b.name, "ko-KR");
     });
 };
+
+/**
+ * 벌점 조건별 회원 배열 반환
+ * 1점, 2점, 3점, 4점 이상
+ */
+
+export function groupMembersByPenalty(members: AdminMemberDetailInfoType[]) {
+  return {
+    one: members.filter((members) => members.penaltyPoints === 1),
+    two: members.filter((members) => members.penaltyPoints === 2),
+    three: members.filter((members) => members.penaltyPoints === 3),
+    fourOrMore: members.filter((members) => members.penaltyPoints >= 4),
+    twoOrMore: members
+      .filter((m) => m.penaltyPoints >= 2)
+      .sort((a, b) => b.penaltyPoints - a.penaltyPoints),
+  };
+}

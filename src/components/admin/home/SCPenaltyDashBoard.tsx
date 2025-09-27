@@ -1,31 +1,12 @@
 import DefaultBadge from "@/components/ui/defaultBadge";
 import { AlertTriangle } from "lucide-react";
 import CCPenaltyBarCharts from "@/components/admin/home/CCPenaltyCharts";
+import { getMembersForStaff } from "@/app/api/member/SCadminMemberApi";
+import { groupMembersByPenalty } from "@/utils/membersUtils";
 
-const withdrawalList = [
-  {
-    name: "김철수",
-    penalty: 3,
-    department: "컴퓨터공학과",
-  },
-  {
-    name: "이영희",
-    penalty: 2,
-    department: "소프트웨어학과",
-  },
-  {
-    name: "박민수",
-    penalty: 2,
-    department: "정보보안학과",
-  },
-  {
-    name: "박민수",
-    penalty: 2,
-    department: "정보보안학과",
-  },
-];
-
-export default function SCPenaltyDashBoard() {
+export default async function SCPenaltyDashBoard() {
+  const members = await getMembersForStaff();
+  const membersWithHighPenalty = groupMembersByPenalty(members).twoOrMore;
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
       <div className="text-card-foreground card-list cursor-default">
@@ -39,7 +20,7 @@ export default function SCPenaltyDashBoard() {
         </div>
         <div className="p-6 pt-0">
           <div className="h-full flex items-center justify-center ">
-            <CCPenaltyBarCharts />
+            <CCPenaltyBarCharts members={members} />
           </div>
         </div>
       </div>
@@ -51,12 +32,12 @@ export default function SCPenaltyDashBoard() {
             탈퇴 위험 회원
           </div>
           <div className="text-base text-muted-foreground">
-            벌점 4점 이상 회원 목록
+            벌점 2점 이상 회원 목록
           </div>
         </div>
         <div>
           <div className="space-y-4 px-6 pb-6 max-h-[22rem] overflow-y-auto">
-            {withdrawalList.map((member, index) => (
+            {membersWithHighPenalty.map((member, index) => (
               <div
                 key={index}
                 className="p-4 border border-gray-200 rounded-lg hover:bg-red-50 hover:border-cert-red/50 transition-all duration-200"
@@ -68,10 +49,10 @@ export default function SCPenaltyDashBoard() {
                         {member.name}
                       </span>
                       <DefaultBadge className="bg-cert-dark-red">
-                        {member.penalty}점
+                        {member.penaltyPoints}점
                       </DefaultBadge>
                     </div>
-                    <p className="text-sm text-gray-600">{member.department}</p>
+                    <p className="text-sm text-gray-600">{member.major}</p>
                   </div>
                 </div>
               </div>
