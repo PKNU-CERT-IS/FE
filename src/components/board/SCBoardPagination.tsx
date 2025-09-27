@@ -23,7 +23,7 @@ export default function BoardPagination({
   if (totalPages <= 1) return null;
   const createPageUrl = (page: number) => {
     const params = {
-      ...(currentSearch && { search: currentSearch }),
+      ...(currentSearch && { keyword: currentSearch }),
       ...(currentCategory !== "전체" && {
         category: categoryMappingToEN[currentCategory],
       }),

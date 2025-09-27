@@ -14,12 +14,15 @@ import { formatDate, formatTime } from "@/utils/formatDateUtil";
 import { useModal } from "@/hooks/useModal";
 import { useSchedule } from "@/hooks/useSchedule";
 import { getTypeLabel, labelToType } from "@/utils/scheduleUtils";
-import { createSchedule, deleteSchedule } from "@/api/schedule/CCSchedule";
+import {
+  createSchedule,
+  deleteSchedule,
+} from "@/app/api/schedule/CCScheduleApi";
 import { toOffset } from "@/utils/transformRequestValue";
 import {
   createAdminSchedule,
   deleteAdminSchedule,
-} from "@/api/schedule/CCAdminSchedule";
+} from "@/app/api/schedule/CCAdminScheduleApi";
 
 interface ScheduleFormModalProps {
   closeModal: () => void;
@@ -74,6 +77,7 @@ export default function CCScheduleFormModal({
       handleStartTime(formatTime(schedule.startedAt, "hm"));
       handleEndTime(formatTime(schedule.endedAt, "hm"));
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [schedule]);
 
   const isValidForm =

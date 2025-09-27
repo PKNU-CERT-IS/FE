@@ -1,36 +1,48 @@
 "server-only";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
-import { ProjectMaterial } from "@/types/project";
 import AttachedFilesDownload from "@/components/project/CCAttachedFilesDownload";
-import { Globe, BookText } from "lucide-react";
+import { Globe } from "lucide-react";
 import Image from "next/image";
-import { getProjectMaterials } from "@/mocks/mockProjectData";
 import BackToListButton from "@/components/detail/SCBackToListButton";
 import KebabMenu from "@/components/detail/CCKebabMenu";
 import ShareButton from "@/components/detail/CCShareButton";
-import { AUTHOR_STATUS_LABELS } from "@/types/project";
 import DefaultBadge from "@/components/ui/defaultBadge";
-import MeetingMinutes from "@/components/study/CCMeetingMinutes";
+import MeetingMinutes from "@/components/project/SCProjectMeetingMinutes";
 import EndRequestButton from "@/components/ui/endRequestButton";
 import { getStatusColor } from "@/utils/badgeUtils";
 import { STATUS_LABELS } from "@/types/progressStatus";
+import { getDetailProject } from "@/app/api/project/SCProjectApi";
+import { MEMBER_GRADE_LABELS, MemberGrade } from "@/types/study";
+import { formatDate } from "@/utils/formatDateUtil";
+import { getCurrentUser } from "@/lib/auth/currentUser";
+import {
+  getProjectApprovedParticipants,
+  getProjectPendingParticipants,
+} from "@/app/api/project/SCProjectParticipantApi";
+import CCParticipantActionButtons from "@/components/ui/CCParticipantActionButtons";
+import { CCJoinButton } from "@/components/ui/CCJoinButton";
+import { SUBCATEGORY_FROM_EN } from "@/types/category";
+
+import MarkdownRenderer from "@/components/ui/defaultMarkdownRenderer";
+import { ProjectMaterial } from "@/types/project";
+import { getStudyPeriodLabel } from "@/utils/studyHelper";
 
 interface ProjectDetailPageProps {
   params: Promise<{ id: string }>;
 }
-
-const getProjectById = (id: string): ProjectMaterial | undefined => {
-  const projects = getProjectMaterials();
-  return projects.find((p) => p.id === id);
-};
 
 // 동적 메타데이터 생성
 export async function generateMetadata({
   params,
 }: ProjectDetailPageProps): Promise<Metadata> {
   const { id } = await params;
-  const projectData = getProjectById(id);
+  const projectId = parseInt(id, 10);
+
+  const projectData = await getDetailProject(projectId);
+  if (!projectData) {
+    notFound();
+  }
 
   if (!projectData) {
     return {
@@ -46,58 +58,50 @@ export async function generateMetadata({
       title: projectData.title,
       description: projectData.description.substring(0, 160) + "...",
       type: "article",
-      authors: [projectData.author],
+      authors: [projectData.projectCreatorName],
       images: ["/logo.svg"],
     },
   };
 }
 
-// 외부 링크용 아이콘 반환
-const getExternalLinkIcon = (type?: string) => {
-  switch (type) {
-    case "notion":
-      return (
-        <div className="w-5 h-5 bg-white border border-gray-300 rounded flex items-center justify-center">
-          <span className="text-black font-bold text-sm">N</span>
-        </div>
-      );
-    case "gdocs":
-      return (
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-          <rect width="20" height="20" rx="4" fill="#fff" />
-          <rect x="5" y="3" width="10" height="14" rx="2" fill="#4285F4" />
-          <rect x="7" y="6" width="6" height="1.2" rx="0.6" fill="#fff" />
-          <rect x="7" y="8.5" width="6" height="1.2" rx="0.6" fill="#fff" />
-          <rect x="7" y="11" width="4" height="1.2" rx="0.6" fill="#fff" />
-        </svg>
-      );
-    case "drive":
-      return <BookText className="w-5 h-5" />;
-    case "figma":
-      return (
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-          <circle cx="10" cy="10" r="8" fill="#fff" />
-          <circle cx="10" cy="6.5" r="2.5" fill="#F24E1E" />
-          <circle cx="10" cy="13.5" r="2.5" fill="#1ABCFE" />
-          <circle cx="6.5" cy="10" r="2.5" fill="#A259FF" />
-          <circle cx="13.5" cy="10" r="2.5" fill="#0ACF83" />
-        </svg>
-      );
-    default:
-      return <Globe className="w-5 h-5" />;
-  }
-};
-
 export default async function ProjectDetailPage({
   params,
 }: ProjectDetailPageProps) {
-  const resolvedParams = await params;
-  const id = parseInt(resolvedParams.id, 10);
-  const project = getProjectById(resolvedParams.id);
+  const { id } = await params;
+  const projectId = parseInt(id, 10);
 
+  const project: ProjectMaterial = await getDetailProject(projectId);
   if (!project) {
     notFound();
   }
+  // 현재 유저 판별
+  const currentUser = await getCurrentUser();
+
+  // 프로젝트장이면 승인/거절 가능
+  const canApproveOrReject =
+    currentUser && currentUser.sub === String(project.creatorId);
+
+  // 승인된 프로젝트원
+  const approvedData = await getProjectApprovedParticipants(projectId, 0, 10);
+  const approvedMember = approvedData.content ?? [];
+
+  // 대기 중인 프로젝트원
+  const pendingData = await getProjectPendingParticipants(projectId, 0, 10);
+  const pendingMember = pendingData.content ?? [];
+  const isAlreadyApproved = approvedMember.some(
+    (m: { memberId: number }) => String(m.memberId) === String(currentUser?.sub)
+  );
+
+  const isPending = pendingMember.some(
+    (m: { memberId: number }) => String(m.memberId) === String(currentUser?.sub)
+  );
+  // 참가 버튼 렌더 조건
+  const showJoinButton =
+    currentUser &&
+    currentUser.sub !== String(project.creatorId) &&
+    !isAlreadyApproved &&
+    project.status !== "COMPLETED";
+
   return (
     <div className="mx-auto max-w-full">
       {/* 뒤로가기 버튼 */}
@@ -105,9 +109,9 @@ export default async function ProjectDetailPage({
       <article>
         {/* 프로젝트 이미지 */}
         <div className="relative h-96 mb-8 bg-gradient-to-br from-purple-400 to-indigo-600 overflow-hidden mt-6 rounded-lg">
-          {project.image ? (
+          {project.thumbnailUrl ? (
             <Image
-              src={project.image}
+              src={project.thumbnailUrl}
               alt={project.title}
               className="w-full h-full object-cover"
               fill
@@ -129,6 +133,14 @@ export default async function ProjectDetailPage({
               {STATUS_LABELS[project.status as keyof typeof STATUS_LABELS]}
             </DefaultBadge>
           </div>
+          <div className="absolute top-4 left-20">
+            <DefaultBadge
+              variant="outline"
+              className="text-cert-red border-cert-red bg-white"
+            >
+              {getStudyPeriodLabel(project.endDate)}
+            </DefaultBadge>
+          </div>
         </div>
 
         {/* 헤더 */}
@@ -138,20 +150,19 @@ export default async function ProjectDetailPage({
           </h1>
 
           <div className="flex flex-wrap gap-6 text-sm text-gray-500 mb-6 dark:text-gray-400">
-            {/* authorStatus + author */}
             <div className="flex flex-col sm:flex-row sm:items-center sm:gap-2">
               <span
                 className={`px-2 py-1 rounded text-xs font-medium ${
-                  project.authorStatus === "student"
-                    ? "bg-blue-100 text-blue-800"
-                    : project.authorStatus === "graduate"
+                  project.projectCreatorGrade === "NONE"
+                    ? "bg-gray-100 text-gray-800"
+                    : project.projectCreatorGrade === "GRADUATED"
                     ? "bg-purple-100 text-black"
-                    : "bg-gray-100 text-gray-800"
+                    : "bg-blue-100 text-blue-800"
                 }`}
               >
-                {AUTHOR_STATUS_LABELS[project.authorStatus]}
+                {MEMBER_GRADE_LABELS[project.projectCreatorGrade]}
               </span>
-              <span className="ml-1 sm:ml-0">{project.author}</span>
+              <span className="ml-1 sm:ml-0">{project.projectCreatorName}</span>
             </div>
 
             {/* 학기 */}
@@ -169,7 +180,10 @@ export default async function ProjectDetailPage({
             {/* 하위 카테고리 */}
             <div className="flex flex-col sm:flex-row sm:items-center sm:gap-2">
               <strong>하위 카테고리:</strong>
-              <span>{project.subCategory}</span>
+              <span>
+                {SUBCATEGORY_FROM_EN[project.subCategory] ??
+                  project.subCategory}
+              </span>
             </div>
           </div>
 
@@ -180,7 +194,8 @@ export default async function ProjectDetailPage({
                 프로젝트 기간
               </h4>
               <p className="text-sm text-gray-600 dark:text-gray-400">
-                {project.startDate} {project.endDate && `~ ${project.endDate}`}
+                {formatDate(project.startDate, "dot")} ~{" "}
+                {formatDate(project.endDate, "dot")}
               </p>
             </div>
             <div>
@@ -188,7 +203,8 @@ export default async function ProjectDetailPage({
                 참가 인원
               </h4>
               <p className="text-sm text-gray-600 dark:text-gray-400">
-                {project.currentParticipants} / {project.maxParticipants}명
+                {project.currentParticipantNumber} /{" "}
+                {project.maxParticipantNumber}명
               </p>
             </div>
           </div>
@@ -198,9 +214,13 @@ export default async function ProjectDetailPage({
         <div className="mt-16 max-w-none mb-8">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-3xl font-bold">프로젝트 소개</h2>
-            <KebabMenu currentId={id} currentUrl="project" />
+            <KebabMenu currentId={projectId} currentUrl="project" />
           </div>
-          <p className="text-lg leading-relaxed">{project.description}</p>
+          <p className="text-lg mb-6 leading-relaxed border-b border-gray-200 pb-6 dark:border-gray-700">
+            {project.description}
+          </p>
+
+          <MarkdownRenderer content={project.content} />
         </div>
 
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-8">
@@ -259,14 +279,41 @@ export default async function ProjectDetailPage({
                 데모 사이트
               </a>
             )}
+            {project.externalUrl && (
+              <div className="flex flex-row flex-wrap gap-2 sm:gap-3">
+                <a
+                  href={project.externalUrl.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-2 
+       px-2.5 sm:px-4 py-1.5 sm:py-2
+       bg-slate-500 text-white rounded-md
+       hover:bg-slate-600 transition-colors
+       text-md sm:text-base"
+                >
+                  <div className="font-medium flex flex-row items-center ">
+                    <Globe className="w-5 h-5 mr-2" />
+                    {project.externalUrl.title}
+                  </div>
+                </a>
+              </div>
+            )}
 
-            <button
-              className="action-button inline-flex items-center justify-center gap-2 
+            {showJoinButton && (
+              <CCJoinButton
+                dataId={project.id}
+                className="action-button inline-flex items-center justify-center gap-2 
                  px-2.5 sm:px-6 py-1.5 sm:py-2 
                  text-md sm:text-base"
-            >
-              프로젝트 참가하기
-            </button>
+                initialState={
+                  isAlreadyApproved
+                    ? "APPROVED"
+                    : isPending
+                    ? "PENDING"
+                    : "NONE"
+                }
+              />
+            )}
           </div>
 
           {/* 종료 버튼 */}
@@ -276,39 +323,111 @@ export default async function ProjectDetailPage({
         </div>
 
         {/* 첨부파일 섹션 */}
-        {project.attachedFiles && project.attachedFiles.length > 0 && (
+        {project.attachments && project.attachments.length > 0 && (
           <div className="mb-8">
-            <AttachedFilesDownload files={project.attachedFiles} />
+            <AttachedFilesDownload files={project.attachments} />
           </div>
         )}
 
-        {/* 외부 문서/링크 + 공유하기 */}
-        <div className="flex flex-col sm:flex-row sm:justify-between gap-3">
-          {project.externalLinks && project.externalLinks.length > 0 && (
-            <div className="flex flex-row flex-wrap gap-2 sm:gap-3">
-              {project.externalLinks.map((link, idx) => (
-                <a
-                  key={idx}
-                  href={link.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2 px-2.5 py-2 sm:px-4 sm:py-2
-                     bg-gray-100 text-gray-700 rounded-lg hover:bg-blue-100 transition-colors
-                     border border-gray-200 dark:bg-gray-600 dark:border-gray-500
-                     dark:text-gray-200 dark:hover:bg-gray-700 text-sm sm:text-base"
-                >
-                  {getExternalLinkIcon(link.type)}
-                  <span className="font-medium">{link.label}</span>
-                </a>
-              ))}
-            </div>
-          )}
-        </div>
-        <div className="flex justify-end mb-8 ">
+        {/* 공유하기 */}
+        <div className="flex justify-end mb-5">
           <ShareButton />
         </div>
 
-        <MeetingMinutes studyId={"1"} currentUserId={1} studyLeaderId={1} />
+        <div className="flex flex-col md:flex-row gap-6 h-full">
+          <div className="basis-2/3 h-full overflow-y-auto">
+            <MeetingMinutes
+              projectId={project.id}
+              currentUserId={Number(currentUser?.sub)}
+              projectLeaderId={project.creatorId}
+            />
+          </div>
+
+          {/* 멤버 목록: 오른쪽 1/3 */}
+          <div className="basis-1/3 h-full overflow-y-auto dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700">
+            <div className="p-6">
+              <h3 className="text-lg font-bold text-black dark:text-white mb-4">
+                프로젝트원 ({approvedMember.length})
+              </h3>
+
+              <div className="mb-6 space-y-3">
+                {approvedMember.length > 0 ? (
+                  approvedMember.map(
+                    (participant: {
+                      id: number;
+                      memberName: string;
+                      memberGrade: MemberGrade;
+                    }) => (
+                      <div
+                        key={participant.id}
+                        className="flex items-center gap-3"
+                      >
+                        <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center text-black text-xs font-medium">
+                          {participant.memberName[0]}
+                        </div>
+                        <p className="text-sm font-medium text-black dark:text-white">
+                          {participant.memberName}
+                        </p>
+                        <p className="text-xs text-gray-500 dark:text-gray-400">
+                          {MEMBER_GRADE_LABELS[participant.memberGrade]}
+                        </p>
+                      </div>
+                    )
+                  )
+                ) : (
+                  <p className="text-sm text-gray-500 dark:text-gray-400">
+                    참여 중인 멤버가 없습니다.
+                  </p>
+                )}
+              </div>
+
+              {canApproveOrReject && (
+                <div>
+                  <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                    대기중 멤버 ({pendingMember.length})
+                  </h4>
+                  <div className="space-y-3">
+                    {pendingMember.length > 0 ? (
+                      pendingMember.map(
+                        (participant: {
+                          id: number;
+                          memberName: string;
+                          memberGrade: MemberGrade;
+                        }) => (
+                          <div
+                            key={participant.id}
+                            className="flex items-center gap-3"
+                          >
+                            <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center text-black text-xs font-medium">
+                              {participant.memberName[0]}
+                            </div>
+                            <p className="text-sm font-medium text-black dark:text-white">
+                              {participant.memberName}
+                            </p>
+                            <p className="text-xs text-gray-500 dark:text-gray-400">
+                              {MEMBER_GRADE_LABELS[participant.memberGrade]}
+                            </p>
+                            {canApproveOrReject && (
+                              <div className="flex gap-2">
+                                <CCParticipantActionButtons
+                                  participantId={participant.id}
+                                />
+                              </div>
+                            )}
+                          </div>
+                        )
+                      )
+                    ) : (
+                      <p className="text-sm text-gray-500 dark:text-gray-400">
+                        대기중인 멤버가 없습니다.
+                      </p>
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
       </article>
     </div>
   );

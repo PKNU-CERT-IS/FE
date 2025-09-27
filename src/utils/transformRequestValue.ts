@@ -82,3 +82,17 @@ export function translateKoreanToRole(korean: string): string {
 
   return koreanToRoleMap[korean];
 }
+// 영어 → 한국어
+export function translateRoleToKorean(role: string): string {
+  const roleToKoreanMap: Record<string, string> = {
+    ADMIN: "관리자",
+    CHAIRMAN: "회장",
+    VICECHAIRMAN: "부회장",
+    STAFF: "임원진",
+    PLAYER: "PLAYER",
+    UPSOLVER: "UPSOLVER",
+    NONE: "없음",
+  };
+
+  return roleToKoreanMap[role] ?? role;
+}

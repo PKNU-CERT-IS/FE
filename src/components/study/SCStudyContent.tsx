@@ -1,211 +1,21 @@
 "server-only";
 
-import type { StudyMaterial, CurrentFilters } from "@/types/study";
-import { AUTHOR_STATUS_LABELS } from "@/types/study";
+import type { StudyList } from "@/types/study";
+import { MEMBER_GRADE_LABELS } from "@/types/study";
 import CCStudyPagination from "@/components/study/CCStudyPagination";
-import CCStudyDateInfo from "@/components/study/CCStudyDateInfo"; // 새로 생성한 클라이언트 컴포넌트
 import SCSearchResultNotFound from "@/components/ui/SCSearchResultNotFound";
 import { getProgressColor, parseSearchParams } from "@/utils/studyHelper";
 import { downloadFile } from "@/actions/study/StudyDownloadFileServerAction";
-import { joinStudy } from "@/actions/study/StudyJoinServerAction";
-
-import DownloadGraySVG from "/public/icons/download-gray.svg";
 import PdfSVG from "/public/icons/pdf.svg";
-
 import Link from "next/link";
 import DefaultBadge from "@/components/ui/defaultBadge";
 import { getCategoryColor, getStatusColor } from "@/utils/badgeUtils";
 import { formatFileSize } from "@/utils/attachedFileUtils";
 import { STATUS_LABELS } from "@/types/progressStatus";
-
-// 학습 자료 데이터를 가져오는 함수 (실제로는 DB에서 가져올 것)
-async function getStudyMaterials(): Promise<StudyMaterial[]> {
-  // 실제 환경에서는 데이터베이스에서 가져올 데이터
-  const studyMaterials: StudyMaterial[] = [
-    {
-      id: "1",
-      isPending: false,
-      title: "OWASP Top 10 2023 취약점 분석",
-      description: "최신 OWASP Top 10 취약점에 대한 상세 분석 자료입니다.",
-      author: "김보안",
-      authorStatus: "student",
-      semester: "2025-2",
-      attachedFiles: [
-        {
-          name: "해커톤_기획서.pdf",
-          size: 2547892,
-          type: "application/pdf",
-
-          attachedUrl: "/api/files/download/hackathon_plan.pdf",
-        },
-      ],
-      category: "CTF",
-      subCategory: "리버싱",
-      hackingTechnique: "CTF",
-      status: "in_progress",
-      startDate: "2025-07-01",
-      endDate: "2025-07-15",
-      currentParticipants: 7,
-      maxParticipants: 10,
-    },
-    {
-      id: "2",
-      isPending: false,
-      title: "Metasploit Framework 완전 정복",
-      description:
-        "Metasploit을 활용한 침투 테스트 기법과 실습 자료를 종합적으로 다룹니다.",
-      author: "이해커",
-      authorStatus: "graduate",
-      semester: "2025-2",
-      attachedFiles: [
-        {
-          name: "해커톤_기획서.pdf",
-          size: 2547892,
-          type: "application/pdf",
-          attachedUrl: "/api/files/download/hackathon_plan.pdf",
-        },
-      ],
-      category: "CTF",
-      subCategory: "리버싱",
-      hackingTechnique: "CTF",
-      status: "completed",
-      startDate: "2025-03-01",
-      endDate: "2025-05-31",
-      currentParticipants: 10,
-      maxParticipants: 10,
-    },
-    {
-      id: "3",
-      isPending: false,
-      title: "암호화 기초의 RSA 구현",
-      description:
-        "암호학의 기초 이론부터 RSA 공개키암호시스템의 Python 구현까지 다룹니다.",
-      author: "박암호",
-      authorStatus: "student",
-      semester: "2025-2",
-      attachedFiles: [
-        {
-          name: "해커톤_기획서.pdf",
-          size: 2547892,
-          type: "application/pdf",
-          attachedUrl: "/api/files/download/hackathon_plan.pdf",
-        },
-      ],
-      category: "CTF",
-      subCategory: "디지털 포렌식",
-      hackingTechnique: "CTF",
-      status: "not_started",
-      startDate: "2025-07-20",
-      currentParticipants: 1,
-      maxParticipants: 10,
-    },
-    {
-      id: "4",
-      isPending: false,
-      title: "디지털 포렌식의 실무 가이드",
-      description:
-        "Autopsy와 Volatility를 활용한 디지털 증거 수집 및 수집한 분석방법을 설명합니다.",
-      author: "최포렌식",
-      authorStatus: "graduate",
-      semester: "2025-2",
-      attachedFiles: [
-        {
-          name: "해커톤_기획서.pdf",
-          size: 2547892,
-          type: "application/pdf",
-          attachedUrl: "/api/files/download/hackathon_plan.pdf",
-        },
-      ],
-      category: "CTF",
-      subCategory: "리버싱",
-      hackingTechnique: "CTF",
-      status: "in_progress",
-      startDate: "2025-06-15",
-      endDate: "2025-08-15",
-      currentParticipants: 5,
-      maxParticipants: 10,
-    },
-    {
-      id: "5",
-      isPending: false,
-      title: "네트워크 보안 모니터링",
-      description:
-        "Wireshark와 Snort를 활용한 네트워크 트래픽 분석 및 침입 시스템 구축 방법을 다룹니다.",
-      author: "정네트워크",
-      authorStatus: "student",
-      semester: "2025-2",
-      attachedFiles: [
-        {
-          name: "해커톤_기획서.pdf",
-          size: 2547892,
-          type: "application/pdf",
-          attachedUrl: "/api/files/download/hackathon_plan.pdf",
-        },
-      ],
-      category: "CTF",
-      subCategory: "리버싱",
-      hackingTechnique: "CTF",
-      status: "completed",
-      startDate: "2024-09-01",
-      endDate: "2024-12-31",
-      currentParticipants: 8,
-      maxParticipants: 8,
-    },
-    {
-      id: "6",
-      isPending: false,
-      title: "SQL Injection 심화 분석",
-      description:
-        "다양한 SQL Injection 공격 기법과 방어 전략을 실습과 함께 학습합니다.",
-      author: "김웹해킹",
-      authorStatus: "graduate",
-      semester: "2025-2",
-      attachedFiles: [
-        {
-          name: "해커톤_기획서.pdf",
-          size: 2547892,
-          type: "application/pdf",
-          attachedUrl: "/api/files/download/hackathon_plan.pdf",
-        },
-      ],
-      category: "BLUE",
-      subCategory: "침입 탐지 및 방어(관제)",
-      hackingTechnique: "BLUE",
-      status: "not_started",
-      startDate: "2025-07-10",
-      currentParticipants: 3,
-      maxParticipants: 8,
-    },
-    {
-      id: "7",
-      isPending: false,
-      title: "모바일 앱 보안 테스팅",
-      description:
-        "Android 및 iOS 앱의 보안 취약점 분석과 테스팅 방법론을 다룹니다.",
-      author: "이모바일",
-      authorStatus: "student",
-      semester: "2025-2",
-      attachedFiles: [
-        {
-          name: "해커톤_기획서.pdf",
-          size: 2547892,
-          type: "application/pdf",
-          attachedUrl: "/api/files/download/hackathon_plan.pdf",
-        },
-      ],
-      category: "CTF",
-      subCategory: "리버싱",
-      hackingTechnique: "CTF",
-      status: "in_progress",
-      startDate: "2025-07-05",
-      endDate: "2025-08-05",
-      currentParticipants: 6,
-      maxParticipants: 12,
-    },
-  ];
-
-  return studyMaterials;
-}
+import { searchStudies, getStudies } from "@/app/api/study/SCStudyApi";
+import { SUBCATEGORY_FROM_EN, SUBCATEGORY_TO_EN } from "@/types/category";
+import { Calendar } from "lucide-react";
+import DownloadButton from "../detail/SCDownloadButton";
 
 interface SCStudyContentProps {
   searchParams: Promise<{
@@ -213,7 +23,7 @@ interface SCStudyContentProps {
     semester?: string;
     category?: string;
     subCategory?: string;
-    status?: string;
+    studyStatus?: string;
     page?: string;
   }>;
 }
@@ -221,118 +31,79 @@ interface SCStudyContentProps {
 export default async function SCStudyContent({
   searchParams,
 }: SCStudyContentProps) {
-  const ITEMS_PER_PAGE = 6;
-
   try {
-    // Promise로 된 searchParams를 await 처리 (Next.js 15 방식)
     const resolvedSearchParams = await searchParams;
 
-    // URL 파라미터에서 필터 값 추출 (안전한 파싱)
-    const currentFilters: CurrentFilters =
-      parseSearchParams(resolvedSearchParams);
+    const currentFilters = parseSearchParams(resolvedSearchParams);
 
-    // 학습 자료 데이터 가져오기
-    const studyMaterials = await getStudyMaterials();
+    // 분기 조건 체크
+    const isDefaultFilters =
+      (!currentFilters.search || currentFilters.search === "ALL") &&
+      (currentFilters.category === "ALL" || !currentFilters.category) &&
+      (currentFilters.subCategory === "ALL" || !currentFilters.subCategory) &&
+      (currentFilters.semester === "ALL" || !currentFilters.semester) &&
+      (currentFilters.studyStatus === "ALL" || !currentFilters.studyStatus);
 
-    // 필터링 로직
-    const filteredMaterials = studyMaterials.filter((material) => {
-      const matchesSearch =
-        !currentFilters.search ||
-        material.title
-          .toLowerCase()
-          .includes(currentFilters.search.toLowerCase()) ||
-        material.description
-          .toLowerCase()
-          .includes(currentFilters.search.toLowerCase()) ||
-        material.author
-          .toLowerCase()
-          .includes(currentFilters.search.toLowerCase());
+    let data;
 
-      const matchesSemester =
-        currentFilters.semester === "all" ||
-        material.semester === currentFilters.semester;
+    if (isDefaultFilters) {
+      data = await getStudies((currentFilters.page ?? 1) - 1);
+    } else {
+      data = await searchStudies({
+        keyword: currentFilters.search,
+        category: currentFilters.category,
+        subcategory: SUBCATEGORY_TO_EN[currentFilters.subCategory],
+        studyStatus: currentFilters.studyStatus,
+        semester: currentFilters.semester,
+      });
+    }
 
-      const matchesCategory =
-        currentFilters.category === "all" ||
-        material.category === currentFilters.category;
-
-      const matchesSubCategory =
-        currentFilters.subCategory === "all" ||
-        material.subCategory === currentFilters.subCategory;
-
-      const matchesStatus =
-        currentFilters.status === "all" ||
-        material.status === currentFilters.status;
-
-      return (
-        matchesSearch &&
-        matchesSemester &&
-        matchesCategory &&
-        matchesSubCategory &&
-        matchesStatus
-      );
-    });
-
-    // 페이지네이션 계산
-    const totalPages = Math.ceil(filteredMaterials.length / ITEMS_PER_PAGE);
-    const currentPage = Math.max(
-      1,
-      Math.min(currentFilters.page, totalPages || 1)
-    );
-    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-    const endIndex = startIndex + ITEMS_PER_PAGE;
-    const currentMaterials = filteredMaterials.slice(startIndex, endIndex);
+    const studyMaterials: StudyList[] = data.content;
+    const totalPages = data.totalPages;
+    const currentPage = (data.number ?? 0) + 1;
 
     return (
       <div className="mb-8">
-        {/* 검색 결과 요약 */}
         <div className="mb-6">
           <p className="text-sm text-gray-600 dark:text-gray-300">
             총{" "}
             <span className="font-semibold text-gray-900 dark:text-gray-200">
-              {filteredMaterials.length}
+              {data.totalElements}
             </span>
             개의 학습 자료가 있습니다.
-            {currentFilters.search && (
-              <span className="ml-1">
-                &apos;
-                <span className="font-medium">{currentFilters.search}</span>
-                &apos; 검색 결과
-              </span>
-            )}
           </p>
         </div>
 
         {/* 카드 그리드 */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-          {currentMaterials.map((material) => {
+          {studyMaterials.map((material) => {
             const participationRate = Math.round(
-              (material.currentParticipants / material.maxParticipants) * 100
+              (material.currentParticipantNumber /
+                material.maxParticipantNumber) *
+                100
             );
             const progressColor = getProgressColor(participationRate);
 
             return (
               <Link href={`/study/${material.id}`} key={material.id}>
-                <div key={material.id} className="card-list p-6 dark-default">
+                <div
+                  key={material.id}
+                  className="card-list p-6 dark-default flex flex-col"
+                >
                   {/* 상태 및 날짜 정보 */}
-                  <div className="flex flex-wrap gap-2 mb-3 items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <DefaultBadge
-                        variant="custom"
-                        className={getStatusColor(material.status)}
-                      >
-                        {STATUS_LABELS[material.status]}
-                      </DefaultBadge>
-                      {/* 날짜 정보를 클라이언트 컴포넌트로 교체 */}
-                      <CCStudyDateInfo
-                        status={material.status}
-                        startDate={material.startDate}
-                        endDate={material.endDate}
-                        semester={material.semester}
-                      />
+                  <div className="flex items-center gap-2 mb-3">
+                    <DefaultBadge
+                      variant="custom"
+                      className={getStatusColor(material.status)}
+                    >
+                      {STATUS_LABELS[material.status]}
+                    </DefaultBadge>
+
+                    <div className="flex items-center gap-2 text-xs text-gray-500">
+                      <Calendar className="w-4 h-4" />
+                      <span>{material.semester}</span>
                     </div>
                   </div>
-
                   {/* 제목 및 설명 */}
                   <h3 className="text-xl font-bold text-gray-900 mb-2 dark:text-gray-200">
                     {material.title}
@@ -340,7 +111,6 @@ export default async function SCStudyContent({
                   <p className="text-gray-600 text-sm leading-relaxed mb-4 dark:text-gray-300">
                     {material.description}
                   </p>
-
                   {/* 카테고리 */}
                   <div className="flex flex-wrap gap-2 mb-4">
                     <DefaultBadge
@@ -353,14 +123,17 @@ export default async function SCStudyContent({
                     <DefaultBadge
                       variant="custom"
                       className={`inline-flex items-center px-2 py-1 rounded text-xs font-medium border-none
-                        ${getCategoryColor(material.subCategory)}`}
+                        ${getCategoryColor(
+                          SUBCATEGORY_FROM_EN[material.subcategory] ??
+                            material.subcategory
+                        )}`}
                     >
-                      {material.subCategory}
+                      {SUBCATEGORY_FROM_EN[material.subcategory] ??
+                        material.subcategory}
                     </DefaultBadge>
                   </div>
-
                   {/* 파일 목록 */}
-                  <div className="space-y-2 mb-4">
+                  <div className="space-y-2 mb-4 h-[100px] overflow-y-auto">
                     <h4 className="text-sm font-medium text-gray-900 flex items-center gap-2 dark:text-gray-200">
                       <svg
                         className="w-4 h-4"
@@ -375,9 +148,9 @@ export default async function SCStudyContent({
                           d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
                         />
                       </svg>
-                      첨부 파일
+                      첨부 파일 ({material.attachments.length})
                     </h4>
-                    {material.attachedFiles?.map((file, index) => (
+                    {material.attachments?.map((file, index) => (
                       <div
                         key={index}
                         className="flex items-center justify-between rounded-lg p-3 dark-default bg-gray-50 dark:bg-gray-700"
@@ -404,15 +177,11 @@ export default async function SCStudyContent({
                             name="studyId"
                             value={material.id}
                           />
-
-                          <button type="submit">
-                            <DownloadGraySVG className="text-gray-400 hover:text-gray-600 dark:text-gray-400" />
-                          </button>
+                          <DownloadButton file={file} />
                         </form>
                       </div>
                     ))}
                   </div>
-
                   {/* 참가 인원 Progress 바 */}
                   <div className="mb-4">
                     <div className="flex justify-between items-center mb-2">
@@ -420,8 +189,8 @@ export default async function SCStudyContent({
                         참가자
                       </span>
                       <span className="text-sm font-medium text-gray-900 dark:text-gray-300">
-                        {material.currentParticipants}/
-                        {material.maxParticipants}
+                        {material.currentParticipantNumber}/
+                        {material.maxParticipantNumber}
                       </span>
                     </div>
                     <div className="w-full bg-gray-200 rounded-full h-2">
@@ -437,38 +206,27 @@ export default async function SCStudyContent({
                       {participationRate}%
                     </span>
                   </div>
-
                   {/* 작성자 및 참가하기 버튼 */}
-                  <div className="flex items-center justify-between pt-4 border-t border-gray-100 dark:border-gray-700">
+                  <div className="flex items-center justify-between pt-4 border-t border-gray-100 dark:border-gray-700 h-12">
                     <div className="flex items-center gap-2">
                       <span
                         className={`px-2 py-1 rounded text-xs font-medium ${
-                          material.authorStatus === "student"
-                            ? "bg-blue-100 text-blue-800"
-                            : "bg-gray-100 text-gray-800"
+                          material.studyCreatorGrade === "GRADUATED"
+                            ? "bg-gray-100 text-gray-800"
+                            : "bg-blue-100 text-blue-800 "
                         }`}
                       >
-                        {AUTHOR_STATUS_LABELS[material.authorStatus]}
+                        {MEMBER_GRADE_LABELS[material.studyCreatorGrade]}
                       </span>
                       <span className="text-sm text-gray-500 dark:text-gray-300">
-                        {material.author}
+                        {material.studyCreatorName}
                       </span>
                     </div>
 
-                    {material.status === "in_progress" && (
-                      <form action={joinStudy}>
-                        <input
-                          type="hidden"
-                          name="studyId"
-                          value={material.id}
-                        />
-                        <button
-                          type="submit"
-                          className="px-4 py-2 action-button text-sm"
-                        >
-                          참가하기
-                        </button>
-                      </form>
+                    {material.participantable && (
+                      <button className="px-4 py-2 action-button text-sm">
+                        참가하기
+                      </button>
                     )}
                   </div>
                 </div>
@@ -478,9 +236,7 @@ export default async function SCStudyContent({
         </div>
 
         {/* 결과가 없을 때 */}
-        {currentMaterials.length === 0 && (
-          <SCSearchResultNotFound mode="study" />
-        )}
+        {studyMaterials.length === 0 && <SCSearchResultNotFound mode="study" />}
 
         {/* 페이지네이션 */}
         {totalPages > 1 && (
@@ -498,11 +254,6 @@ export default async function SCStudyContent({
     // 에러 발생 시 기본값으로 렌더링
     return (
       <div className="mb-8">
-        <div className="mb-6">
-          <p className="text-sm text-gray-600">
-            데이터를 불러오는 중 오류가 발생했습니다.
-          </p>
-        </div>
         <SCSearchResultNotFound
           title="데이터를 불러올 수 없습니다"
           description="페이지를 새로고침하거나 잠시 후 다시 시도해주세요."

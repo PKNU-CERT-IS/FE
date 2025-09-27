@@ -1,15 +1,10 @@
 import { CategoryType, SubCategoryType } from "@/types/category";
 import { StatusType } from "@/types/progressStatus";
-import type {
-  StudyMaterial,
-  CurrentFilters,
-  SemesterType,
-  StudySearchParams,
-} from "@/types/study";
+import type { SemesterType, StudySearchParams } from "@/types/study";
 
 export function isCategoryType(value: string): value is CategoryType {
   const validCategories: CategoryType[] = [
-    "all",
+    "ALL",
     "CTF",
     "CS",
     "RED",
@@ -22,7 +17,7 @@ export function isCategoryType(value: string): value is CategoryType {
 
 export function isSubCategoryType(value: string): value is SubCategoryType {
   const validSubCategories: SubCategoryType[] = [
-    "all",
+    "ALL",
     // CTF
     "포너블",
     "리버싱",
@@ -155,50 +150,12 @@ export function isSubCategoryType(value: string): value is SubCategoryType {
 
 export function isStatusType(value: string): value is StatusType {
   const validStatuses: StatusType[] = [
-    "all",
-    "not_started",
-    "in_progress",
-    "completed",
+    "ALL",
+    "READY",
+    "INPROGRESS",
+    "COMPLETED",
   ];
   return validStatuses.includes(value as StatusType);
-}
-
-// 필터링 함수
-export function filterStudyMaterials(
-  materials: StudyMaterial[],
-  filters: CurrentFilters
-): StudyMaterial[] {
-  return materials.filter((material) => {
-    const matchesSearch =
-      !filters.search ||
-      material.title.toLowerCase().includes(filters.search.toLowerCase()) ||
-      material.description
-        .toLowerCase()
-        .includes(filters.search.toLowerCase()) ||
-      material.author.toLowerCase().includes(filters.search.toLowerCase());
-
-    const matchesSemester =
-      filters.semester === "all" || material.semester === filters.semester;
-
-    const matchesCategory =
-      filters.category === "all" ||
-      material.hackingTechnique === filters.category;
-
-    const matchesSubCategory =
-      filters.subCategory === "all" ||
-      material.hackingTechnique === filters.subCategory;
-
-    const matchesStatus =
-      filters.status === "all" || material.status === filters.status;
-
-    return (
-      matchesSearch &&
-      matchesSemester &&
-      matchesCategory &&
-      matchesSubCategory &&
-      matchesStatus
-    );
-  });
 }
 
 // 상수 정의
@@ -244,40 +201,86 @@ export const calculateDaysFromNow = (targetDate: string): number => {
 
 /**
  * 스터디 상태에 따른 날짜 정보를 반환합니다.
- * @param status - 스터디 상태
- * @param startDate - 시작 날짜 (선택사항)
- * @param endDate - 종료 날짜 (선택사항)
- * @param semester - 학기 정보 (선택사항)
+ * @param startDate - 시작 날짜
+ * @param endDate - 종료 날짜
  * @returns 상태별 날짜 표시 문자열
  */
 export const getStatusDateInfo = (
-  status: StatusType,
   startDate?: string,
-  endDate?: string,
-  semester?: string
-): string => {
-  switch (status) {
-    case "not_started":
-      if (startDate) {
-        const daysLeft = calculateDaysFromNow(startDate);
-        return daysLeft > 0 ? `${daysLeft}일 뒤` : "곧 시작";
-      }
-      return "날짜 미정";
+  endDate?: string
+): { status: StatusType; label: string } => {
+  const now = new Date();
+  const start = startDate ? new Date(startDate) : null;
+  const end = endDate ? new Date(endDate) : null;
 
-    case "in_progress":
-      if (endDate) {
-        const daysLeft = calculateDaysFromNow(endDate);
-        return daysLeft > 0 ? `D-${daysLeft}` : "종료 임박";
-      }
-      return "진행 중";
-
-    case "completed":
-      return semester ? `${semester} 진행` : "종료됨";
-
-    default:
-      return "";
+  if (start && now < start) {
+    const daysLeft = calculateDaysFromNow(startDate!);
+    return {
+      status: "READY",
+      label: daysLeft > 0 ? `${daysLeft}일 뒤` : "곧 시작",
+    };
   }
+
+  if (end && now > end) {
+    const semester = startDate
+      ? getSemesterFromStartDate(startDate)
+      : undefined;
+    return {
+      status: "COMPLETED",
+      label: semester ? `${semester} 진행` : "완료",
+    };
+  }
+
+  if (end) {
+    const daysLeft = calculateDaysFromNow(endDate!);
+    return {
+      status: "INPROGRESS",
+      label: daysLeft > 0 ? `D-${daysLeft}` : "종료 임박",
+    };
+  }
+
+  return { status: "INPROGRESS", label: "진행 중" };
 };
+
+/**
+ * D-DAY 표기
+ */
+export const getStudyPeriodLabel = (endDate?: string) => {
+  if (!endDate) return null;
+
+  const diffDays = calculateDaysFromNow(endDate);
+
+  if (diffDays === 0) {
+    return "D-Day";
+  }
+
+  if (diffDays > 0) {
+    return `D-${diffDays}`; // 종료일까지 남은 일수
+  }
+
+  return `D+${Math.abs(diffDays)}`; // 종료일로부터 지난 일수
+};
+
+// study D-Day 계산을 위한 함수
+export function calculateDDay(startDate: string): string {
+  const today = new Date();
+  const start = new Date(startDate);
+
+  // 시간을 00:00:00 으로 맞추기
+  today.setHours(0, 0, 0, 0);
+  start.setHours(0, 0, 0, 0);
+
+  const diffTime = start.getTime() - today.getTime();
+  const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+  if (diffDays === 0) {
+    return "D+0"; // 오늘
+  } else if (diffDays > 0) {
+    return `D+${diffDays}`; // 미래
+  } else {
+    return `D${diffDays}`; // 과거 (자동으로 D-3 형태가 됨)
+  }
+}
 
 /**
  * 참여율을 계산합니다.
@@ -293,26 +296,25 @@ export const calculateParticipationRate = (
   return Math.round((current / max) * 100);
 };
 
-export function parseSearchParams(
-  searchParams?: StudySearchParams | null
-): CurrentFilters {
+export function parseSearchParams(searchParams?: StudySearchParams | null) {
   if (!searchParams) {
     return {
       search: "",
-      semester: "all" as SemesterType,
-      category: "all" as CategoryType,
-      subCategory: "all" as SubCategoryType,
-      status: "all" as StatusType,
+      semester: "ALL" as SemesterType,
+      category: "ALL" as CategoryType,
+      subCategory: "ALL" as SubCategoryType,
+      studyStatus: "ALL" as StatusType,
+      projectStatus: "ALL" as StatusType,
       page: 1,
     };
   }
 
   return {
     search: searchParams.search || "",
-    semester: (searchParams.semester as SemesterType) || "all",
-    category: (searchParams.category as CategoryType) || "all",
-    subCategory: (searchParams.subCategory as SubCategoryType) || "all",
-    status: (searchParams.status as StatusType) || "all",
+    semester: (searchParams.semester as SemesterType) || "ALL",
+    category: (searchParams.category as CategoryType) || "ALL",
+    subCategory: (searchParams.subCategory as SubCategoryType) || "ALL",
+    studyStatus: (searchParams.studyStatus as StatusType) || "ALL",
     page: parseInt(searchParams.page || "1", 10),
   };
 }
@@ -332,7 +334,6 @@ export function createPageUrl(
     }
   });
 
-  // 페이지 파라미터 설정
   if (page > 1) {
     params.set("page", page.toString());
   }
@@ -341,11 +342,17 @@ export function createPageUrl(
   return queryString ? `?${queryString}` : "";
 }
 
-// study D-Day 계산을 위한 함수
-export function calculateDDay(endDate: string): number {
-  const today = new Date();
-  const end = new Date(endDate);
-  const diffTime = end.getTime() - today.getTime();
-  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-  return diffDays;
+/**
+ * 시작 날짜 기준으로 학기를 계산합니다.
+ * @param startDate - 스터디 시작일 (YYYY-MM-DD or ISO string)
+ * @returns 학기 문자열 (예: "2025-1", "2025-2")
+ */
+export function getSemesterFromStartDate(startDate?: string): SemesterType {
+  if (!startDate) return "ALL";
+
+  const date = new Date(startDate);
+  const year = date.getFullYear();
+  const month = date.getMonth() + 1;
+
+  return month >= 1 && month <= 6 ? `${year}-01` : `${year}-02`;
 }

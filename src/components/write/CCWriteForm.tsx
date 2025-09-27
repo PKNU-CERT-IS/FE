@@ -14,10 +14,24 @@ import {
   getSubCategories,
 } from "@/utils/newPageFormUtils";
 import { AttachedFile } from "@/types/attachedFile";
+
+// import { Reference } from "@/types/blog";
+import { createBoard } from "@/app/api/board/CCboardApi";
+
 import { BlogReferenceType, BlogCreateRequest } from "@/types/blog";
 import { createBlog } from "@/app/api/blog/CCblogApi";
-import { createBoard } from "@/api/board/CCboard";
+
 import AlertModal from "@/components/ui/defaultAlertModal";
+import { createStudy } from "@/app/api/study/CCStudyApi";
+import { toOffset } from "@/utils/transformRequestValue";
+import {
+  CATEGORY_TO_EN,
+  CategoryType,
+  SUBCATEGORY_TO_EN,
+  SubCategoryType,
+} from "@/types/category";
+import { BoardCategoryType, categoryMappingToEN } from "@/types/board";
+import { createProject } from "@/app/api/project/CCProjectApi";
 
 interface WriteFormProps {
   type: NewPageCategoryType;
@@ -25,22 +39,45 @@ interface WriteFormProps {
 }
 
 // 파일 맨 위 근처에 추가
+// FIXME: 파일 요청하기
 const PLAN_SAMPLE = {
   label: "계획서 샘플 (DOCX)",
   href: "/samples/plan-sample.docx", // public/samples/plan-sample.docx 에 파일 두기
 };
 
+// 내가 참여한 활동 리스트 (더미 예시)
+// const myActivities: Reference[] = [
+//   { referenceId: 1, type: "study", title: "OWASP Top 10 2023 취약점 분석" },
+//   {
+//     referenceId: 2,
+//     type: "study",
+//     title: "Metasploit Framework 완전 정복",
+//   },
+//   {
+//     referenceId: 1,
+//     type: "project",
+//     title: "Social Impact Hackathon 2025",
+//   },
+//   {
+//     referenceId: 2,
+//     type: "project",
+//     title: "OWASP Top 10 2023 취약점 분석",
+//   },
+// ];
+
+// export default function WriteForm({ type }: WriteFormProps) {
+
 export default function WriteForm({ type, initialReferences }: WriteFormProps) {
   const router = useRouter();
   const [title, setTitle] = useState<string>("");
-  const [description, setDescription] = useState<string>(""); // 설명란 추가
+  const [description, setDescription] = useState<string>("");
   const [content, setContent] = useState<string>("");
   const [category, setCategory] = useState("");
   const [subCategory, setSubCategory] = useState("");
   const [attachments, setAttachments] = useState<AttachedFile[]>([]);
   const [startDate, setStartDate] = useState<string>("");
   const [endDate, setEndDate] = useState<string>("");
-  const [maxParticipants, setMaxParticipants] = useState("");
+  const [maxParticipants, setMaxParticipants] = useState<number>();
   const [isCategoryOpen, setIsCategoryOpen] = useState<boolean>(false);
   const [isSubCategoryOpen, setIsSubCategoryOpen] = useState<boolean>(false);
   const [isSelectedReferenceOpen, setIsSelecteReferenceOpen] =
@@ -57,12 +94,33 @@ export default function WriteForm({ type, initialReferences }: WriteFormProps) {
   // 프로젝트 전용 필드들
   const [githubUrl, setGithubUrl] = useState<string>("");
   const [demoUrl, setDemoUrl] = useState<string>("");
-  const [externalLinks, setExternalLinks] = useState<
-    { label: string; url: string; type?: string }[]
-  >([]);
-  const [projectImage, setProjectImage] = useState<File | null>(null);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [semester, setSemester] = useState<string>("");
+  const [externalUrl, setExternalUrl] = useState<{
+    title: string;
+    url: string;
+  }>({
+    title: "",
+    url: "",
+  });
+
+  const [thumbnailUrl, setThumbnailUrl] = useState<string>("");
+  const [dateError, setDateError] = useState<string>("");
+  const today = new Date().toISOString().split("T")[0]; // 지난 날짜 선택 방지 변수
+  // 날짜 검증 함수 추가
+  const validateDates = useCallback((start: string, end: string) => {
+    if (!start || !end) return;
+
+    if (new Date(end) < new Date(start)) {
+      setDateError("종료일은 시작일보다 늦어야 합니다.");
+    } else {
+      setDateError("");
+    }
+  }, []);
+
+  // useEffect로 날짜 변경 감지
+  useEffect(() => {
+    validateDates(startDate, endDate);
+  }, [startDate, endDate, validateDates]);
+
   // 드롭다운 닫기 함수
   const closeAllDropdowns = useCallback(() => {
     setIsCategoryOpen(false);
@@ -87,22 +145,9 @@ export default function WriteForm({ type, initialReferences }: WriteFormProps) {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [closeAllDropdowns]);
 
-  const addExternalLink = () => {
-    setExternalLinks([
-      ...externalLinks,
-      { label: "", url: "", type: "website" },
-    ]);
-  };
-
-  const updateExternalLink = (index: number, field: string, value: string) => {
-    const updated = externalLinks.map((link, i) =>
-      i === index ? { ...link, [field]: value } : link
-    );
-    setExternalLinks(updated);
-  };
-
-  const removeExternalLink = (index: number) => {
-    setExternalLinks(externalLinks.filter((_, i) => i !== index));
+  // 값 변경
+  const updateExternalLink = (field: "title" | "url", value: string) => {
+    setExternalUrl((prev) => ({ ...prev, [field]: value }));
   };
 
   const handleSubmit = async () => {
@@ -111,60 +156,130 @@ export default function WriteForm({ type, initialReferences }: WriteFormProps) {
         title,
         description,
         content,
-        category,
-        attachments,
+        // category,
       };
 
       let submitData;
 
       switch (type) {
-        case "board": {
-          submitData = { ...baseData };
-          const apiResponse = await createBoard(baseData);
+        case "board":
+          submitData = {
+            ...baseData,
+            category: categoryMappingToEN[category as BoardCategoryType],
+            attachments: attachments.map((file) => ({
+              name: file.name,
+              type: file.type,
+              size: file.size,
+              attachedUrl: file.attachedUrl,
+              id: file.id,
+            })),
+          };
+
+          const apiResponse = await createBoard(submitData);
           if (apiResponse?.statusCode === 201) {
             router.back();
-            setTimeout(() => router.refresh(), 100);
+            setTimeout(() => {
+              router.refresh();
+            }, 100);
           }
           break;
-        }
+
+        // FIXME: 웅기님 코드인데 생성에 에러가 나서 일단 주석처리해뒀습니다.
+        // case "blog": {
+        //   const submitData: BlogCreateRequest = {
+        //     ...baseData,
+        //     category,
+        //     isPublic,
+        //     referenceId: selectedReference?.referenceId,
+        //     referenceType: selectedReference?.referenceType,
+        //     referenceTitle: selectedReference?.referenceTitle,
+        //   };
+        //   await createBlog(submitData);
+        //   router.replace("/blog");
+        //   router.refresh();
+        //   break;
+        // }
         case "blog": {
           const submitData: BlogCreateRequest = {
             ...baseData,
-            isPublic,
+            category,
+            isPublic, // 기본값 보장
             referenceId: selectedReference?.referenceId,
             referenceType: selectedReference?.referenceType,
             referenceTitle: selectedReference?.referenceTitle,
           };
-          await createBlog(submitData);
-          router.replace("/blog");
-          router.refresh();
+
+          const blogApiResponse = await createBlog(submitData);
+
+          if (blogApiResponse?.statusCode === 201) {
+            router.replace("/blog");
+            setTimeout(() => {
+              router.refresh();
+            }, 100);
+          } else {
+            throw new Error("블로그 생성 실패");
+          }
           break;
         }
+
         case "study": {
           submitData = {
             ...baseData,
-            subCategory,
-            startDate,
-            endDate,
-            maxParticipants,
+            category,
+            subCategory: SUBCATEGORY_TO_EN[subCategory as SubCategoryType],
+            startDate: toOffset(startDate),
+            endDate: toOffset(endDate),
+            maxParticipants: maxParticipants ?? 0,
+            attachments: attachments.map((file) => ({
+              name: file.name,
+              type: file.type,
+              size: file.size,
+              attachedUrl: file.attachedUrl,
+              id: file.id,
+            })),
           };
-          console.log("Study creation not implemented yet:", submitData);
+          const studyApiResponse = await createStudy(submitData);
+          if (studyApiResponse?.statusCode === 201) {
+            router.back();
+            setTimeout(() => {
+              router.refresh();
+            }, 100);
+          }
           break;
         }
         case "project": {
           submitData = {
             ...baseData,
-            subCategory,
-            startDate,
-            endDate,
-            maxParticipants,
+            category: CATEGORY_TO_EN[category as CategoryType],
+            subCategory: SUBCATEGORY_TO_EN[subCategory as SubCategoryType],
+            startDate: toOffset(startDate),
+            endDate: toOffset(endDate),
+            maxParticipants: maxParticipants ?? 0,
             githubUrl,
+            externalUrl:
+              externalUrl.title && externalUrl.url ? externalUrl : undefined,
+            thumbnailUrl,
+            attachments: attachments.map((file) => ({
+              name: file.name,
+              type: file.type,
+              size: file.size,
+              attachedUrl: file.attachedUrl,
+              id: file.id,
+            })),
             demoUrl,
-            externalLinks: externalLinks.filter((l) => l.label && l.url),
-            projectImage,
-            semester,
           };
-          console.log("Project creation not implemented yet:", submitData);
+          const projectApiResponse = await createProject(submitData);
+          if (projectApiResponse?.statusCode === 201) {
+            router.back();
+            setTimeout(() => {
+              router.refresh();
+            }, 100);
+          }
+
+          //   externalLinks: externalLinks.filter((l) => l.label && l.url),
+          //   projectImage,
+          //   semester,
+          // };
           break;
         }
         default:
@@ -178,6 +293,17 @@ export default function WriteForm({ type, initialReferences }: WriteFormProps) {
 
   const handleCancel = () => {
     router.back();
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setThumbnailUrl(reader.result as string); // base64 string
+    };
+    reader.readAsDataURL(file);
   };
 
   return (
@@ -228,13 +354,14 @@ export default function WriteForm({ type, initialReferences }: WriteFormProps) {
         {/* 설명란 - 모든 도메인에 추가 */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-gray-200">
-            설명
+            설명 *
           </label>
           <textarea
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent resize-none dark:border-gray-600"
             placeholder={getDescriptionPlaceholder(type)}
+            required
           />
           <p className="text-xs text-gray-500 mt-1 dark:text-gray-400">
             선택사항이지만, 다른 사용자들이 내용을 빠르게 파악할 수 있도록
@@ -433,12 +560,16 @@ export default function WriteForm({ type, initialReferences }: WriteFormProps) {
               </label>
               <input
                 type="number"
-                value={maxParticipants}
-                onChange={(e) => setMaxParticipants(e.target.value)}
+                value={maxParticipants ?? ""}
+                onChange={(e) =>
+                  setMaxParticipants(
+                    e.target.value ? Number(e.target.value) : undefined
+                  )
+                }
                 className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent dark:border-gray-600"
                 placeholder="최대 참가자 수"
-                min="1"
-                max={type === "study" ? "20" : "10"}
+                min={1}
+                max={type === "study" ? 20 : 10}
                 required
               />
             </div>
@@ -454,8 +585,10 @@ export default function WriteForm({ type, initialReferences }: WriteFormProps) {
             <input
               type="file"
               accept="image/*"
-              onChange={(e) => setProjectImage(e.target.files?.[0] || null)}
-              className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent dark:border-gray-600"
+              onChange={handleFileChange}
+              className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md 
+             focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent 
+             dark:border-gray-600"
             />
             <p className="text-xs text-gray-500 mt-1">
               선택하지 않으면 제목의 첫 글자로 기본 이미지가 생성됩니다.
@@ -493,55 +626,46 @@ export default function WriteForm({ type, initialReferences }: WriteFormProps) {
           </div>
         )}
 
-        {/* 외부 링크 섹션 (프로젝트 전용) */}
+        {/* 프로젝트 소개 페이지 (프로젝트 전용) */}
         {type === "project" && (
           <div>
             <div className="flex items-center justify-between mb-2">
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">
-                외부 문서/링크
+                프로젝트 소개 페이지
               </label>
-              <DefaultButton type="button" size="sm" onClick={addExternalLink}>
-                + 링크 추가
-              </DefaultButton>
             </div>
+
             <div className="space-y-3">
-              {externalLinks.map((link, index) => (
-                <div key={index} className="flex gap-2 items-end">
-                  <div className="flex-1">
-                    <input
-                      type="text"
-                      value={link.label}
-                      onChange={(e) =>
-                        updateExternalLink(index, "label", e.target.value)
-                      }
-                      className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent dark:border-gray-600"
-                      placeholder="링크 제목"
-                    />
-                  </div>
-                  <div className="flex-1">
-                    <input
-                      type="url"
-                      value={link.url}
-                      onChange={(e) =>
-                        updateExternalLink(index, "url", e.target.value)
-                      }
-                      className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent dark:border-gray-600"
-                      placeholder="https://..."
-                    />
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => removeExternalLink(index)}
-                    className="px-3 py-2 text-cert-red hover:text-red-800 cursor-pointer"
-                  >
-                    ✕
-                  </button>
+              <div className="flex gap-2 items-end">
+                <div className="flex-1">
+                  <input
+                    type="text"
+                    value={externalUrl.title}
+                    onChange={(e) =>
+                      updateExternalLink("title", e.target.value)
+                    }
+                    className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md 
+                       focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent
+                       dark:border-gray-600"
+                    placeholder="CERT-IS 프로젝트 소개"
+                  />
                 </div>
-              ))}
+                <div className="flex-1">
+                  <input
+                    type="url"
+                    value={externalUrl.url}
+                    onChange={(e) => updateExternalLink("url", e.target.value)}
+                    className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md 
+                       focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent
+                       dark:border-gray-600"
+                    placeholder="https://project-introducing-site.com"
+                  />
+                </div>
+              </div>
             </div>
+
             <p className="text-xs text-gray-500 mt-1">
-              노션, 구글 독스, 피그마 등의 외부 문서나 관련 링크를 추가할 수
-              있습니다.
+              해당 프로젝트를 설명할 수 있는 링크를 추가할 수 있습니다.
             </p>
           </div>
         )}
@@ -557,8 +681,10 @@ export default function WriteForm({ type, initialReferences }: WriteFormProps) {
                 <input
                   type="date"
                   value={startDate}
+                  min={today}
                   onChange={(e) => setStartDate(e.target.value)}
-                  className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent cursor-pointer dark:border-gray-600"
+                  className={`w-full text-sm px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent cursor-pointer dark:border-gray-600
+                    ${dateError ? "border-cert-red" : "border-gray-300"}`}
                   required
                 />
               </div>
@@ -569,11 +695,16 @@ export default function WriteForm({ type, initialReferences }: WriteFormProps) {
                 <input
                   type="date"
                   value={endDate}
+                  min={today}
                   onChange={(e) => setEndDate(e.target.value)}
-                  className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent cursor-pointer dark:border-gray-600"
+                  className={`w-full text-sm px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent cursor-pointer dark:border-gray-600
+                    ${dateError ? "border-cert-red" : "border-gray-300"}`}
                   required
                 />
               </div>
+              {dateError && (
+                <p className="text-cert-red text-sm">⚠️ {dateError}</p>
+              )}
             </div>
 
             {/* 기간 정책 안내 */}
@@ -617,6 +748,32 @@ export default function WriteForm({ type, initialReferences }: WriteFormProps) {
         </div>
 
         {/* 액션 버튼 */}
+        {/* <div className="flex items-center justify-end gap-3 pt-6 border-t border-gray-200 dark:border-gray-600">
+          <DefaultButton variant="outline" onClick={handleCancel}>
+            취소
+          </DefaultButton>
+          <DefaultButton
+            onClick={handleSubmit}
+            disabled={
+              !isFormValid(
+                title,
+                description,
+                content,
+                category,
+                type,
+                maxParticipants,
+                startDate,
+                endDate
+              )
+            }
+          >
+            {type === "study"
+              ? "스터디 개설"
+              : type === "project"
+              ? "프로젝트 생성"
+              : "게시하기"}
+          </DefaultButton> */}
+
         <div className="pt-6 border-t border-gray-200 dark:border-gray-600">
           {type === "blog" ? (
             // 블로그일 때: 좌측 토글 + 우측 버튼
@@ -658,6 +815,7 @@ export default function WriteForm({ type, initialReferences }: WriteFormProps) {
                   disabled={
                     !isFormValid(
                       title,
+                      description,
                       content,
                       category,
                       type,
@@ -682,6 +840,7 @@ export default function WriteForm({ type, initialReferences }: WriteFormProps) {
                 disabled={
                   !isFormValid(
                     title,
+                    description,
                     content,
                     category,
                     type,

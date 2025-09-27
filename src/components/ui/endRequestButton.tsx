@@ -3,10 +3,12 @@
 import { useState } from "react";
 import DefaultButton from "@/components/ui/defaultButton";
 import ConfirmModal from "@/components/ui/defaultConfirmModal";
-import type { AttachedFile } from "@/types/attachedFile";
 import { usePathname, useSearchParams } from "next/navigation";
+import { endProject } from "@/app/api/project/CCProjectApi";
+import { AttachedFile } from "@/types/attachedFile";
+import { endStudy } from "@/app/api/study/CCStudyApi";
 
-export default function EndRequestButton({ id }: { id: number | string }) {
+export default function EndRequestButton({ id }: { id: number }) {
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
@@ -27,22 +29,41 @@ export default function EndRequestButton({ id }: { id: number | string }) {
     e.preventDefault();
     setIsOpenModal(true);
   };
+
   const closeModal = () => setIsOpenModal(false);
 
-  // ConfirmModal이 onConfirm(attachments, link)로 호출해줌
-  const handleEndRequest = async (
-    attachments: AttachedFile[],
-    link: string
-  ) => {
+  const handleEndRequest = async (attachment: AttachedFile) => {
     if (submitting) return;
     setSubmitting(true);
-    console.log(id, attachments, link);
+
     try {
-      // api 요청
-      // 성공 처리
+      if (!attachment) {
+        alert("파일을 업로드해야 합니다.");
+        return;
+      }
+
+      if (pageType === "study") {
+        await endStudy(id, {
+          id: attachment.id,
+          name: attachment.name,
+          type: attachment.type,
+          size: attachment.size,
+          attachedUrl: attachment.attachedUrl,
+        });
+      } else {
+        await endProject(id, {
+          id: attachment.id,
+          name: attachment.name,
+          type: attachment.type,
+          size: attachment.size,
+          attachedUrl: attachment.attachedUrl,
+        });
+      }
+
       setIsOpenModal(false);
     } catch (err) {
-      console.error(err);
+      alert(`${pageLabel} 종료 요청에 실패했습니다.`);
+      throw err;
     } finally {
       setSubmitting(false);
     }
@@ -53,7 +74,7 @@ export default function EndRequestButton({ id }: { id: number | string }) {
       <DefaultButton
         onClick={openModal}
         disabled={submitting}
-        className="px-6 py-2 w-full bg-white text-cert-red hover:text-white hover:bg-cert-red dark:bg-gray-800 rounded-lg shadow-lg border border-cert-red/50  dark:text-gray-200 cursor-pointer"
+        className="px-6 py-2 w-full bg-white text-cert-red hover:text-white hover:bg-cert-red dark:bg-gray-800 rounded-lg shadow-lg border border-cert-red/50 dark:text-gray-200 cursor-pointer"
       >
         {pageLabel} 종료하기
       </DefaultButton>
@@ -65,7 +86,7 @@ export default function EndRequestButton({ id }: { id: number | string }) {
         message={`${pageLabel}의 결과물과 후기를 반드시 제출해주세요.`}
         confirmText={submitting ? "제출 중..." : "제출"}
         cancelText="취소"
-        onConfirm={handleEndRequest}
+        onEndConfirm={handleEndRequest}
         onCancel={closeModal}
         pageLabel={pageLabel}
       />

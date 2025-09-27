@@ -2,7 +2,7 @@
 import { useState } from "react";
 import DefaultButton from "@/components/ui/defaultButton";
 import { Heart } from "lucide-react";
-import { postLike } from "@/api/board/CCboard";
+import { postLike } from "@/app/api/board/CCboardApi";
 import { useRouter } from "next/navigation";
 import AlertModal from "@/components/ui/defaultAlertModal";
 import { AxiosError } from "axios";

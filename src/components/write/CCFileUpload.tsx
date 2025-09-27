@@ -3,37 +3,39 @@
 import { AttachedFile, getFileKey } from "@/types/attachedFile";
 import DefaultButton from "@/components/ui/defaultButton";
 import { Upload, Trash2 } from "lucide-react";
+import { cn } from "@/lib/utils";
 import {
   convertFileToAttachedFile,
   formatFileSize,
   getFileIcon,
 } from "@/utils/attachedFileUtils";
-import { cn } from "@/lib/utils";
 
 interface FileUploadProps {
   attachments: AttachedFile[];
   onAttachmentsChange: (files: AttachedFile[]) => void;
+
   className?: string;
 }
-
 export default function FileUpload({
   attachments,
   onAttachmentsChange,
   className,
 }: FileUploadProps) {
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files) return;
 
-    const newAttachedFiles = Array.from(files).map(convertFileToAttachedFile);
+    const newAttachedFiles = await Promise.all(
+      Array.from(files).map((file) => convertFileToAttachedFile(file))
+    );
     onAttachmentsChange([...attachments, ...newAttachedFiles]);
     e.target.value = "";
   };
 
-  const handleRemoveFile = (index: number) => {
-    onAttachmentsChange(attachments.filter((_, i) => i !== index));
+  const handleRemoveFile = (name: string) => {
+    const updatedAttachments = attachments.filter((file) => file.name !== name);
+    onAttachmentsChange(updatedAttachments);
   };
-
   return (
     <div className="space-y-4">
       <div
@@ -69,7 +71,7 @@ export default function FileUpload({
           <h4 className="text-sm font-medium text-gray-700">
             첨부파일 ({attachments.length})
           </h4>
-          {attachments.map((file, index) => (
+          {attachments.map((file) => (
             <div
               key={getFileKey(file)}
               className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg"
@@ -85,7 +87,7 @@ export default function FileUpload({
                 type="button"
                 variant="outline"
                 size="sm"
-                onClick={() => handleRemoveFile(index)}
+                onClick={() => handleRemoveFile(file.name)}
                 className="text-cert-red hover:bg-red-50 hover:text-cert-red"
               >
                 <Trash2 className="w-4 h-4" />

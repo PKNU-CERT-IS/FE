@@ -19,6 +19,8 @@ import SectionBadge from "@/components/sectionBadge";
 import MiniCalendar from "@/components/miniCalendar";
 import DefaultButton from "@/components/ui/defaultButton";
 import { Metadata } from "next";
+import { getSchedules } from "@/app/api/schedule/SCscheduleApi";
+import { ScheduleInfo } from "@/types/schedule";
 
 export const metadata: Metadata = {
   title: "CERT-IS",
@@ -30,32 +32,16 @@ export const metadata: Metadata = {
   },
 };
 
-// 캘린더 동적 이벤트 생성 -> 이 부분은 추후 /schedule 과 연동하여 제거될 변수입니다
-const generateUpcomingEvents = () => {
-  // schedule API 끌고오기
-  const today = new Date();
-  const currentMonth = today.getMonth();
-  return [
-    {
-      date: 5,
-      title: "보안 세미나",
-      description: "최신 사이버보안 트렌드",
-      color: "red",
-    },
-    {
-      date: 12,
-      title: "CTF 대회",
-      description: "교내 해킹 경진대회",
-      color: "red",
-    },
-  ].filter(
-    (event) =>
-      event.date >= today.getDate() || currentMonth !== today.getMonth()
-  );
-};
-const upcomingEvents = generateUpcomingEvents();
+export default async function HomePage() {
+  const today = new Date().toISOString();
+  const schedules: ScheduleInfo[] = await getSchedules(today);
 
-export default function HomePage() {
+  const upcomingEvents = schedules
+    .filter((s) => new Date(s.startedAt) > new Date())
+    .sort(
+      (a, b) =>
+        new Date(a.startedAt).getTime() - new Date(b.startedAt).getTime()
+    );
   return (
     <>
       <div className="mx-auto">
@@ -174,7 +160,7 @@ export default function HomePage() {
                       >
                         <div className="flex-shrink-0 mr-3">
                           <div className="w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-bold bg-cert-dark-red  dark:text-gray-200">
-                            {event.date}
+                            {new Date(event.startedAt).getDate()}
                           </div>
                         </div>
                         <div>

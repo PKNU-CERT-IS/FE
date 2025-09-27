@@ -18,6 +18,6 @@ export interface NewPageFormData {
   isCategoryOpen: boolean;
   githubUrl?: string;
   demoUrl?: string;
-  externalLinks?: { label: string; url: string; type?: string }[];
+  externalUrl?: { url: string; title: string };
   projectImage?: string;
 }

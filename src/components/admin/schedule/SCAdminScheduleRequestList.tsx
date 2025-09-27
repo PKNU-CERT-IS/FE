@@ -4,7 +4,7 @@ import {
   approveReservation,
   rejectReservation,
 } from "@/actions/admin/schedule/AdminScheduleRequestServerAction";
-import { getPendingSchedules } from "@/api/schedule/SCAdminSchedule";
+import { getPendingSchedules } from "@/app/api/schedule/SCAdminScheduleApi";
 import RequestActionButtons from "@/components/ui/requestActionButtons";
 import { formatDate, formatTime } from "@/utils/formatDateUtil";
 import {
@@ -77,6 +77,7 @@ export default async function CCAdminScheduleRequestList() {
                     id={reservation.scheduleId}
                     approveAction={approveReservation}
                     rejectAction={rejectReservation}
+                    fieldName="id"
                   />
                 </div>
               </div>

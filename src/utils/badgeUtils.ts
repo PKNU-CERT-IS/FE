@@ -43,12 +43,13 @@ export const getCategoryColor = (
  */
 export function getStatusColor(status: StatusType): string {
   switch (status) {
-    case "not_started":
+    case "READY":
       return "badge-gray";
-    case "in_progress":
+    case "INPROGRESS":
       return "badge-blue";
-    case "completed":
+    case "COMPLETED":
       return "badge-green";
+
     default:
       return "badge-gray";
   }

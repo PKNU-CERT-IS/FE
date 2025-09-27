@@ -2,19 +2,25 @@ import { fetchWithAuth } from "@/lib/serverIntercept";
 
 // 게시글 조회
 export async function getBoards(
-  search: string = "",
-  category: string = "",
-  page: number = 1,
+  keyword?: string,
+  category?: string,
+  page: number = 0,
   size: number = 10
 ) {
   try {
     const params = new URLSearchParams();
-    params.append("search", search ?? "");
-    params.append("category", category || "NOTICE"); // FIXME: all 해결되면 수정되어야 함
+
+    if (keyword) {
+      params.append("keyword", keyword);
+    }
+    console.log(keyword);
+    if (category && category !== "전체" && category !== "ALL") {
+      params.append("category", category);
+    }
     params.append("page", page.toString());
     params.append("size", size.toString());
-
-    const res = await fetchWithAuth(`/board/keyword?${params.toString()}`, {
+    console.log(params.toString());
+    const res = await fetchWithAuth(`/board/search?${params.toString()}`, {
       method: "GET",
       headers: { "Content-Type": "application/json" },
     });
@@ -24,6 +30,7 @@ export async function getBoards(
     }
 
     const json = await res.json();
+    console.log(json);
     return json.data;
   } catch (error) {
     throw error;

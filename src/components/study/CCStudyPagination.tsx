@@ -24,7 +24,7 @@ export default function CCStudyPagination({
   }, [currentPage]);
 
   const getVisiblePages = useMemo(() => {
-    const maxVisible = 5;
+    const maxVisible = 6;
     let start = Math.max(1, currentPage - Math.floor(maxVisible / 2));
     const end = Math.min(totalPages, start + maxVisible - 1);
 
@@ -75,7 +75,13 @@ export default function CCStudyPagination({
         {visiblePages[0] > 1 && (
           <>
             <Link key={1} href={createSafePageUrl(1)}>
-              <div className="text-sm font-medium inline-flex items-center justify-center h-9 px-3 rounded-md border border-gray-300 text-gray-600 bg-white hover:bg-cert-red hover:border-cert-red hover:text-white transition-colors min-w-[40px] dark-default dark:hover:bg-gray-600 dark:border-gray-800 dark:text-gray-500">
+              <div
+                className={`w-10 h-10 text-sm font-medium flex items-center justify-center rounded-md transition-colors border ${
+                  currentPage === 1
+                    ? "bg-cert-red text-white shadow-md border-cert-red"
+                    : "text-gray-700 border-gray-300 hover:bg-gray-100 dark-default dark:hover:bg-gray-600 dark:border-gray-700 dark:text-gray-500"
+                }`}
+              >
                 1
               </div>
             </Link>
@@ -111,7 +117,13 @@ export default function CCStudyPagination({
               </span>
             )}
             <Link key={totalPages} href={createSafePageUrl(totalPages)}>
-              <div className="text-sm font-medium inline-flex items-center justify-center h-9 px-3 rounded-md border border-gray-300 text-gray-600 bg-white hover:bg-cert-red hover:border-cert-red hover:text-white transition-colors min-w-[40px] dark-default dark:hover:bg-gray-600 dark:border-gray-800 dark:text-gray-500">
+              <div
+                className={`w-10 h-10 text-sm font-medium flex items-center justify-center rounded-md transition-colors border ${
+                  currentPage === totalPages
+                    ? "bg-cert-red text-white shadow-md border-cert-red"
+                    : "text-gray-700 border-gray-300 hover:bg-gray-100 dark-default dark:hover:bg-gray-600 dark:border-gray-700 dark:text-gray-500"
+                }`}
+              >
                 {totalPages}
               </div>
             </Link>
@@ -122,7 +134,7 @@ export default function CCStudyPagination({
         {currentPage < totalPages ? (
           <Link href={createSafePageUrl(currentPage + 1)}>
             <div
-              className="p-2 rounded-md transition-all duration-200 text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700/40"
+              className="p-2 rounded-md transition-all duration-200 text-gray-700 hover:bg-gray-100  dark:text-gray-300 dark:hover:bg-gray-700/40"
               title="다음 페이지"
             >
               <ChevronRight className="w-4 h-4" />
@@ -130,7 +142,7 @@ export default function CCStudyPagination({
           </Link>
         ) : (
           <div
-            className="p-2 rounded-md transition-all duration-200 text-gray-400 cursor-not-allowed dark:text-gray-600"
+            className="p-2 rounded-md transition-all duration-200 text-gray-400 cursor-not-allowed  dark:text-gray-600"
             title="다음 페이지"
           >
             <ChevronRight className="w-4 h-4" />

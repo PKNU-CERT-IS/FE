@@ -3,13 +3,19 @@
 import { apiClient } from "@/lib/clientIntercept";
 import { NewBoardFormData } from "@/types/board";
 import { AttachedFile } from "@/types/attachedFile";
-
+// board 전용
+export interface BoardAttachedFile {
+  name: string;
+  size: string;
+  type: string;
+  attachedUrl: string;
+}
 interface UpdateBoardPayload {
   title: string;
   content: string;
   description?: string;
   category: string;
-  attachments?: AttachedFile[];
+  attachments: AttachedFile[]; // FIXME: 될지 말지 모르겠다...
 }
 
 // 게시글 생성
@@ -67,8 +73,8 @@ export async function updateBoard(
   }
 }
 
-// 디테일 페이지 조회
-export async function getDetailBoard(boardId: number) {
+// 디테일 페이지 조회 -> 수정 위해서 필요
+export async function getCCDetailBoard(boardId: number) {
   try {
     const res = await apiClient.get(`/board/detail/${boardId}`, {
       headers: { "Content-Type": "application/json" },

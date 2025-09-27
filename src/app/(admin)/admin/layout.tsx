@@ -1,4 +1,7 @@
+import CCThemeSwitch from "@/components/ui/CCThemeSwitch";
+import CCTopButton from "@/components/ui/CCTopButton";
 import AdminNavigationBar from "@/layouts/admin/adminNavigationBar";
+import Footer from "@/layouts/footer";
 
 export const metadata = {
   title: "Admin | CERT-IS",
@@ -14,6 +17,11 @@ export default function AdminLayout({
     <div className="flex flex-col min-h-screen">
       <AdminNavigationBar />
       <main className="flex-1">{children}</main>
+      <footer>
+        <Footer />
+      </footer>
+      <CCThemeSwitch />
+      <CCTopButton />
     </div>
   );
 }

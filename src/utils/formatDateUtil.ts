@@ -14,8 +14,20 @@ export const formatDate = (
   format: "short" | "medium" | "long" | "dot" = "short"
 ): string => {
   try {
+    // 문자열일 경우 포맷 정규화
+    const normalizeDateString = (dateStr: string) => {
+      // case1: "2025-09-22 15:19:16" → "2025-09-22T15:19:16Z"
+      if (/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/.test(dateStr)) {
+        return dateStr.replace(" ", "T") + "Z";
+      }
+      return dateStr;
+    };
+
     const date =
-      typeof dateInput === "string" ? new Date(dateInput) : dateInput;
+      typeof dateInput === "string"
+        ? new Date(normalizeDateString(dateInput))
+        : dateInput;
+
     if (isNaN(date.getTime())) return String(dateInput);
 
     if (format === "long") {

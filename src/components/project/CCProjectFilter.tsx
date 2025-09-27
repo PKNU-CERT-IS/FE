@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { ChevronDown, X } from "lucide-react";
 import CCProjectSearchBar from "@/components/project/CCProjectSearchBar";
 import {
-  CurrentFilters,
+  ProjectCurrentFilters,
   SEMESTER_OPTIONS,
   SEMESTER_LABELS,
   FilterKey,
@@ -19,14 +19,16 @@ import {
   SUBCATEGORY_MAP,
   SubCategoryKey,
 } from "@/types/category";
-import { STATUS_LABELS, STATUS_OPTIONS } from "@/types/progressStatus";
+import { STATUS_FILTER_OPTIONS, STATUS_LABELS } from "@/types/progressStatus";
 
 interface ProjectCategoryProps {
-  currentFilters: CurrentFilters;
+  projectCurrentFilters: ProjectCurrentFilters;
+  isAdmin?: boolean;
 }
 
 export default function CCProjectFilter({
-  currentFilters,
+  projectCurrentFilters,
+  isAdmin = false,
 }: ProjectCategoryProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -47,31 +49,36 @@ export default function CCProjectFilter({
   const statusRef = useRef<HTMLDivElement>(null);
 
   const updateFilter = useCallback(
-    (key: FilterKey, value: string) => {
-      const params = new URLSearchParams(searchParams.toString());
+    (key: FilterKey, value: string): void => {
+      const params = new URLSearchParams(searchParams);
 
-      if (value === "all" || value === "") {
+      if (value === "ALL" || value === "") {
         params.delete(key);
       } else {
         params.set(key, value);
       }
 
+      // 필터 변경 시 페이지를 1로 리셋
       params.delete("page");
 
-      const newUrl = `/project?${params.toString()}`;
       startTransition(() => {
-        router.push(newUrl);
+        if (isAdmin) {
+          const tab = params.get("tab") || "project";
+          params.set("tab", tab);
+          router.push(`/admin/study?${params.toString()}`);
+        } else {
+          router.push(`/project?${params.toString()}`);
+        }
       });
     },
-    [searchParams, router]
+    [searchParams, router, isAdmin]
   );
-
   // 메인카테고리에서 다른 카테고리 선택 시 서브 카테고리 리셋
   const resetSubCategory = useCallback(
     (newCategory: string) => {
       const params = new URLSearchParams(searchParams);
 
-      if (newCategory === "all" || newCategory === "") {
+      if (newCategory === "ALL" || newCategory === "") {
         params.delete("category");
       } else {
         params.set("category", newCategory);
@@ -80,14 +87,18 @@ export default function CCProjectFilter({
       params.delete("subCategory");
       params.delete("page");
 
-      const newUrl = `/project?${params.toString()}`;
       startTransition(() => {
-        router.push(newUrl);
+        if (isAdmin) {
+          const tab = params.get("tab") || "project";
+          params.set("tab", tab);
+          router.push(`/admin/study?${params.toString()}`);
+        } else {
+          router.push(`/project?${params.toString()}`);
+        }
       });
     },
-    [searchParams, router]
+    [searchParams, router, isAdmin]
   );
-
   const closeAllDropdowns = useCallback(() => {
     setShowSemesterDropdown(false);
     setShowCategoryDropdown(false);
@@ -111,10 +122,11 @@ export default function CCProjectFilter({
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [closeAllDropdowns]);
+
   return (
     <div className="mb-1 sm:mb-4">
       <div className="flex flex-col sm:flex-row gap-3 mb-4">
-        <CCProjectSearchBar currentSearch={currentFilters.search} />
+        <CCProjectSearchBar currentSearch={projectCurrentFilters.search} />
 
         {/* 필터 버튼들 */}
         <div className="grid grid-cols-2 gap-3 sm:flex sm:flex-row sm:flex-wrap">
@@ -140,7 +152,7 @@ export default function CCProjectFilter({
               }}
             >
               <span className="text-gray-700 truncate pr-1 dark:text-gray-200">
-                {SEMESTER_LABELS[currentFilters.semester]}
+                {SEMESTER_LABELS[projectCurrentFilters.semester]}
               </span>
               <ChevronDown
                 className={`h-4 w-4 transition-transform duration-300 text-gray-400 ${
@@ -190,7 +202,7 @@ export default function CCProjectFilter({
               }}
             >
               <span className="text-gray-700 truncate pr-1 dark:text-gray-200">
-                {CATEGORY_LABELS[currentFilters.category]}
+                {CATEGORY_LABELS[projectCurrentFilters.category]}
               </span>
               <ChevronDown
                 className={`h-4 w-4 transition-transform duration-300 text-gray-400 ${
@@ -240,9 +252,9 @@ export default function CCProjectFilter({
               }}
             >
               <span className="text-gray-700 truncate pr-1 dark:text-gray-200">
-                {currentFilters.subCategory
+                {projectCurrentFilters.subCategory
                   ? SUBCATEGORY_LABELS[
-                      currentFilters.subCategory as SubCategoryKey
+                      projectCurrentFilters.subCategory as SubCategoryKey
                     ]
                   : ""}
               </span>
@@ -255,19 +267,21 @@ export default function CCProjectFilter({
 
             {showSubCategoryDropdown && (
               <div className="absolute top-full mt-1 w-full rounded-lg border border-gray-300 bg-white shadow-lg z-20 max-h-48 overflow-y-auto dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200">
-                {SUBCATEGORY_MAP[currentFilters.category].map((option) => (
-                  <button
-                    key={option}
-                    type="button"
-                    className="w-full px-4 py-2 text-left text-gray-900 dark:text-gray-200 cursor-pointer first:rounded-t-lg last:rounded-b-lg text-sm hover:bg-cert-red hover:text-white dark:hover:bg-cert-red duration-100"
-                    onClick={() => {
-                      updateFilter("subCategory", option);
-                      closeAllDropdowns();
-                    }}
-                  >
-                    {SUBCATEGORY_LABELS[option as SubCategoryKey]}
-                  </button>
-                ))}
+                {SUBCATEGORY_MAP[projectCurrentFilters.category].map(
+                  (option) => (
+                    <button
+                      key={option}
+                      type="button"
+                      className="w-full px-4 py-2 text-left text-gray-900 dark:text-gray-200 cursor-pointer first:rounded-t-lg last:rounded-b-lg text-sm hover:bg-cert-red hover:text-white dark:hover:bg-cert-red duration-100"
+                      onClick={() => {
+                        updateFilter("subCategory", option);
+                        closeAllDropdowns();
+                      }}
+                    >
+                      {SUBCATEGORY_LABELS[option as SubCategoryKey]}
+                    </button>
+                  )
+                )}
               </div>
             )}
           </div>
@@ -294,7 +308,7 @@ export default function CCProjectFilter({
               }}
             >
               <span className="text-gray-700 truncate pr-1 dark:text-gray-200">
-                {STATUS_LABELS[currentFilters.status]}
+                {STATUS_LABELS[projectCurrentFilters.projectStatus]}
               </span>
               <ChevronDown
                 className={`h-4 w-4 transition-transform duration-300 text-gray-400 ${
@@ -305,13 +319,13 @@ export default function CCProjectFilter({
 
             {showStatusDropdown && (
               <div className="absolute top-full mt-1 w-full rounded-lg border border-gray-300 bg-white shadow-lg z-20 max-h-48 overflow-y-auto dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200">
-                {STATUS_OPTIONS.map((option) => (
+                {STATUS_FILTER_OPTIONS.map((option) => (
                   <button
                     key={option}
                     type="button"
                     className="w-full px-4 py-2 text-left text-gray-900 dark:text-gray-200 cursor-pointer first:rounded-t-lg last:rounded-b-lg text-sm hover:bg-cert-red hover:text-white dark:hover:bg-cert-red duration-100"
                     onClick={() => {
-                      updateFilter("status", option);
+                      updateFilter("projectStatus", option);
                       closeAllDropdowns();
                     }}
                   >
@@ -325,10 +339,10 @@ export default function CCProjectFilter({
       </div>
 
       {/* 활성 필터 태그 */}
-      <div className="flex flex-wrap gap-2 mt-2">
-        {currentFilters.search && (
+      <div className="flex flex-wrap gap-2 mt-4">
+        {projectCurrentFilters.search && (
           <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800 mb-3 sm:mb-0">
-            검색: {currentFilters.search}
+            검색: {projectCurrentFilters.search}
             <button
               type="button"
               onClick={() => updateFilter("search", "")}
@@ -338,48 +352,48 @@ export default function CCProjectFilter({
             </button>
           </span>
         )}
-        {currentFilters.semester !== "all" && (
+        {projectCurrentFilters.semester !== "ALL" && (
           <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800 mb-3 sm:mb-0">
-            {SEMESTER_LABELS[currentFilters.semester]}
+            {SEMESTER_LABELS[projectCurrentFilters.semester]}
             <button
               type="button"
-              onClick={() => updateFilter("semester", "all")}
+              onClick={() => updateFilter("semester", "ALL")}
               className="ml-2 inline-flex items-center justify-center w-4 h-4 rounded-full hover:bg-red-200"
             >
               <X className="w-3" />
             </button>
           </span>
         )}
-        {currentFilters.category !== "all" && (
+        {projectCurrentFilters.category !== "ALL" && (
           <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 mb-3 sm:mb-0">
-            {currentFilters.category}
+            {projectCurrentFilters.category}
             <button
               type="button"
-              onClick={() => updateFilter("category", "all")}
+              onClick={() => updateFilter("category", "ALL")}
               className="ml-2 inline-flex items-center justify-center w-4 h-4 rounded-full hover:bg-blue-200"
             >
               <X className="w-3" />
             </button>
           </span>
         )}
-        {currentFilters.subCategory !== "all" && (
+        {projectCurrentFilters.subCategory !== "ALL" && (
           <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 mb-3 sm:mb-0">
-            {currentFilters.subCategory}
+            {projectCurrentFilters.subCategory}
             <button
               type="button"
-              onClick={() => updateFilter("subCategory", "all")}
+              onClick={() => updateFilter("subCategory", "ALL")}
               className="ml-2 inline-flex items-center justify-center w-4 h-4 rounded-full hover:bg-blue-200"
             >
               <X className="w-3" />
             </button>
           </span>
         )}
-        {currentFilters.status !== "all" && (
+        {projectCurrentFilters.projectStatus !== "ALL" && (
           <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 mb-3 sm:mb-0">
-            {STATUS_LABELS[currentFilters.status]}
+            {STATUS_LABELS[projectCurrentFilters.projectStatus]}
             <button
               type="button"
-              onClick={() => updateFilter("status", "all")}
+              onClick={() => updateFilter("projectStatus", "ALL")}
               className="ml-2 inline-flex items-center justify-center w-4 h-4 rounded-full hover:bg-green-200"
             >
               <X className="w-3" />
