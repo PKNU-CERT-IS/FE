@@ -22,7 +22,7 @@ import { signupAction } from "@/actions/auth/SignUpServerAction";
 import { GENDER_OPTIONS } from "@/types/login";
 import { membersGradeCategories } from "@/types/members";
 import AlertModal from "@/components/ui/defaultAlertModal";
-import { useState, useTransition } from "react";
+import { useState, useTransition, useEffect } from "react";
 
 export default function CCSignUpForm() {
   const {
@@ -44,15 +44,54 @@ export default function CCSignUpForm() {
   } = useAuth();
 
   const [alertOpen, setAlertOpen] = useState(false);
+  const [formattedPhone, setFormattedPhone] = useState("");
 
   const [isPending, startTransition] = useTransition();
+
+  // signupFormData.phone이 변경될 때 formattedPhone 업데이트
+  useEffect(() => {
+    if (signupFormData.phone) {
+      setFormattedPhone(formatPhoneNumber(signupFormData.phone));
+    }
+  }, [signupFormData.phone]);
 
   const isSamePassword =
     signupFormData.password === signupFormData.confirmPassword;
 
+  // 전화번호 포맷팅 함수
+  const formatPhoneNumber = (value: string): string => {
+    // 숫자만 추출
+    const numbers = value.replace(/\D/g, "");
+
+    // 빈 문자열이면 그대로 반환
+    if (!numbers) return "";
+
+    // 길이에 따른 포맷팅
+    if (numbers.length <= 3) {
+      return numbers;
+    } else if (numbers.length <= 7) {
+      return `${numbers.slice(0, 3)}-${numbers.slice(3)}`;
+    } else {
+      return `${numbers.slice(0, 3)}-${numbers.slice(3, 7)}-${numbers.slice(
+        7,
+        11
+      )}`;
+    }
+  };
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    updateSignupField(name as keyof typeof signupFormData, value);
+
+    // 전화번호 필드인 경우 포맷팅 적용
+    if (name === "phone") {
+      const formattedPhone = formatPhoneNumber(value);
+      setFormattedPhone(formattedPhone);
+      // 숫자만 추출해서 원본 데이터에 저장 (서버 전송용)
+      const numbersOnly = formattedPhone.replace(/\D/g, "");
+      updateSignupField(name as keyof typeof signupFormData, numbersOnly);
+    } else {
+      updateSignupField(name as keyof typeof signupFormData, value);
+    }
   };
 
   const selectedGradeLabel = signupFormData.grade || "학년을 선택해주세요";
@@ -78,6 +117,7 @@ export default function CCSignUpForm() {
         {/* hidden inputs for server action */}
         <input type="hidden" name="grade" value={signupFormData.grade} />
         <input type="hidden" name="gender" value={signupFormData.gender} />
+        <input type="hidden" name="phone" value={signupFormData.phone} />
 
         {/* 이름 */}
         <div className="space-y-2">
@@ -392,12 +432,13 @@ export default function CCSignUpForm() {
               id="phone"
               name="phone"
               type="tel"
-              value={signupFormData.phone}
+              value={formattedPhone}
               onChange={handleInputChange}
               className={`input-default pl-10 ${
                 errors.phone ? "border-red-500" : "dark:border-gray-600"
               }`}
               placeholder="010-1234-5678"
+              maxLength={13} // 010-1234-5678 최대 길이
               required
             />
           </div>
