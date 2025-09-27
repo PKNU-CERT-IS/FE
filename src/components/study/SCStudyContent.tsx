@@ -31,8 +31,6 @@ interface SCStudyContentProps {
 export default async function SCStudyContent({
   searchParams,
 }: SCStudyContentProps) {
-  const ITEMS_PER_PAGE = 10;
-
   try {
     const resolvedSearchParams = await searchParams;
 

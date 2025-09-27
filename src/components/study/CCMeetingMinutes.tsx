@@ -226,11 +226,10 @@ export default function MeetingMinutes({
     };
 
     try {
-      let response;
       if (pageType === "study") {
-        response = await updateStudyMeeting(body);
+        await updateStudyMeeting(body);
       } else if (pageType === "project") {
-        response = await updateProjectMeeting(body);
+        await updateProjectMeeting(body);
       }
 
       setMeetingMinutes((prev) =>

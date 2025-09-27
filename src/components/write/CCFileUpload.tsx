@@ -71,7 +71,7 @@ export default function FileUpload({
           <h4 className="text-sm font-medium text-gray-700">
             첨부파일 ({attachments.length})
           </h4>
-          {attachments.map((file, index) => (
+          {attachments.map((file) => (
             <div
               key={getFileKey(file)}
               className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg"

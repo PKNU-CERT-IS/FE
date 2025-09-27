@@ -101,8 +101,6 @@ export default function WriteForm({ type, initialReferences }: WriteFormProps) {
     title: "",
     url: "",
   });
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  // const [semester, setSemester] = useState<string>("");
 
   const [thumbnailUrl, setThumbnailUrl] = useState<string>("");
   const [dateError, setDateError] = useState<string>("");

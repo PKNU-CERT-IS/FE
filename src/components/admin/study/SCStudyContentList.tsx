@@ -127,9 +127,6 @@ export default async function SCStudyContentList({
           </div>
 
           {studyMaterials.map((study) => {
-            const displayStatus =
-              study.status === "APPROVED" ? "READY" : study.status;
-
             return (
               <Link key={study.id} href={`/admin/study/${study.id}?tab=study`}>
                 <div className="mt-4 card-list">

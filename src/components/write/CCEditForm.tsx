@@ -138,6 +138,7 @@ export default function EditForm({
   );
   const searchParams = useSearchParams();
   const from = searchParams.get("from");
+
   useEffect(() => {
     const loadInitialData = async () => {
       try {
@@ -220,11 +221,15 @@ export default function EditForm({
           setDemoUrl(initialData.demoUrl || "");
           setExternalUrl(initialData.externalUrl ?? { title: "", url: "" });
           setThumbnailUrl(initialData.thumbnailUrl || "");
-          setSelectedReference(initialData.reference || null); // FIXME:
+          // setSelectedReference(initialData.reference || null); // FIXME:
+          if ("reference" in initialData) {
+            setSelectedReference(
+              (initialData.reference as BlogReferenceType) || null
+            );
+          } else {
+            setSelectedReference(null);
+          }
           setStatus(initialData.status || "");
-
-          // setExternalLinks(initialData.externalLinks || []);
-          console.log("현재 status", status, initialData.status);
         } else {
           console.warn("Initial data가 없습니다!");
         }
@@ -237,9 +242,8 @@ export default function EditForm({
 
     if (dataId && type) {
       loadInitialData();
-    } else {
-      console.warn("dataId 또는 type이 없습니다:", { dataId, type });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dataId, type]);
 
   useEffect(() => {
@@ -286,13 +290,6 @@ export default function EditForm({
           }
           break;
         }
-
-        // case "blog": {
-        //   const updateData = {
-        //     ...baseData,
-        //     description: description ?? "",
-        //     reference: selectedReference ?? null,
-        //   };
 
         case "blog":
           const blogUpdateRequest: BlogUpdateRequest = {
@@ -351,7 +348,6 @@ export default function EditForm({
             demoUrl,
             externalUrl:
               externalUrl.title && externalUrl.url ? externalUrl : undefined,
-            // thumbnailUrl: thumbnailUrl || undefined,
             thumbnailUrl: thumbnailUrl,
             attachments: attachments,
           };
@@ -677,6 +673,7 @@ export default function EditForm({
             {thumbnailUrl && (
               <div className="relative mt-2">
                 <div className="relative group inline-block">
+                  {/* eslint-disable @next/next/no-img-element */}
                   <img
                     src={thumbnailUrl}
                     alt="Thumbnail preview"
@@ -856,28 +853,6 @@ export default function EditForm({
       </div>
 
       {/* 액션 버튼 */}
-
-      {/* <div className="flex items-center justify-end gap-3 pt-6 border-t border-gray-200 dark:border-gray-700">
-        <DefaultButton variant="outline" onClick={handleCancel}>
-          취소
-        </DefaultButton>
-        <DefaultButton
-          onClick={handleSubmit}
-          disabled={
-            !isFormValid(
-              title,
-              description,
-              content,
-              category,
-              type,
-              maxParticipants,
-              startDate,
-              endDate
-            )
-          }
-        >
-          수정하기
-        </DefaultButton> */}
 
       <div className="flex items-center justify-between pt-6 border-t border-gray-200 dark:border-gray-700">
         {/* 블로그 공개 설정 토글 - blog일 때만 표시 */}

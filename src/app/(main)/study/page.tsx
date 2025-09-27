@@ -3,7 +3,7 @@ import { Suspense } from "react";
 import CCStudyFilter from "@/components/study/CCStudyFilter";
 import SCStudyContent from "@/components/study/SCStudyContent";
 import SCStudySkeleton from "@/components/study/SCStudySkeleton";
-import type { StudyPageProps, StudyCurrentFilters } from "@/types/study";
+import type { StudyPageProps } from "@/types/study";
 import Link from "next/link";
 import { Plus } from "lucide-react";
 import { parseSearchParams } from "@/utils/studyHelper";

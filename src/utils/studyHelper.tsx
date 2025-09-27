@@ -1,5 +1,4 @@
 import { CategoryType, SubCategoryType } from "@/types/category";
-import { studyStatus } from "@/types/profile";
 import { StatusType } from "@/types/progressStatus";
 import type { SemesterType, StudySearchParams } from "@/types/study";
 

@@ -77,6 +77,7 @@ export default function CCScheduleFormModal({
       handleStartTime(formatTime(schedule.startedAt, "hm"));
       handleEndTime(formatTime(schedule.endedAt, "hm"));
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [schedule]);
 
   const isValidForm =

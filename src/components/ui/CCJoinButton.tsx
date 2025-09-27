@@ -33,6 +33,7 @@ export function CCJoinButton({
     : "project";
 
   // 참가 여부 상태
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isJoined, setIsJoined] = useState(initiallyJoined);
   const handleClick = () => {
     startTransition(async () => {
@@ -60,6 +61,7 @@ export function CCJoinButton({
         }
       } catch (err) {
         alert("처리 실패, 다시 시도해주세요.");
+        throw err;
       }
     });
   };

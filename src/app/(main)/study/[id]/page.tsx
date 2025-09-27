@@ -59,10 +59,7 @@ export async function generateMetadata({
       },
     };
   } catch (error) {
-    return {
-      title: "에러 발생",
-      description: "스터디 데이터를 불러오는 중 오류가 발생했습니다.",
-    };
+    throw error;
   }
 }
 

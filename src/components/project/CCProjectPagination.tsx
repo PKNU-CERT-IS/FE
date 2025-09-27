@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useCallback } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 // 프로젝트 검색 파라미터
@@ -30,9 +30,9 @@ export default function ProjectPagination({
     window.scrollTo({ top: 0 });
   }, [currentPage]);
 
-  if (totalPages <= 1) return null;
+  const visiblePages = useMemo(() => {
+    if (totalPages <= 1) return []; // ← 조건을 훅 내부에서 처리
 
-  const getVisiblePages = useMemo(() => {
     const maxVisible = 5;
     let start = Math.max(1, currentPage - Math.floor(maxVisible / 2));
     const end = Math.min(totalPages, start + maxVisible - 1);
@@ -44,39 +44,39 @@ export default function ProjectPagination({
     return Array.from({ length: end - start + 1 }, (_, i) => start + i);
   }, [currentPage, totalPages]);
 
-  const visiblePages = getVisiblePages;
+  const createPageUrl = useCallback(
+    (page: number, searchParams: ProjectSearchParams) => {
+      const params = new URLSearchParams();
+      const safeSearchParams = searchParams || {};
+      Object.entries(safeSearchParams).forEach(([key, value]) => {
+        if (value && key !== "page") {
+          params.set(key, value);
+        }
+      });
 
-  function createPageUrl(
-    page: number,
-    searchParams: ProjectSearchParams
-  ): string {
-    const params = new URLSearchParams();
-    const safeSearchParams = searchParams || {};
-    Object.entries(safeSearchParams).forEach(([key, value]) => {
-      if (value && key !== "page") {
-        params.set(key, value);
+      if (page > 1) {
+        params.set("page", page.toString());
       }
-    });
 
-    // 페이지 파라미터 설정
-    if (page > 1) {
-      params.set("page", page.toString());
-    }
+      const queryString = params.toString();
+      return queryString ? `?${queryString}` : "";
+    },
+    []
+  );
 
-    const queryString = params.toString();
-    return queryString ? `?${queryString}` : "";
-  }
-  // URL 생성 함수들을 메모이제이션
-  const createSafePageUrl = useMemo(() => {
-    return (page: number) => {
+  const createSafePageUrl = useCallback(
+    (page: number) => {
       try {
         return `/project${createPageUrl(page, searchParams || {})}`;
       } catch (error) {
         console.error("URL creation error:", error);
         return `/project?page=${page}`;
       }
-    };
-  }, [searchParams]);
+    },
+    [searchParams, createPageUrl]
+  );
+
+  if (visiblePages.length === 0) return null; // ← 여기서 조건부 렌더링
 
   return (
     <div className="mt-8">

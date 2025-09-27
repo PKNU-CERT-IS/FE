@@ -63,6 +63,7 @@ export default function EndRequestButton({ id }: { id: number }) {
       setIsOpenModal(false);
     } catch (err) {
       alert(`${pageLabel} 종료 요청에 실패했습니다.`);
+      throw err;
     } finally {
       setSubmitting(false);
     }

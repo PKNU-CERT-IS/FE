@@ -33,8 +33,7 @@ export async function searchStudies(
     subcategory?: string;
     studyStatus?: string;
     semester?: string;
-  } = {},
-  options: { page?: number; size?: number; sort?: string[] } = {}
+  } = {}
 ) {
   try {
     const params = new URLSearchParams();
