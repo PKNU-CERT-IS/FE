@@ -1,6 +1,6 @@
 "server-only";
 
-import RequestActionButtons from "@/components/ui/requestActionButtons";
+import RegisterActionButtons from "@/components/admin/members/CCRegisterActionButtons";
 import { User } from "lucide-react";
 import { getMembersForStaff } from "@/app/api/member/SCadminMemberApi";
 import { groupMembersWaitingForApproval } from "@/utils/membersUtils";
@@ -47,7 +47,7 @@ export default async function CCSignUpList() {
                 </div>
 
                 <div className="flex gap-2 shrink-0 w-40">
-                  <RequestActionButtons
+                  <RegisterActionButtons
                     id={member.memberId}
                     grade={member.grade}
                   />
