@@ -14,6 +14,7 @@ import {
   Calendar,
   GraduationCap,
   User,
+  Loader2,
 } from "lucide-react";
 import DefaultButton from "@/components/ui/defaultButton";
 import { useAuth } from "@/hooks/useAuth";
@@ -21,7 +22,7 @@ import { signupAction } from "@/actions/auth/SignUpServerAction";
 import { GENDER_OPTIONS } from "@/types/login";
 import { membersGradeCategories } from "@/types/members";
 import AlertModal from "@/components/ui/defaultAlertModal";
-import { useState } from "react";
+import { use, useState, useTransition } from "react";
 
 export default function CCSignUpForm() {
   const {
@@ -44,6 +45,8 @@ export default function CCSignUpForm() {
 
   const [alertOpen, setAlertOpen] = useState(false);
 
+  const [isPending, startTransition] = useTransition();
+
   const isSamePassword =
     signupFormData.password === signupFormData.confirmPassword;
 
@@ -58,14 +61,15 @@ export default function CCSignUpForm() {
   const router = useRouter();
 
   async function handleSubmit(formData: FormData) {
-    const result = await signupAction(formData);
+    startTransition(async () => {
+      const result = await signupAction(formData);
 
-    if (result.success) {
-      router.push("/login");
-    } else {
-      console.log(result.message);
-      setAlertOpen(true);
-    }
+      if (result.success) {
+        router.push("/login");
+      } else {
+        setAlertOpen(true);
+      }
+    });
   }
 
   return (
@@ -460,17 +464,27 @@ export default function CCSignUpForm() {
 
         <DefaultButton
           type="submit"
-          className="w-full h-12 text-white font-medium transition-all duration-300 shadow-lg cursor-pointer hover:shadow-xl"
+          disabled={isPending}
+          className="w-full h-12 text-white font-medium transition-all duration-300 shadow-lg cursor-pointer hover:shadow-xl flex justify-center items-center gap-2"
         >
-          <UserPlus className="w-4 h-4 mr-1" />
-          회원가입
+          {isPending ? (
+            <>
+              <Loader2 className="w-4 h-4 animate-spin" />
+              회원가입 중...
+            </>
+          ) : (
+            <>
+              <UserPlus className="w-4 h-4 mr-1" />
+              회원가입
+            </>
+          )}
         </DefaultButton>
       </form>
       <AlertModal
         isOpen={alertOpen}
         message={"회원가입에 실패하였습니다."}
         type="error"
-        duration={3000}
+        duration={6000}
         onClose={() => setAlertOpen(false)}
       />
     </>
