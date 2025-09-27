@@ -212,7 +212,7 @@ export default function WriteForm({ type, initialReferences }: WriteFormProps) {
           const blogApiResponse = await createBlog(submitData);
 
           if (blogApiResponse?.statusCode === 201) {
-            router.replace("/blog");
+            router.back();
             setTimeout(() => {
               router.refresh();
             }, 100);
