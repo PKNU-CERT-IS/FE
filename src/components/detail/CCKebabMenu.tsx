@@ -48,9 +48,9 @@ export default function KebabMenu({
         case currentUrl.startsWith("board"):
           await deleteBoard(currentId);
           break;
-        // case currentUrl.startsWith("blog"):
-        //   await deleteBlog(currentId);
-        //   break;
+        case currentUrl.startsWith("blog"):
+          await deleteBlog({ blogId: currentId });
+          break;
         case currentUrl.startsWith("study"):
           await deleteStudy(currentId);
           break;
@@ -61,10 +61,6 @@ export default function KebabMenu({
           throw new Error("알 수 없는 도메인입니다.");
       }
 
-      if (currentUrl === "blog") {
-        //  blog 삭제
-        await deleteBlog({ blogId: currentId });
-      }
       //  admin 여부에 따라 분기
       if (isAdmin) {
         router.push(`/admin/${currentUrl}`);
