@@ -9,7 +9,7 @@ import { downloadFile } from "@/actions/study/StudyDownloadFileServerAction";
 import CCAdminStudyPagination from "@/components/admin/study/CCAdminStudyPagination";
 import SCSearchResultNotFound from "@/components/ui/SCSearchResultNotFound";
 import { formatFileSize } from "@/utils/attachedFileUtils";
-import { CurrentFilters, ProjectList } from "@/types/project";
+import { ProjectCurrentFilters, ProjectList } from "@/types/project";
 import { getProjects, searchProjects } from "@/app/api/project/SCProjectApi";
 import { SUBCATEGORY_FROM_EN, SUBCATEGORY_TO_EN } from "@/types/category";
 import { calculateProgress } from "@/utils/adminProgressUtil";
@@ -29,7 +29,7 @@ interface SCProjectContentListProps {
   currentView: SubTab;
   currentSearch?: string;
   currentPage?: number;
-  currentFilters: CurrentFilters;
+  projectCurrentFilters: ProjectCurrentFilters;
 }
 
 export default async function SCProjectContentList({
@@ -37,7 +37,7 @@ export default async function SCProjectContentList({
   currentView,
   currentSearch = "",
   currentPage = 1,
-  currentFilters,
+  projectCurrentFilters,
 }: SCProjectContentListProps) {
   const statusByView =
     !currentView || currentView === "pending"
@@ -48,10 +48,14 @@ export default async function SCProjectContentList({
 
   const isDefaultFilters =
     (!currentSearch || currentSearch === "ALL") &&
-    (currentFilters.category === "ALL" || !currentFilters.category) &&
-    (currentFilters.subCategory === "ALL" || !currentFilters.subCategory) &&
-    (currentFilters.semester === "ALL" || !currentFilters.semester) &&
-    (currentFilters.status === "ALL" || !currentFilters.status) &&
+    (projectCurrentFilters.category === "ALL" ||
+      !projectCurrentFilters.category) &&
+    (projectCurrentFilters.subCategory === "ALL" ||
+      !projectCurrentFilters.subCategory) &&
+    (projectCurrentFilters.semester === "ALL" ||
+      !projectCurrentFilters.semester) &&
+    (projectCurrentFilters.projectStatus === "ALL" ||
+      !projectCurrentFilters.projectStatus) &&
     (statusByView === "ALL" || !statusByView);
 
   let projectMaterials: ProjectList[] = [];
@@ -73,12 +77,11 @@ export default async function SCProjectContentList({
     currentValidPage = (listData.number ?? 0) + 1;
   } else {
     const searchData = await searchProjects({
-      keyword: currentFilters.search,
-      category: currentFilters.category,
-      subcategory: SUBCATEGORY_TO_EN[currentFilters.subCategory],
-      status:
-        currentView === "pending" ? "READY" : currentFilters.status || "ALL",
-      semester: currentFilters.semester,
+      keyword: projectCurrentFilters.search,
+      category: projectCurrentFilters.category,
+      subcategory: SUBCATEGORY_TO_EN[projectCurrentFilters.subCategory],
+      projectStatus: projectCurrentFilters.projectStatus || "READY",
+      semester: projectCurrentFilters.semester,
     });
     projectMaterials = searchData.content ?? [];
     totalItems = projectMaterials.length;

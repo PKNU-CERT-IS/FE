@@ -35,7 +35,7 @@ export async function searchProjects(
     keyword?: string;
     category?: string;
     subcategory?: string;
-    status?: string;
+    projectStatus?: string;
     semester?: string;
   } = {},
   options: { page?: number; size?: number; sort?: string[] } = {}
@@ -53,8 +53,8 @@ export async function searchProjects(
     if (filters.subcategory && filters.subcategory !== "ALL") {
       params.append("subcategory", filters.subcategory);
     }
-    if (filters.status && filters.status !== "ALL") {
-      params.append("status", filters.status);
+    if (filters.projectStatus && filters.projectStatus !== "ALL") {
+      params.append("projectStatus", filters.projectStatus);
     }
     params.append("page", String((options.page ?? 1) - 1));
     params.append("size", String(options.size ?? 10));

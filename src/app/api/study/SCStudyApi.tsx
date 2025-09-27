@@ -31,7 +31,7 @@ export async function searchStudies(
     keyword?: string;
     category?: string;
     subcategory?: string;
-    status?: string;
+    studyStatus?: string;
     semester?: string;
   } = {},
   options: { page?: number; size?: number; sort?: string[] } = {}
@@ -44,8 +44,8 @@ export async function searchStudies(
       params.append("category", filters.category);
     if (filters.subcategory && filters.subcategory !== "ALL")
       params.append("subcategory", filters.subcategory);
-    if (filters.status && filters.status !== "ALL")
-      params.append("status", filters.status);
+    if (filters.studyStatus && filters.studyStatus !== "ALL")
+      params.append("studyStatus", filters.studyStatus);
     if (filters.semester && filters.semester !== "ALL") {
       params.append("semester", normalizeSemester(filters.semester));
     }

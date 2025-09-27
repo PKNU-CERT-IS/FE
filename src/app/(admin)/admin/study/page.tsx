@@ -11,6 +11,7 @@ import {
 } from "@/types/admin/adminStudyTab";
 import CCStudyFilter from "@/components/study/CCStudyFilter";
 import { parseSearchParams } from "@/utils/studyHelper";
+import CCProjectFilter from "@/components/project/CCProjectFilter";
 
 interface AdminStudyProps {
   searchParams: Promise<{
@@ -37,11 +38,38 @@ export default async function AdminStudyPage({
   const currentView: SubTab =
     viewParam && isValidSubTab(viewParam) ? viewParam : "list";
 
-  const filters = parseSearchParams(resolvedSearchParams);
+  // const filters = parseSearchParams(resolvedSearchParams);
+
+  const baseFilters = parseSearchParams(resolvedSearchParams);
+
+  // 각 컴포넌트에 맞는 필터 타입으로 변환
+  const studyFilters = {
+    ...baseFilters,
+    studyStatus: baseFilters.studyStatus,
+  };
+
+  const projectFilters = {
+    search: baseFilters.search || "",
+    semester: baseFilters.semester || "ALL",
+    category: baseFilters.category || "ALL",
+    subCategory: baseFilters.subCategory || "ALL",
+    projectStatus: baseFilters.projectStatus || "ALL",
+  };
 
   return (
     <div>
-      <CCStudyFilter currentFilters={filters} isAdmin />
+      {currentTab === "study" && (
+        <CCStudyFilter studyCurrentFilters={studyFilters} isAdmin />
+      )}
+
+      {currentTab === "project" && (
+        <CCProjectFilter projectCurrentFilters={projectFilters} isAdmin />
+      )}
+      {/* <CCStudyFilter
+        studyCurrentFilters={studyFilters}
+        // projectCurrentFilters={projectFilters}
+        isAdmin
+      /> */}
       <CCStudyTabBar currentTab={currentTab} currentView={currentView} />
 
       {currentTab === "study" && (
@@ -50,7 +78,7 @@ export default async function AdminStudyPage({
           currentView={currentView}
           currentSearch={currentSearch}
           currentPage={currentPage}
-          currentFilters={filters}
+          studyCurrentFilters={studyFilters}
         />
       )}
 
@@ -60,7 +88,7 @@ export default async function AdminStudyPage({
           currentView={currentView}
           currentSearch={currentSearch}
           currentPage={currentPage}
-          currentFilters={filters}
+          projectCurrentFilters={projectFilters}
         />
       )}
     </div>

@@ -1,4 +1,5 @@
 import { CategoryType, SubCategoryType } from "@/types/category";
+import { studyStatus } from "@/types/profile";
 import { StatusType } from "@/types/progressStatus";
 import type { SemesterType, StudySearchParams } from "@/types/study";
 
@@ -303,7 +304,8 @@ export function parseSearchParams(searchParams?: StudySearchParams | null) {
       semester: "ALL" as SemesterType,
       category: "ALL" as CategoryType,
       subCategory: "ALL" as SubCategoryType,
-      status: "ALL" as StatusType,
+      studyStatus: "ALL" as StatusType,
+      projectStatus: "ALL" as StatusType,
       page: 1,
     };
   }
@@ -313,7 +315,7 @@ export function parseSearchParams(searchParams?: StudySearchParams | null) {
     semester: (searchParams.semester as SemesterType) || "ALL",
     category: (searchParams.category as CategoryType) || "ALL",
     subCategory: (searchParams.subCategory as SubCategoryType) || "ALL",
-    status: (searchParams.status as StatusType) || "ALL",
+    studyStatus: (searchParams.studyStatus as StatusType) || "ALL",
     page: parseInt(searchParams.page || "1", 10),
   };
 }

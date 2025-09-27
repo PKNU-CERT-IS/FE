@@ -34,7 +34,8 @@ export type FilterKey =
   | "semester"
   | "category"
   | "subCategory"
-  | "status";
+  | "studyStatus";
+// | "projectStatus";
 
 // 페이지 검색 파라미터
 export interface StudySearchParams {
@@ -42,12 +43,23 @@ export interface StudySearchParams {
   semester?: string;
   category?: string;
   subCategory?: string;
-  status?: string;
+  studyStatus?: string;
+
   page?: string;
 }
 
 // 현재 필터 상태
-export interface CurrentFilters {
+export interface StudyCurrentFilters {
+  search: string;
+  semester: SemesterType;
+  category: CategoryType;
+  subCategory: SubCategoryType;
+  studyStatus: StatusType;
+  resultSubmitStatus?: string; // 개설, 종료 요청에 따른 추가 상태
+  page: number;
+}
+// 현재 필터 상태
+export interface ProjectCurrentFilters {
   search: string;
   semester: SemesterType;
   category: CategoryType;
@@ -131,10 +143,10 @@ export interface StudyPageProps {
   searchParams: Promise<StudySearchParams>;
 }
 export interface StudyFilterProps {
-  currentFilters: CurrentFilters;
+  studyCurrentFilters: StudyCurrentFilters;
 }
 export interface StudyContentProps {
-  currentFilters: CurrentFilters;
+  studyCurrentFilters: StudyCurrentFilters;
 }
 export interface StudyPaginationProps {
   currentPage: number;
@@ -167,7 +179,7 @@ export type FilterOptions = {
   semester: typeof SEMESTER_OPTIONS;
   category: typeof CATEGORY_OPTIONS;
   subCategory: typeof SUBCATEGORY_OPTIONS;
-  status: typeof STATUS_OPTIONS;
+  studystatus: typeof STATUS_OPTIONS;
 };
 
 // API
@@ -176,7 +188,7 @@ export interface StudyMaterialsResponse {
   totalCount: number;
   totalPages: number;
 }
-export interface FilterParams extends Omit<CurrentFilters, "page"> {
+export interface FilterParams extends Omit<StudyCurrentFilters, "page"> {
   page: number;
 }
 

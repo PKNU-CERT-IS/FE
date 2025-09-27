@@ -14,7 +14,7 @@ interface SCProjectListProps {
     semester?: string;
     category?: string;
     subCategory?: string;
-    status?: string;
+    projectStatus?: string;
     page?: string;
   }>;
 }
@@ -33,7 +33,7 @@ export default async function SCProjectList({
       (currentFilters.category === "ALL" || !currentFilters.category) &&
       (currentFilters.subCategory === "ALL" || !currentFilters.subCategory) &&
       (currentFilters.semester === "ALL" || !currentFilters.semester) &&
-      (currentFilters.status === "ALL" || !currentFilters.status);
+      (currentFilters.projectStatus === "ALL" || !currentFilters.projectStatus);
 
     let data;
 
@@ -44,7 +44,7 @@ export default async function SCProjectList({
         keyword: currentFilters.search,
         category: currentFilters.category,
         subcategory: SUBCATEGORY_TO_EN[currentFilters.subCategory],
-        status: currentFilters.status,
+        projectStatus: currentFilters.projectStatus,
         semester: currentFilters.semester,
       });
     }

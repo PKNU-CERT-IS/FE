@@ -1,6 +1,10 @@
 // utils/projectUtils.ts
 import { CategoryType, SubCategoryType } from "@/types/category";
-import { ProjectMaterial, CurrentFilters, SemesterType } from "@/types/project";
+import {
+  ProjectMaterial,
+  ProjectCurrentFilters,
+  SemesterType,
+} from "@/types/project";
 import { StatusType } from "@/types/progressStatus";
 
 /**
@@ -12,16 +16,16 @@ export function parseSearchParams(searchParams: {
   semester?: string;
   category?: string;
   subCategory?: string;
-  status?: string;
+  projectStatus?: string;
   page?: string;
-}): CurrentFilters {
+}): ProjectCurrentFilters {
   return {
     search: searchParams.search || "",
     semester: (searchParams.semester as SemesterType) || "ALL",
     category: (searchParams.category as CategoryType) || "ALL",
     subCategory: (searchParams.subCategory as SubCategoryType) || "ALL",
-    status: (searchParams.status as StatusType) || "ALL",
-    page: parseInt(searchParams.page || "1", 10),
+    projectStatus: (searchParams.projectStatus as StatusType) || "ALL",
+    // page: parseInt(searchParams.page || "1", 10),
   };
 }
 

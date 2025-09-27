@@ -42,17 +42,17 @@ export interface ProjectList {
   attachments: AttachedFile[];
 }
 
-export interface CurrentFilters {
+export interface ProjectCurrentFilters {
   search: string;
   semester: SemesterType;
   category: CategoryType;
   subCategory: SubCategoryType;
-  status: StatusType;
-  page: number;
+  projectStatus: StatusType;
+  page?: number;
 }
 
 export interface ProjectFilterProps {
-  currentFilters: CurrentFilters;
+  currentFilters: ProjectCurrentFilters;
 }
 
 export type FilterKey =
@@ -60,7 +60,7 @@ export type FilterKey =
   | "semester"
   | "category"
   | "subCategory"
-  | "status";
+  | "projectStatus";
 
 export type SemesterType = "ALL" | `${number}-01` | `${number}-02`;
 export function getCurrentSemester(): SemesterType {

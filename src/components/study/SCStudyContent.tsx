@@ -23,7 +23,7 @@ interface SCStudyContentProps {
     semester?: string;
     category?: string;
     subCategory?: string;
-    status?: string;
+    studyStatus?: string;
     page?: string;
   }>;
 }
@@ -44,7 +44,7 @@ export default async function SCStudyContent({
       (currentFilters.category === "ALL" || !currentFilters.category) &&
       (currentFilters.subCategory === "ALL" || !currentFilters.subCategory) &&
       (currentFilters.semester === "ALL" || !currentFilters.semester) &&
-      (currentFilters.status === "ALL" || !currentFilters.status);
+      (currentFilters.studyStatus === "ALL" || !currentFilters.studyStatus);
 
     let data;
 
@@ -55,7 +55,7 @@ export default async function SCStudyContent({
         keyword: currentFilters.search,
         category: currentFilters.category,
         subcategory: SUBCATEGORY_TO_EN[currentFilters.subCategory],
-        status: currentFilters.status,
+        studyStatus: currentFilters.studyStatus,
         semester: currentFilters.semester,
       });
     }

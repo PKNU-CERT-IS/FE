@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import { CurrentFilters } from "@/types/project";
+import { ProjectCurrentFilters } from "@/types/project";
 import SCProjectList from "@/components/project/SCProjectList";
 import { parseSearchParams } from "@/utils/projectUtils";
 import CCProjectFilter from "@/components/project/CCProjectFilter";
@@ -39,6 +39,7 @@ export async function generateMetadata({
     search?: string;
     category?: string;
     subCategory?: string;
+    projectStatus?: string;
   }>;
 }): Promise<Metadata> {
   const { search, category, subCategory } = await searchParams;
@@ -71,13 +72,14 @@ export async function generateMetadata({
 export default async function ProjectPage({ searchParams }: ProjectPageProps) {
   const resolvedSearchParams = await searchParams;
 
-  const filters: CurrentFilters = parseSearchParams(resolvedSearchParams);
+  const filters: ProjectCurrentFilters =
+    parseSearchParams(resolvedSearchParams);
 
   return (
     <div className="space-y-6 sm:space-y-0">
       <div className="flex flex-col sm:flex-row gap-0 sm:gap-4 ">
         <div className="flex-1">
-          <CCProjectFilter currentFilters={filters} />
+          <CCProjectFilter projectCurrentFilters={filters} />
         </div>
         <Link
           scroll={false}

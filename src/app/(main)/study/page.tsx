@@ -3,7 +3,7 @@ import { Suspense } from "react";
 import CCStudyFilter from "@/components/study/CCStudyFilter";
 import SCStudyContent from "@/components/study/SCStudyContent";
 import SCStudySkeleton from "@/components/study/SCStudySkeleton";
-import type { StudyPageProps, CurrentFilters } from "@/types/study";
+import type { StudyPageProps, StudyCurrentFilters } from "@/types/study";
 import Link from "next/link";
 import { Plus } from "lucide-react";
 import { parseSearchParams } from "@/utils/studyHelper";
@@ -31,6 +31,7 @@ export async function generateMetadata({
     search?: string;
     category?: string;
     subCategory?: string;
+    studyStatus?: string;
   }>;
 }): Promise<Metadata> {
   const { search, category, subCategory } = await searchParams;
@@ -72,7 +73,7 @@ export default async function StudyPage({ searchParams }: StudyPageProps) {
       {/* 검색 및 필터 - Client Component */}
       <div className="flex flex-col sm:flex-row gap-0 sm:gap-4">
         <div className="flex-1">
-          <CCStudyFilter currentFilters={filters} />
+          <CCStudyFilter studyCurrentFilters={filters} />
         </div>
         <Link
           href={"/study/write"}

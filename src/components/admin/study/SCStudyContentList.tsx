@@ -9,7 +9,11 @@ import { downloadFile } from "@/actions/study/StudyDownloadFileServerAction";
 import CCAdminStudyPagination from "@/components/admin/study/CCAdminStudyPagination";
 import SCSearchResultNotFound from "@/components/ui/SCSearchResultNotFound";
 import { formatFileSize } from "@/utils/attachedFileUtils";
-import { CurrentFilters, MEMBER_GRADE_LABELS, StudyList } from "@/types/study";
+import {
+  StudyCurrentFilters,
+  MEMBER_GRADE_LABELS,
+  StudyList,
+} from "@/types/study";
 import { SUBCATEGORY_FROM_EN, SUBCATEGORY_TO_EN } from "@/types/category";
 import { getStudies, searchStudies } from "@/app/api/study/SCStudyApi";
 import { calculateProgress } from "@/utils/adminProgressUtil";
@@ -28,7 +32,7 @@ interface SCStudyContentListProps {
   currentView: SubTab;
   currentSearch?: string;
   currentPage: number;
-  currentFilters: CurrentFilters;
+  studyCurrentFilters: StudyCurrentFilters;
 }
 
 export default async function SCStudyContentList({
@@ -36,7 +40,7 @@ export default async function SCStudyContentList({
   currentView,
   currentSearch = "",
   currentPage = 1,
-  currentFilters,
+  studyCurrentFilters,
 }: SCStudyContentListProps) {
   const statusByView =
     !currentView || currentView === "pending"
@@ -47,10 +51,12 @@ export default async function SCStudyContentList({
 
   const isDefaultFilters =
     (!currentSearch || currentSearch === "ALL") &&
-    (currentFilters.category === "ALL" || !currentFilters.category) &&
-    (currentFilters.subCategory === "ALL" || !currentFilters.subCategory) &&
-    (currentFilters.semester === "ALL" || !currentFilters.semester) &&
-    (currentFilters.status === "ALL" || !currentFilters.status) &&
+    (studyCurrentFilters.category === "ALL" || !studyCurrentFilters.category) &&
+    (studyCurrentFilters.subCategory === "ALL" ||
+      !studyCurrentFilters.subCategory) &&
+    (studyCurrentFilters.semester === "ALL" || !studyCurrentFilters.semester) &&
+    (studyCurrentFilters.studyStatus === "ALL" ||
+      !studyCurrentFilters.studyStatus) &&
     (statusByView === "ALL" || !statusByView);
 
   let studyMaterials: StudyList[] = [];
@@ -72,12 +78,15 @@ export default async function SCStudyContentList({
     currentValidPage = (listData.number ?? 0) + 1;
   } else {
     const searchData = await searchStudies({
-      keyword: currentFilters.search,
-      category: currentFilters.category,
-      subcategory: SUBCATEGORY_TO_EN[currentFilters.subCategory],
-      status:
-        currentView === "pending" ? "READY" : currentFilters.status || "ALL",
-      semester: currentFilters.semester,
+      keyword: studyCurrentFilters.search,
+      category: studyCurrentFilters.category,
+      subcategory: SUBCATEGORY_TO_EN[studyCurrentFilters.subCategory],
+      studyStatus: studyCurrentFilters.studyStatus || "READY",
+      // studyStatus:
+      //   currentView === "pending"
+      //     ? "READY"
+      //     : studyCurrentFilters.studyStatus || "ALL",
+      semester: studyCurrentFilters.semester,
     });
     studyMaterials = searchData.content ?? [];
     totalItems = studyMaterials.length;
@@ -135,11 +144,11 @@ export default async function SCStudyContentList({
                           <div className="flex items-center gap-2">
                             <DefaultBadge
                               variant="custom"
-                              className={getStatusColor(displayStatus)}
+                              className={getStatusColor(study.status)}
                             >
                               {
                                 STATUS_LABELS[
-                                  displayStatus as keyof typeof STATUS_LABELS
+                                  study.status as keyof typeof STATUS_LABELS
                                 ]
                               }
                             </DefaultBadge>
