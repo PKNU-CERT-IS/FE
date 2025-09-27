@@ -1,7 +1,8 @@
 "use client";
 
-import { memo, useMemo, useState } from "react";
+import { memo, useEffect, useMemo, useState } from "react";
 import { DAY_NAMES, MONTH_NAMES } from "@/utils/scheduleUtils";
+import { getSchedules } from "@/app/api/schedule/CCScheduleApi";
 
 const MiniCalendar = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -10,7 +11,20 @@ const MiniCalendar = () => {
   const today = useMemo(() => new Date(), []);
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
+  const [events, setEvents] = useState<Record<string, string>>({});
 
+  useEffect(() => {
+    const loadSchedules = async () => {
+      const schedules = await getSchedules(currentDate.toISOString());
+      const mapped: Record<string, string> = {};
+      schedules.forEach((s) => {
+        const dateKey = new Date(s.startedAt).toDateString();
+        mapped[dateKey] = s.title;
+      });
+      setEvents(mapped);
+    };
+    loadSchedules();
+  }, [currentDate]);
   const days = useMemo(() => {
     const firstDay = new Date(year, month, 1);
     const lastDay = new Date(year, month + 1, 0);
@@ -27,12 +41,6 @@ const MiniCalendar = () => {
 
     return daysArray;
   }, [year, month]);
-
-  // 동적 이벤트 생성 - 현재 달 기준
-  const events = {
-    [new Date(year, month, 5).toDateString()]: "보안 세미나",
-    [new Date(year, month, 12).toDateString()]: "CTF 대회",
-  };
 
   return (
     <div className="border rounded-lg p-4 shadow-lg dark-default">
