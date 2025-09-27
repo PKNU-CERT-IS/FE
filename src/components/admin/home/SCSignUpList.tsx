@@ -1,37 +1,15 @@
 "server-only";
 
-import {
-  approveSignUp,
-  rejectSignUp,
-} from "@/actions/admin/auth/AdminSignUpRequestServerAction";
 import RequestActionButtons from "@/components/ui/requestActionButtons";
-import { SignUpList } from "@/types/admin/adminDashBoard";
 import { User } from "lucide-react";
+import { getMembersForStaff } from "@/app/api/member/SCadminMemberApi";
+import { groupMembersWaitingForApproval } from "@/utils/membersUtils";
 
-const signUpList: SignUpList[] = [
-  {
-    name: "김철수",
-    department: "컴퓨터공학과",
-    studentId: 20212334,
-  },
-  {
-    name: "강민수",
-    department: "소프트웨어학과",
-    studentId: 20212334,
-  },
-  {
-    name: "박민수",
-    department: "정보보안학과",
-    studentId: 20212334,
-  },
-  {
-    name: "박민수",
-    department: "정보보안학과",
-    studentId: 20212334,
-  },
-];
+export default async function CCSignUpList() {
+  const members = await getMembersForStaff();
+  const signUpList = groupMembersWaitingForApproval(members);
+  console.log("signUpList", signUpList);
 
-export default function CCSignUpList() {
   return (
     <div className="text-card-foreground card-list h-full cursor-default">
       <div className="pb-4 flex flex-col space-y-1.5 p-6">
@@ -62,19 +40,16 @@ export default function CCSignUpList() {
                       {member.name}
                     </span>
                   </div>
-                  <p className="text-sm text-gray-600">
-                    학과: {member.department}
-                  </p>
+                  <p className="text-sm text-gray-600">학과: {member.major}</p>
                   <p className="text-sm text-gray-500 mt-1">
-                    학번: {member.studentId}
+                    학번: {member.studentNumber}
                   </p>
                 </div>
 
                 <div className="flex gap-2 shrink-0 w-40">
                   <RequestActionButtons
-                    id={member.studentId}
-                    approveAction={approveSignUp}
-                    rejectAction={rejectSignUp}
+                    id={member.memberId}
+                    grade={member.grade}
                   />
                 </div>
               </div>

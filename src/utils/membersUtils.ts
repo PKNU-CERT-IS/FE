@@ -162,3 +162,9 @@ export function groupMembersByPenalty(members: AdminMemberDetailInfoType[]) {
       .sort((a, b) => b.penaltyPoints - a.penaltyPoints),
   };
 }
+
+export function groupMembersWaitingForApproval(
+  members: AdminMemberDetailInfoType[]
+) {
+  return members.filter((member) => member.role === "NONE");
+}
