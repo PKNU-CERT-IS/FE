@@ -5,7 +5,10 @@ import Image from "next/image";
 import GithubSVG from "/public/icons/github.svg";
 import EmailSVG from "/public/icons/email.svg";
 import LinkedinSVG from "/public/icons/linkedIn.svg";
-import { translateMemberRole } from "@/utils/transfromResponseValue";
+import {
+  translateMemberRole,
+  translateGradeToKorean,
+} from "@/utils/transfromResponseValue";
 import { AdminMemberDetailInfoType } from "@/types/admin/adminMembers";
 import ClipboardButton from "@/components/ui/CCClipboardButton";
 export default function MembersCard({
@@ -14,7 +17,6 @@ export default function MembersCard({
   members: AdminMemberDetailInfoType;
 }) {
   const role = translateMemberRole(members.role);
-  console.log(members);
   return (
     <div
       className={`card-list p-6 group transform hover:-translate-y-2 hover:shadow-2xl hover:shadow-gray-300/50 shadow-sm cursor-default dark:bg-gray-800 dark:border-gray-700 ${getRoleBorderStyle(
@@ -52,7 +54,7 @@ export default function MembersCard({
 
           <div className="mt-2 text-sm text-gray-500 dark:text-gray-300">
             <p>
-              {members.grade} • {members.major}
+              {translateGradeToKorean(members.grade)} • {members.major}
             </p>
           </div>
         </div>
