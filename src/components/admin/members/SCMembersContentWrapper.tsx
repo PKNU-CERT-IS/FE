@@ -19,20 +19,6 @@ export default async function SCMembersContentWrapper({
     sortKorean(a.name, b.name)
   );
 
-  // const filteredMembers = () => {
-  //   return sortedMembers.filter(
-  //     (member: AdminMemberDetailInfoType) =>
-  //       member.name.includes(currentSearch) ||
-  //       member.major.includes(currentSearch) ||
-  //       member.studentNumber.includes(currentSearch) ||
-  //       member.activeProjects.some((project: string) =>
-  //         project.includes(currentSearch)
-  //       ) ||
-  //       member.activeStudies.some((study: string) =>
-  //         study.includes(currentSearch)
-  //       )
-  //   );
-  // };
   const filtered = sortedMembers;
 
   if (filtered.length === 0) {

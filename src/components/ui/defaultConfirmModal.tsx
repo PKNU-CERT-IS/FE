@@ -114,13 +114,6 @@ export default function ConfirmModal({
         {/* 버튼 */}
         <div className="flex items-center justify-center gap-3">
           <DefaultButton
-            variant="outline"
-            onClick={onCancel}
-            className="px-4 py-2 min-w-[80px] dark:text-gray-300"
-          >
-            {cancelText}
-          </DefaultButton>
-          <DefaultButton
             variant="default"
             onClick={() => {
               if (isEnd && onEndConfirm) {
@@ -136,6 +129,13 @@ export default function ConfirmModal({
             className="px-4 py-2 min-w-[80px]"
           >
             {confirmText}
+          </DefaultButton>
+          <DefaultButton
+            variant="outline"
+            onClick={onCancel}
+            className="px-4 py-2 min-w-[80px] dark:text-gray-300 text-black"
+          >
+            {cancelText}
           </DefaultButton>
         </div>
       </div>
