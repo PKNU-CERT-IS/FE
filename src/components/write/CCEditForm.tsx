@@ -909,7 +909,8 @@ export default function EditForm({
           </div>
         )}
 
-        <div className="flex items-center justify-end gap-3 pt-6 border-t border-gray-200 dark:border-gray-700">
+        {/* 액션 버튼: 항상 우측 고정 */}
+        <div className="flex items-center gap-3 ml-auto">
           <DefaultButton variant="outline" onClick={handleCancel}>
             취소
           </DefaultButton>
@@ -932,6 +933,7 @@ export default function EditForm({
           </DefaultButton>
         </div>
       </div>
+      {/* </div> */}
     </div>
   );
 }
