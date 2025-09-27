@@ -46,6 +46,9 @@ export default function CCProfileModal({
   );
   const [showGradeDropdown, setShowGradeDropdown] = useState<boolean>(false);
   const gradeRef = useRef<HTMLDivElement>(null);
+  const [skillInput, setSkillInput] = useState<string>(
+    editedUser.skills?.join(", ") || ""
+  );
 
   const role = translateMemberRole(editedUser.memberRole);
 
@@ -125,7 +128,10 @@ export default function CCProfileModal({
         birthday: toOffsetDateTime(editedUser.birthday), // string
         phoneNumber: editedUser.phoneNumber,
         studentNumber: editedUser.studentNumber,
-        skills: editedUser.skills,
+        skills: skillInput
+          .split(",")
+          .map((s) => s.trim())
+          .filter(Boolean),
         grade: translateKoreanToGrade(editedUser.memberGrade), // Enum
         email: editedUser.email,
         githubUrl: editedUser.githubUrl,
@@ -341,16 +347,8 @@ export default function CCProfileModal({
           <div className="space-y-2">
             <p className="text-sm dark:text-gray-200">기술스택</p>
             <input
-              value={(editedUser.skills ?? []).join(", ")}
-              onChange={(e) =>
-                setEditedUser((prev) => ({
-                  ...prev,
-                  skills: e.target.value
-                    .split(",")
-                    .map((s) => s.trim())
-                    .filter(Boolean),
-                }))
-              }
+              value={skillInput}
+              onChange={(e) => setSkillInput(e.target.value)}
               className="text-sm flex h-10 w-full rounded-md border px-3 py-2 bg-white border-gray-300 text-gray-900 focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent dark:bg-gray-800 dark:border-gray-600 dark:text-gray-200"
               placeholder="React, Node.js, Python (쉼표로 구분)"
             />
