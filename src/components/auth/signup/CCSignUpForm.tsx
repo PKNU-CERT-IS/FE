@@ -407,6 +407,7 @@ export default function CCSignUpForm() {
               id="birthDate"
               name="birthDate"
               type="date"
+              max="9999-12-31"
               value={signupFormData.birthDate}
               onChange={handleInputChange}
               className={`h-10 pl-10  w-full rounded-md border border-gray-300 text-gray-900 bg-white px-3 py-2 text-sm focus:border-cert-red focus:outline-none cursor-pointer ${

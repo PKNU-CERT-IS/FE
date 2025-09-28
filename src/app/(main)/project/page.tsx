@@ -12,7 +12,7 @@ import {
   SUBCATEGORY_OPTIONS,
 } from "@/types/category";
 import { Suspense } from "react";
-import SCProjectSkeleton from "@/components/project/\bSCProjectSkeleton";
+import SCProjectSkeleton from "@/components/project/SCProjectSkeleton";
 
 interface ProjectPageProps {
   searchParams: Promise<{
