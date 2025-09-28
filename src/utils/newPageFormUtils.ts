@@ -1,3 +1,4 @@
+import { AttachedFile } from "@/types/attachedFile";
 import { NewPageCategoryType } from "@/types/newPageForm";
 
 // type에 따라 목록을 반환하는 함수
@@ -221,7 +222,8 @@ export const isFormValid = (
   type: NewPageCategoryType,
   maxParticipants?: number,
   startDate?: string,
-  endDate?: string
+  endDate?: string,
+  attachments?: AttachedFile[]
 ) => {
   const baseValid =
     title.trim() && description.trim() && content.trim() && category;
@@ -229,5 +231,9 @@ export const isFormValid = (
     type === "study" || type === "project"
       ? startDate && endDate && maxParticipants
       : true;
-  return baseValid && dateValid;
+  const attachmentValid =
+    type === "study" || type === "project"
+      ? attachments && attachments.length > 0
+      : true;
+  return baseValid && dateValid && attachmentValid;
 };

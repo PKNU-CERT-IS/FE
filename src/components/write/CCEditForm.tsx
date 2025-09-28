@@ -441,10 +441,6 @@ export default function EditForm({
           className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent resize-none dark:border-gray-600"
           placeholder={getDescriptionPlaceholder(type)}
         />
-        <p className="text-xs text-gray-500 mt-1 dark:text-gray-400">
-          선택사항이지만, 다른 사용자들이 내용을 빠르게 파악할 수 있도록
-          도와줍니다.
-        </p>
       </div>
 
       {type === "blog" && (
@@ -835,12 +831,17 @@ export default function EditForm({
       {(type === "study" || type === "board" || type === "project") && (
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-gray-200">
-            첨부 파일
+            첨부 파일 {(type === "study" || type === "project") && "*"}
           </label>
           <FileUpload
             attachments={attachments}
             onAttachmentsChange={setAttachments}
           />
+          {(type === "study" || type === "project") && (
+            <p className="text-xs text-gray-500 mt-1 dark:text-gray-400">
+              계획서를 반드시 첨부해주세요.
+            </p>
+          )}
         </div>
       )}
 
@@ -900,7 +901,8 @@ export default function EditForm({
                 type,
                 maxParticipants,
                 startDate,
-                endDate
+                endDate,
+                attachments
               )
             }
           >
@@ -908,7 +910,6 @@ export default function EditForm({
           </DefaultButton>
         </div>
       </div>
-      {/* </div> */}
     </div>
   );
 }
