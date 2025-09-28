@@ -11,6 +11,7 @@ import {
   translateGradeToKorean,
   fromOffsetDateTime,
 } from "@/utils/transfromResponseValue";
+import LogoSVG from "/public/icons/logo.svg";
 
 export default async function SCProfileCard() {
   const profile = await getProfile();
@@ -34,7 +35,7 @@ export default async function SCProfileCard() {
                     className="rounded-full object-cover"
                   />
                 ) : (
-                  <div>{profile.name}</div>
+                  <LogoSVG className="w-26 h-26 " />
                 )}
               </div>
             </div>

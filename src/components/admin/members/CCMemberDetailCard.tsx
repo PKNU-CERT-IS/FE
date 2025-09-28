@@ -216,6 +216,7 @@ export default function CCMemberDetailCard({
                 (
                 <input
                   type="date"
+                  max="9999-12-31"
                   value={newGracePeriod}
                   onChange={(e) => setNewGracePeriod(e.target.value)}
                   className="rounded text-xs cursor-pointer"

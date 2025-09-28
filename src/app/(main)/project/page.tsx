@@ -11,6 +11,8 @@ import {
   SubCategoryType,
   SUBCATEGORY_OPTIONS,
 } from "@/types/category";
+import { Suspense } from "react";
+import SCProjectSkeleton from "@/components/project/SCProjectSkeleton";
 
 interface ProjectPageProps {
   searchParams: Promise<{
@@ -89,7 +91,12 @@ export default async function ProjectPage({ searchParams }: ProjectPageProps) {
           <Plus className="w-4 h-4" />새 프로젝트 생성
         </Link>
       </div>
-      <SCProjectList searchParams={searchParams} />
+      <Suspense
+        key={(await searchParams).search}
+        fallback={<SCProjectSkeleton />}
+      >
+        <SCProjectList searchParams={searchParams} />
+      </Suspense>
     </div>
   );
 }

@@ -9,6 +9,8 @@ import {
   translateKoreanToGrade,
   translateKoreanToRole,
 } from "@/utils/transformRequestValue";
+import { Suspense } from "react";
+import SCMembersSkeleton from "@/components/members/SCMemberSkeleton";
 interface MembersPageProps {
   searchParams: Promise<{
     role?: string;
@@ -78,8 +80,12 @@ export default async function MembersPage({ searchParams }: MembersPageProps) {
           </div>
         </div>
       </div>
-
-      <MembersCardList members={members} />
+      <Suspense
+        key={(await searchParams).keyword}
+        fallback={<SCMembersSkeleton />}
+      >
+        <MembersCardList members={members} />
+      </Suspense>
     </div>
   );
 }

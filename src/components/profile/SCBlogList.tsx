@@ -51,21 +51,11 @@ export default async function SCBlogList({ searchParams }: SCBlogListProps) {
                         {blog.title}
                       </div>
 
-                      <div className="mt-2 text-xs sm:text-sm text-gray-600 transition-colors duration-300 dark:text-gray-400">
-                        <div className="sm:inline-block">
+                      <div className="mt-2 text-xs sm:text-sm text-gray-600 transition-colors  flex flex-row items-center gap-2 duration-300 dark:text-gray-400">
+                        <div className="sm:inline-block flex flex-row sm:gap-2">
                           {fromOffsetDateTime(blog.blogStartDate)}
                         </div>
-
-                        <div className="flex flex-row items-center gap-2 mt-1 sm:mt-0 sm:ml-2">
-                          <DefaultBadge
-                            variant="custom"
-                            className={getCategoryColor(
-                              blog.category as BlogCategory
-                            )}
-                          >
-                            {blog.category}
-                          </DefaultBadge>
-
+                        <div>
                           {blog.referenceType && (
                             <span
                               className={cn(
@@ -83,12 +73,24 @@ export default async function SCBlogList({ searchParams }: SCBlogListProps) {
                           )}
                         </div>
                       </div>
+                      <div>
+                        <div className="flex flex-row items-center gap-2 mt-2 ">
+                          <DefaultBadge
+                            variant="custom"
+                            className={getCategoryColor(
+                              blog.category as BlogCategory
+                            )}
+                          >
+                            {blog.category}
+                          </DefaultBadge>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
 
                 {/* 조회수 */}
-                <div className="p-4 pt-0 sm:p-6 sm:pt-0">
+                <div className="p-4 sm:p-6 sm:pt-0">
                   <div className="flex items-center gap-4 text-xs sm:text-sm text-gray-600 dark:text-gray-400 transition-colors duration-300">
                     <div className="flex items-center gap-1">
                       <EyeSVG className="w-4 h-4" />
