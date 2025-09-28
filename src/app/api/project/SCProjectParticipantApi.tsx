@@ -26,7 +26,6 @@ export async function getProjectApprovedParticipants(
     }
 
     const json = await res.json();
-    console.log(json);
     return json.data;
   } catch (error) {
     throw error;
@@ -61,7 +60,6 @@ export async function getProjectPendingParticipants(
     const json = await res.json();
     return json.data;
   } catch (error) {
-    console.error("대기중 참가자 조회 에러", error);
     throw error;
   }
 }

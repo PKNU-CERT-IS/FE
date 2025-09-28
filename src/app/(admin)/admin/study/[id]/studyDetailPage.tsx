@@ -262,7 +262,7 @@ export default async function StudyDetailPage({
                       (participant: {
                         id: number;
                         memberName: string;
-                        memberGrade: string;
+                        memberGrade: MemberGrade;
                       }) => (
                         <div
                           key={participant.id}
@@ -275,7 +275,7 @@ export default async function StudyDetailPage({
                             {participant.memberName}
                           </p>
                           <p className="text-xs text-gray-500 dark:text-gray-400">
-                            {participant.memberGrade}
+                            {MEMBER_GRADE_LABELS[participant.memberGrade]}
                           </p>
 
                           <div className="flex gap-2">

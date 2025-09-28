@@ -341,7 +341,7 @@ export default async function StudyMaterialDetailPage({
                         (participant: {
                           id: number;
                           memberName: string;
-                          memberGrade: string;
+                          memberGrade: MemberGrade;
                         }) => (
                           <div
                             key={participant.id}
@@ -354,7 +354,7 @@ export default async function StudyMaterialDetailPage({
                               {participant.memberName}
                             </p>
                             <p className="text-xs text-gray-500 dark:text-gray-400">
-                              {participant.memberGrade}
+                              {MEMBER_GRADE_LABELS[participant.memberGrade]}
                             </p>
 
                             {canApproveOrReject && (
