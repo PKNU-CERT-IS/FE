@@ -1,5 +1,4 @@
 import { Metadata } from "next";
-import { redirect } from "next/navigation";
 import { Calendar, User, Eye } from "lucide-react";
 import BackToListButton from "@/components/detail/SCBackToListButton";
 import KebabMenuButton from "@/components/detail/CCKebabMenu";
