@@ -3,6 +3,7 @@
 import LockSVG from "/public/icons/lock.svg";
 import ProfileSVG from "/public/icons/profile.svg";
 import { useRouter } from "next/navigation";
+import MajorDropdown from "@/components/auth/signup/CCMajotDropdownProps"; // 위에서 만든 컴포넌트
 import {
   Eye,
   EyeOff,
@@ -20,6 +21,7 @@ import DefaultButton from "@/components/ui/defaultButton";
 import { useAuth } from "@/hooks/useAuth";
 import { signupAction } from "@/actions/auth/SignUpServerAction";
 import { GENDER_OPTIONS } from "@/types/login";
+import { SelectedMajorInfo, getMajorUtils } from "@/types/major";
 import { membersGradeCategories } from "@/types/members";
 import AlertModal from "@/components/ui/defaultAlertModal";
 import { useState, useTransition, useEffect } from "react";
@@ -47,6 +49,9 @@ export default function CCSignUpForm() {
   const [formattedPhone, setFormattedPhone] = useState<string>("");
   const [alertMessage, setAlertMessage] = useState<string>("");
   const [isPending, startTransition] = useTransition();
+  const [selectedMajorInfo, setSelectedMajorInfo] = useState<SelectedMajorInfo>(
+    {}
+  );
 
   // signupFormData.phone이 변경될 때 formattedPhone 업데이트
   useEffect(() => {
@@ -480,32 +485,45 @@ export default function CCSignUpForm() {
           )}
         </div>
 
-        {/* 전공 */}
+        {/* 전공 - MajorDropdown 컴포넌트 사용 */}
         <div className="space-y-2 pb-6">
-          <label
-            htmlFor="major"
-            className="font-medium text-gray-700 dark:text-gray-200"
-          >
-            전공
-          </label>
-          <div className="relative mt-1">
-            <GraduationCap className="absolute left-3 top-3 h-4 w-4 text-gray-400 dark:stroke-cert-red" />
-            <input
-              id="major"
-              name="major"
-              type="text"
-              value={signupFormData.major}
-              onChange={handleInputChange}
-              className={`input-default pl-10 ${
-                errors.major ? "border-red-500" : "dark:border-gray-600"
-              }`}
-              placeholder="예: 컴퓨터공학과"
-              required
-            />
-          </div>
-          {errors.major && (
-            <p className="text-sm text-red-500">{errors.major}</p>
-          )}
+          <MajorDropdown
+            selectedMajor={selectedMajorInfo}
+            onMajorChange={setSelectedMajorInfo}
+            errors={{
+              college: errors.major?.includes("대학")
+                ? "대학을 선택해주세요"
+                : undefined,
+              department: errors.major?.includes("학부")
+                ? "학부를 선택해주세요"
+                : undefined,
+              major: errors.major?.includes("전공")
+                ? "전공을 선택해주세요"
+                : undefined,
+            }}
+          />
+
+          <input
+            type="hidden"
+            name="major"
+            value={
+              [
+                selectedMajorInfo.college
+                  ? getMajorUtils.getCollegeName(selectedMajorInfo.college)
+                  : null,
+                selectedMajorInfo.department
+                  ? getMajorUtils.getDepartmentName(
+                      selectedMajorInfo.department
+                    )
+                  : null,
+                selectedMajorInfo.major
+                  ? getMajorUtils.getMajorName(selectedMajorInfo.major)
+                  : null,
+              ]
+                .filter(Boolean) // undefined, null 제거
+                .join("-") // 한글 이름만 이어 붙이기
+            }
+          />
         </div>
 
         <DefaultButton
