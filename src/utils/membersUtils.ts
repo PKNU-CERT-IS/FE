@@ -168,3 +168,33 @@ export function groupMembersWaitingForApproval(
 ) {
   return members.filter((member) => member.role === "NONE");
 }
+
+type Role =
+  | "ADMIN"
+  | "CHAIRMAN"
+  | "VICECHAIRMAN"
+  | "STAFF"
+  | "PLAYER"
+  | "UPSOLVER"
+  | "NONE";
+
+const roleOrder: Record<Role, number> = {
+  CHAIRMAN: 1,
+  VICECHAIRMAN: 2,
+  STAFF: 3,
+  UPSOLVER: 4,
+  PLAYER: 5,
+
+  NONE: 6,
+  ADMIN: 99, // ADMIN을 항상 맨 뒤로 보내기 위해 가장 큰 값으로
+};
+
+export function sortMembersByRole(
+  members: AdminMemberDetailInfoType[]
+): AdminMemberDetailInfoType[] {
+  return [...members].sort((a, b) => {
+    const aRole = roleOrder[a.role as Role] ?? roleOrder["NONE"];
+    const bRole = roleOrder[b.role as Role] ?? roleOrder["NONE"];
+    return aRole - bRole;
+  });
+}
