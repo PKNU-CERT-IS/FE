@@ -21,6 +21,10 @@ export async function middleware(req: NextRequest) {
   if (PUBLIC_ROUTES.includes(pathname) || pathname.startsWith("/_next")) {
     return NextResponse.next();
   }
+  // /blog/[숫자] 패턴만 공개
+  if (/^\/blog\/\d+$/.test(pathname)) {
+    return NextResponse.next();
+  }
 
   const accessToken = req.cookies.get("accessToken")?.value;
   const refreshToken = req.cookies.get("refreshToken")?.value;
