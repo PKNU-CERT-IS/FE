@@ -1,6 +1,7 @@
 export type AttachedType =
   | "PDF"
   | "HWP"
+  | "HWPX"
   | "WORD"
   | "PPT"
   | "PPTX"

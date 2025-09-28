@@ -266,7 +266,7 @@ export default function WriteForm({ type, initialReferences }: WriteFormProps) {
                 <h3 className="text-sm font-semibold text-gray-900 whitespace-nowrap dark:text-gray-200">
                   계획서 샘플 다운로드
                 </h3>
-                <p className="text-xs text-gray-500 whitespace-nowrap dark:text-gray-400 sm:flex hidden">
+                <p className="hidden sm:flex text-xs text-gray-500 whitespace-nowrap dark:text-gray-400">
                   (계획서 작성 후, 반드시 첨부파일에 첨부해주세요)
                 </p>
               </div>
@@ -274,15 +274,22 @@ export default function WriteForm({ type, initialReferences }: WriteFormProps) {
               <a
                 href={PLAN_SAMPLE.href}
                 download
-                className="inline-flex items-center gap-2 rounded-md border border-gray-300 bg-white px-3 py-1.5 text-xs text-gray-700 hover:bg-gray-100 whitespace-nowrap dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 hover:dark:bg-gray-700"
+                className="hidden sm:inline-flex items-center gap-2 rounded-md border border-gray-300 bg-white px-3 py-1.5 text-xs text-gray-700 hover:bg-gray-100 whitespace-nowrap dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 hover:dark:bg-gray-700"
               >
                 <Download className="w-4 h-4" />
                 {PLAN_SAMPLE.label}
               </a>
+              {/* mobile */}
+              <a
+                href={PLAN_SAMPLE.href}
+                download
+                className="sm:hidden inline-flex items-center justify-center rounded-md border border-gray-300 bg-white p-2 text-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 hover:dark:bg-gray-700"
+              >
+                <Download className="w-4 h-4" />
+              </a>
             </div>
           </section>
         )}
-
         {/* 제목 */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-gray-200">

@@ -50,7 +50,7 @@ export default function FileUpload({
           onChange={handleFileUpload}
           className="hidden"
           id="file-upload"
-          accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.jpg,.jpeg,.png,.gif"
+          accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.jpg,.jpeg,.png,.gif,.hwp,.hwpx"
         />
         <label
           htmlFor="file-upload"
@@ -61,7 +61,7 @@ export default function FileUpload({
             파일을 드래그하거나 클릭하여 업로드
           </span>
           <span className="text-xs text-gray-500">
-            최대 10MB, PDF, DOC, XLS, PPT, 이미지 파일
+            최대 10MB, HWP, PDF, DOC, XLS, PPT, 이미지 파일
           </span>
         </label>
       </div>

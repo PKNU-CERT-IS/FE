@@ -15,7 +15,7 @@ interface UpdateBoardPayload {
   content: string;
   description?: string;
   category: string;
-  attachments: AttachedFile[]; // FIXME: 될지 말지 모르겠다...
+  attachments: AttachedFile[];
 }
 
 // 게시글 생성

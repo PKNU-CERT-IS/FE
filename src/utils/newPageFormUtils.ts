@@ -176,20 +176,12 @@ export const getPeriodPolicyInfo = (type: NewPageCategoryType) => {
     case "study":
       return {
         title: "스터디 기간 정책",
-        items: [
-          "스터디: 1주 ~ 2개월 수행 가능",
-          "2주 이하: 모든 주제 가능 (운동, 노래, 시험공부 등)",
-          "2주 이상: 보안 또는 컴퓨터 관련 주제만 가능",
-        ],
+        items: ["스터디: 1주 ~ 2개월 수행 가능"],
       };
     case "project":
       return {
         title: "프로젝트 기간 정책",
-        items: [
-          "프로젝트: 2주 ~ 6개월 수행 가능",
-          "모든 프로젝트는 보안 또는 컴퓨터 관련 주제만 가능",
-          "장기 프로젝트의 경우 중간 점검이 있을 수 있습니다",
-        ],
+        items: ["프로젝트: 2주 ~ 6개월 수행 가능"],
       };
     default:
       return null;
