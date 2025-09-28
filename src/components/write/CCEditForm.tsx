@@ -43,6 +43,7 @@ import {
 } from "@/types/blog";
 import { updateBlog } from "@/app/api/blog/CCblogApi";
 import AlertModal from "@/components/ui/defaultAlertModal";
+import { getNextMonday, getNextSunday } from "@/utils/dateUtils";
 
 interface EditFormProps {
   type: NewPageCategoryType;
@@ -114,6 +115,8 @@ export default function EditForm({
       setDateError("");
     }
   }, []);
+  const startWeek = getNextMonday();
+  const endWeek = getNextSunday();
 
   useEffect(() => {
     validateDates(startDate, endDate);
@@ -766,33 +769,34 @@ export default function EditForm({
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-gray-200">
-                  시작일 *
+                  시작주 *
                 </label>
                 <input
                   type="date"
                   value={startDate}
-                  min={today}
-                  onChange={(e) => setStartDate(e.target.value)}
+                  min={startWeek}
+                  step={7}
+                  onChange={(e) => {
+                    setStartDate(e.target.value);
+                  }}
                   className={`w-full text-sm px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent cursor-pointer dark:border-gray-600
-            ${dateError ? "border-cert-red" : "border-gray-300"}
-            ${
-              status !== "READY"
-                ? "bg-gray-100 text-gray-500 cursor-not-allowed"
-                : ""
-            }`}
+                    ${dateError ? "border-cert-red" : "border-gray-300"}`}
                   required
                   disabled={status !== "READY"}
                 />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-gray-200">
-                  종료일 *
+                  종료주 *
                 </label>
                 <input
                   type="date"
                   value={endDate}
-                  min={today}
-                  onChange={(e) => setEndDate(e.target.value)}
+                  min={endWeek}
+                  step={7}
+                  onChange={(e) => {
+                    setEndDate(e.target.value);
+                  }}
                   className={`w-full text-sm px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent cursor-pointer dark:border-gray-600
                     ${dateError ? "border-cert-red" : "border-gray-300"}`}
                   required

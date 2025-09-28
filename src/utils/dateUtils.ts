@@ -20,3 +20,20 @@ export function getDDay(target: string): string {
   if (diffDays > 0) return `D - ${diffDays}`;
   return `D+${Math.abs(diffDays)}`; // 이미 지난 날짜
 }
+
+// 시작주 선택시 월요일만 선택
+export const getNextMonday = () => {
+  const today = new Date();
+  const day = today.getDay();
+  const diff = (8 - day) % 7;
+  today.setDate(today.getDate() + diff);
+  return today.toISOString().split("T")[0];
+};
+// 종료주 선택시 일요일만 선택
+export const getNextSunday = () => {
+  const today = new Date();
+  const day = today.getDay();
+  const diff = (7 - day) % 7;
+  today.setDate(today.getDate() + diff);
+  return today.toISOString().split("T")[0];
+};

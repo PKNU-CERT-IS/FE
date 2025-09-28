@@ -28,6 +28,7 @@ import {
 } from "@/types/category";
 import { BoardCategoryType, categoryMappingToEN } from "@/types/board";
 import { createProject } from "@/app/api/project/CCProjectApi";
+import { getNextMonday, getNextSunday } from "@/utils/dateUtils";
 
 interface WriteFormProps {
   type: NewPageCategoryType;
@@ -121,6 +122,8 @@ export default function WriteForm({ type, initialReferences }: WriteFormProps) {
   const updateExternalLink = (field: "title" | "url", value: string) => {
     setExternalUrl((prev) => ({ ...prev, [field]: value }));
   };
+  const startWeek = getNextMonday();
+  const endWeek = getNextSunday();
 
   const handleSubmit = async () => {
     try {
@@ -128,7 +131,6 @@ export default function WriteForm({ type, initialReferences }: WriteFormProps) {
         title,
         description,
         content,
-        // category,
       };
 
       let submitData;
@@ -632,8 +634,11 @@ export default function WriteForm({ type, initialReferences }: WriteFormProps) {
                 <input
                   type="date"
                   value={startDate}
-                  min={today}
-                  onChange={(e) => setStartDate(e.target.value)}
+                  min={startWeek}
+                  step={7}
+                  onChange={(e) => {
+                    setStartDate(e.target.value);
+                  }}
                   className={`w-full text-sm px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent cursor-pointer dark:border-gray-600
                     ${dateError ? "border-cert-red" : "border-gray-300"}`}
                   required
@@ -646,8 +651,11 @@ export default function WriteForm({ type, initialReferences }: WriteFormProps) {
                 <input
                   type="date"
                   value={endDate}
-                  min={today}
-                  onChange={(e) => setEndDate(e.target.value)}
+                  min={endWeek}
+                  step={7}
+                  onChange={(e) => {
+                    setEndDate(e.target.value);
+                  }}
                   className={`w-full text-sm px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent cursor-pointer dark:border-gray-600
                     ${dateError ? "border-cert-red" : "border-gray-300"}`}
                   required
