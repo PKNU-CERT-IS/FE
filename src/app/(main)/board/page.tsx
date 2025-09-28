@@ -13,6 +13,8 @@ import {
 } from "@/types/board";
 import Link from "next/link";
 import { getBoards } from "@/app/api/board/SCBoardApi";
+import { Suspense } from "react";
+import SCBoardSkeleton from "@/components/board/ScBoardSkeleton";
 
 const ITEMS_PER_PAGE = 5;
 
@@ -102,8 +104,12 @@ export default async function BoardPage({ searchParams }: BoardPageProps) {
         </Link>
       </div>
 
-      <BoardCardList contents={contents} />
-
+      <Suspense
+        key={(await searchParams).keyword}
+        fallback={<SCBoardSkeleton />}
+      >
+        <BoardCardList contents={contents} />
+      </Suspense>
       <BoardPagination
         currentPage={currentPage}
         totalItems={totalItems}

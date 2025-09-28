@@ -85,7 +85,10 @@ export default async function StudyPage({ searchParams }: StudyPageProps) {
       </div>
 
       {/* 콘텐츠 - Suspense로 감싼 카드 그리드 */}
-      <Suspense fallback={<SCStudySkeleton />}>
+      <Suspense
+        key={(await searchParams).search}
+        fallback={<SCStudySkeleton />}
+      >
         <SCStudyContent searchParams={searchParams} />
       </Suspense>
     </div>
