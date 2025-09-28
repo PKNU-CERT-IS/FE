@@ -77,7 +77,6 @@ export default function WriteForm({ type, initialReferences }: WriteFormProps) {
 
   const [thumbnailUrl, setThumbnailUrl] = useState<string>("");
   const [dateError, setDateError] = useState<string>("");
-  const today = new Date().toISOString().split("T")[0]; // 지난 날짜 선택 방지 변수
   // 날짜 검증 함수 추가
   const validateDates = useCallback((start: string, end: string) => {
     if (!start || !end) return;

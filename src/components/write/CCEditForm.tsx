@@ -102,7 +102,6 @@ export default function EditForm({
   });
   const [thumbnailUrl, setThumbnailUrl] = useState<string>("");
   const [dateError, setDateError] = useState<string>("");
-  const today = new Date().toISOString().split("T")[0]; // 지난 날짜 선택 방지 변수
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [status, setStatus] = useState<string>("");
   const [alertOpen, setAlertOpen] = useState(false);
