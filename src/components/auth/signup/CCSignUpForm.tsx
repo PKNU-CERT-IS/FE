@@ -25,6 +25,7 @@ import { SelectedMajorInfo, getMajorUtils } from "@/types/major";
 import { membersGradeCategories } from "@/types/members";
 import AlertModal from "@/components/ui/defaultAlertModal";
 import { useState, useTransition, useEffect } from "react";
+import { formatPhoneNumber } from "@/utils/formEditUtils";
 
 export default function CCSignUpForm() {
   const {
@@ -62,27 +63,6 @@ export default function CCSignUpForm() {
 
   const isSamePassword =
     signupFormData.password === signupFormData.confirmPassword;
-
-  // 전화번호 포맷팅 함수
-  const formatPhoneNumber = (value: string): string => {
-    // 숫자만 추출
-    const numbers = value.replace(/\D/g, "");
-
-    // 빈 문자열이면 그대로 반환
-    if (!numbers) return "";
-
-    // 길이에 따른 포맷팅
-    if (numbers.length <= 3) {
-      return numbers;
-    } else if (numbers.length <= 7) {
-      return `${numbers.slice(0, 3)}-${numbers.slice(3)}`;
-    } else {
-      return `${numbers.slice(0, 3)}-${numbers.slice(3, 7)}-${numbers.slice(
-        7,
-        11
-      )}`;
-    }
-  };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
