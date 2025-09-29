@@ -24,6 +24,7 @@ export function mapToAttachedType(
   // 문서
   if (mime === "application/pdf" || ext === "pdf") return "PDF";
   if (mime === "application/haansofthwp" || ext === "hwp") return "HWP";
+  if (ext === "hwpx" || mime === "application/vnd.hancom.hwpx") return "HWPX";
   if (
     mime === "application/msword" ||
     mime.includes("word") ||

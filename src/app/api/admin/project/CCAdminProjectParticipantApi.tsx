@@ -7,7 +7,7 @@ export async function approveAdminProjectParticipant(
 ) {
   try {
     const res = await apiClient.post(
-      `/admin/study/participant/approve`,
+      `/admin/project/participant/approve`,
       { participantId, reason },
       { headers: { "Content-Type": "application/json" } }
     );
@@ -24,7 +24,7 @@ export async function rejectAdminProjectParticipant(
 ) {
   try {
     const res = await apiClient.post(
-      `/admin/study/participant/reject`,
+      `/admin/project/participant/reject`,
       { participantId, reason },
       { headers: { "Content-Type": "application/json" } }
     );

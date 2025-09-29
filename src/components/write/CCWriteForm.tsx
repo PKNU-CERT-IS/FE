@@ -28,17 +28,16 @@ import {
 } from "@/types/category";
 import { BoardCategoryType, categoryMappingToEN } from "@/types/board";
 import { createProject } from "@/app/api/project/CCProjectApi";
+import { getNextMonday, getNextSunday } from "@/utils/dateUtils";
 
 interface WriteFormProps {
   type: NewPageCategoryType;
   initialReferences?: BlogReferenceType[];
 }
 
-// 파일 맨 위 근처에 추가
-// FIXME: 파일 요청하기
 const PLAN_SAMPLE = {
-  label: "계획서 샘플 (DOCX)",
-  href: "/samples/plan-sample.docx", // public/samples/plan-sample.docx 에 파일 두기
+  label: "스터디(프로젝트) 계획서_스터디(프로젝트)명",
+  href: "/files/스터디(프로젝트) 계획서_스터디(프로젝트)명.hwpx",
 };
 
 export default function WriteForm({ type, initialReferences }: WriteFormProps) {
@@ -78,7 +77,6 @@ export default function WriteForm({ type, initialReferences }: WriteFormProps) {
 
   const [thumbnailUrl, setThumbnailUrl] = useState<string>("");
   const [dateError, setDateError] = useState<string>("");
-  const today = new Date().toISOString().split("T")[0]; // 지난 날짜 선택 방지 변수
   // 날짜 검증 함수 추가
   const validateDates = useCallback((start: string, end: string) => {
     if (!start || !end) return;
@@ -123,6 +121,8 @@ export default function WriteForm({ type, initialReferences }: WriteFormProps) {
   const updateExternalLink = (field: "title" | "url", value: string) => {
     setExternalUrl((prev) => ({ ...prev, [field]: value }));
   };
+  const startWeek = getNextMonday();
+  const endWeek = getNextSunday();
 
   const handleSubmit = async () => {
     try {
@@ -130,7 +130,6 @@ export default function WriteForm({ type, initialReferences }: WriteFormProps) {
         title,
         description,
         content,
-        // category,
       };
 
       let submitData;
@@ -157,34 +156,16 @@ export default function WriteForm({ type, initialReferences }: WriteFormProps) {
             }, 100);
           }
           break;
-
-        // FIXME: 웅기님 코드인데 생성에 에러가 나서 일단 주석처리해뒀습니다.
-        // case "blog": {
-        //   const submitData: BlogCreateRequest = {
-        //     ...baseData,
-        //     category,
-        //     isPublic,
-        //     referenceId: selectedReference?.referenceId,
-        //     referenceType: selectedReference?.referenceType,
-        //     referenceTitle: selectedReference?.referenceTitle,
-        //   };
-        //   await createBlog(submitData);
-        //   router.replace("/blog");
-        //   router.refresh();
-        //   break;
-        // }
         case "blog": {
           const submitData: BlogCreateRequest = {
             ...baseData,
             category,
-            isPublic, // 기본값 보장
+            isPublic,
             referenceId: selectedReference?.referenceId,
             referenceType: selectedReference?.referenceType,
             referenceTitle: selectedReference?.referenceTitle,
           };
-
           const blogApiResponse = await createBlog(submitData);
-
           if (blogApiResponse?.statusCode === 201) {
             router.back();
             setTimeout(() => {
@@ -286,7 +267,7 @@ export default function WriteForm({ type, initialReferences }: WriteFormProps) {
                 <h3 className="text-sm font-semibold text-gray-900 whitespace-nowrap dark:text-gray-200">
                   계획서 샘플 다운로드
                 </h3>
-                <p className="text-xs text-gray-500 whitespace-nowrap dark:text-gray-400 sm:flex hidden">
+                <p className="hidden sm:flex text-xs text-gray-500 whitespace-nowrap dark:text-gray-400">
                   (계획서 작성 후, 반드시 첨부파일에 첨부해주세요)
                 </p>
               </div>
@@ -294,15 +275,22 @@ export default function WriteForm({ type, initialReferences }: WriteFormProps) {
               <a
                 href={PLAN_SAMPLE.href}
                 download
-                className="inline-flex items-center gap-2 rounded-md border border-gray-300 bg-white px-3 py-1.5 text-xs text-gray-700 hover:bg-gray-100 whitespace-nowrap dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 hover:dark:bg-gray-700"
+                className="hidden sm:inline-flex items-center gap-2 rounded-md border border-gray-300 bg-white px-3 py-1.5 text-xs text-gray-700 hover:bg-gray-100 whitespace-nowrap dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 hover:dark:bg-gray-700"
               >
                 <Download className="w-4 h-4" />
                 {PLAN_SAMPLE.label}
               </a>
+              {/* mobile */}
+              <a
+                href={PLAN_SAMPLE.href}
+                download
+                className="sm:hidden inline-flex items-center justify-center rounded-md border border-gray-300 bg-white p-2 text-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 hover:dark:bg-gray-700"
+              >
+                <Download className="w-4 h-4" />
+              </a>
             </div>
           </section>
         )}
-
         {/* 제목 */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-gray-200">
@@ -331,10 +319,6 @@ export default function WriteForm({ type, initialReferences }: WriteFormProps) {
             placeholder={getDescriptionPlaceholder(type)}
             required
           />
-          <p className="text-xs text-gray-500 mt-1 dark:text-gray-400">
-            선택사항이지만, 다른 사용자들이 내용을 빠르게 파악할 수 있도록
-            도와줍니다.
-          </p>
         </div>
 
         {type === "blog" && (
@@ -649,8 +633,11 @@ export default function WriteForm({ type, initialReferences }: WriteFormProps) {
                 <input
                   type="date"
                   value={startDate}
-                  min={today}
-                  onChange={(e) => setStartDate(e.target.value)}
+                  min={startWeek}
+                  step={7}
+                  onChange={(e) => {
+                    setStartDate(e.target.value);
+                  }}
                   className={`w-full text-sm px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent cursor-pointer dark:border-gray-600
                     ${dateError ? "border-cert-red" : "border-gray-300"}`}
                   required
@@ -663,8 +650,11 @@ export default function WriteForm({ type, initialReferences }: WriteFormProps) {
                 <input
                   type="date"
                   value={endDate}
-                  min={today}
-                  onChange={(e) => setEndDate(e.target.value)}
+                  min={endWeek}
+                  step={7}
+                  onChange={(e) => {
+                    setEndDate(e.target.value);
+                  }}
                   className={`w-full text-sm px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent cursor-pointer dark:border-gray-600
                     ${dateError ? "border-cert-red" : "border-gray-300"}`}
                   required
@@ -698,12 +688,17 @@ export default function WriteForm({ type, initialReferences }: WriteFormProps) {
         {(type === "study" || type === "board" || type === "project") && (
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-gray-200">
-              첨부 파일
+              첨부 파일 {(type === "study" || type === "project") && "*"}
             </label>
             <FileUpload
               attachments={attachments}
               onAttachmentsChange={setAttachments}
             />
+            {(type === "study" || type === "project") && (
+              <p className="text-xs text-gray-500 mt-1 dark:text-gray-400">
+                계획서를 반드시 첨부해주세요.
+              </p>
+            )}
           </div>
         )}
 
@@ -716,116 +711,64 @@ export default function WriteForm({ type, initialReferences }: WriteFormProps) {
         </div>
 
         {/* 액션 버튼 */}
-        {/* <div className="flex items-center justify-end gap-3 pt-6 border-t border-gray-200 dark:border-gray-600">
-          <DefaultButton variant="outline" onClick={handleCancel}>
-            취소
-          </DefaultButton>
-          <DefaultButton
-            onClick={handleSubmit}
-            disabled={
-              !isFormValid(
-                title,
-                description,
-                content,
-                category,
-                type,
-                maxParticipants,
-                startDate,
-                endDate
-              )
-            }
-          >
-            {type === "study"
-              ? "스터디 개설"
-              : type === "project"
-              ? "프로젝트 생성"
-              : "게시하기"}
-          </DefaultButton> */}
-
-        <div className="pt-6 border-t border-gray-200 dark:border-gray-600">
-          {type === "blog" ? (
-            // 블로그일 때: 좌측 토글 + 우측 버튼
-            <div className="flex items-center justify-between">
-              {/* 공개 설정 토글 */}
-              <div className="flex items-center gap-3">
-                <button
-                  type="button"
-                  onClick={() => setIsPublic(!isPublic)}
-                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                    isPublic ? "bg-cert-red" : "bg-gray-300 dark:bg-gray-600"
-                  }`}
-                >
-                  <span
-                    className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                      isPublic ? "translate-x-6" : "translate-x-1"
-                    }`}
-                  />
-                </button>
-                <div className="flex flex-col">
-                  <span className="text-sm font-medium text-gray-900 dark:text-gray-200">
-                    {isPublic ? "외부 공개" : "외부 비공개"}
-                  </span>
-                  <span className="text-xs text-gray-500 dark:text-gray-400">
-                    {isPublic
-                      ? "모든 사용자가 열람할 수 있습니다"
-                      : "CERT-IS 회원만 열람할 수 있습니다"}
-                  </span>
-                </div>
-              </div>
-
-              {/* 버튼 그룹 */}
-              <div className="flex items-center gap-3">
-                <DefaultButton variant="outline" onClick={handleCancel}>
-                  취소
-                </DefaultButton>
-                <DefaultButton
-                  onClick={handleSubmit}
-                  disabled={
-                    !isFormValid(
-                      title,
-                      description,
-                      content,
-                      category,
-                      type,
-                      maxParticipants,
-                      startDate,
-                      endDate
-                    )
-                  }
-                >
-                  게시하기
-                </DefaultButton>
-              </div>
-            </div>
-          ) : (
-            // 블로그가 아닐 때: 버튼만 오른쪽
-            <div className="flex items-center justify-end gap-3">
-              <DefaultButton variant="outline" onClick={handleCancel}>
-                취소
-              </DefaultButton>
-              <DefaultButton
-                onClick={handleSubmit}
-                disabled={
-                  !isFormValid(
-                    title,
-                    description,
-                    content,
-                    category,
-                    type,
-                    maxParticipants,
-                    startDate,
-                    endDate
-                  )
-                }
+        <div className="flex items-center justify-between pt-6 border-t border-gray-200 dark:border-gray-700">
+          {/* 블로그 공개 설정 토글 - blog일 때만 표시 */}
+          {type === "blog" && (
+            <div className="flex items-center gap-3">
+              <button
+                type="button"
+                onClick={() => setIsPublic(!isPublic)}
+                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-200 ease-in-out focus:outline-none ${
+                  isPublic ? "bg-cert-red" : "bg-gray-300 dark:bg-gray-600"
+                }`}
               >
-                {type === "study"
-                  ? "스터디 개설"
-                  : type === "project"
-                  ? "프로젝트 생성"
-                  : "게시하기"}
-              </DefaultButton>
+                <span
+                  className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform duration-200 ease-in-out ${
+                    isPublic ? "translate-x-6" : "translate-x-1"
+                  }`}
+                />
+              </button>
+              <div className="flex flex-col">
+                <span className="text-sm font-medium text-gray-900 dark:text-gray-200">
+                  {isPublic ? "외부 공개" : "외부 비공개"}
+                </span>
+                <span className="text-xs text-gray-500 dark:text-gray-400">
+                  {isPublic
+                    ? "모든 사용자가 열람할 수 있습니다"
+                    : "CERT-IS에 가입한 회원만 열람할 수 있습니다"}
+                </span>
+              </div>
             </div>
           )}
+
+          {/* 액션 버튼: 항상 우측 고정 */}
+          <div className="flex items-center gap-3 ml-auto">
+            <DefaultButton variant="outline" onClick={handleCancel}>
+              취소
+            </DefaultButton>
+            <DefaultButton
+              onClick={handleSubmit}
+              disabled={
+                !isFormValid(
+                  title,
+                  description,
+                  content,
+                  category,
+                  type,
+                  maxParticipants,
+                  startDate,
+                  endDate,
+                  attachments
+                )
+              }
+            >
+              {type === "study"
+                ? "스터디 개설"
+                : type === "project"
+                ? "프로젝트 생성"
+                : "게시하기"}
+            </DefaultButton>
+          </div>
         </div>
       </div>
       <AlertModal

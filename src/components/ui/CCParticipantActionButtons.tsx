@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter, usePathname } from "next/navigation";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import {
   approveStudyParticipant,
   rejectStudyParticipant,
@@ -25,7 +25,7 @@ export default function CCParticipantActionButtons({
 }) {
   const router = useRouter();
   const pathname = usePathname();
-
+  const searchParams = useSearchParams();
   const isAdmin = pathname.startsWith("/admin");
   const pageType: "study" | "project" = pathname.includes("study")
     ? "study"
@@ -34,7 +34,8 @@ export default function CCParticipantActionButtons({
   const handleApprove = async () => {
     try {
       if (isAdmin) {
-        if (pageType === "study") {
+        const tab = searchParams.get("tab");
+        if (tab === "study") {
           await approveAdminStudyParticipant(participantId);
         } else {
           await approveAdminProjectParticipant(participantId);
@@ -55,7 +56,8 @@ export default function CCParticipantActionButtons({
   const handleReject = async () => {
     try {
       if (isAdmin) {
-        if (pageType === "study") {
+        const tab = searchParams.get("tab");
+        if (tab === "study") {
           await rejectAdminStudyParticipant(participantId);
         } else {
           await rejectAdminProjectParticipant(participantId);

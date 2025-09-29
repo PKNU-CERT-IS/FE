@@ -9,11 +9,9 @@ export async function getBoards(
 ) {
   try {
     const params = new URLSearchParams();
-
     if (keyword) {
       params.append("keyword", keyword);
     }
-    console.log(keyword);
     if (category && category !== "전체" && category !== "ALL") {
       params.append("category", category);
     }
@@ -30,7 +28,6 @@ export async function getBoards(
     }
 
     const json = await res.json();
-    console.log(json);
     return json.data;
   } catch (error) {
     throw error;

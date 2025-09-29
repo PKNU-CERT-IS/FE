@@ -10,12 +10,14 @@ import {
   joinProjectRegister,
   cancelProjectRegister,
 } from "@/app/api/project/CCProjectParticipantApi";
+import AlertModal from "@/components/ui/defaultAlertModal";
+import { AxiosError } from "axios";
+import { ErrorResponse } from "@/types/errorResponse";
 
 type JoinState = "NONE" | "PENDING" | "APPROVED" | "REJECTED";
 
 export function CCJoinButton({
   dataId,
-  initiallyJoined = false,
   initialState = "NONE",
   className,
 }: {
@@ -28,71 +30,87 @@ export function CCJoinButton({
   const pathname = usePathname();
   // 참가 상태
   const [joinState, setJoinState] = useState<JoinState>(initialState);
+  const [alertOpen, setAlertOpen] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertType, setAlertType] = useState<"success" | "warning">("success");
+
   const pageType: "study" | "project" = pathname.startsWith("/study")
     ? "study"
     : "project";
 
-  // 참가 여부 상태
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [isJoined, setIsJoined] = useState(initiallyJoined);
   const handleClick = () => {
     startTransition(async () => {
       try {
         if (joinState === "NONE") {
-          // 참가 신청
           if (pageType === "study") {
-            await joinStudyRegister(dataId);
-            alert("스터디 참가 신청 완료!");
+            const res = await joinStudyRegister(dataId);
+            setAlertMessage(res.message ?? "스터디 참가 신청 완료");
           } else {
-            await joinProjectRegister(dataId);
-            alert("프로젝트 참가 신청 완료!");
+            const res = await joinProjectRegister(dataId);
+            setAlertMessage(res.message ?? "프로젝트 참가 신청 완료");
           }
+          setAlertType("success");
+          setAlertOpen(true);
           setJoinState("PENDING");
         } else if (joinState === "PENDING") {
-          // 신청 취소
           if (pageType === "study") {
-            await cancelStudyRegister(dataId);
-            alert("스터디 참가 신청 취소 완료!");
+            const res = await cancelStudyRegister(dataId);
+            setAlertMessage(res.message ?? "스터디 참가 신청 취소 완료");
           } else {
-            await cancelProjectRegister(dataId);
-            alert("프로젝트 참가 신청 취소 완료!");
+            const res = await cancelProjectRegister(dataId);
+            setAlertMessage(res.message ?? "프로젝트 참가 신청 취소 완료");
           }
+          setAlertType("success");
+          setAlertOpen(true);
           setJoinState("NONE");
         }
-      } catch (err) {
-        alert("처리 실패, 다시 시도해주세요.");
-        throw err;
+      } catch (error) {
+        const err = error as AxiosError<ErrorResponse>;
+        const msg =
+          err.response?.data?.message || "처리 실패, 다시 시도해주세요.";
+        setAlertMessage(msg);
+        setAlertType("warning");
+        setAlertOpen(true);
       }
     });
   };
 
   if (joinState === "APPROVED") {
-    return null; // 승인된 경우 버튼 안 보임
+    return null;
   }
 
   return (
-    <button
-      onClick={handleClick}
-      disabled={isPending}
-      className={`action-button ${className}`}
-    >
-      {isPending ? (
-        "처리 중..."
-      ) : joinState === "NONE" ? (
-        <>
-          <span className="sm:hidden">참가하기</span>
-          <span className="hidden sm:inline">
-            {pageType === "study" ? "스터디 참가하기" : "프로젝트 참가하기"}
-          </span>
-        </>
-      ) : (
-        <>
-          <span className="sm:hidden">참가신청</span>
-          <span className="hidden sm:inline">
-            {pageType === "study" ? "스터디 참가 취소" : "프로젝트 참가 취소"}
-          </span>
-        </>
-      )}
-    </button>
+    <>
+      <button
+        onClick={handleClick}
+        disabled={isPending}
+        className={`action-button ${className}`}
+      >
+        {isPending ? (
+          "처리 중..."
+        ) : joinState === "NONE" ? (
+          <>
+            <span className="sm:hidden">참가하기</span>
+            <span className="hidden sm:inline">
+              {pageType === "study" ? "스터디 참가하기" : "프로젝트 참가하기"}
+            </span>
+          </>
+        ) : (
+          <>
+            <span className="sm:hidden">참가신청</span>
+            <span className="hidden sm:inline">
+              {pageType === "study" ? "스터디 참가 취소" : "프로젝트 참가 취소"}
+            </span>
+          </>
+        )}
+      </button>
+      <AlertModal
+        isOpen={alertOpen}
+        message={alertMessage}
+        type={alertType}
+        duration={2500}
+        onClose={() => setAlertOpen(false)}
+      />
+    </>
   );
 }

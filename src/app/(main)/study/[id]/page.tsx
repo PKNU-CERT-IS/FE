@@ -262,8 +262,8 @@ export default async function StudyMaterialDetailPage({
           {/* 회의록 */}
           <MeetingMinutes
             studyId={studyData.id}
-            currentUserId={Number(currentUser?.sub)} // 로그인 유저 ID 연결
-            studyLeaderId={studyData.creatorId} // 스터디장 ID 연결 (creator 정보 기반)
+            currentUserId={Number(currentUser?.sub)}
+            studyLeaderId={studyData.creatorId}
           />
         </div>
 
@@ -341,7 +341,7 @@ export default async function StudyMaterialDetailPage({
                         (participant: {
                           id: number;
                           memberName: string;
-                          memberGrade: string;
+                          memberGrade: MemberGrade;
                         }) => (
                           <div
                             key={participant.id}
@@ -354,7 +354,7 @@ export default async function StudyMaterialDetailPage({
                               {participant.memberName}
                             </p>
                             <p className="text-xs text-gray-500 dark:text-gray-400">
-                              {participant.memberGrade}
+                              {MEMBER_GRADE_LABELS[participant.memberGrade]}
                             </p>
 
                             {canApproveOrReject && (
@@ -395,7 +395,7 @@ export default async function StudyMaterialDetailPage({
           </div>
 
           {/* 종료 요청 버튼 */}
-          <EndRequestButton id={studyData.id} />
+          {canApproveOrReject && <EndRequestButton id={studyData.id} />}
         </div>
       </div>
     </div>

@@ -318,7 +318,7 @@ export default async function ProjectDetailPage({
 
           {/* 종료 버튼 */}
           <span>
-            <EndRequestButton id={project.id} />
+            {canApproveOrReject && <EndRequestButton id={project.id} />}
           </span>
         </div>
 

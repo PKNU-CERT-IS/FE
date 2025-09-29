@@ -63,9 +63,17 @@ export default function KebabMenu({
 
       //  admin 여부에 따라 분기
       if (isAdmin) {
-        router.push(`/admin/${currentUrl}`);
-      } else {
-        router.push(`/${currentUrl}`);
+        if (isAdmin) {
+          if (currentUrl.startsWith("study")) {
+            router.push("/admin/study?tab=study");
+          } else if (currentUrl.startsWith("project")) {
+            router.push("/admin/study?tab=project&view=list");
+          } else if (currentUrl.startsWith("blog")) {
+            router.push("/admin/blog");
+          }
+        } else {
+          router.push(`/${currentUrl}`);
+        }
       }
       router.refresh();
     } catch (error) {
@@ -84,17 +92,17 @@ export default function KebabMenu({
     const isAdmin = pathname.startsWith("/admin");
 
     if (isAdmin) {
-      router.push(`/${currentUrl}/${currentId}/edit?from=admin`);
       if (currentUrl === "study") {
-        router.push(`/study/${currentId}/edit?tab=${currentUrl}`);
+        router.push(`/admin/study/${currentId}/edit?tab=study`);
       } else if (currentUrl === "project") {
-        router.push(`/study/${currentId}/edit?tab=${currentUrl}`);
+        router.push(`/admin/study/${currentId}/edit?tab=project`);
+      } else {
+        router.push(`/${currentUrl}/${currentId}/edit?from=admin`);
       }
     } else {
       router.push(`/${currentUrl}/${currentId}/edit`);
     }
   };
-  // };
 
   return (
     <>
