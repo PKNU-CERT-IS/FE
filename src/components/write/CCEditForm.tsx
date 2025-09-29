@@ -114,8 +114,12 @@ export default function EditForm({
       setDateError("");
     }
   }, []);
-  const startWeek = getNextMonday();
-  const endWeek = getNextSunday();
+  const [startWeek, setStartWeek] = useState("");
+  const [endWeek, setEndWeek] = useState("");
+  useEffect(() => {
+    setStartWeek(getNextMonday());
+    setEndWeek(getNextSunday());
+  }, []);
 
   useEffect(() => {
     validateDates(startDate, endDate);

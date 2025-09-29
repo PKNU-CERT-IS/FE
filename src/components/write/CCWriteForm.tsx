@@ -88,7 +88,13 @@ export default function WriteForm({ type, initialReferences }: WriteFormProps) {
     }
   }, []);
 
-  // useEffect로 날짜 변경 감지
+  const [startWeek, setStartWeek] = useState("");
+  const [endWeek, setEndWeek] = useState("");
+  useEffect(() => {
+    setStartWeek(getNextMonday());
+    setEndWeek(getNextSunday());
+  }, []);
+
   useEffect(() => {
     validateDates(startDate, endDate);
   }, [startDate, endDate, validateDates]);
@@ -121,8 +127,6 @@ export default function WriteForm({ type, initialReferences }: WriteFormProps) {
   const updateExternalLink = (field: "title" | "url", value: string) => {
     setExternalUrl((prev) => ({ ...prev, [field]: value }));
   };
-  const startWeek = getNextMonday();
-  const endWeek = getNextSunday();
 
   const handleSubmit = async () => {
     try {
