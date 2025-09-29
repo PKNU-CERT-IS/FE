@@ -7,7 +7,8 @@ import CCProfilePagination from "@/components/profile/CCProfilePagination";
 import { getProfileBlog } from "@/app/api/profile/SCprofileApi";
 
 import { StudyStatusType } from "@/types/profile";
-
+import { Suspense } from "react";
+import DefaultSuspnenseComponent from "@/components/ui/CCDefaultSuspnenseComponent";
 interface SCProfileContentProps {
   currentTab: string;
   searchParams: Promise<{
@@ -20,7 +21,7 @@ export default async function SCProfileContent({
   currentTab,
   searchParams,
 }: SCProfileContentProps) {
-  const { page } = await searchParams;
+  const { page, tab, status } = await searchParams;
   const isStudyTab = currentTab === "study";
   const currentPage = parseInt(page || "1", 10);
   const blogs = await getProfileBlog();
@@ -33,11 +34,23 @@ export default async function SCProfileContent({
     <div className="lg:col-span-2">
       <CCTabBar currentTab={currentTab} />
 
-      {isStudyTab && <SCStudyList searchParams={searchParams} />}
-
+      {isStudyTab && (
+        <Suspense
+          key={`${tab}-${status}-${page}`}
+          fallback={<DefaultSuspnenseComponent />}
+        >
+          <SCStudyList searchParams={searchParams} />
+        </Suspense>
+      )}
       {!isStudyTab && (
         <>
-          <SCBlogList searchParams={searchParams} />
+          <Suspense
+            key={`${tab}-${status}-${page}`}
+            fallback={<DefaultSuspnenseComponent />}
+          >
+            <SCBlogList searchParams={searchParams} />
+          </Suspense>
+
           <CCProfilePagination
             currentPage={currentPage}
             totalItems={allBlogData.length}
