@@ -72,8 +72,7 @@ export default function CCSignUpForm() {
       const formattedPhone = formatPhoneNumber(value);
       setFormattedPhone(formattedPhone);
       // 숫자만 추출해서 원본 데이터에 저장 (서버 전송용)
-      const numbersOnly = formattedPhone.replace(/\D/g, "");
-      updateSignupField(name as keyof typeof signupFormData, numbersOnly);
+      updateSignupField(name as keyof typeof signupFormData, formattedPhone);
     } else {
       updateSignupField(name as keyof typeof signupFormData, value);
     }

@@ -21,15 +21,6 @@ export const formatPhoneNumber = (value: string): string => {
 };
 
 /**
- * 전화번호에서 숫자만 추출
- * @param formattedPhone - 포맷된 전화번호
- * @returns 숫자만 포함된 전화번호
- */
-export const extractPhoneNumbers = (formattedPhone: string): string => {
-  return formattedPhone.replace(/\D/g, "");
-};
-
-/**
  * 전공 문자열을 대학-학부-전공으로 파싱
  * @param majorString - "대학-학부-전공" 형식의 문자열
  * @returns 파싱된 객체 { college, department, major }

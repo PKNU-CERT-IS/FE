@@ -19,11 +19,7 @@ import { toOffsetDateTime } from "@/utils/transformRequestValue";
 import { useRouter } from "next/navigation";
 import { translateKoreanToGrade } from "@/utils/transformRequestValue";
 
-import {
-  formatPhoneNumber,
-  extractPhoneNumbers,
-  parseMajorString,
-} from "@/utils/formEditUtils";
+import { formatPhoneNumber, parseMajorString } from "@/utils/formEditUtils";
 import { COLLEGE_DATA, getMajorUtils, SelectedMajorInfo } from "@/types/major";
 
 interface ModalProps {
@@ -143,10 +139,9 @@ export default function CCProfileModal({
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const formatted = formatPhoneNumber(e.target.value);
     setFormattedPhone(formatted);
-    const numbersOnly = extractPhoneNumbers(formatted);
     setEditedUser((prev) => ({
       ...prev,
-      phoneNumber: numbersOnly,
+      phoneNumber: formatted,
     }));
   };
 
