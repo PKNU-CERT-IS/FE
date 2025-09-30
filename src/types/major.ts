@@ -42,7 +42,7 @@ export const COLLEGE_DATA: College[] = [
     name: "인문사회과학대학",
     departments: [
       {
-        id: "free-major",
+        id: "humanities-social-free-major",
         name: "자유전공학부",
         collegeId: "humanities-social",
         majors: [],
@@ -145,12 +145,6 @@ export const COLLEGE_DATA: College[] = [
             departmentId: "international-area",
             collegeId: "humanities-social",
           },
-          {
-            id: "area-studies",
-            name: "국제지역연구학전공",
-            departmentId: "international-area",
-            collegeId: "humanities-social",
-          },
         ],
       },
       {
@@ -160,8 +154,8 @@ export const COLLEGE_DATA: College[] = [
         majors: [],
       },
       {
-        id: "youth-education",
-        name: "청소년교육과",
+        id: "political-science-diplomacy",
+        name: "정치외교학과",
         collegeId: "humanities-social",
         majors: [],
       },
@@ -183,12 +177,6 @@ export const COLLEGE_DATA: College[] = [
         collegeId: "humanities-social",
         majors: [],
       },
-      {
-        id: "political-diplomacy",
-        name: "정치외교학과",
-        collegeId: "humanities-social",
-        majors: [],
-      },
     ],
   },
 
@@ -197,6 +185,18 @@ export const COLLEGE_DATA: College[] = [
     id: "natural-science",
     name: "자연과학대학",
     departments: [
+      {
+        id: "natural-science-free-major",
+        name: "자유전공학부",
+        collegeId: "natural-science",
+        majors: [],
+      },
+      {
+        id: "applied-mathematics",
+        name: "응용수학과",
+        collegeId: "natural-science",
+        majors: [],
+      },
       {
         id: "physics",
         name: "물리학과",
@@ -227,12 +227,6 @@ export const COLLEGE_DATA: College[] = [
         collegeId: "natural-science",
         majors: [],
       },
-      {
-        id: "business-free-major",
-        name: "경영대학 자유전공학부",
-        collegeId: "natural-science",
-        majors: [],
-      },
     ],
   },
 
@@ -242,10 +236,22 @@ export const COLLEGE_DATA: College[] = [
     name: "경영대학",
     departments: [
       {
+        id: "business-free-major",
+        name: "자유전공학부",
+        collegeId: "business",
+        majors: [],
+      },
+      {
         id: "business-administration",
         name: "경영학부",
         collegeId: "business",
         majors: [
+          {
+            id: "business-management",
+            name: "경영학전공",
+            departmentId: "business-administration",
+            collegeId: "business",
+          },
           {
             id: "accounting-finance",
             name: "회계·재무학전공",
@@ -258,12 +264,6 @@ export const COLLEGE_DATA: College[] = [
             departmentId: "business-administration",
             collegeId: "business",
           },
-          {
-            id: "international-business",
-            name: "국제통상학전공",
-            departmentId: "business-administration",
-            collegeId: "business",
-          },
         ],
       },
       {
@@ -271,6 +271,12 @@ export const COLLEGE_DATA: College[] = [
         name: "국제통상학부",
         collegeId: "business",
         majors: [
+          {
+            id: "international-business",
+            name: "국제통상학전공",
+            departmentId: "international-trade",
+            collegeId: "business",
+          },
           {
             id: "trade-logistics",
             name: "국제무역물류학전공",
@@ -285,12 +291,6 @@ export const COLLEGE_DATA: College[] = [
           },
         ],
       },
-      {
-        id: "business-free-major-dept",
-        name: "경과대학 자유전공학부",
-        collegeId: "business",
-        majors: [],
-      },
     ],
   },
 
@@ -300,8 +300,8 @@ export const COLLEGE_DATA: College[] = [
     name: "공과대학",
     departments: [
       {
-        id: "architecture",
-        name: "건축공학과",
+        id: "engineering-free-major",
+        name: "자유전공학부",
         collegeId: "engineering",
         majors: [],
       },
@@ -322,43 +322,57 @@ export const COLLEGE_DATA: College[] = [
             departmentId: "electrical",
             collegeId: "engineering",
           },
+          {
+            id: "display-semiconductor",
+            name: "디스플레이반도체공학전공",
+            departmentId: "electrical",
+            collegeId: "engineering",
+          },
         ],
       },
       {
-        id: "display-semiconductor",
-        name: "디스플레이반도체공학전공",
-        collegeId: "engineering",
-        majors: [],
-      },
-      {
         id: "mechanical",
-        name: "기계공학과",
+        name: "기계공학부",
         collegeId: "engineering",
-        majors: [],
+        majors: [
+          {
+            id: "mechanical-engineering",
+            name: "기계공학전공",
+            departmentId: "mechanical",
+            collegeId: "engineering",
+          },
+          {
+            id: "mechanical-design",
+            name: "기계설계공학전공",
+            departmentId: "mechanical",
+            collegeId: "engineering",
+          },
+        ],
       },
       {
-        id: "mechanical-design",
-        name: "기계설계공학전공",
+        id: "energy-transport-system-engineering",
+        name: "에너지수송시스템공학부",
         collegeId: "engineering",
-        majors: [],
-      },
-      {
-        id: "mechanical-system",
-        name: "기계시스템공학전공",
-        collegeId: "engineering",
-        majors: [],
-      },
-      {
-        id: "refrigeration-air-conditioning",
-        name: "냉동공조공학전공",
-        collegeId: "engineering",
-        majors: [],
-      },
-      {
-        id: "shipbuilding-ocean",
-        name: "조선해양시스템공학전공",
-        collegeId: "engineering",
-        majors: [],
+        majors: [
+          {
+            id: "mechanical-system",
+            name: "기계시스템공학전공",
+            departmentId: "energy-transport-system-engineering",
+            collegeId: "engineering",
+          },
+          {
+            id: "refrigeration-air-conditioning",
+            name: "냉동공조공학전공",
+            departmentId: "energy-transport-system-engineering",
+            collegeId: "engineering",
+          },
+          {
+            id: "shipbuilding-ocean",
+            name: "조선해양시스템공학전공",
+            departmentId: "energy-transport-system-engineering",
+            collegeId: "engineering",
+          },
+        ],
       },
       {
         id: "chemical-engineering",
@@ -367,20 +381,27 @@ export const COLLEGE_DATA: College[] = [
         majors: [],
       },
       {
-        id: "energy-chemistry",
-        name: "에너지화학수재공학전공",
+        id: "chemistry-materials-engineering",
+        name: "고분자·화학소재공학부",
         collegeId: "engineering",
-        majors: [],
-      },
-      {
-        id: "polymer",
-        name: "고분자공학전공",
-        collegeId: "engineering",
-        majors: [],
+        majors: [
+          {
+            id: "energy-chemistry",
+            name: "에너지화학소재공학전공",
+            departmentId: "chemistry-materials-engineering",
+            collegeId: "engineering",
+          },
+          {
+            id: "polymer",
+            name: "고분자공학전공",
+            departmentId: "chemistry-materials-engineering",
+            collegeId: "engineering",
+          },
+        ],
       },
       {
         id: "nano-convergence",
-        name: "나노융합공학부",
+        name: "나노융합반도체공학부",
         collegeId: "engineering",
         majors: [
           {
@@ -389,31 +410,38 @@ export const COLLEGE_DATA: College[] = [
             departmentId: "nano-convergence",
             collegeId: "engineering",
           },
+          {
+            id: "semiconductor-engineering",
+            name: "차세대반도체공학전공",
+            departmentId: "nano-convergence",
+            collegeId: "engineering",
+          },
         ],
       },
       {
-        id: "materials-engineering",
-        name: "재료공학전공",
+        id: "systems-engineering-safety-engineering",
+        name: "시스템경영·안전공학부",
         collegeId: "engineering",
-        majors: [],
-      },
-      {
-        id: "industrial-management",
-        name: "산업경영공학전공",
-        collegeId: "engineering",
-        majors: [],
-      },
-      {
-        id: "systems-convergence",
-        name: "시스템경영·기술·데이터공학전공",
-        collegeId: "engineering",
-        majors: [],
-      },
-      {
-        id: "safety-engineering",
-        name: "안전공학전공",
-        collegeId: "engineering",
-        majors: [],
+        majors: [
+          {
+            id: "industrial-management",
+            name: "산업경영공학전공",
+            departmentId: "systems-engineering-safety-engineering",
+            collegeId: "engineering",
+          },
+          {
+            id: "systems-convergence",
+            name: "기술·데이터공학전공",
+            departmentId: "systems-engineering-safety-engineering",
+            collegeId: "engineering",
+          },
+          {
+            id: "safety-engineering",
+            name: "안전공학전공",
+            departmentId: "systems-engineering-safety-engineering",
+            collegeId: "engineering",
+          },
+        ],
       },
       {
         id: "fire-protection",
@@ -422,22 +450,54 @@ export const COLLEGE_DATA: College[] = [
         majors: [],
       },
       {
-        id: "convergence-engineering",
-        name: "융합공학전공",
+        id: "convergence-materials-engineering",
+        name: "융합소재공학부",
+        collegeId: "engineering",
+        majors: [
+          {
+            id: "metallurgical-engineering",
+            name: "금속공학전공",
+            departmentId: "convergence-materials-engineering",
+            collegeId: "engineering",
+          },
+          {
+            id: "materials-engineering",
+            name: "재료공학전공",
+            departmentId: "convergence-materials-engineering",
+            collegeId: "engineering",
+          },
+          {
+            id: "materials-system-engineering",
+            name: "신소재시스템공학전공",
+            departmentId: "convergence-materials-engineering",
+            collegeId: "engineering",
+          },
+        ],
+      },
+      {
+        id: "architecture",
+        name: "건축공학과",
         collegeId: "engineering",
         majors: [],
       },
       {
-        id: "civil",
-        name: "토목공학전공",
+        id: "sustainable-engineering",
+        name: "지속가능공학부",
         collegeId: "engineering",
-        majors: [],
-      },
-      {
-        id: "new-materials-system",
-        name: "신소재시스템공학전공",
-        collegeId: "engineering",
-        majors: [],
+        majors: [
+          {
+            id: "civil",
+            name: "토목공학전공",
+            departmentId: "sustainable-engineering",
+            collegeId: "engineering",
+          },
+          {
+            id: "ecological-engineering",
+            name: "생태공학전공",
+            departmentId: "sustainable-engineering",
+            collegeId: "engineering",
+          },
+        ],
       },
     ],
   },
@@ -449,7 +509,7 @@ export const COLLEGE_DATA: College[] = [
     departments: [
       {
         id: "fisheries-free-major",
-        name: "수산과학대학 자유전공학부",
+        name: "자유전공학부",
         collegeId: "fisheries-science",
         majors: [],
       },
@@ -485,7 +545,7 @@ export const COLLEGE_DATA: College[] = [
         majors: [
           {
             id: "marine-production-system",
-            name: "해양생산시스템관리전공",
+            name: "해양생산학전공",
             departmentId: "marine-production",
             collegeId: "fisheries-science",
           },
@@ -510,7 +570,7 @@ export const COLLEGE_DATA: College[] = [
           },
           {
             id: "marine-life",
-            name: "자원생명학전공",
+            name: "자원생물학전공",
             departmentId: "marine-bio-science",
             collegeId: "fisheries-science",
           },
@@ -523,40 +583,66 @@ export const COLLEGE_DATA: College[] = [
         majors: [],
       },
       {
-        id: "mechanical-marine",
-        name: "기관공학전공",
+        id: "fisheries-education",
+        name: "수해양산업교육과",
         collegeId: "fisheries-science",
-        majors: [],
+        majors: [
+          {
+            id: "mechanical-marine",
+            name: "기관공학전공",
+            departmentId: "fisheries-education",
+            collegeId: "fisheries-science",
+          },
+          {
+            id: "refrigeration",
+            name: "냉동공학전공",
+            departmentId: "fisheries-education",
+            collegeId: "fisheries-science",
+          },
+          {
+            id: "food-engineering-dept",
+            name: "식품공학전공",
+            departmentId: "fisheries-education",
+            collegeId: "fisheries-science",
+          },
+          {
+            id: "aquaculture-engineering",
+            name: "양식공학전공",
+            departmentId: "fisheries-education",
+            collegeId: "fisheries-science",
+          },
+          {
+            id: "fisheries-engineering",
+            name: "어업공학전공",
+            departmentId: "fisheries-education",
+            collegeId: "fisheries-science",
+          },
+          {
+            id: "navigation",
+            name: "항해공학전공",
+            departmentId: "fisheries-education",
+            collegeId: "fisheries-science",
+          },
+        ],
       },
       {
-        id: "refrigeration",
-        name: "냉동공학전공",
+        id: "fisheries-economics",
+        name: "해양수산경영경제학부",
         collegeId: "fisheries-science",
-        majors: [],
-      },
-      {
-        id: "food-engineering-dept",
-        name: "식품공학전공",
-        collegeId: "fisheries-science",
-        majors: [],
-      },
-      {
-        id: "aquaculture-engineering",
-        name: "양식공학전공",
-        collegeId: "fisheries-science",
-        majors: [],
-      },
-      {
-        id: "fisheries-engineering",
-        name: "어업공학전공",
-        collegeId: "fisheries-science",
-        majors: [],
-      },
-      {
-        id: "navigation",
-        name: "항해공학전공",
-        collegeId: "fisheries-science",
-        majors: [],
+        majors: [
+          {
+            id: "fisheries-business",
+            name: "해양수산경영학전공",
+            departmentId: "fisheries-economics",
+            collegeId: "fisheries-science",
+          },
+          {
+            id: "environmental-economics",
+            name: "자원환경경제학전공",
+            departmentId: "fisheries-economics",
+            collegeId: "fisheries-science",
+          },
+        ],
       },
     ],
   },
@@ -568,15 +654,27 @@ export const COLLEGE_DATA: College[] = [
     departments: [
       {
         id: "env-marine-free-major",
-        name: "환경·해양대학 자유전공학부",
+        name: "자유전공학부",
         collegeId: "environmental-marine",
         majors: [],
       },
       {
         id: "earth-environmental",
-        name: "자구환경시스템과학부",
+        name: "지구환경시스템과학부",
         collegeId: "environmental-marine",
         majors: [
+          {
+            id: "environmental-engineering",
+            name: "환경공학전공",
+            departmentId: "earth-environmental",
+            collegeId: "environmental-marine",
+          },
+          {
+            id: "marine-science",
+            name: "해양학전공",
+            departmentId: "earth-environmental",
+            collegeId: "environmental-marine",
+          },
           {
             id: "environmental-system",
             name: "환경지질과학전공",
@@ -589,13 +687,13 @@ export const COLLEGE_DATA: College[] = [
             departmentId: "earth-environmental",
             collegeId: "environmental-marine",
           },
+          {
+            id: "geomatics-engineering",
+            name: "위성정보융합공학전공",
+            departmentId: "earth-environmental",
+            collegeId: "environmental-marine",
+          },
         ],
-      },
-      {
-        id: "environmental-engineering",
-        name: "환경공학과",
-        collegeId: "environmental-marine",
-        majors: [],
       },
       {
         id: "ocean-engineering",
@@ -619,13 +717,7 @@ export const COLLEGE_DATA: College[] = [
     departments: [
       {
         id: "info-convergence-free-major",
-        name: "정보융합대학 자유전공학부",
-        collegeId: "information-convergence",
-        majors: [],
-      },
-      {
-        id: "bigdata-convergence",
-        name: "빅데이터융합전공",
+        name: "자유전공학부",
         collegeId: "information-convergence",
         majors: [],
       },
@@ -634,6 +726,12 @@ export const COLLEGE_DATA: College[] = [
         name: "데이터정보과학부",
         collegeId: "information-convergence",
         majors: [
+          {
+            id: "bigdata-convergence",
+            name: "빅데이터융합전공",
+            departmentId: "data-information",
+            collegeId: "information-convergence",
+          },
           {
             id: "statistics-data-science",
             name: "통계·데이터사이언스전공",
@@ -644,21 +742,34 @@ export const COLLEGE_DATA: College[] = [
       },
       {
         id: "media",
-        name: "미디어커뮤니케이션학전공",
+        name: "미디어커뮤니케이션학부",
         collegeId: "information-convergence",
-        majors: [],
-      },
-      {
-        id: "humanities-info",
-        name: "인문정보전공",
-        collegeId: "information-convergence",
-        majors: [],
+        majors: [
+          {
+            id: "journalism-information",
+            name: "언론정보전공",
+            departmentId: "media",
+            collegeId: "information-convergence",
+          },
+          {
+            id: "human-ict-convergence",
+            name: "휴먼ICT융합전공",
+            departmentId: "media",
+            collegeId: "information-convergence",
+          },
+        ],
       },
       {
         id: "smart-healthcare",
         name: "스마트헬스케어학부",
         collegeId: "information-convergence",
         majors: [
+          {
+            id: "biomedical-engineering",
+            name: "의공학전공",
+            departmentId: "smart-healthcare",
+            collegeId: "information-convergence",
+          },
           {
             id: "marine-sports",
             name: "해양스포츠전공",
@@ -697,6 +808,12 @@ export const COLLEGE_DATA: College[] = [
         name: "조형학부",
         collegeId: "information-convergence",
         majors: [
+          {
+            id: "architecture-major",
+            name: "건축학전공",
+            departmentId: "design",
+            collegeId: "information-convergence",
+          },
           {
             id: "visual-design",
             name: "시각디자인전공",
@@ -748,7 +865,7 @@ export const COLLEGE_DATA: College[] = [
   // 미래융합대학
   {
     id: "future-convergence",
-    name: "미래융합대학",
+    name: "미래융합학부",
     departments: [
       {
         id: "lifelong-counseling",
@@ -757,8 +874,8 @@ export const COLLEGE_DATA: College[] = [
         majors: [],
       },
       {
-        id: "business-creation",
-        name: "경영창업지원학전공",
+        id: "criminal-psychology",
+        name: "경찰범죄심리학전공",
         collegeId: "future-convergence",
         majors: [],
       },
@@ -770,13 +887,13 @@ export const COLLEGE_DATA: College[] = [
       },
       {
         id: "electrical-control-service",
-        name: "기계조선조융합전공",
+        name: "기계조선공조공학전공",
         collegeId: "future-convergence",
         majors: [],
       },
       {
         id: "electro-it-service",
-        name: "전기전자SW융합전공",
+        name: "전기전자SW공학전공",
         collegeId: "future-convergence",
         majors: [],
       },

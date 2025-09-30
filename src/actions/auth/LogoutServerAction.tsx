@@ -1,13 +1,16 @@
 "use server";
 
 import { cookies } from "next/headers";
+import { fetchWithAuth } from "@/lib/serverIntercept";
 
 export async function logoutAction() {
-  await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/logout`, {
+  // 서버 API 호출 (토큰 무효화)
+  await fetchWithAuth("/auth/logout", {
     method: "POST",
-    credentials: "include",
   });
 
-  (await cookies()).delete("accessToken");
-  (await cookies()).delete("refreshToken");
+  // 쿠키 삭제
+  const cookieStore = await cookies();
+  cookieStore.delete("accessToken");
+  cookieStore.delete("refreshToken");
 }
