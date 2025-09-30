@@ -10,7 +10,8 @@ export type AttachedType =
   | "PNG"
   | "JPEG"
   | "JPG"
-  | "ZIP";
+  | "ZIP"
+  | "CSV";
 
 // 첨부파일 타입 정의
 export interface AttachedFile {

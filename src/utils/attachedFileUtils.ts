@@ -34,6 +34,7 @@ export function mapToAttachedType(
   if (mime.includes("presentation") || ["ppt", "pptx"].includes(ext))
     return ext === "pptx" ? "PPTX" : "PPT";
   if (mime.includes("excel") || ["xls", "xlsx"].includes(ext)) return "EXCEL";
+  if (mime === "text/csv" || ext === "csv") return "CSV";
   if (mime === "text/plain" || ext === "txt") return "TEXT";
 
   // 이미지

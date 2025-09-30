@@ -46,7 +46,7 @@ export const getSubCategories = (mainCategory: string): string[] => {
       "데이터베이스",
       "C/C++",
       "Python",
-      "어샘블리어",
+      "어셈블리어",
       "JavaScript",
       "개발 생명주기",
       "소프트웨어 설계",
