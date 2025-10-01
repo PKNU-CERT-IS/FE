@@ -50,7 +50,7 @@ export default function FileUpload({
           onChange={handleFileUpload}
           className="hidden"
           id="file-upload"
-          accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.jpg,.jpeg,.png,.gif,.hwp,.hwpx"
+          accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.jpg,.jpeg,.png,.gif,.hwp,.hwpx, .csv"
         />
         <label
           htmlFor="file-upload"
