@@ -1,12 +1,14 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
+import { useTransition } from "react";
 import DefaultButton from "@/components/ui/defaultButton";
 import {
   boardCategories,
   BoardCategoryType,
   toEnglishCategory,
 } from "@/types/board";
+import { cn } from "@/lib/utils";
 
 interface BoardCategoryProps {
   selectedCategory: BoardCategoryType;
@@ -17,8 +19,10 @@ export default function BoardCategory({
 }: BoardCategoryProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const [isPending, startTransition] = useTransition();
 
   const handleCategoryChange = (category: BoardCategoryType) => {
+    if (isPending) return;
     const params = new URLSearchParams(searchParams);
 
     if (category === "전체") {
@@ -30,26 +34,38 @@ export default function BoardCategory({
 
     const queryString = params.toString();
     const newUrl = queryString ? `/board?${queryString}` : "/board";
-    router.push(newUrl);
+
+    startTransition(() => {
+      router.push(newUrl);
+    });
   };
+
   return (
     <div className="sm:w-auto w-full overflow-x-auto scrollbar-hide">
       <div className="inline-flex gap-2 sm:flex-wrap">
-        {boardCategories.map((category) => (
-          <DefaultButton
-            key={category}
-            variant={selectedCategory === category ? "default" : "outline"}
-            size="sm"
-            onClick={() => handleCategoryChange(category)}
-            className={`cursor-pointer whitespace-nowrap flex-shrink-0 ${
-              selectedCategory === category
-                ? "category-filter-active"
-                : "category-filte dark:text-gray-200"
-            }`}
-          >
-            {category}
-          </DefaultButton>
-        ))}
+        {boardCategories.map((category) => {
+          const isActive = selectedCategory === category;
+
+          return (
+            <DefaultButton
+              key={category}
+              variant={isActive ? "default" : "outline"}
+              size="sm"
+              onClick={() => {
+                if (!isPending) handleCategoryChange(category);
+              }}
+              className={cn(
+                "whitespace-nowrap flex-shrink-0",
+                isActive
+                  ? "category-filter-active"
+                  : "category-filte dark:text-gray-200",
+                isPending ? "cursor-wait pointer-events-none" : "cursor-pointer"
+              )}
+            >
+              {category}
+            </DefaultButton>
+          );
+        })}
       </div>
     </div>
   );

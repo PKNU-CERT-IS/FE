@@ -178,11 +178,6 @@ export default function CCStudyFilter({
             onChange={handleSearchChange}
             className="pl-10 w-full"
           />
-          {isPending && (
-            <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
-              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-red-500" />
-            </div>
-          )}
         </div>
 
         {/* 필터 버튼들 */}
@@ -207,6 +202,7 @@ export default function CCStudyFilter({
                 setShowSubCategoryDropdown(false);
                 setShowStatusDropdown(false);
               }}
+              disabled={isPending}
             >
               <span className="text-gray-700 truncate pr-1 dark:text-gray-200">
                 {SEMESTER_LABELS[studyCurrentFilters.semester]}
@@ -257,6 +253,7 @@ export default function CCStudyFilter({
                 setShowSubCategoryDropdown(false);
                 setShowStatusDropdown(false);
               }}
+              disabled={isPending}
             >
               <span className="text-gray-700 truncate pr-1 dark:text-gray-200">
                 {CATEGORY_LABELS[studyCurrentFilters.category]}
@@ -307,6 +304,7 @@ export default function CCStudyFilter({
                 setShowCategoryDropdown(false);
                 setShowStatusDropdown(false);
               }}
+              disabled={isPending}
             >
               <span
                 className="block w-20 truncate pr-1 text-gray-700 dark:text-gray-200"
@@ -358,7 +356,9 @@ export default function CCStudyFilter({
               variant="outline"
               size="default"
               disabled={
-                (isAdmin && view === "pending") || (isAdmin && view === "end")
+                (isAdmin && view === "pending") ||
+                (isAdmin && view === "end") ||
+                isPending
               }
               className={cn(
                 "w-full justify-between text-left font-normal transition-all duration-200",
