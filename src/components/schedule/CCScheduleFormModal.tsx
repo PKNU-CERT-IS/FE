@@ -97,7 +97,7 @@ export default function CCScheduleFormModal({
     if (!typeValue || !isValidForm) return;
 
     const start = new Date(`${date}T${selectedStartTime}:00+09:00`);
-    let end = new Date(`${date}T${selectedEndTime}:00+09:00`);
+    const end = new Date(`${date}T${selectedEndTime}:00+09:00`);
 
     let durationHours = 0;
 

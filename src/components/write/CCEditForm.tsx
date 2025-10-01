@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-
+import Image from "next/image";
 import DefaultButton from "@/components/ui/defaultButton";
 import { Info, ChevronDown, X } from "lucide-react";
 import FileUpload from "@/components/write/CCFileUpload";
@@ -44,6 +44,8 @@ import {
 import { updateBlog } from "@/app/api/blog/CCblogApi";
 import AlertModal from "@/components/ui/defaultAlertModal";
 import { getNextMonday, getNextSunday } from "@/utils/dateUtils";
+import { updateAdminStudy } from "@/app/api/admin/study/CCAdminStudyUpdateApi";
+import { updateAdminProject } from "@/app/api/admin/project/CCAdminProjectUpdateApi";
 
 interface EditFormProps {
   type: NewPageCategoryType;
@@ -60,6 +62,7 @@ export default function EditForm({
 }: EditFormProps) {
   const router = useRouter();
   const pathname = usePathname();
+  const isAdmin = pathname.startsWith("/admin");
   const [title, setTitle] = useState(initialData?.title || "");
   const [description, setDescription] = useState(
     initialData?.description || ""
@@ -103,7 +106,7 @@ export default function EditForm({
   const [thumbnailUrl, setThumbnailUrl] = useState<string>("");
   const [dateError, setDateError] = useState<string>("");
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [status, setStatus] = useState<string>("");
+  const [, setStatus] = useState<string>("");
   const [alertOpen, setAlertOpen] = useState(false);
   const validateDates = useCallback((start: string, end: string) => {
     if (!start || !end) return;
@@ -131,7 +134,6 @@ export default function EditForm({
     setIsSelecteReferenceOpen(false);
   }, []);
 
-  // 초기 데이터 로드
   const [isPublic, setIsPublic] = useState<boolean>(
     initialData?.isPublic ?? false
   );
@@ -241,7 +243,6 @@ export default function EditForm({
     if (dataId && type) {
       loadInitialData();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dataId, type]);
 
   useEffect(() => {
@@ -273,7 +274,7 @@ export default function EditForm({
       };
 
       let response;
-      const isAdmin = pathname.startsWith("/admin");
+
       switch (type) {
         case "board": {
           const updateData = {
@@ -319,10 +320,13 @@ export default function EditForm({
             startDate: toOffset(startDate),
             endDate: toOffset(endDate),
             maxParticipants: maxParticipants ?? 0,
-            attachments: attachments,
+            attachments,
           };
 
-          response = await updateStudy(dataId, updateData);
+          response = isAdmin
+            ? await updateAdminStudy(dataId, updateData)
+            : await updateStudy(dataId, updateData);
+
           if (response?.statusCode === 200) {
             router.push(
               isAdmin ? `/admin/study/${dataId}?tab=study` : `/study/${dataId}`
@@ -331,7 +335,6 @@ export default function EditForm({
           }
           break;
         }
-
         case "project": {
           const updateData = {
             ...baseData,
@@ -345,11 +348,14 @@ export default function EditForm({
             demoUrl,
             externalUrl:
               externalUrl.title && externalUrl.url ? externalUrl : undefined,
-            thumbnailUrl: thumbnailUrl,
-            attachments: attachments,
+            thumbnailUrl,
+            attachments,
           };
 
-          response = await updateProject(dataId, updateData);
+          response = isAdmin
+            ? await updateAdminProject(dataId, updateData)
+            : await updateProject(dataId, updateData);
+
           if (response?.statusCode === 200) {
             router.push(
               isAdmin
@@ -371,8 +377,12 @@ export default function EditForm({
   };
 
   const handleCancel = () => {
-    if (from === "admin") {
-      router.push(`/admin/${type}/${dataId}`);
+    if (isAdmin) {
+      if (type === "study" || type === "project") {
+        router.push(`/admin/study/${dataId}?tab=${type}`);
+      } else {
+        router.push(`/admin/${type}/${dataId}`);
+      }
     } else {
       router.push(`/${type}/${dataId}`);
     }
@@ -668,12 +678,14 @@ export default function EditForm({
               {thumbnailUrl && (
                 <div className="relative mt-2">
                   <div className="relative group inline-block">
-                    {/* eslint-disable @next/next/no-img-element */}
-                    <img
+                    <Image
                       src={thumbnailUrl}
                       alt="Thumbnail preview"
-                      className="max-h-24 rounded-md"
+                      width={150}
+                      height={150}
+                      className="max-h-24 rounded-lg object-contain"
                     />
+
                     <button
                       type="button"
                       onClick={clearThumbnail}
@@ -782,10 +794,13 @@ export default function EditForm({
                   onChange={(e) => {
                     setStartDate(e.target.value);
                   }}
-                  className={`w-full text-sm px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent cursor-pointer dark:border-gray-600
-                    ${dateError ? "border-cert-red" : "border-gray-300"}`}
-                  required
-                  disabled={status !== "READY"}
+                  className={`w-full text-sm px-3 py-2 border rounded-md focus:outline-none 
+                    focus:ring-2 focus:ring-cert-red focus:border-transparent cursor-pointer 
+                    dark:border-gray-600 
+                    ${dateError ? "border-cert-red" : "border-gray-300"}
+                    disabled:bg-gray-100 disabled:text-gray-400 dark:disabled:bg-gray-700 dark:disabled:text-gray-500`}
+                  required={isAdmin}
+                  disabled={!isAdmin}
                 />
               </div>
               <div>
@@ -797,12 +812,14 @@ export default function EditForm({
                   value={endDate}
                   min={endWeek}
                   step={7}
-                  onChange={(e) => {
-                    setEndDate(e.target.value);
-                  }}
-                  className={`w-full text-sm px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent cursor-pointer dark:border-gray-600
-                    ${dateError ? "border-cert-red" : "border-gray-300"}`}
-                  required
+                  onChange={(e) => setEndDate(e.target.value)}
+                  className={`w-full text-sm px-3 py-2 border rounded-md focus:outline-none 
+                    focus:ring-2 focus:ring-cert-red focus:border-transparent cursor-pointer 
+                    dark:border-gray-600 
+                    ${dateError ? "border-cert-red" : "border-gray-300"}
+                    disabled:bg-gray-100 disabled:text-gray-400 dark:disabled:bg-gray-700 dark:disabled:text-gray-500`}
+                  required={isAdmin}
+                  disabled={!isAdmin}
                 />
               </div>
               {dateError && (
