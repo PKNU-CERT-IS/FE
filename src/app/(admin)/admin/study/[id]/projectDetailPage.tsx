@@ -23,6 +23,7 @@ import {
   getProjectPendingParticipants,
 } from "@/app/api/project/SCProjectParticipantApi";
 import { getCurrentUser } from "@/lib/auth/currentUser";
+import LogoSVG from "/public/icons/logo.svg";
 
 interface ProjectDetailPageProps {
   params: { id: string };
@@ -282,15 +283,26 @@ export default async function ProjectDetailPage({
                   approvedMember.map(
                     (participant: {
                       id: number;
+                      memberId: number;
                       memberName: string;
                       memberGrade: MemberGrade;
+                      profileImageUrl?: string;
                     }) => (
                       <div
                         key={participant.id}
                         className="flex items-center gap-3"
                       >
-                        <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center text-black text-xs font-medium">
-                          {participant.memberName[0]}
+                        <div className="relative w-8 h-8 rounded-full overflow-hidden bg-gray-200 flex items-center justify-center text-xs font-medium text-black dark:bg-gray-700 dark:text-white">
+                          {participant.profileImageUrl ? (
+                            <Image
+                              src={participant.profileImageUrl}
+                              alt={`${participant.memberName} 프로필`}
+                              fill
+                              className="object-cover"
+                            />
+                          ) : (
+                            <LogoSVG className="w-8 h-8 text-gray-400" />
+                          )}
                         </div>
                         <p className="text-sm font-medium text-black dark:text-white">
                           {participant.memberName}
@@ -317,15 +329,26 @@ export default async function ProjectDetailPage({
                     pendingMember.map(
                       (participant: {
                         id: number;
+                        memberId: number;
                         memberName: string;
                         memberGrade: MemberGrade;
+                        profileImageUrl?: string;
                       }) => (
                         <div
                           key={participant.id}
                           className="flex items-center gap-3"
                         >
-                          <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center text-black text-xs font-medium">
-                            {participant.memberName[0]}
+                          <div className="relative w-8 h-8 rounded-full overflow-hidden bg-gray-200 flex items-center justify-center text-xs font-medium text-black dark:bg-gray-700 dark:text-white">
+                            {participant.profileImageUrl ? (
+                              <Image
+                                src={participant.profileImageUrl}
+                                alt={`${participant.memberName} 프로필`}
+                                fill
+                                className="object-cover"
+                              />
+                            ) : (
+                              <LogoSVG className="w-8 h-8 text-gray-400" />
+                            )}
                           </div>
                           <p className="text-sm font-medium text-black dark:text-white">
                             {participant.memberName}
@@ -336,7 +359,8 @@ export default async function ProjectDetailPage({
 
                           <div className="flex gap-2">
                             <CCParticipantActionButtons
-                              participantId={participant.id}
+                              memberId={participant.memberId}
+                              dataId={project.id}
                             />
                           </div>
                         </div>

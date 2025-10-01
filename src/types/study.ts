@@ -98,6 +98,7 @@ export interface StudyMaterial {
   status: StatusType;
   creatorId: number;
   content: string;
+  studyCreatorProfileImageUrl: string;
 }
 
 export interface SortInfo {

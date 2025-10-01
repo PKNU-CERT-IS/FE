@@ -1,5 +1,5 @@
 "server-only";
-
+import Image from "next/image";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Calendar, Users, Download } from "lucide-react";
@@ -28,6 +28,7 @@ import CCParticipantActionButtons from "@/components/ui/CCParticipantActionButto
 import MeetingMinutes from "@/components/study/SCStudyMeetingMinutes";
 import { AttachedFile } from "@/types/attachedFile";
 import { MEMBER_GRADE_LABELS, MemberGrade, StudyMaterial } from "@/types/study";
+import LogoSVG from "/public/icons/logo.svg";
 
 // 메타데이터 생성
 export async function generateMetadata({
@@ -276,8 +277,17 @@ export default async function StudyMaterialDetailPage({
                 스터디 리더
               </h3>
               <div className="flex items-center gap-3">
-                <div className="w-12 h-12 bg-cert-red rounded-full flex items-center justify-center text-white font-medium">
-                  {studyData.studyCreatorName[0]}
+                <div className="relative w-12 h-12 rounded-full overflow-hidden bg-gray-100 flex items-center justify-center font-medium">
+                  {studyData.studyCreatorProfileImageUrl ? (
+                    <Image
+                      src={studyData.studyCreatorProfileImageUrl}
+                      alt={`${studyData.studyCreatorName} 프로필`}
+                      fill
+                      className="object-cover"
+                    />
+                  ) : (
+                    <LogoSVG className="w-12 h-12 text-gray-400" />
+                  )}
                 </div>
                 <div>
                   <p className="font-medium text-black dark:text-white">
@@ -303,15 +313,26 @@ export default async function StudyMaterialDetailPage({
                     approvedMember.map(
                       (participant: {
                         id: number;
+                        memberId: number;
                         memberName: string;
                         memberGrade: MemberGrade;
+                        profileImageUrl?: string;
                       }) => (
                         <div
                           key={participant.id}
                           className="flex items-center gap-3"
                         >
-                          <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center text-black text-xs font-medium">
-                            {participant.memberName[0]}
+                          <div className="relative w-8 h-8 rounded-full overflow-hidden bg-gray-200 flex items-center justify-center text-xs font-medium text-black dark:bg-gray-700 dark:text-white">
+                            {participant.profileImageUrl ? (
+                              <Image
+                                src={participant.profileImageUrl}
+                                alt={`${participant.memberName} 프로필`}
+                                fill
+                                className="object-cover"
+                              />
+                            ) : (
+                              <LogoSVG className="w-8 h-8 text-gray-400" />
+                            )}
                           </div>
                           <p className="text-sm font-medium text-black dark:text-white">
                             {participant.memberName}
@@ -340,15 +361,26 @@ export default async function StudyMaterialDetailPage({
                       pendingMember.map(
                         (participant: {
                           id: number;
+                          memberId: number;
                           memberName: string;
                           memberGrade: MemberGrade;
+                          profileImageUrl?: string;
                         }) => (
                           <div
                             key={participant.id}
                             className="flex items-center gap-3"
                           >
-                            <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center text-black text-xs font-medium">
-                              {participant.memberName[0]}
+                            <div className="relative w-8 h-8 rounded-full overflow-hidden bg-gray-200 flex items-center justify-center text-xs font-medium text-black dark:bg-gray-700 dark:text-white">
+                              {participant.profileImageUrl ? (
+                                <Image
+                                  src={participant.profileImageUrl}
+                                  alt={`${participant.memberName} 프로필`}
+                                  fill
+                                  className="object-cover"
+                                />
+                              ) : (
+                                <LogoSVG className="w-8 h-8 text-gray-400" />
+                              )}
                             </div>
                             <p className="text-sm font-medium text-black dark:text-white">
                               {participant.memberName}
@@ -360,7 +392,8 @@ export default async function StudyMaterialDetailPage({
                             {canApproveOrReject && (
                               <div className="flex gap-2">
                                 <CCParticipantActionButtons
-                                  participantId={participant.id}
+                                  memberId={participant.memberId}
+                                  dataId={studyData.id}
                                 />
                               </div>
                             )}
