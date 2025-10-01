@@ -6,7 +6,7 @@ import {
 } from "@/actions/admin/schedule/AdminScheduleRequestServerAction";
 import { getPendingSchedules } from "@/app/api/schedule/SCAdminScheduleApi";
 import RequestActionButtons from "@/components/ui/requestActionButtons";
-import { formatDate, formatTime } from "@/utils/formatDateUtil";
+import { formatDateRange, formatTime } from "@/utils/formatDateUtil";
 import {
   CheckCircle,
   Clock,
@@ -56,7 +56,13 @@ export default async function CCAdminScheduleRequestList() {
                     </div>
                     <div className="flex items-center gap-1">
                       <Calendar className="w-3 h-3" />
-                      <span>{formatDate(reservation.startedAt, "short")}</span>
+                      <span>
+                        {formatDateRange(
+                          reservation.startedAt,
+                          reservation.endedAt,
+                          "dot"
+                        )}
+                      </span>
                     </div>
                     <div className="flex items-center gap-1">
                       <Clock className="w-3 h-3" />

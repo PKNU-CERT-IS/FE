@@ -12,12 +12,13 @@ import {
 } from "@/utils/scheduleUtils";
 import CCDeleteButton from "@/components/admin/schedule/CCDeleteButton";
 import { ScheduleInfo } from "@/types/schedule";
-import { formatDate, formatTime } from "@/utils/formatDateUtil";
+import { formatDateRange, formatTime } from "@/utils/formatDateUtil";
 import { getMySchedules } from "@/app/api/schedule/SCscheduleApi";
 
 export default async function SCScheduleRequestList() {
   const requests: ScheduleInfo[] = await getMySchedules();
   const pendingRequests = requests.filter((r) => r.status === "PENDING");
+
   return (
     <div className="mt-6 p-6 rounded-lg border shadow-sm h-min dark-default">
       <p className="text-lg font-semibold mb-4">예약 신청 현황</p>
@@ -30,7 +31,7 @@ export default async function SCScheduleRequestList() {
         ) : (
           pendingRequests.map((request) => (
             <div key={request.scheduleId} className="text-sm text-gray-700">
-              <div className="relative flex items-start border p-3 rounded-lg border-gray-200 bg-gray-50 gap-3 dark:bg-gray-700 dark:border-gray-600">
+              <div className="relative flex items-start border p-3 rounded-lg border-gray-200 bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
                 <div className="flex-1 min-w-0">
                   <p className="text-md font-semibold text-gray-700 mb-3 dark:text-gray-200">
                     {request.title}
@@ -38,7 +39,11 @@ export default async function SCScheduleRequestList() {
                   <div className="space-y-2 text-sm text-gray-600 dark:text-gray-300">
                     <div className="flex flex-row items-center">
                       <ScheduleSVG className="w-4 mr-2 stroke-gray-700 dark:stroke-gray-300" />
-                      {formatDate(request.startedAt, "dot")}
+                      {formatDateRange(
+                        request.startedAt,
+                        request.endedAt,
+                        "dot"
+                      )}
                     </div>
                     <div className="flex flex-row items-center">
                       <TimeSVG className="mr-2" />
@@ -59,16 +64,16 @@ export default async function SCScheduleRequestList() {
                   </div>
                 </div>
 
-                <div>
+                <div className="absolute right-3 top-3 flex flex-row items-center gap-2">
                   <div
-                    className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold shrink-0 whitespace-nowrap ${getStatusColor(
+                    className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold whitespace-nowrap ${getStatusColor(
                       request.status
                     )}`}
                   >
                     {getStatusLabel(request.status)}
                   </div>
                   <div
-                    className={`ml-2 inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors shrink-0 whitespace-nowrap ${getTypeColor(
+                    className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors whitespace-nowrap ${getTypeColor(
                       request.type
                     )}`}
                   >
@@ -76,7 +81,6 @@ export default async function SCScheduleRequestList() {
                   </div>
                 </div>
                 <div className="absolute right-3 bottom-3">
-                  {/* <CCDeleteButton schedule={request} onRemove={onRemove} /> */}
                   <CCDeleteButton schedule={request} />
                 </div>
               </div>

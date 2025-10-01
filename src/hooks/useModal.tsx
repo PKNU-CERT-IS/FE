@@ -2,6 +2,12 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 
+function parseTimeToMinutes(time: string): number {
+  if (time === "선택") return -1;
+  const [h, m] = time.split(":").map(Number);
+  return h * 60 + m;
+}
+
 export const useModal = () => {
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
 
@@ -23,37 +29,49 @@ export const useModal = () => {
 
   const modalOutsideRef = useRef<HTMLDivElement | null>(null);
 
-  const toggleDropdown = () => {
-    setIsTypeDropdownOpen((prev) => !prev);
-  };
-
-  const toggleStartTimeDropdown = () => {
+  const toggleDropdown = () => setIsTypeDropdownOpen((prev) => !prev);
+  const toggleStartTimeDropdown = () =>
     setIsStartTimeDropdownOpen((prev) => !prev);
-  };
+  const toggleEndTimeDropdown = () => setIsEndTimeDropdownOpen((prev) => !prev);
 
-  const toggleEndTimeDropdown = () => {
-    setIsEndTimeDropdownOpen((prev) => !prev);
-  };
   const handleType = useCallback((type: string) => {
     setSelectedType(type);
     setIsTypeDropdownOpen(false);
   }, []);
 
   const handleStartTime = (time: string) => {
-    if (selectedEndTime !== "선택" && time >= selectedEndTime) {
-      setTimeError("시작 시간은 종료 시간보다 빨라야 합니다.");
-    } else {
-      setTimeError("");
+    const startMinutes = parseTimeToMinutes(time);
+    const endMinutes = parseTimeToMinutes(selectedEndTime);
+
+    if (endMinutes !== -1) {
+      if (startMinutes === endMinutes) {
+        setTimeError("시작 시간과 종료 시간이 같을 수 없습니다.");
+      } else if (startMinutes > endMinutes) {
+        setTimeError(
+          "시작 시간은 종료 시간보다 빨라야 합니다. (자정을 넘어가는 예약의 경우는 제외)"
+        );
+      } else {
+        setTimeError("");
+      }
     }
     setSelectedStartTime(time);
     setIsStartTimeDropdownOpen(false);
   };
 
   const handleEndTime = (time: string) => {
-    if (selectedStartTime !== "선택" && selectedStartTime >= time) {
-      setTimeError("종료 시간은 시작 시간보다 늦어야 합니다.");
-    } else {
-      setTimeError("");
+    const endMinutes = parseTimeToMinutes(time);
+    const startMinutes = parseTimeToMinutes(selectedStartTime);
+
+    if (startMinutes !== -1) {
+      if (startMinutes === endMinutes) {
+        setTimeError("시작 시간과 종료 시간이 같을 수 없습니다.");
+      } else if (endMinutes < startMinutes) {
+        setTimeError(
+          "시작 시간은 종료 시간보다 빨라야 합니다. (자정을 넘어가는 예약의 경우는 제외)"
+        );
+      } else {
+        setTimeError("");
+      }
     }
     setSelectedEndTime(time);
     setIsEndTimeDropdownOpen(false);
