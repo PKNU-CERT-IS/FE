@@ -205,3 +205,11 @@ export function normalizeSemester(value: string): string {
   // 뒤에 두 자리 패딩
   return `${year}-${sem.padStart(2, "0")}`;
 }
+
+// study, project 참가자타입
+export interface ParticipantType {
+  memberId: number;
+  memberName: string;
+  memberGrade: MemberGrade;
+  profileImageUrl?: string;
+}

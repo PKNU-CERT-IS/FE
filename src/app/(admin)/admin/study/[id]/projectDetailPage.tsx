@@ -13,7 +13,11 @@ import EndRequestButton from "@/components/ui/endRequestButton";
 import { STATUS_LABELS } from "@/types/progressStatus";
 import { getStatusColor } from "@/utils/badgeUtils";
 import CCParticipantActionButtons from "@/components/ui/CCParticipantActionButtons";
-import { MEMBER_GRADE_LABELS, MemberGrade } from "@/types/study";
+import {
+  MEMBER_GRADE_LABELS,
+  MemberGrade,
+  ParticipantType,
+} from "@/types/study";
 import MarkdownRenderer from "@/components/ui/defaultMarkdownRenderer";
 import { formatDate } from "@/utils/formatDateUtil";
 import { SUBCATEGORY_FROM_EN } from "@/types/category";
@@ -280,16 +284,47 @@ export default async function ProjectDetailPage({
 
               <div className="mb-6 space-y-3">
                 {approvedMember.length > 0 ? (
-                  approvedMember.map(
-                    (participant: {
-                      id: number;
-                      memberId: number;
-                      memberName: string;
-                      memberGrade: MemberGrade;
-                      profileImageUrl?: string;
-                    }) => (
+                  approvedMember.map((participant: ParticipantType) => (
+                    <div
+                      key={participant.memberId}
+                      className="flex items-center gap-3"
+                    >
+                      <div className="relative w-8 h-8 rounded-full overflow-hidden bg-gray-200 flex items-center justify-center text-xs font-medium text-black dark:bg-gray-700 dark:text-white">
+                        {participant.profileImageUrl ? (
+                          <Image
+                            src={participant.profileImageUrl}
+                            alt={`${participant.memberName} 프로필`}
+                            fill
+                            className="object-cover"
+                          />
+                        ) : (
+                          <LogoSVG className="w-8 h-8 text-gray-400" />
+                        )}
+                      </div>
+                      <p className="text-sm font-medium text-black dark:text-white">
+                        {participant.memberName}
+                      </p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">
+                        {MEMBER_GRADE_LABELS[participant.memberGrade]}
+                      </p>
+                    </div>
+                  ))
+                ) : (
+                  <p className="text-sm text-gray-500 dark:text-gray-400">
+                    참여 중인 멤버가 없습니다.
+                  </p>
+                )}
+              </div>
+
+              <div>
+                <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                  대기중 멤버 ({pendingMember.length})
+                </h4>
+                <div className="space-y-3">
+                  {pendingMember.length > 0 ? (
+                    pendingMember.map((participant: ParticipantType) => (
                       <div
-                        key={participant.id}
+                        key={participant.memberId}
                         className="flex items-center gap-3"
                       >
                         <div className="relative w-8 h-8 rounded-full overflow-hidden bg-gray-200 flex items-center justify-center text-xs font-medium text-black dark:bg-gray-700 dark:text-white">
@@ -310,62 +345,15 @@ export default async function ProjectDetailPage({
                         <p className="text-xs text-gray-500 dark:text-gray-400">
                           {MEMBER_GRADE_LABELS[participant.memberGrade]}
                         </p>
-                      </div>
-                    )
-                  )
-                ) : (
-                  <p className="text-sm text-gray-500 dark:text-gray-400">
-                    참여 중인 멤버가 없습니다.
-                  </p>
-                )}
-              </div>
 
-              <div>
-                <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                  대기중 멤버 ({pendingMember.length})
-                </h4>
-                <div className="space-y-3">
-                  {pendingMember.length > 0 ? (
-                    pendingMember.map(
-                      (participant: {
-                        id: number;
-                        memberId: number;
-                        memberName: string;
-                        memberGrade: MemberGrade;
-                        profileImageUrl?: string;
-                      }) => (
-                        <div
-                          key={participant.id}
-                          className="flex items-center gap-3"
-                        >
-                          <div className="relative w-8 h-8 rounded-full overflow-hidden bg-gray-200 flex items-center justify-center text-xs font-medium text-black dark:bg-gray-700 dark:text-white">
-                            {participant.profileImageUrl ? (
-                              <Image
-                                src={participant.profileImageUrl}
-                                alt={`${participant.memberName} 프로필`}
-                                fill
-                                className="object-cover"
-                              />
-                            ) : (
-                              <LogoSVG className="w-8 h-8 text-gray-400" />
-                            )}
-                          </div>
-                          <p className="text-sm font-medium text-black dark:text-white">
-                            {participant.memberName}
-                          </p>
-                          <p className="text-xs text-gray-500 dark:text-gray-400">
-                            {MEMBER_GRADE_LABELS[participant.memberGrade]}
-                          </p>
-
-                          <div className="flex gap-2">
-                            <CCParticipantActionButtons
-                              memberId={participant.memberId}
-                              dataId={project.id}
-                            />
-                          </div>
+                        <div className="flex gap-2">
+                          <CCParticipantActionButtons
+                            memberId={participant.memberId}
+                            dataId={project.id}
+                          />
                         </div>
-                      )
-                    )
+                      </div>
+                    ))
                   ) : (
                     <p className="text-sm text-gray-500 dark:text-gray-400">
                       대기중인 멤버가 없습니다.
