@@ -377,7 +377,7 @@ export default function EditForm({
   };
 
   const handleCancel = () => {
-    if (isAdmin) {
+    if (from === "admin" || isAdmin) {
       if (type === "study" || type === "project") {
         router.push(`/admin/study/${dataId}?tab=${type}`);
       } else {
