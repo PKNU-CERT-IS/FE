@@ -106,7 +106,7 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
         {/* 블로그 카드 목록 */}
         {blogs.length > 0 ? (
           <Suspense
-            key={(await searchParams).keyword}
+            key={JSON.stringify({ keyword, category, page })}
             fallback={<SCBlogSkeleton />}
           >
             <BlogCardList blogs={blogs} />

@@ -20,7 +20,7 @@ interface ProjectPageProps {
     semester?: string;
     category?: string;
     subCategory?: string;
-    status?: string;
+    projectStatus?: string;
     page?: string;
   }>;
 }
@@ -73,7 +73,8 @@ export async function generateMetadata({
 
 export default async function ProjectPage({ searchParams }: ProjectPageProps) {
   const resolvedSearchParams = await searchParams;
-
+  const { search, category, page, projectStatus, semester } =
+    resolvedSearchParams;
   const filters: ProjectCurrentFilters =
     parseSearchParams(resolvedSearchParams);
 
@@ -92,7 +93,13 @@ export default async function ProjectPage({ searchParams }: ProjectPageProps) {
         </Link>
       </div>
       <Suspense
-        key={(await searchParams).search}
+        key={JSON.stringify({
+          search,
+          category,
+          page,
+          projectStatus,
+          semester,
+        })}
         fallback={<SCProjectSkeleton />}
       >
         <SCProjectList searchParams={searchParams} />

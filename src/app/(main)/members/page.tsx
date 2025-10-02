@@ -81,7 +81,7 @@ export default async function MembersPage({ searchParams }: MembersPageProps) {
         </div>
       </div>
       <Suspense
-        key={(await searchParams).keyword}
+        key={JSON.stringify({ keyword, role, grade })}
         fallback={<SCMembersSkeleton />}
       >
         <MembersCardList members={members} />
