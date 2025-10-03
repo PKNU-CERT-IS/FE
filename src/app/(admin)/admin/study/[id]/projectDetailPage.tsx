@@ -13,11 +13,7 @@ import EndRequestButton from "@/components/ui/endRequestButton";
 import { STATUS_LABELS } from "@/types/progressStatus";
 import { getStatusColor } from "@/utils/badgeUtils";
 import CCParticipantActionButtons from "@/components/ui/CCParticipantActionButtons";
-import {
-  MEMBER_GRADE_LABELS,
-  MemberGrade,
-  ParticipantType,
-} from "@/types/study";
+import { MEMBER_GRADE_LABELS, ParticipantType } from "@/types/study";
 import MarkdownRenderer from "@/components/ui/defaultMarkdownRenderer";
 import { formatDate } from "@/utils/formatDateUtil";
 import { SUBCATEGORY_FROM_EN } from "@/types/category";

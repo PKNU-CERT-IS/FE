@@ -18,7 +18,6 @@ import { formatDate } from "@/utils/formatDateUtil";
 import CCParticipantActionButtons from "@/components/ui/CCParticipantActionButtons";
 import {
   MEMBER_GRADE_LABELS,
-  MemberGrade,
   ParticipantType,
   StudyMaterial,
 } from "@/types/study";

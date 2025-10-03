@@ -13,11 +13,7 @@ import EndRequestButton from "@/components/ui/endRequestButton";
 import { getStatusColor } from "@/utils/badgeUtils";
 import { STATUS_LABELS } from "@/types/progressStatus";
 import { getDetailProject } from "@/app/api/project/SCProjectApi";
-import {
-  MEMBER_GRADE_LABELS,
-  MemberGrade,
-  ParticipantType,
-} from "@/types/study";
+import { MEMBER_GRADE_LABELS, ParticipantType } from "@/types/study";
 import { formatDate } from "@/utils/formatDateUtil";
 import { getCurrentUser } from "@/lib/auth/currentUser";
 import {

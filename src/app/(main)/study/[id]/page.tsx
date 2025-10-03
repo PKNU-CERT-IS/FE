@@ -29,7 +29,6 @@ import MeetingMinutes from "@/components/study/SCStudyMeetingMinutes";
 import { AttachedFile } from "@/types/attachedFile";
 import {
   MEMBER_GRADE_LABELS,
-  MemberGrade,
   ParticipantType,
   StudyMaterial,
 } from "@/types/study";

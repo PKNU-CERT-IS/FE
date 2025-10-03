@@ -46,6 +46,7 @@ import AlertModal from "@/components/ui/defaultAlertModal";
 import { getNextMonday, getNextSunday } from "@/utils/dateUtils";
 import { updateAdminStudy } from "@/app/api/admin/study/CCAdminStudyUpdateApi";
 import { updateAdminProject } from "@/app/api/admin/project/CCAdminProjectUpdateApi";
+import { AxiosError } from "axios";
 
 interface EditFormProps {
   type: NewPageCategoryType;
@@ -108,6 +109,7 @@ export default function EditForm({
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [, setStatus] = useState<string>("");
   const [alertOpen, setAlertOpen] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
   const validateDates = useCallback((start: string, end: string) => {
     if (!start || !end) return;
 
@@ -286,6 +288,8 @@ export default function EditForm({
           if (response?.statusCode === 200) {
             router.push(`/board/${dataId}`);
             router.refresh();
+          } else {
+            throw new Error(response?.message || "게시글 수정 실패");
           }
           break;
         }
@@ -302,11 +306,15 @@ export default function EditForm({
             referenceTitle: selectedReference?.referenceTitle ?? "",
             referenceId: selectedReference?.referenceId,
           };
-          await updateBlog(blogUpdateRequest);
-          if (from === "admin") {
-            router.push(`/admin/${type}/${dataId}`);
+          response = await updateBlog(blogUpdateRequest);
+          if (response?.statusCode === 200) {
+            if (from === "admin") {
+              router.push(`/admin/${type}/${dataId}`);
+            } else {
+              router.push(`/${type}/${dataId}`);
+            }
           } else {
-            router.push(`/${type}/${dataId}`);
+            throw new Error(response?.message || "게시글 수정 실패");
           }
           break;
 
@@ -332,6 +340,8 @@ export default function EditForm({
               isAdmin ? `/admin/study/${dataId}?tab=study` : `/study/${dataId}`
             );
             router.refresh();
+          } else {
+            throw new Error(response?.message || "스터디 수정 실패");
           }
           break;
         }
@@ -363,6 +373,8 @@ export default function EditForm({
                 : `/project/${dataId}`
             );
             router.refresh();
+          } else {
+            throw new Error(response?.message || "프로젝트 수정 실패");
           }
           break;
         }
@@ -371,8 +383,11 @@ export default function EditForm({
           throw new Error(`Unknown type: ${type}`);
       }
     } catch (error) {
+      const err = error as AxiosError<{ message?: string }>;
+      setAlertMessage(
+        err.response?.data?.message || "요청 처리 중 오류가 발생했습니다."
+      );
       setAlertOpen(true);
-      throw error;
     }
   };
 
@@ -441,7 +456,7 @@ export default function EditForm({
         {/* 설명란 */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-gray-200">
-            설명
+            설명 *
           </label>
           <textarea
             value={description}
@@ -932,7 +947,7 @@ export default function EditForm({
       </div>
       <AlertModal
         isOpen={alertOpen}
-        message="게시글 수정에 실패하셨습니다."
+        message={alertMessage}
         type="warning"
         duration={2500}
         onClose={() => setAlertOpen(false)}
