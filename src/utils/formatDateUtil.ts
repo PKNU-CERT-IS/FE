@@ -29,9 +29,11 @@ export const formatDate = (
         : dateInput;
 
     if (isNaN(date.getTime())) return String(dateInput);
+    const options: Intl.DateTimeFormatOptions = { timeZone: "Asia/Seoul" };
 
     if (format === "long") {
       return date.toLocaleDateString("ko-KR", {
+        ...options,
         year: "numeric",
         month: "long",
         day: "numeric",
@@ -41,6 +43,7 @@ export const formatDate = (
 
     if (format === "medium") {
       return date.toLocaleDateString("ko-KR", {
+        ...options,
         month: "long",
         day: "numeric",
         weekday: "long",
@@ -49,6 +52,7 @@ export const formatDate = (
 
     if (format === "dot") {
       return date.toLocaleDateString("ko-KR", {
+        ...options,
         year: "numeric",
         month: "2-digit",
         day: "2-digit",
@@ -56,9 +60,16 @@ export const formatDate = (
     }
 
     // short
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const day = String(date.getDate()).padStart(2, "0");
+    const year = date.toLocaleDateString("ko-KR", {
+      ...options,
+      year: "numeric",
+    });
+    const month = date
+      .toLocaleDateString("ko-KR", { ...options, month: "2-digit" })
+      .replace(/[^0-9]/g, "");
+    const day = date
+      .toLocaleDateString("ko-KR", { ...options, day: "2-digit" })
+      .replace(/[^0-9]/g, "");
     return `${year}-${month}-${day}`;
   } catch (error) {
     console.warn("Date formatting error:", error);
@@ -88,6 +99,7 @@ export const formatTime = (
       hour: "2-digit",
       minute: "2-digit",
       hour12: false,
+      timeZone: "Asia/Seoul",
     };
 
     if (format === "hms") {
