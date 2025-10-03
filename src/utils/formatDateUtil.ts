@@ -60,16 +60,9 @@ export const formatDate = (
     }
 
     // short
-    const year = date.toLocaleDateString("ko-KR", {
-      ...options,
-      year: "numeric",
-    });
-    const month = date
-      .toLocaleDateString("ko-KR", { ...options, month: "2-digit" })
-      .replace(/[^0-9]/g, "");
-    const day = date
-      .toLocaleDateString("ko-KR", { ...options, day: "2-digit" })
-      .replace(/[^0-9]/g, "");
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
     return `${year}-${month}-${day}`;
   } catch (error) {
     console.warn("Date formatting error:", error);
