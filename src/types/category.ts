@@ -46,7 +46,7 @@ export type SubCategoryType =
   | "데이터베이스"
   | "C/C++"
   | "Python"
-  | "어샘블리어"
+  | "어셈블리어"
   | "JavaScript"
   | "개발 생명주기"
   | "소프트웨어 설계"
@@ -188,7 +188,7 @@ export const SUBCATEGORY_OPTIONS: readonly SubCategoryType[] = [
   "데이터베이스",
   "C/C++",
   "Python",
-  "어샘블리어",
+  "어셈블리어",
   "JavaScript",
   "개발 생명주기",
   "소프트웨어 설계",
@@ -326,7 +326,7 @@ export const SUBCATEGORY_MAP: Record<CategoryType, readonly SubCategoryType[]> =
       "데이터베이스",
       "C/C++",
       "Python",
-      "어샘블리어",
+      "어셈블리어",
       "JavaScript",
       "개발 생명주기",
       "소프트웨어 설계",
@@ -485,7 +485,7 @@ export const SUBCATEGORY_LABELS = {
   데이터베이스: "데이터베이스",
   "C/C++": "C/C++",
   Python: "Python",
-  어샘블리어: "어샘블리어",
+  어셈블리어: "어셈블리어",
   JavaScript: "JavaScript",
   "개발 생명주기": "개발 생명주기",
   "소프트웨어 설계": "소프트웨어 설계",
@@ -635,7 +635,7 @@ export const SUBCATEGORY_TO_EN: Record<SubCategoryType, string> = {
   데이터베이스: "DATABASE",
   "C/C++": "C_CPP",
   Python: "PYTHON",
-  어샘블리어: "ASSEMBLY",
+  어셈블리어: "ASSEMBLY",
   JavaScript: "JAVASCRIPT",
   "개발 생명주기": "SDLC",
   "소프트웨어 설계": "SOFTWARE_DESIGN",

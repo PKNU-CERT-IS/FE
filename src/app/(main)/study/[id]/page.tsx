@@ -1,5 +1,5 @@
 "server-only";
-
+import Image from "next/image";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Calendar, Users, Download } from "lucide-react";
@@ -27,7 +27,12 @@ import { getCurrentUser } from "@/lib/auth/currentUser";
 import CCParticipantActionButtons from "@/components/ui/CCParticipantActionButtons";
 import MeetingMinutes from "@/components/study/SCStudyMeetingMinutes";
 import { AttachedFile } from "@/types/attachedFile";
-import { MEMBER_GRADE_LABELS, MemberGrade, StudyMaterial } from "@/types/study";
+import {
+  MEMBER_GRADE_LABELS,
+  ParticipantType,
+  StudyMaterial,
+} from "@/types/study";
+import LogoSVG from "/public/icons/logo.svg";
 
 // 메타데이터 생성
 export async function generateMetadata({
@@ -276,8 +281,17 @@ export default async function StudyMaterialDetailPage({
                 스터디 리더
               </h3>
               <div className="flex items-center gap-3">
-                <div className="w-12 h-12 bg-cert-red rounded-full flex items-center justify-center text-white font-medium">
-                  {studyData.studyCreatorName[0]}
+                <div className="relative w-12 h-12 rounded-full overflow-hidden bg-gray-100 flex items-center justify-center font-medium">
+                  {studyData.studyCreatorProfileImageUrl ? (
+                    <Image
+                      src={studyData.studyCreatorProfileImageUrl}
+                      alt={`${studyData.studyCreatorName} 프로필`}
+                      fill
+                      className="object-cover"
+                    />
+                  ) : (
+                    <LogoSVG className="w-12 h-12 text-gray-400" />
+                  )}
                 </div>
                 <div>
                   <p className="font-medium text-black dark:text-white">
@@ -300,28 +314,31 @@ export default async function StudyMaterialDetailPage({
               <div className="mb-6">
                 <div className="space-y-3">
                   {approvedMember.length > 0 ? (
-                    approvedMember.map(
-                      (participant: {
-                        id: number;
-                        memberName: string;
-                        memberGrade: MemberGrade;
-                      }) => (
-                        <div
-                          key={participant.id}
-                          className="flex items-center gap-3"
-                        >
-                          <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center text-black text-xs font-medium">
-                            {participant.memberName[0]}
-                          </div>
-                          <p className="text-sm font-medium text-black dark:text-white">
-                            {participant.memberName}
-                          </p>
-                          <p className="text-xs text-gray-500 dark:text-gray-400">
-                            {MEMBER_GRADE_LABELS[participant.memberGrade]}
-                          </p>
+                    approvedMember.map((participant: ParticipantType) => (
+                      <div
+                        key={participant.memberId}
+                        className="flex items-center gap-3"
+                      >
+                        <div className="relative w-8 h-8 rounded-full overflow-hidden bg-gray-200 flex items-center justify-center text-xs font-medium text-black dark:bg-gray-700 dark:text-white">
+                          {participant.profileImageUrl ? (
+                            <Image
+                              src={participant.profileImageUrl}
+                              alt={`${participant.memberName} 프로필`}
+                              fill
+                              className="object-cover"
+                            />
+                          ) : (
+                            <LogoSVG className="w-8 h-8 text-gray-400" />
+                          )}
                         </div>
-                      )
-                    )
+                        <p className="text-sm font-medium text-black dark:text-white">
+                          {participant.memberName}
+                        </p>
+                        <p className="text-xs text-gray-500 dark:text-gray-400">
+                          {MEMBER_GRADE_LABELS[participant.memberGrade]}
+                        </p>
+                      </div>
+                    ))
                   ) : (
                     <p className="text-sm text-gray-500 dark:text-gray-400">
                       참여 중인 멤버가 없습니다.
@@ -337,36 +354,40 @@ export default async function StudyMaterialDetailPage({
                   </h4>
                   <div className="space-y-3">
                     {pendingMember.length > 0 ? (
-                      pendingMember.map(
-                        (participant: {
-                          id: number;
-                          memberName: string;
-                          memberGrade: MemberGrade;
-                        }) => (
-                          <div
-                            key={participant.id}
-                            className="flex items-center gap-3"
-                          >
-                            <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center text-black text-xs font-medium">
-                              {participant.memberName[0]}
-                            </div>
-                            <p className="text-sm font-medium text-black dark:text-white">
-                              {participant.memberName}
-                            </p>
-                            <p className="text-xs text-gray-500 dark:text-gray-400">
-                              {MEMBER_GRADE_LABELS[participant.memberGrade]}
-                            </p>
-
-                            {canApproveOrReject && (
-                              <div className="flex gap-2">
-                                <CCParticipantActionButtons
-                                  participantId={participant.id}
-                                />
-                              </div>
+                      pendingMember.map((participant: ParticipantType) => (
+                        <div
+                          key={participant.memberId}
+                          className="flex items-center gap-3"
+                        >
+                          <div className="relative w-8 h-8 rounded-full overflow-hidden bg-gray-200 flex items-center justify-center text-xs font-medium text-black dark:bg-gray-700 dark:text-white">
+                            {participant.profileImageUrl ? (
+                              <Image
+                                src={participant.profileImageUrl}
+                                alt={`${participant.memberName} 프로필`}
+                                fill
+                                className="object-cover"
+                              />
+                            ) : (
+                              <LogoSVG className="w-8 h-8 text-gray-400" />
                             )}
                           </div>
-                        )
-                      )
+                          <p className="text-sm font-medium text-black dark:text-white">
+                            {participant.memberName}
+                          </p>
+                          <p className="text-xs text-gray-500 dark:text-gray-400">
+                            {MEMBER_GRADE_LABELS[participant.memberGrade]}
+                          </p>
+
+                          {canApproveOrReject && (
+                            <div className="flex gap-2">
+                              <CCParticipantActionButtons
+                                memberId={participant.memberId}
+                                dataId={studyData.id}
+                              />
+                            </div>
+                          )}
+                        </div>
+                      ))
                     ) : (
                       <p className="text-sm text-gray-500 dark:text-gray-400">
                         대기중인 멤버가 없습니다.

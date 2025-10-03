@@ -29,6 +29,7 @@ import {
 import { BoardCategoryType, categoryMappingToEN } from "@/types/board";
 import { createProject } from "@/app/api/project/CCProjectApi";
 import { getNextMonday, getNextSunday } from "@/utils/dateUtils";
+import { AxiosError } from "axios";
 
 interface WriteFormProps {
   type: NewPageCategoryType;
@@ -77,6 +78,7 @@ export default function WriteForm({ type, initialReferences }: WriteFormProps) {
 
   const [thumbnailUrl, setThumbnailUrl] = useState<string>("");
   const [dateError, setDateError] = useState<string>("");
+  const [alertMessage, setAlertMessage] = useState("");
   // 날짜 검증 함수 추가
   const validateDates = useCallback((start: string, end: string) => {
     if (!start || !end) return;
@@ -88,7 +90,13 @@ export default function WriteForm({ type, initialReferences }: WriteFormProps) {
     }
   }, []);
 
-  // useEffect로 날짜 변경 감지
+  const [startWeek, setStartWeek] = useState("");
+  const [endWeek, setEndWeek] = useState("");
+  useEffect(() => {
+    setStartWeek(getNextMonday());
+    setEndWeek(getNextSunday());
+  }, []);
+
   useEffect(() => {
     validateDates(startDate, endDate);
   }, [startDate, endDate, validateDates]);
@@ -121,8 +129,6 @@ export default function WriteForm({ type, initialReferences }: WriteFormProps) {
   const updateExternalLink = (field: "title" | "url", value: string) => {
     setExternalUrl((prev) => ({ ...prev, [field]: value }));
   };
-  const startWeek = getNextMonday();
-  const endWeek = getNextSunday();
 
   const handleSubmit = async () => {
     try {
@@ -236,8 +242,11 @@ export default function WriteForm({ type, initialReferences }: WriteFormProps) {
           throw new Error(`Unknown type: ${type}`);
       }
     } catch (error) {
+      const err = error as AxiosError<{ message?: string }>;
+      setAlertMessage(
+        err.response?.data?.message || "요청 처리 중 오류가 발생했습니다."
+      );
       setAlertOpen(true);
-      throw error;
     }
   };
 
@@ -773,7 +782,7 @@ export default function WriteForm({ type, initialReferences }: WriteFormProps) {
       </div>
       <AlertModal
         isOpen={alertOpen}
-        message="생성 중 오류가 발생했습니다."
+        message={alertMessage}
         type="error"
         duration={3000}
         onClose={() => setAlertOpen(false)}

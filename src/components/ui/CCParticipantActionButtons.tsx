@@ -19,9 +19,11 @@ import {
 } from "@/app/api/admin/project/CCAdminProjectParticipantApi";
 
 export default function CCParticipantActionButtons({
-  participantId,
+  memberId,
+  dataId,
 }: {
-  participantId: number;
+  memberId: number;
+  dataId: number;
 }) {
   const router = useRouter();
   const pathname = usePathname();
@@ -36,15 +38,15 @@ export default function CCParticipantActionButtons({
       if (isAdmin) {
         const tab = searchParams.get("tab");
         if (tab === "study") {
-          await approveAdminStudyParticipant(participantId);
+          await approveAdminStudyParticipant(memberId, dataId);
         } else {
-          await approveAdminProjectParticipant(participantId);
+          await approveAdminProjectParticipant(memberId, dataId);
         }
       } else {
         if (pageType === "study") {
-          await approveStudyParticipant(participantId);
+          await approveStudyParticipant(memberId, dataId);
         } else {
-          await approveProjectParticipant(participantId);
+          await approveProjectParticipant(memberId, dataId);
         }
       }
       router.refresh();
@@ -58,15 +60,15 @@ export default function CCParticipantActionButtons({
       if (isAdmin) {
         const tab = searchParams.get("tab");
         if (tab === "study") {
-          await rejectAdminStudyParticipant(participantId);
+          await rejectAdminStudyParticipant(memberId, dataId);
         } else {
-          await rejectAdminProjectParticipant(participantId);
+          await rejectAdminProjectParticipant(memberId, dataId);
         }
       } else {
         if (pageType === "study") {
-          await rejectStudyParticipant(participantId);
+          await rejectStudyParticipant(memberId, dataId);
         } else {
-          await rejectProjectParticipant(participantId);
+          await rejectProjectParticipant(memberId, dataId);
         }
       }
       router.refresh();

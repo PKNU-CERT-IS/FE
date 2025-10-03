@@ -64,6 +64,7 @@ export interface BlogDataType {
   referenceTitle: string;
   referenceId: number;
   isPublic: boolean;
+  blogCreatorProfileImageUrl: string;
 }
 
 export interface BlogDetailDataType extends BlogDataType {

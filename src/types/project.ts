@@ -145,6 +145,7 @@ export interface ProjectMaterial {
   maxParticipantNumber: number;
   currentParticipantNumber: number;
   participantable: boolean;
+  profileImageUrl: string;
 }
 export interface ProjectSearchParams {
   search?: string;

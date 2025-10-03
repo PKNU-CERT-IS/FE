@@ -29,9 +29,11 @@ export const formatDate = (
         : dateInput;
 
     if (isNaN(date.getTime())) return String(dateInput);
+    const options: Intl.DateTimeFormatOptions = { timeZone: "Asia/Seoul" };
 
     if (format === "long") {
       return date.toLocaleDateString("ko-KR", {
+        ...options,
         year: "numeric",
         month: "long",
         day: "numeric",
@@ -41,6 +43,7 @@ export const formatDate = (
 
     if (format === "medium") {
       return date.toLocaleDateString("ko-KR", {
+        ...options,
         month: "long",
         day: "numeric",
         weekday: "long",
@@ -49,6 +52,7 @@ export const formatDate = (
 
     if (format === "dot") {
       return date.toLocaleDateString("ko-KR", {
+        ...options,
         year: "numeric",
         month: "2-digit",
         day: "2-digit",
@@ -88,6 +92,7 @@ export const formatTime = (
       hour: "2-digit",
       minute: "2-digit",
       hour12: false,
+      timeZone: "Asia/Seoul",
     };
 
     if (format === "hms") {
@@ -99,4 +104,32 @@ export const formatTime = (
     console.warn("Time formatting error:", error);
     return String(dateInput);
   }
+};
+
+/**
+ * 시작일과 종료일을 범위 형식으로 포맷팅합니다.
+ * 같은 날이면 시작일만, 다르면 "YYYY.MM.DD ~ YYYY.MM.DD" 형식 반환
+ */
+export const formatDateRange = (
+  startInput: Date | string,
+  endInput: Date | string,
+  format: "dot" | "short" | "medium" | "long" = "dot"
+): string => {
+  const startDate =
+    typeof startInput === "string" ? new Date(startInput) : startInput;
+  const endDate = typeof endInput === "string" ? new Date(endInput) : endInput;
+
+  if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
+    return `${startInput} ~ ${endInput}`;
+  }
+
+  const startStr = formatDate(startDate, format);
+  const endStr = formatDate(endDate, format);
+
+  const sameDay =
+    startDate.getFullYear() === endDate.getFullYear() &&
+    startDate.getMonth() === endDate.getMonth() &&
+    startDate.getDate() === endDate.getDate();
+
+  return sameDay ? startStr : `${startStr} ~ ${endStr}`;
 };

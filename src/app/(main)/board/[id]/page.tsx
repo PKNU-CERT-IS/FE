@@ -1,5 +1,5 @@
 "server-only";
-
+import Image from "next/image";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import BackToListButton from "@/components/detail/SCBackToListButton";
@@ -18,6 +18,7 @@ import { toKoreanCategory } from "@/types/board";
 import { formatDate } from "@/utils/formatDateUtil";
 import { AttachedFile, getFileKey } from "@/types/attachedFile";
 import { translateRoleToKorean } from "@/utils/transformRequestValue";
+import LogoSVG from "/public/icons/logo.svg";
 
 export async function generateMetadata({
   params,
@@ -100,8 +101,17 @@ export default async function DetailPage({
 
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center text-gray-600 font-medium">
-                {data.author.name.charAt(0)}
+              <div className="relative w-12 h-12 rounded-full overflow-hidden bg-gray-100 flex items-center justify-center text-gray-600 font-medium">
+                {data.author.profileImageUrl ? (
+                  <Image
+                    src={data.author.profileImageUrl}
+                    alt={`${data.author.name} 프로필`}
+                    fill
+                    className="object-cover"
+                  />
+                ) : (
+                  <LogoSVG className="w-12 h-12 text-gray-400" />
+                )}
               </div>
               <div>
                 <div className="flex items-center gap-2">

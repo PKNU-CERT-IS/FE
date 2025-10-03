@@ -1,3 +1,6 @@
+"server-only";
+
+import { Suspense } from "react";
 import SCScheduleInfo from "@/components/schedule/SCScheduleInfo";
 import SCScheduleList from "@/components/schedule/SCScheduleList";
 import Calendar from "@/components/schedule/calendar";
@@ -7,6 +10,7 @@ import { getSchedules } from "@/app/api/schedule/SCscheduleApi";
 import { ScheduleInfo } from "@/types/schedule";
 import SCScheduleRequestList from "@/components/schedule/SCScheduleRequestList";
 import CCAddScheduleCard from "@/components/schedule/CCAddScheduleCard";
+import SCScheduleSkeleton from "@/components/schedule/SCScheduleSkeleton";
 
 interface SearchPageProps {
   searchParams: Promise<{ date: string }>;
@@ -44,6 +48,7 @@ function toLocalDate(date: string | Date) {
   const d = typeof date === "string" ? new Date(date) : date;
   return d.toISOString().split("T")[0];
 }
+
 export default async function SchedulePage({ searchParams }: SearchPageProps) {
   const resolvedSearchParams = await searchParams;
 
@@ -59,21 +64,23 @@ export default async function SchedulePage({ searchParams }: SearchPageProps) {
         <div className="absolute right-4 top-40 sm:hidden z-10">
           <CCScrollScheduleList />
         </div>
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <div className="md:col-span-2">
-            <Calendar schedules={schedules} selectedDate={selectedDate} />
-          </div>
-          <div>
-            <CCAddScheduleCard />
 
-            <div className="relative">
-              <SCScheduleInfo selectedDate={selectedDate} />
+        <Suspense fallback={<SCScheduleSkeleton />}>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div className="md:col-span-2">
+              <Calendar schedules={schedules} selectedDate={selectedDate} />
             </div>
-            <SCScheduleRequestList />
+            <div>
+              <CCAddScheduleCard />
+              <div className="relative">
+                <SCScheduleInfo selectedDate={selectedDate} />
+              </div>
+              <SCScheduleRequestList />
+            </div>
           </div>
-        </div>
 
-        <SCScheduleList id="all-schedule-list" date={selectedDate ?? ""} />
+          <SCScheduleList id="all-schedule-list" date={selectedDate ?? ""} />
+        </Suspense>
       </div>
     </div>
   );

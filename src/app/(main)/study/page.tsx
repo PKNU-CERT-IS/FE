@@ -32,6 +32,7 @@ export async function generateMetadata({
     category?: string;
     subCategory?: string;
     studyStatus?: string;
+    semester?: string;
   }>;
 }): Promise<Metadata> {
   const { search, category, subCategory } = await searchParams;
@@ -64,6 +65,8 @@ export async function generateMetadata({
 
 export default async function StudyPage({ searchParams }: StudyPageProps) {
   const resolvedSearchParams = await searchParams;
+  const { search, category, page, studyStatus, semester } =
+    resolvedSearchParams;
 
   // URL에서 필터 파라미터 추출 (안전한 파싱 사용)
   const filters = parseSearchParams(resolvedSearchParams);
@@ -86,7 +89,7 @@ export default async function StudyPage({ searchParams }: StudyPageProps) {
 
       {/* 콘텐츠 - Suspense로 감싼 카드 그리드 */}
       <Suspense
-        key={(await searchParams).search}
+        key={JSON.stringify({ search, category, page, studyStatus, semester })}
         fallback={<SCStudySkeleton />}
       >
         <SCStudyContent searchParams={searchParams} />
