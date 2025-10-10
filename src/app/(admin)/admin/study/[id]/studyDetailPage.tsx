@@ -6,7 +6,7 @@ import DefaultBadge from "@/components/ui/defaultBadge";
 import MarkdownRenderer from "@/components/ui/defaultMarkdownRenderer";
 import BackToListButton from "@/components/detail/SCBackToListButton";
 import KebabMenu from "@/components/detail/CCKebabMenu";
-import MeetingMinutes from "@/components/study/SCStudyMeetingMinutes";
+import SCStudyMeetingMinutes from "@/components/study/SCStudyMeetingMinutes";
 import DownloadButton from "@/components/detail/SCDownloadButton";
 import { formatFileSize } from "@/utils/attachedFileUtils";
 import { getFileIcon } from "@/utils/attachedFileUtils";
@@ -189,7 +189,7 @@ export default async function StudyDetailPage({
           </div>
 
           {/* 회의록 */}
-          <MeetingMinutes
+          <SCStudyMeetingMinutes
             studyId={studyData.id}
             currentUserId={Number(currentUser?.sub)} // 로그인 유저 ID 연결
             studyLeaderId={studyData.creatorId} // 스터디장 ID 연결 (creator 정보 기반)
