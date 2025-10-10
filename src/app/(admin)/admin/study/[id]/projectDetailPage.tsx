@@ -8,7 +8,7 @@ import BackToListButton from "@/components/detail/SCBackToListButton";
 import KebabMenu from "@/components/detail/CCKebabMenu";
 import ShareButton from "@/components/detail/CCShareButton";
 import DefaultBadge from "@/components/ui/defaultBadge";
-import MeetingMinutes from "@/components/study/SCStudyMeetingMinutes";
+import SCProjectMeetingMinutes from "@/components/project/SCProjectMeetingMinutes";
 import EndRequestButton from "@/components/ui/endRequestButton";
 import { STATUS_LABELS } from "@/types/progressStatus";
 import { getStatusColor } from "@/utils/badgeUtils";
@@ -264,10 +264,10 @@ export default async function ProjectDetailPage({
 
         <div className="flex flex-col md:flex-row gap-6 h-full">
           <div className="basis-2/3 h-full overflow-y-auto">
-            <MeetingMinutes
-              studyId={project.id}
+            <SCProjectMeetingMinutes
+              projectId={project.id}
               currentUserId={Number(currentUser?.sub)}
-              studyLeaderId={project.creatorId}
+              projectLeaderId={project.creatorId}
             />
           </div>
 
