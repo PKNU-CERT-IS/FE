@@ -87,7 +87,7 @@ export default async function StudyDetailPage({
                       variant="outline"
                       className="text-cert-red border-cert-red"
                     >
-                      {getStudyPeriodLabel(studyData.endDate)}
+                      {getStudyPeriodLabel(studyData.startDate)}
                     </DefaultBadge>
                   </div>
                 </div>
@@ -326,7 +326,7 @@ export default async function StudyDetailPage({
                 스터디 기간
               </h3>
               <p className="text-2xl font-bold text-cert-red mb-2">
-                {getStudyPeriodLabel(studyData.endDate)}
+                {getStudyPeriodLabel(studyData.startDate)}
               </p>
               <p className="text-sm text-gray-600 dark:text-gray-400">
                 {formatDate(studyData.startDate, "dot")} ~{" "}

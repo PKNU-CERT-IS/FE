@@ -24,6 +24,7 @@ import {
 } from "@/app/api/project/SCProjectParticipantApi";
 import { getCurrentUser } from "@/lib/auth/currentUser";
 import LogoSVG from "/public/icons/logo.svg";
+import { getStudyPeriodLabel } from "@/utils/studyHelper";
 
 interface ProjectDetailPageProps {
   params: { id: string };
@@ -80,6 +81,14 @@ export default async function ProjectDetailPage({
               className={getStatusColor(project.status)}
             >
               {STATUS_LABELS[project.status as keyof typeof STATUS_LABELS]}
+            </DefaultBadge>
+          </div>
+          <div className="absolute top-4 left-20">
+            <DefaultBadge
+              variant="outline"
+              className="text-cert-red border-cert-red bg-white"
+            >
+              {getStudyPeriodLabel(project.startDate)}
             </DefaultBadge>
           </div>
         </div>
