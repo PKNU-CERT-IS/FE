@@ -5,7 +5,6 @@ import { MEMBER_GRADE_LABELS } from "@/types/study";
 import CCStudyPagination from "@/components/study/CCStudyPagination";
 import SCSearchResultNotFound from "@/components/ui/SCSearchResultNotFound";
 import { getProgressColor, parseSearchParams } from "@/utils/studyHelper";
-import { downloadFile } from "@/actions/study/StudyDownloadFileServerAction";
 import PdfSVG from "/public/icons/pdf.svg";
 import Link from "next/link";
 import DefaultBadge from "@/components/ui/defaultBadge";
@@ -15,7 +14,7 @@ import { STATUS_LABELS } from "@/types/progressStatus";
 import { searchStudies, getStudies } from "@/app/api/study/SCStudyApi";
 import { SUBCATEGORY_FROM_EN, SUBCATEGORY_TO_EN } from "@/types/category";
 import { Calendar } from "lucide-react";
-import DownloadButton from "../detail/SCDownloadButton";
+import DownloadButton from "@/components/detail/SCDownloadButton";
 
 interface SCStudyContentProps {
   searchParams: Promise<{
@@ -171,19 +170,17 @@ export default async function SCStudyContent({
                             </p>
                           </div>
                         </div>
-                        <form action={downloadFile}>
-                          <input
-                            type="hidden"
-                            name="fileName"
-                            value={file.name}
-                          />
-                          <input
-                            type="hidden"
-                            name="studyId"
-                            value={material.id}
-                          />
-                          <DownloadButton file={file} />
-                        </form>
+                        <input
+                          type="hidden"
+                          name="fileName"
+                          value={file.name}
+                        />
+                        <input
+                          type="hidden"
+                          name="studyId"
+                          value={material.id}
+                        />
+                        <DownloadButton file={file} />
                       </div>
                     ))}
                   </div>

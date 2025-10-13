@@ -246,28 +246,16 @@ export const getStatusDateInfo = (
 /**
  * D-DAY 표기
  */
-export const getStudyPeriodLabel = (endDate?: string) => {
-  if (!endDate) return null;
-
-  const diffDays = calculateDaysFromNow(endDate);
-
-  if (diffDays === 0) {
-    return "D-Day";
-  }
-
-  if (diffDays > 0) {
-    return `D-${diffDays}`; // 종료일까지 남은 일수
-  }
-
-  return `D+${Math.abs(diffDays)}`; // 종료일로부터 지난 일수
+export const getStudyPeriodLabel = (startDate?: string) => {
+  if (!startDate) return null;
+  return calculateDDay(startDate);
 };
 
-// study D-Day 계산을 위한 함수
+// study D-Day 계산 함수 (startDate 기준)
 export function calculateDDay(startDate: string): string {
   const today = new Date();
   const start = new Date(startDate);
 
-  // 시간을 00:00:00 으로 맞추기
   today.setHours(0, 0, 0, 0);
   start.setHours(0, 0, 0, 0);
 
@@ -275,11 +263,11 @@ export function calculateDDay(startDate: string): string {
   const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
 
   if (diffDays === 0) {
-    return "D+0"; // 오늘
+    return "D-Day"; // 오늘 시작
   } else if (diffDays > 0) {
-    return `D+${diffDays}`; // 미래
+    return `D-${diffDays}`; // 시작일까지 남은 일수
   } else {
-    return `D${diffDays}`; // 과거 (자동으로 D-3 형태가 됨)
+    return `D+${Math.abs(diffDays)}`; // 시작일부터 지난 일수
   }
 }
 

@@ -138,7 +138,7 @@ export default async function ProjectDetailPage({
               variant="outline"
               className="text-cert-red border-cert-red bg-white"
             >
-              {getStudyPeriodLabel(project.endDate)}
+              {getStudyPeriodLabel(project.startDate)}
             </DefaultBadge>
           </div>
         </div>

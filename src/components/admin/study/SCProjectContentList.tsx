@@ -5,7 +5,6 @@ import { AlertCircle, Calendar, Target, User, Users } from "lucide-react";
 import { MainTab, SubTab } from "@/types/admin/adminStudyTab";
 import Link from "next/link";
 import PdfSVG from "/public/icons/pdf.svg";
-import { downloadFile } from "@/actions/study/StudyDownloadFileServerAction";
 import CCAdminStudyPagination from "@/components/admin/study/CCAdminStudyPagination";
 import SCSearchResultNotFound from "@/components/ui/SCSearchResultNotFound";
 import { formatFileSize } from "@/utils/attachedFileUtils";
@@ -235,19 +234,18 @@ export default async function SCProjectContentList({
                                   </p>
                                 </div>
                               </div>
-                              <form action={downloadFile}>
-                                <input
-                                  type="hidden"
-                                  name="fileName"
-                                  value={file.name}
-                                />
-                                <input
-                                  type="hidden"
-                                  name="studyId"
-                                  value={project.id}
-                                />
-                                <DownloadButton file={file} />
-                              </form>
+
+                              <input
+                                type="hidden"
+                                name="fileName"
+                                value={file.name}
+                              />
+                              <input
+                                type="hidden"
+                                name="studyId"
+                                value={project.id}
+                              />
+                              <DownloadButton file={file} />
                             </div>
                           ))}
                         </div>
@@ -377,19 +375,17 @@ export default async function SCProjectContentList({
                               </div>
                             </div>
 
-                            <form action={downloadFile}>
-                              <input
-                                type="hidden"
-                                name="fileName"
-                                value={project.attachment.name}
-                              />
-                              <input
-                                type="hidden"
-                                name="projectId"
-                                value={project.projectId}
-                              />
-                              <DownloadButton file={project.attachment} />
-                            </form>
+                            <input
+                              type="hidden"
+                              name="fileName"
+                              value={project.attachment.name}
+                            />
+                            <input
+                              type="hidden"
+                              name="projectId"
+                              value={project.projectId}
+                            />
+                            <DownloadButton file={project.attachment} />
                           </div>
                         )}
                       </div>
@@ -513,19 +509,18 @@ export default async function SCProjectContentList({
                                 </p>
                               </div>
                             </div>
-                            <form action={downloadFile}>
-                              <input
-                                type="hidden"
-                                name="fileName"
-                                value={file.name}
-                              />
-                              <input
-                                type="hidden"
-                                name="studyId"
-                                value={project.id}
-                              />
-                              <DownloadButton file={file} />
-                            </form>
+
+                            <input
+                              type="hidden"
+                              name="fileName"
+                              value={file.name}
+                            />
+                            <input
+                              type="hidden"
+                              name="studyId"
+                              value={project.id}
+                            />
+                            <DownloadButton file={file} />
                           </div>
                         ))}
                       </div>

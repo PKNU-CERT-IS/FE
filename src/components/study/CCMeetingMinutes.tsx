@@ -378,7 +378,6 @@ export default function MeetingMinutes({
               </div>
             ) : (
               meetingMinutes.map((minute) => {
-                // const isLong = (minute.content || "").length > 30;
                 const needsDetail = !minute.content;
                 const expanded = expandedIds.has(minute.id);
                 const textToShow = expanded ? minute.content : "";
@@ -434,26 +433,26 @@ export default function MeetingMinutes({
                     <div className="mt-2 flex flex-row">
                       <p className="text-sm text-gray-800 leading-relaxed dark:text-gray-300 break-all whitespace-normal">
                         {textToShow}
+                        {shouldShowButton && (
+                          <button
+                            type="button"
+                            onClick={() => toggleExpand(minute.id, pageType)}
+                            className="ml-1 inline-flex flex-row items-center whitespace-nowrap text-xs text-gray-500 hover:underline cursor-pointer align-baseline"
+                          >
+                            {expanded ? (
+                              <>
+                                접기{" "}
+                                <ChevronUp className="w-3.5 h-3.5 ml-0.5" />
+                              </>
+                            ) : (
+                              <>
+                                세부 내용 더보기{" "}
+                                <ChevronDown className="w-3.5 h-3.5 ml-0.5" />
+                              </>
+                            )}
+                          </button>
+                        )}
                       </p>
-
-                      {shouldShowButton && (
-                        <button
-                          type="button"
-                          onClick={() => toggleExpand(minute.id, pageType)}
-                          className="ml-1 inline-flex flex-row items-center whitespace-nowrap text-xs text-gray-500 hover:underline cursor-pointer"
-                        >
-                          {expanded ? (
-                            <>
-                              접기 <ChevronUp className="w-3.5 h-3.5 ml-0.5" />
-                            </>
-                          ) : (
-                            <>
-                              세부 내용 더보기{" "}
-                              <ChevronDown className="w-3.5 h-3.5 ml-0.5" />
-                            </>
-                          )}
-                        </button>
-                      )}
                     </div>
 
                     {/* 링크: 인라인 배치 */}
