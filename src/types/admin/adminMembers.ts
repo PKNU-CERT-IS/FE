@@ -13,4 +13,5 @@ export interface AdminMemberDetailInfoType extends MembersDataType {
   penaltyPoints: number;
   grade: string;
   memberId: number;
+  createdAt: string;
 }
