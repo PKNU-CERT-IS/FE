@@ -68,3 +68,29 @@ export async function rejectStudyParticipant(
     throw error;
   }
 }
+
+// 승인된 참가자 조회
+export async function getStudyApprovedParticipants(
+  studyId: number,
+  page = 0,
+  size = 10
+) {
+  const res = await apiClient.get(
+    `/study/participant/${studyId}/participants/approved`,
+    { params: { page, size, sort: "createdAt,desc" } }
+  );
+  return res.data.data;
+}
+
+// 대기중 참가자 조회
+export async function getStudyPendingParticipants(
+  studyId: number,
+  page = 0,
+  size = 10
+) {
+  const res = await apiClient.get(
+    `/study/participant/${studyId}/participants/pending`,
+    { params: { page, size, sort: "createdAt,desc" } }
+  );
+  return res.data.data;
+}
