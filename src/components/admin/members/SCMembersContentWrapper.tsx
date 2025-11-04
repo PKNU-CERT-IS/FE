@@ -1,7 +1,6 @@
 "server-only";
 
 import SCSearchResultNotFound from "@/components/ui/SCSearchResultNotFound";
-// import { AdminMemberDetailInfoType } from "@/types/admin/adminMembers";
 import CCMembersList from "@/components/admin/members/CCMembersList";
 import { getMembersForStaff } from "@/app/api/member/SCadminMemberApi";
 
@@ -29,6 +28,5 @@ export default async function SCMembersContentWrapper({
     );
   }
 
-  // ✅ 데이터만 클라이언트로 내려서 상호작용은 거기서
   return <CCMembersList filteredMembers={filtered} />;
 }

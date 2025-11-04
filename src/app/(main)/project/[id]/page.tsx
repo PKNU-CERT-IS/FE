@@ -13,20 +13,19 @@ import EndRequestButton from "@/components/ui/endRequestButton";
 import { getStatusColor } from "@/utils/badgeUtils";
 import { STATUS_LABELS } from "@/types/progressStatus";
 import { getDetailProject } from "@/app/api/project/SCProjectApi";
-import { MEMBER_GRADE_LABELS, ParticipantType } from "@/types/study";
+import { MEMBER_GRADE_LABELS } from "@/types/study";
 import { formatDate } from "@/utils/formatDateUtil";
 import { getCurrentUser } from "@/lib/auth/currentUser";
 import {
   getProjectApprovedParticipants,
   getProjectPendingParticipants,
 } from "@/app/api/project/SCProjectParticipantApi";
-import CCParticipantActionButtons from "@/components/ui/CCParticipantActionButtons";
 import { CCJoinButton } from "@/components/ui/CCJoinButton";
 import { SUBCATEGORY_FROM_EN } from "@/types/category";
 import MarkdownRenderer from "@/components/ui/defaultMarkdownRenderer";
 import { ProjectMaterial } from "@/types/project";
 import { getStudyPeriodLabel } from "@/utils/studyHelper";
-import LogoSVG from "/public/icons/logo.svg";
+import CCParticipantsList from "@/components/detail/CCParticipantsList";
 
 interface ProjectDetailPageProps {
   params: Promise<{ id: string }>;
@@ -346,92 +345,12 @@ export default async function ProjectDetailPage({
           {/* 멤버 목록: 오른쪽 1/3 */}
           <div className="basis-1/3 h-full overflow-y-auto dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700">
             <div className="p-6">
-              <h3 className="text-lg font-bold text-black dark:text-white mb-4">
-                프로젝트원 ({approvedMember.length})
-              </h3>
-
-              <div className="mb-6 space-y-3">
-                {approvedMember.length > 0 ? (
-                  approvedMember.map((participant: ParticipantType) => (
-                    <div
-                      key={participant.memberId}
-                      className="flex items-center gap-3"
-                    >
-                      <div className="relative w-8 h-8 rounded-full overflow-hidden bg-gray-200 flex items-center justify-center text-xs font-medium text-black dark:bg-gray-700 dark:text-white">
-                        {participant.profileImageUrl ? (
-                          <Image
-                            src={participant.profileImageUrl}
-                            alt={`${participant.memberName} 프로필`}
-                            fill
-                            className="object-cover"
-                          />
-                        ) : (
-                          <LogoSVG className="w-8 h-8 text-gray-400" />
-                        )}
-                      </div>
-                      <p className="text-sm font-medium text-black dark:text-white">
-                        {participant.memberName}
-                      </p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">
-                        {MEMBER_GRADE_LABELS[participant.memberGrade]}
-                      </p>
-                    </div>
-                  ))
-                ) : (
-                  <p className="text-sm text-gray-500 dark:text-gray-400">
-                    참여 중인 멤버가 없습니다.
-                  </p>
-                )}
-              </div>
-
-              {canApproveOrReject && (
-                <div>
-                  <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                    대기중 멤버 ({pendingMember.length})
-                  </h4>
-                  <div className="space-y-3">
-                    {pendingMember.length > 0 ? (
-                      pendingMember.map((participant: ParticipantType) => (
-                        <div
-                          key={participant.memberId}
-                          className="flex items-center gap-3"
-                        >
-                          <div className="relative w-8 h-8 rounded-full overflow-hidden bg-gray-200 flex items-center justify-center text-xs font-medium text-black dark:bg-gray-700 dark:text-white">
-                            {participant.profileImageUrl ? (
-                              <Image
-                                src={participant.profileImageUrl}
-                                alt={`${participant.memberName} 프로필`}
-                                fill
-                                className="object-cover"
-                              />
-                            ) : (
-                              <LogoSVG className="w-8 h-8 text-gray-400" />
-                            )}
-                          </div>
-                          <p className="text-sm font-medium text-black dark:text-white">
-                            {participant.memberName}
-                          </p>
-                          <p className="text-xs text-gray-500 dark:text-gray-400">
-                            {MEMBER_GRADE_LABELS[participant.memberGrade]}
-                          </p>
-                          {canApproveOrReject && (
-                            <div className="flex gap-2">
-                              <CCParticipantActionButtons
-                                memberId={participant.memberId}
-                                dataId={project.id}
-                              />
-                            </div>
-                          )}
-                        </div>
-                      ))
-                    ) : (
-                      <p className="text-sm text-gray-500 dark:text-gray-400">
-                        대기중인 멤버가 없습니다.
-                      </p>
-                    )}
-                  </div>
-                </div>
-              )}
+              <CCParticipantsList
+                type="project"
+                dataId={project.id}
+                size={10}
+                canApproveOrReject={!!canApproveOrReject}
+              />
             </div>
           </div>
         </div>

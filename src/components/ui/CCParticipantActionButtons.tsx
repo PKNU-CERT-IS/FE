@@ -18,13 +18,19 @@ import {
   rejectAdminProjectParticipant,
 } from "@/app/api/admin/project/CCAdminProjectParticipantApi";
 
+interface CCParticipantActionButtonsProps {
+  memberId: number;
+  dataId: number;
+  onApprove?: () => void;
+  onReject?: () => void;
+}
+
 export default function CCParticipantActionButtons({
   memberId,
   dataId,
-}: {
-  memberId: number;
-  dataId: number;
-}) {
+  onApprove,
+  onReject,
+}: CCParticipantActionButtonsProps) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -49,9 +55,10 @@ export default function CCParticipantActionButtons({
           await approveProjectParticipant(memberId, dataId);
         }
       }
+      if (onApprove) onApprove();
       router.refresh();
-    } catch (err) {
-      throw err;
+    } catch (error) {
+      throw error;
     }
   };
 
@@ -71,9 +78,10 @@ export default function CCParticipantActionButtons({
           await rejectProjectParticipant(memberId, dataId);
         }
       }
+      if (onReject) onReject();
       router.refresh();
-    } catch (err) {
-      throw err;
+    } catch (error) {
+      throw error;
     }
   };
 
