@@ -10,6 +10,7 @@ import { useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/store/authStore";
 import { useEffect } from "react";
+
 export default function CCLoginInput() {
   const { showPassword, setShowPassword, loginFormData, setLoginFormData } =
     useAuth();
@@ -17,26 +18,28 @@ export default function CCLoginInput() {
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
 
+  // savedId → 초기 렌더에만 적용
   useEffect(() => {
     const savedId = localStorage.getItem("savedId");
     if (savedId) {
-      setLoginFormData({ ...loginFormData, id: savedId, rememberId: true });
+      setLoginFormData({
+        ...loginFormData,
+        id: savedId,
+        rememberId: true,
+      });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  async function handleSubmit(formData: FormData) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault(); // 브라우저 기본 submit 동작 차단 이전 DOM rollaback 방지
+    const formData = new FormData(e.currentTarget);
+
     startTransition(async () => {
       try {
         const result = await loginAction(formData);
         if (result.success) {
           setAuth(true, result.role);
-
-          if (loginFormData.rememberId) {
-            localStorage.setItem("savedId", loginFormData.id);
-          } else {
-            localStorage.removeItem("savedId");
-          }
-
           router.push("/");
         } else {
           console.log(result.message);
@@ -44,11 +47,29 @@ export default function CCLoginInput() {
       } catch (err) {
         console.log(err);
       }
+
+      // formData에서 직접 반영
+      const id = (formData.get("id") ?? "") as string;
+      const rememberId = formData.get("rememberId") !== null;
+
+      if (rememberId) {
+        localStorage.setItem("savedId", id);
+      } else {
+        localStorage.removeItem("savedId");
+      }
+
+      // 상태도 제출 값 기반으로 업데이트
+      setLoginFormData((prev) => ({
+        ...prev,
+        id,
+        rememberId,
+        password: "", // 제출 후 비번 리셋
+      }));
     });
   }
 
   return (
-    <form action={handleSubmit} className="space-y-4">
+    <form onSubmit={handleSubmit} className="space-y-4">
       {/* 아이디 입력 */}
       <div className="space-y-2">
         <label
