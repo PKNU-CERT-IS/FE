@@ -1,11 +1,10 @@
-"server-only";
-
+"use client";
 import Link from "next/link";
 import NavBarItems from "@/components/nav/navBarItems";
 import LogoSVG from "/public/icons/logo-white.svg";
 import LoginButton from "@/components/nav/loginButton";
 import HamburgerMenu from "@/components/nav/hamburgerMenu";
-import { cookies } from "next/headers";
+import { usePathname } from "next/navigation";
 
 const navBarList = [
   { name: "Home", href: "/admin" },
@@ -15,9 +14,9 @@ const navBarList = [
   { name: "Members", href: "/admin/members" },
 ];
 
-export default async function AdminNavigationBar() {
-  const cookieStore = await cookies();
-  const initialIsLogin = !!cookieStore.get("accessToken");
+export default function AdminNavigationBar() {
+  const pathname = usePathname();
+
   return (
     <>
       <nav className="fixed w-full bg-white/95 backdrop-blur-md border-b border-gray-200 top-0 z-20 transition-colors duration-300">
@@ -39,13 +38,9 @@ export default async function AdminNavigationBar() {
 
           {/* 데스크탑 메뉴 */}
           <div className="hidden md:flex flex-row items-center">
-            <NavBarItems navBarList={navBarList} />
+            <NavBarItems navBarList={navBarList} pathname={pathname} />
             <div className="pl-6 ml-2 border-l border-gray-300">
-              <LoginButton
-                href="/admin/login"
-                className="text-sm"
-                initialIsLogin={initialIsLogin}
-              />
+              <LoginButton href="/admin/login" className="text-sm" />
             </div>
           </div>
 
