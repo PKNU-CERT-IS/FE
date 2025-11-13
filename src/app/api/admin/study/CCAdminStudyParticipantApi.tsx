@@ -2,13 +2,14 @@ import { apiClient } from "@/lib/clientIntercept";
 
 // 스터디 참가자 승인
 export async function approveAdminStudyParticipant(
-  participantId: number,
+  memberId: number,
+  studyId: number,
   reason = ""
 ) {
   try {
     const res = await apiClient.post(
       `/admin/study/participant/approve`,
-      { participantId, reason },
+      { memberId, studyId, reason },
       { headers: { "Content-Type": "application/json" } }
     );
     return res.data;
@@ -19,13 +20,14 @@ export async function approveAdminStudyParticipant(
 
 // 스터디 참가자 거절
 export async function rejectAdminStudyParticipant(
-  participantId: number,
+  memberId: number,
+  studyId: number,
   reason = ""
 ) {
   try {
     const res = await apiClient.post(
       `/admin/study/participant/reject`,
-      { participantId, reason },
+      { memberId, studyId, reason },
       { headers: { "Content-Type": "application/json" } }
     );
     return res.data;

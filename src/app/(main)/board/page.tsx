@@ -105,7 +105,7 @@ export default async function BoardPage({ searchParams }: BoardPageProps) {
       </div>
 
       <Suspense
-        key={(await searchParams).keyword}
+        key={JSON.stringify({ keyword, category, page })}
         fallback={<SCBoardSkeleton />}
       >
         <BoardCardList contents={contents} />

@@ -61,21 +61,20 @@ export default function KebabMenu({
           throw new Error("알 수 없는 도메인입니다.");
       }
 
-      //  admin 여부에 따라 분기
+      // admin 여부에 따라 분기
       if (isAdmin) {
-        if (isAdmin) {
-          if (currentUrl.startsWith("study")) {
-            router.push("/admin/study?tab=study");
-          } else if (currentUrl.startsWith("project")) {
-            router.push("/admin/study?tab=project&view=list");
-          } else if (currentUrl.startsWith("blog")) {
-            router.push("/admin/blog");
-          }
+        if (currentUrl.startsWith("study")) {
+          router.push("/admin/study?tab=study");
+        } else if (currentUrl.startsWith("project")) {
+          router.push("/admin/study?tab=project&view=list");
+        } else if (currentUrl.startsWith("blog")) {
+          router.push("/admin/blog");
         } else {
-          router.push(`/${currentUrl}`);
+          router.push("/admin");
         }
+      } else {
+        router.push(`/${currentUrl}`);
       }
-      router.refresh();
     } catch (error) {
       setAlertOpen(true); //  실패 시 알림
       throw error;

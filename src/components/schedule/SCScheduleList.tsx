@@ -5,7 +5,7 @@ import LocationSVG from "/public/icons/location.svg";
 import TimeSVG from "/public/icons/time.svg";
 import { getTypeColor, getTypeLabel } from "@/utils/scheduleUtils";
 import { ScheduleInfo } from "@/types/schedule";
-import { formatDate, formatTime } from "@/utils/formatDateUtil";
+import { formatDateRange, formatTime } from "@/utils/formatDateUtil";
 import { MessageSquareText } from "lucide-react";
 import { getSchedules } from "@/app/api/schedule/SCscheduleApi";
 
@@ -51,8 +51,12 @@ export default async function SCScheduleList({
                     </p>
                     <div className="space-y-2 text-sm text-gray-600  dark:text-gray-300">
                       <div className="flex items-center">
-                        <ScheduleSVG className="w-4 mr-2 stroke-gray-600  dark:stroke-gray-300" />
-                        {formatDate(schedule.startedAt, "dot")}
+                        <ScheduleSVG className="w-4 mr-2 stroke-gray-600 dark:stroke-gray-300" />
+                        {formatDateRange(
+                          schedule.startedAt,
+                          schedule.endedAt,
+                          "dot"
+                        )}
                       </div>
                       <div className="flex items-center">
                         <TimeSVG className="mr-2" />

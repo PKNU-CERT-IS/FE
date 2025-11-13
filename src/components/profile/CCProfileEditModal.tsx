@@ -18,6 +18,10 @@ import { updateProfile } from "@/app/api/profile/CCprofileApi";
 import { toOffsetDateTime } from "@/utils/transformRequestValue";
 import { useRouter } from "next/navigation";
 import { translateKoreanToGrade } from "@/utils/transformRequestValue";
+
+import { formatPhoneNumber, parseMajorString } from "@/utils/formEditUtils";
+import { COLLEGE_DATA, getMajorUtils, SelectedMajorInfo } from "@/types/major";
+
 interface ModalProps {
   closeModal: () => void;
   modalRef?: RefObject<HTMLDivElement | null>;
@@ -32,20 +36,53 @@ export default function CCProfileModal({
   initialProfileData,
 }: ModalProps) {
   const router = useRouter();
+
+  // 초기 전공 파싱
+  const parsedMajor = parseMajorString(initialProfileData.major);
+  const initialMajorInfo: SelectedMajorInfo = {
+    college: parsedMajor.college
+      ? COLLEGE_DATA.find((c) => c.name === parsedMajor.college)?.id
+      : undefined,
+    department: parsedMajor.department
+      ? COLLEGE_DATA.flatMap((c) => c.departments).find(
+          (d) => d.name === parsedMajor.department
+        )?.id
+      : undefined,
+    major: parsedMajor.major
+      ? COLLEGE_DATA.flatMap((c) => c.departments)
+          .flatMap((d) => d.majors)
+          .find((m) => m.name === parsedMajor.major)?.id
+      : undefined,
+  };
+
   const [editedUser, setEditedUser] = useState<ProfileDataType>({
     ...initialProfileData,
     studentNumber: initialProfileData.studentNumber ?? "",
-    birthday: initialProfileData.birthday?.split("T")[0] ?? "", // "2025-09-20" 형태
+    birthday: initialProfileData.birthday?.split("T")[0] ?? "",
     phoneNumber: initialProfileData.phoneNumber ?? "",
-    memberGrade: translateGradeToKorean(initialProfileData.memberGrade) ?? "", // ✅ 변환
+    memberGrade: translateGradeToKorean(initialProfileData.memberGrade) ?? "",
   });
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [profileImageFile, setProfileImageFile] = useState<File | null>(null);
+
   const [previewImage, setPreviewImage] = useState<string | null>(
     initialProfileData.profileImage || null
   );
   const [showGradeDropdown, setShowGradeDropdown] = useState<boolean>(false);
+  const [formattedPhone, setFormattedPhone] = useState<string>(
+    formatPhoneNumber(initialProfileData.phoneNumber ?? "")
+  );
+  const [selectedMajorInfo, setSelectedMajorInfo] =
+    useState<SelectedMajorInfo>(initialMajorInfo);
+  const [majorDropdownState, setMajorDropdownState] = useState({
+    collegeOpen: false,
+    departmentOpen: false,
+    majorOpen: false,
+  });
+
   const gradeRef = useRef<HTMLDivElement>(null);
+  const collegeDropdownRef = useRef<HTMLDivElement>(null);
+  const departmentDropdownRef = useRef<HTMLDivElement>(null);
+  const majorDropdownRef = useRef<HTMLDivElement>(null);
+
   const [skillInput, setSkillInput] = useState<string>(
     editedUser.skills?.join(", ") || ""
   );
@@ -54,20 +91,37 @@ export default function CCProfileModal({
 
   const closeAllDropdowns = useCallback(() => {
     setShowGradeDropdown(false);
+    setMajorDropdownState({
+      collegeOpen: false,
+      departmentOpen: false,
+      majorOpen: false,
+    });
   }, []);
 
   // 드롭다운 외부 클릭 닫기
   useEffect(() => {
     const onDocClick = (e: MouseEvent) => {
       const target = e.target as Node;
-      if (gradeRef.current?.contains(target)) return;
+      if (
+        gradeRef.current?.contains(target) ||
+        collegeDropdownRef.current?.contains(target) ||
+        departmentDropdownRef.current?.contains(target) ||
+        majorDropdownRef.current?.contains(target)
+      )
+        return;
       closeAllDropdowns();
     };
-    if (showGradeDropdown) {
+
+    if (
+      showGradeDropdown ||
+      majorDropdownState.collegeOpen ||
+      majorDropdownState.departmentOpen ||
+      majorDropdownState.majorOpen
+    ) {
       document.addEventListener("mousedown", onDocClick);
       return () => document.removeEventListener("mousedown", onDocClick);
     }
-  }, [showGradeDropdown, closeAllDropdowns]);
+  }, [showGradeDropdown, majorDropdownState, closeAllDropdowns]);
 
   const onChange =
     <K extends keyof ProfileDataType>(key: K) =>
@@ -82,22 +136,27 @@ export default function CCProfileModal({
       }));
     };
 
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const formatted = formatPhoneNumber(e.target.value);
+    setFormattedPhone(formatted);
+    setEditedUser((prev) => ({
+      ...prev,
+      phoneNumber: formatted,
+    }));
+  };
+
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      // 파일 크기 체크
       if (file.size > 1 * 1024 * 1024) {
         alert("파일 크기는 1MB 이하로 업로드해주세요.");
         return;
       }
-      // 이미지 파일 타입 체크
       const allowedTypes = ["image/jpeg", "image/jpg", "image/png"];
       if (!allowedTypes.includes(file.type)) {
         alert("JPG, PNG 파일만 업로드 가능합니다. (GIF 제외)");
         return;
       }
-
-      setProfileImageFile(file);
 
       const reader = new FileReader();
       reader.onload = (event) => {
@@ -113,31 +172,106 @@ export default function CCProfileModal({
   };
 
   const removeImage = () => {
-    setProfileImageFile(null);
     setPreviewImage(null);
     setEditedUser((prev) => ({ ...prev, profileImage: "" }));
   };
 
+  // 전공 선택 함수들
+  const toggleMajorDropdown = (type: keyof typeof majorDropdownState) => {
+    setMajorDropdownState((prev) => ({
+      collegeOpen: type === "collegeOpen" ? !prev.collegeOpen : false,
+      departmentOpen: type === "departmentOpen" ? !prev.departmentOpen : false,
+      majorOpen: type === "majorOpen" ? !prev.majorOpen : false,
+    }));
+  };
+
+  const selectCollege = (collegeId: string) => {
+    setSelectedMajorInfo({ college: collegeId });
+    setMajorDropdownState((prev) => ({ ...prev, collegeOpen: false }));
+  };
+
+  const selectDepartment = (departmentId: string) => {
+    setSelectedMajorInfo((prev) => ({
+      ...prev,
+      department: departmentId,
+      major: undefined,
+    }));
+    setMajorDropdownState((prev) => ({ ...prev, departmentOpen: false }));
+  };
+
+  const selectMajor = (majorId: string) => {
+    setSelectedMajorInfo((prev) => ({
+      ...prev,
+      major: majorId,
+    }));
+    setMajorDropdownState((prev) => ({ ...prev, majorOpen: false }));
+  };
+
+  const getDisplayText = (type: "college" | "department" | "major") => {
+    switch (type) {
+      case "college":
+        return selectedMajorInfo.college
+          ? getMajorUtils.getCollegeName(selectedMajorInfo.college)
+          : "대학을 선택해주세요";
+      case "department":
+        return selectedMajorInfo.department
+          ? getMajorUtils.getDepartmentName(selectedMajorInfo.department)
+          : "학부를 선택해주세요";
+      case "major":
+        return selectedMajorInfo.major
+          ? getMajorUtils.getMajorName(selectedMajorInfo.major)
+          : "전공을 선택해주세요";
+      default:
+        return "";
+    }
+  };
+
+  const availableDepartments = selectedMajorInfo.college
+    ? getMajorUtils.getDepartmentsByCollege(selectedMajorInfo.college)
+    : [];
+
+  const availableMajors = selectedMajorInfo.department
+    ? getMajorUtils.getMajorsByDepartment(selectedMajorInfo.department)
+    : [];
+
   const handleSave = async () => {
     try {
+      const majorString = [
+        selectedMajorInfo.college
+          ? getMajorUtils.getCollegeName(selectedMajorInfo.college)
+          : null,
+        selectedMajorInfo.department
+          ? getMajorUtils.getDepartmentName(selectedMajorInfo.department)
+          : null,
+        selectedMajorInfo.major
+          ? getMajorUtils.getMajorName(selectedMajorInfo.major)
+          : null,
+      ]
+        .filter(Boolean)
+        .join("-");
+
       await updateProfile({
         name: editedUser.name,
         description: editedUser.description,
         profileImage: editedUser.profileImage,
-        major: editedUser.major,
-        birthday: toOffsetDateTime(editedUser.birthday), // string
+        major: majorString,
+        birthday: toOffsetDateTime(editedUser.birthday),
         phoneNumber: editedUser.phoneNumber,
         studentNumber: editedUser.studentNumber,
         skills: skillInput
           .split(",")
           .map((s) => s.trim())
           .filter(Boolean),
-        grade: translateKoreanToGrade(editedUser.memberGrade), // Enum
+        grade: translateKoreanToGrade(editedUser.memberGrade),
         email: editedUser.email,
         githubUrl: editedUser.githubUrl,
         linkedinUrl: editedUser.linkedinUrl,
       });
-      onSave?.(editedUser);
+
+      onSave?.({
+        ...editedUser,
+        major: majorString,
+      });
 
       closeModal();
       router.refresh();
@@ -231,17 +365,6 @@ export default function CCProfileModal({
                 />
               </div>
 
-              {/* 전공 */}
-              <div>
-                <p className="text-sm mb-1.5 dark:text-gray-200">전공</p>
-                <input
-                  value={editedUser.major}
-                  onChange={onChange("major")}
-                  className="text-sm flex h-10 w-full rounded-md border px-3 py-2 bg-white border-gray-300 text-gray-900 focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent dark:bg-gray-800 dark:border-gray-600 dark:text-gray-200"
-                  placeholder="예: 컴퓨터공학과 소프트웨어전공"
-                />
-              </div>
-
               {/* 학년 */}
               <div>
                 <p className="text-sm mb-1.5 font-medium text-gray-700 dark:text-gray-200">
@@ -308,15 +431,16 @@ export default function CCProfileModal({
                   className="text-sm w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent dark:bg-gray-800 dark:border-gray-600 dark:text-gray-200"
                 />
               </div>
-
               {/* 전화번호 */}
               <div>
                 <p className="text-sm mb-1.5 dark:text-gray-200">전화번호</p>
                 <input
-                  value={editedUser.phoneNumber}
-                  onChange={onChange("phoneNumber")}
+                  type="tel"
+                  value={formattedPhone}
+                  onChange={handlePhoneChange}
+                  maxLength={13}
                   className="text-sm flex h-10 w-full rounded-md border px-3 py-2 bg-white border-gray-300 text-gray-900 focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent dark:bg-gray-800 dark:border-gray-600 dark:text-gray-200"
-                  placeholder="010-0000-0000"
+                  placeholder="010-1234-5678"
                 />
               </div>
 
@@ -328,6 +452,166 @@ export default function CCProfileModal({
                   onChange={onChange("studentNumber")}
                   className="text-sm flex h-10 w-full rounded-md border px-3 py-2 bg-white border-gray-300 text-gray-900 focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent dark:bg-gray-800 dark:border-gray-600 dark:text-gray-200"
                 />
+              </div>
+            </div>
+            {/* 대학 */}
+            <div>
+              <div className="space-y-2">
+                <label className="text-xs text-gray-600 dark:text-gray-400">
+                  대학
+                </label>
+                <div className="relative" ref={collegeDropdownRef}>
+                  <button
+                    type="button"
+                    onClick={() => toggleMajorDropdown("collegeOpen")}
+                    className="input-default px-3 py-2 text-sm text-left flex items-center justify-between w-full h-10"
+                  >
+                    <span
+                      className={
+                        selectedMajorInfo.college
+                          ? "text-gray-900 dark:text-gray-200"
+                          : "text-gray-400"
+                      }
+                    >
+                      {getDisplayText("college")}
+                    </span>
+                    <ChevronDown
+                      className={`h-4 w-4 text-gray-400 transform transition-transform ${
+                        majorDropdownState.collegeOpen ? "rotate-180" : ""
+                      }`}
+                    />
+                  </button>
+
+                  {majorDropdownState.collegeOpen && (
+                    <div
+                      className="absolute z-20 w-full mt-1 bg-white border border-gray-300 
+                      rounded-md shadow-lg dark:bg-gray-800 dark:border-gray-600 
+                      max-h-60 overflow-y-auto"
+                    >
+                      {COLLEGE_DATA.map((college) => (
+                        <button
+                          key={college.id}
+                          type="button"
+                          onClick={() => selectCollege(college.id)}
+                          className="w-full px-3 py-2 text-sm text-left hover:bg-gray-100 
+                       dark:hover:bg-cert-red cursor-pointer"
+                        >
+                          {college.name}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* 학부(과) */}
+              <div className="space-y-2 mt-3">
+                <label className="text-xs text-gray-600 dark:text-gray-400">
+                  학부(과)
+                </label>
+                <div className="relative" ref={departmentDropdownRef}>
+                  <button
+                    type="button"
+                    onClick={() => toggleMajorDropdown("departmentOpen")}
+                    disabled={!selectedMajorInfo.college}
+                    className={`input-default px-3 py-2 text-sm text-left flex items-center justify-between w-full h-10 ${
+                      !selectedMajorInfo.college
+                        ? "opacity-50 cursor-not-allowed bg-gray-50 dark:bg-gray-900"
+                        : ""
+                    }`}
+                  >
+                    <span
+                      className={
+                        selectedMajorInfo.department
+                          ? "text-gray-900 dark:text-gray-200"
+                          : "text-gray-400"
+                      }
+                    >
+                      {getDisplayText("department")}
+                    </span>
+                    <ChevronDown
+                      className={`h-4 w-4 text-gray-400 transform transition-transform ${
+                        majorDropdownState.departmentOpen ? "rotate-180" : ""
+                      }`}
+                    />
+                  </button>
+
+                  {majorDropdownState.departmentOpen &&
+                    selectedMajorInfo.college && (
+                      <div
+                        className="absolute z-20 w-full mt-1 bg-white border border-gray-300 
+                      rounded-md shadow-lg dark:bg-gray-800 dark:border-gray-600 
+                      max-h-60 overflow-y-auto"
+                      >
+                        {availableDepartments.map((department) => (
+                          <button
+                            key={department.id}
+                            type="button"
+                            onClick={() => selectDepartment(department.id)}
+                            className="w-full px-3 py-2 text-sm text-left hover:bg-gray-100 
+                       dark:hover:bg-cert-red cursor-pointer"
+                          >
+                            {department.name}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                </div>
+              </div>
+
+              {/* 전공 */}
+              <div className="space-y-2 mt-3">
+                <label className="text-xs text-gray-600 dark:text-gray-400">
+                  전공
+                </label>
+                <div className="relative" ref={majorDropdownRef}>
+                  <button
+                    type="button"
+                    onClick={() => toggleMajorDropdown("majorOpen")}
+                    disabled={!selectedMajorInfo.department}
+                    className={`input-default px-3 py-2 text-sm text-left flex items-center justify-between w-full h-10 ${
+                      !selectedMajorInfo.department
+                        ? "opacity-50 cursor-not-allowed bg-gray-50 dark:bg-gray-900"
+                        : ""
+                    }`}
+                  >
+                    <span
+                      className={
+                        selectedMajorInfo.major
+                          ? "text-gray-900 dark:text-gray-200"
+                          : "text-gray-400"
+                      }
+                    >
+                      {getDisplayText("major")}
+                    </span>
+                    <ChevronDown
+                      className={`h-4 w-4 text-gray-400 transform transition-transform ${
+                        majorDropdownState.majorOpen ? "rotate-180" : ""
+                      }`}
+                    />
+                  </button>
+
+                  {majorDropdownState.majorOpen &&
+                    selectedMajorInfo.department && (
+                      <div
+                        className="absolute z-20 w-full mt-1 bg-white border border-gray-300 
+                      rounded-md shadow-lg dark:bg-gray-800 dark:border-gray-600 
+                      max-h-60 overflow-y-auto"
+                      >
+                        {availableMajors.map((major) => (
+                          <button
+                            key={major.id}
+                            type="button"
+                            onClick={() => selectMajor(major.id)}
+                            className="w-full px-3 py-2 text-sm text-left hover:bg-gray-100 
+                       dark:hover:bg-cert-red cursor-pointer"
+                          >
+                            {major.name}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                </div>
               </div>
             </div>
           </div>
@@ -438,7 +722,22 @@ export default function CCProfileModal({
               </div>
               <div className="text-xs text-center text-gray-500 mt-2 dark:text-gray-300">
                 <p>
-                  {editedUser.memberGrade} • {editedUser.major}
+                  {editedUser.memberGrade} •{" "}
+                  {[
+                    selectedMajorInfo.college
+                      ? getMajorUtils.getCollegeName(selectedMajorInfo.college)
+                      : null,
+                    selectedMajorInfo.department
+                      ? getMajorUtils.getDepartmentName(
+                          selectedMajorInfo.department
+                        )
+                      : null,
+                    selectedMajorInfo.major
+                      ? getMajorUtils.getMajorName(selectedMajorInfo.major)
+                      : null,
+                  ]
+                    .filter(Boolean)
+                    .join(" - ")}{" "}
                 </p>
               </div>
               <div className="text-xs text-center text-gray-600 mt-3 dark:text-gray-300">

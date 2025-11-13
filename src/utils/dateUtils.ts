@@ -23,17 +23,20 @@ export function getDDay(target: string): string {
 
 // 시작주 선택시 월요일만 선택
 export const getNextMonday = () => {
-  const today = new Date();
-  const day = today.getDay();
+  const now = new Date();
+  const kst = new Date(now.getTime() + 9 * 60 * 60 * 1000); // UTC+9 보정
+  const day = kst.getUTCDay();
   const diff = (8 - day) % 7;
-  today.setDate(today.getDate() + diff);
-  return today.toISOString().split("T")[0];
+  kst.setDate(kst.getDate() + diff);
+  return kst.toISOString().split("T")[0];
 };
+
 // 종료주 선택시 일요일만 선택
 export const getNextSunday = () => {
-  const today = new Date();
-  const day = today.getDay();
+  const now = new Date();
+  const kst = new Date(now.getTime() + 9 * 60 * 60 * 1000);
+  const day = kst.getUTCDay();
   const diff = (7 - day) % 7;
-  today.setDate(today.getDate() + diff);
-  return today.toISOString().split("T")[0];
+  kst.setDate(kst.getDate() + diff);
+  return kst.toISOString().split("T")[0];
 };

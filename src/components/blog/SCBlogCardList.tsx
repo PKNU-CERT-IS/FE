@@ -1,9 +1,10 @@
 "server-only";
-
+import Image from "next/image";
 import Link from "next/link";
 import { BlogDataType } from "@/types/blog";
 import { formatDate } from "@/utils/formatDateUtil";
 import { getCategoryColor } from "@/utils/badgeUtils";
+import LogoSVG from "/public/icons/logo.svg";
 
 interface SCBlogCardListProps {
   blogs: BlogDataType[];
@@ -56,10 +57,17 @@ export default function BlogCardList({ blogs }: SCBlogCardListProps) {
 
             {/* 작성자 */}
             <div className="flex items-center gap-2 pt-2 border-t border-gray-100 dark:border-gray-700">
-              <div className="w-7 h-7 bg-gray-200 dark:bg-gray-700 rounded-full flex items-center justify-center">
-                <span className="text-xs font-semibold text-gray-600 dark:text-gray-300">
-                  {blog.blogCreatorName?.charAt(0).toUpperCase()}
-                </span>
+              <div className="relative w-7 h-7 rounded-full overflow-hidden bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
+                {blog.blogCreatorProfileImageUrl ? (
+                  <Image
+                    src={blog.blogCreatorProfileImageUrl}
+                    alt={`${blog.blogCreatorName} 프로필`}
+                    fill
+                    className="object-cover"
+                  />
+                ) : (
+                  <LogoSVG className="w-7 h-7 text-gray-400" />
+                )}
               </div>
               <span className="text-sm text-gray-700 font-medium dark:text-gray-300">
                 {blog.blogCreatorName}

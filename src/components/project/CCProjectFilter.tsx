@@ -33,7 +33,6 @@ export default function CCProjectFilter({
   const router = useRouter();
   const searchParams = useSearchParams();
   const view = searchParams.get("view");
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isPending, startTransition] = useTransition();
 
   const [showSemesterDropdown, setShowSemesterDropdown] = useState(false);
@@ -148,6 +147,7 @@ export default function CCProjectFilter({
                 setShowSubCategoryDropdown(false);
                 setShowStatusDropdown(false);
               }}
+              disabled={isPending}
             >
               <span className="text-gray-700 truncate pr-1 dark:text-gray-200">
                 {SEMESTER_LABELS[projectCurrentFilters.semester]}
@@ -198,6 +198,7 @@ export default function CCProjectFilter({
                 setShowSubCategoryDropdown(false);
                 setShowStatusDropdown(false);
               }}
+              disabled={isPending}
             >
               <span className="text-gray-700 truncate pr-1 dark:text-gray-200">
                 {CATEGORY_LABELS[projectCurrentFilters.category]}
@@ -248,6 +249,7 @@ export default function CCProjectFilter({
                 setShowCategoryDropdown(false);
                 setShowStatusDropdown(false);
               }}
+              disabled={isPending}
             >
               <span className="text-gray-700 truncate pr-1 dark:text-gray-200">
                 {projectCurrentFilters.subCategory
@@ -299,7 +301,9 @@ export default function CCProjectFilter({
                   : "cursor-pointer border-gray-300 bg-white hover:border-cert-red hover:text-cert-black hover:bg-white focus:border-cert-red focus:ring-2 focus:ring-cert-red/20 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-800"
               )}
               disabled={
-                (isAdmin && view === "pending") || (isAdmin && view === "end")
+                (isAdmin && view === "pending") ||
+                (isAdmin && view === "end") ||
+                isPending
               }
               onClick={() => {
                 if (

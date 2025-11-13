@@ -2,13 +2,14 @@ import { apiClient } from "@/lib/clientIntercept";
 
 // 프로젝트 참가자 승인
 export async function approveAdminProjectParticipant(
-  participantId: number,
+  memberId: number,
+  projectId: number,
   reason = ""
 ) {
   try {
     const res = await apiClient.post(
       `/admin/project/participant/approve`,
-      { participantId, reason },
+      { memberId, projectId, reason },
       { headers: { "Content-Type": "application/json" } }
     );
     return res.data;
@@ -19,13 +20,14 @@ export async function approveAdminProjectParticipant(
 
 // 프로젝트 참가자 거절
 export async function rejectAdminProjectParticipant(
-  participantId: number,
+  memberId: number,
+  projectId: number,
   reason = ""
 ) {
   try {
     const res = await apiClient.post(
       `/admin/project/participant/reject`,
-      { participantId, reason },
+      { memberId, projectId, reason },
       { headers: { "Content-Type": "application/json" } }
     );
     return res.data;

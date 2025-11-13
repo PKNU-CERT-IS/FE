@@ -8,21 +8,18 @@ import BackToListButton from "@/components/detail/SCBackToListButton";
 import KebabMenu from "@/components/detail/CCKebabMenu";
 import ShareButton from "@/components/detail/CCShareButton";
 import DefaultBadge from "@/components/ui/defaultBadge";
-import MeetingMinutes from "@/components/study/SCStudyMeetingMinutes";
+import SCProjectMeetingMinutes from "@/components/project/SCProjectMeetingMinutes";
 import EndRequestButton from "@/components/ui/endRequestButton";
 import { STATUS_LABELS } from "@/types/progressStatus";
 import { getStatusColor } from "@/utils/badgeUtils";
-import CCParticipantActionButtons from "@/components/ui/CCParticipantActionButtons";
-import { MEMBER_GRADE_LABELS, MemberGrade } from "@/types/study";
+import { MEMBER_GRADE_LABELS } from "@/types/study";
 import MarkdownRenderer from "@/components/ui/defaultMarkdownRenderer";
 import { formatDate } from "@/utils/formatDateUtil";
 import { SUBCATEGORY_FROM_EN } from "@/types/category";
 import { getDetailProject } from "@/app/api/project/SCProjectApi";
-import {
-  getProjectApprovedParticipants,
-  getProjectPendingParticipants,
-} from "@/app/api/project/SCProjectParticipantApi";
 import { getCurrentUser } from "@/lib/auth/currentUser";
+import { getStudyPeriodLabel } from "@/utils/studyHelper";
+import CCParticipantsList from "@/components/detail/CCParticipantsList";
 
 interface ProjectDetailPageProps {
   params: { id: string };
@@ -41,14 +38,6 @@ export default async function ProjectDetailPage({
 
   // 현재 유저 판별
   const currentUser = await getCurrentUser();
-
-  // 승인된 프로젝트원
-  const approvedData = await getProjectApprovedParticipants(projectId, 0, 10);
-  const approvedMember = approvedData.content ?? [];
-
-  // 대기 중인 프로젝트원
-  const pendingData = await getProjectPendingParticipants(projectId, 0, 10);
-  const pendingMember = pendingData.content ?? [];
 
   return (
     <div className="mx-auto max-w-full">
@@ -79,6 +68,14 @@ export default async function ProjectDetailPage({
               className={getStatusColor(project.status)}
             >
               {STATUS_LABELS[project.status as keyof typeof STATUS_LABELS]}
+            </DefaultBadge>
+          </div>
+          <div className="absolute top-4 left-20">
+            <DefaultBadge
+              variant="outline"
+              className="text-cert-red border-cert-red bg-white"
+            >
+              {getStudyPeriodLabel(project.startDate)}
             </DefaultBadge>
           </div>
         </div>
@@ -263,92 +260,21 @@ export default async function ProjectDetailPage({
 
         <div className="flex flex-col md:flex-row gap-6 h-full">
           <div className="basis-2/3 h-full overflow-y-auto">
-            <MeetingMinutes
-              studyId={project.id}
+            <SCProjectMeetingMinutes
+              projectId={project.id}
               currentUserId={Number(currentUser?.sub)}
-              studyLeaderId={project.creatorId}
+              projectLeaderId={project.creatorId}
             />
           </div>
 
           {/* 멤버 목록: 오른쪽 1/3 */}
           <div className="basis-1/3 h-full overflow-y-auto dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700">
             <div className="p-6">
-              <h3 className="text-lg font-bold text-black dark:text-white mb-4">
-                프로젝트원 ({approvedMember.length})
-              </h3>
-
-              <div className="mb-6 space-y-3">
-                {approvedMember.length > 0 ? (
-                  approvedMember.map(
-                    (participant: {
-                      id: number;
-                      memberName: string;
-                      memberGrade: MemberGrade;
-                    }) => (
-                      <div
-                        key={participant.id}
-                        className="flex items-center gap-3"
-                      >
-                        <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center text-black text-xs font-medium">
-                          {participant.memberName[0]}
-                        </div>
-                        <p className="text-sm font-medium text-black dark:text-white">
-                          {participant.memberName}
-                        </p>
-                        <p className="text-xs text-gray-500 dark:text-gray-400">
-                          {MEMBER_GRADE_LABELS[participant.memberGrade]}
-                        </p>
-                      </div>
-                    )
-                  )
-                ) : (
-                  <p className="text-sm text-gray-500 dark:text-gray-400">
-                    참여 중인 멤버가 없습니다.
-                  </p>
-                )}
-              </div>
-
-              <div>
-                <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                  대기중 멤버 ({pendingMember.length})
-                </h4>
-                <div className="space-y-3">
-                  {pendingMember.length > 0 ? (
-                    pendingMember.map(
-                      (participant: {
-                        id: number;
-                        memberName: string;
-                        memberGrade: MemberGrade;
-                      }) => (
-                        <div
-                          key={participant.id}
-                          className="flex items-center gap-3"
-                        >
-                          <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center text-black text-xs font-medium">
-                            {participant.memberName[0]}
-                          </div>
-                          <p className="text-sm font-medium text-black dark:text-white">
-                            {participant.memberName}
-                          </p>
-                          <p className="text-xs text-gray-500 dark:text-gray-400">
-                            {MEMBER_GRADE_LABELS[participant.memberGrade]}
-                          </p>
-
-                          <div className="flex gap-2">
-                            <CCParticipantActionButtons
-                              participantId={participant.id}
-                            />
-                          </div>
-                        </div>
-                      )
-                    )
-                  ) : (
-                    <p className="text-sm text-gray-500 dark:text-gray-400">
-                      대기중인 멤버가 없습니다.
-                    </p>
-                  )}
-                </div>
-              </div>
+              <CCParticipantsList
+                type="project"
+                dataId={project.id}
+                size={10}
+              />
             </div>
           </div>
         </div>

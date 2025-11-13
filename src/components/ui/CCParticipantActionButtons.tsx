@@ -18,11 +18,19 @@ import {
   rejectAdminProjectParticipant,
 } from "@/app/api/admin/project/CCAdminProjectParticipantApi";
 
+interface CCParticipantActionButtonsProps {
+  memberId: number;
+  dataId: number;
+  onApprove?: () => void;
+  onReject?: () => void;
+}
+
 export default function CCParticipantActionButtons({
-  participantId,
-}: {
-  participantId: number;
-}) {
+  memberId,
+  dataId,
+  onApprove,
+  onReject,
+}: CCParticipantActionButtonsProps) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -36,20 +44,21 @@ export default function CCParticipantActionButtons({
       if (isAdmin) {
         const tab = searchParams.get("tab");
         if (tab === "study") {
-          await approveAdminStudyParticipant(participantId);
+          await approveAdminStudyParticipant(memberId, dataId);
         } else {
-          await approveAdminProjectParticipant(participantId);
+          await approveAdminProjectParticipant(memberId, dataId);
         }
       } else {
         if (pageType === "study") {
-          await approveStudyParticipant(participantId);
+          await approveStudyParticipant(memberId, dataId);
         } else {
-          await approveProjectParticipant(participantId);
+          await approveProjectParticipant(memberId, dataId);
         }
       }
+      if (onApprove) onApprove();
       router.refresh();
-    } catch (err) {
-      throw err;
+    } catch (error) {
+      throw error;
     }
   };
 
@@ -58,20 +67,21 @@ export default function CCParticipantActionButtons({
       if (isAdmin) {
         const tab = searchParams.get("tab");
         if (tab === "study") {
-          await rejectAdminStudyParticipant(participantId);
+          await rejectAdminStudyParticipant(memberId, dataId);
         } else {
-          await rejectAdminProjectParticipant(participantId);
+          await rejectAdminProjectParticipant(memberId, dataId);
         }
       } else {
         if (pageType === "study") {
-          await rejectStudyParticipant(participantId);
+          await rejectStudyParticipant(memberId, dataId);
         } else {
-          await rejectProjectParticipant(participantId);
+          await rejectProjectParticipant(memberId, dataId);
         }
       }
+      if (onReject) onReject();
       router.refresh();
-    } catch (err) {
-      throw err;
+    } catch (error) {
+      throw error;
     }
   };
 

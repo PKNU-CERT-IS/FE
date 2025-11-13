@@ -34,11 +34,14 @@ export async function cancelStudyRegister(studyId: number) {
 
 /* 스터디 생성자만 조작 가능 */
 // 참가 신청 승인
-export async function approveStudyParticipant(participantId: number) {
+export async function approveStudyParticipant(
+  memberId: number,
+  studyId: number
+) {
   try {
     const res = await apiClient.post(
       `/study/participant/join/approve`,
-      { participantId },
+      { memberId, studyId },
       {
         headers: {
           "Content-Type": "application/json",
@@ -50,15 +53,44 @@ export async function approveStudyParticipant(participantId: number) {
     throw error;
   }
 }
-export async function rejectStudyParticipant(participantId: number) {
+export async function rejectStudyParticipant(
+  memberId: number,
+  studyId: number
+) {
   try {
     const res = await apiClient.post(
       `/study/participant/join/reject`,
-      { participantId },
+      { memberId, studyId },
       { headers: { "Content-Type": "application/json" } }
     );
     return res.data;
   } catch (error) {
     throw error;
   }
+}
+
+// 승인된 참가자 조회
+export async function getStudyApprovedParticipants(
+  studyId: number,
+  page = 0,
+  size = 10
+) {
+  const res = await apiClient.get(
+    `/study/participant/${studyId}/participants/approved`,
+    { params: { page, size, sort: "createdAt,desc" } }
+  );
+  return res.data.data;
+}
+
+// 대기중 참가자 조회
+export async function getStudyPendingParticipants(
+  studyId: number,
+  page = 0,
+  size = 10
+) {
+  const res = await apiClient.get(
+    `/study/participant/${studyId}/participants/pending`,
+    { params: { page, size, sort: "createdAt,desc" } }
+  );
+  return res.data.data;
 }
