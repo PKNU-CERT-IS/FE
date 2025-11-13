@@ -1,4 +1,4 @@
-"server-only";
+"use client";
 
 import Link from "next/link";
 import BugReport from "@/components/nav/bugReport";
@@ -6,7 +6,7 @@ import NavBarItems from "@/components/nav/navBarItems";
 import LogoSVG from "/public/icons/logo-white.svg";
 import LoginButton from "@/components/nav/loginButton";
 import HamburgerMenu from "@/components/nav/hamburgerMenu";
-import { cookies } from "next/headers";
+import { usePathname } from "next/navigation";
 
 const navBarList = [
   { name: "Home", href: "/" },
@@ -19,9 +19,8 @@ const navBarList = [
   { name: "Profile", href: "/profile" },
 ];
 
-const NavigationBar = async () => {
-  const cookieStore = await cookies();
-  const initialIsLogin = !!cookieStore.get("accessToken");
+export default function NavigationBar() {
+  const pathname = usePathname();
   return (
     <>
       <nav className="fixed w-full bg-white/95 backdrop-blur-md border-b border-gray-200 top-0 z-25 transition-colors duration-300 dark:bg-cert-darker dark:border-gray-700">
@@ -43,14 +42,11 @@ const NavigationBar = async () => {
 
           {/* 데스크탑 메뉴 */}
           <div className="hidden md:flex flex-row items-center overflow-x-auto scrollbar-hide whitespace-nowrap">
-            <NavBarItems navBarList={navBarList} />
+            <NavBarItems navBarList={navBarList} pathname={pathname} />
             <div className="pl-6 ml-2 border-l border-gray-300 dark:border-gray-700 flex-shrink-0">
               <BugReport className="text-sm" />
             </div>
-            <LoginButton
-              className="text-sm flex-shrink-0"
-              initialIsLogin={initialIsLogin}
-            />
+            <LoginButton className="text-sm flex-shrink-0" />
           </div>
 
           {/* 모바일 메뉴 */}
@@ -59,6 +55,4 @@ const NavigationBar = async () => {
       </nav>
     </>
   );
-};
-
-export default NavigationBar;
+}

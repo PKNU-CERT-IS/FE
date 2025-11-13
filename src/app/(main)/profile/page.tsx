@@ -4,6 +4,7 @@ import SCProfileCard from "@/components/profile/SCProfileCard";
 import SCProfileContent from "@/components/profile/SCProfileContent";
 import SCPenaltyStatus from "@/components/profile/SCPenaltyStatus";
 import SCTodaySchedule from "@/components/profile/SCTodaySchedule";
+import CCTabBar from "@/components/profile/CCTabBar";
 import { Metadata } from "next";
 
 interface ProfilePageProps {
@@ -54,10 +55,14 @@ export default async function ProfilePage({ searchParams }: ProfilePageProps) {
             <SCPenaltyStatus />
             <SCTodaySchedule />
           </div>
-          <SCProfileContent
-            currentTab={currentTab}
-            searchParams={searchParams}
-          />
+          <div className="lg:col-span-2">
+            <CCTabBar currentTab={currentTab} />
+
+            <SCProfileContent
+              currentTab={currentTab}
+              searchParams={searchParams}
+            />
+          </div>
         </div>
       </div>
     </div>
