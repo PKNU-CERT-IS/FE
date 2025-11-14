@@ -1,10 +1,7 @@
 "server-only";
 
-import CCTabBar from "@/components/profile/CCTabBar";
 import SCStudyList from "@/components/profile/SCStudyList";
 import SCBlogList from "@/components/profile/SCBlogList";
-import CCProfilePagination from "@/components/profile/CCProfilePagination";
-import { getProfileBlog } from "@/app/api/profile/SCprofileApi";
 
 import { StudyStatusType } from "@/types/profile";
 import { Suspense } from "react";
@@ -23,17 +20,8 @@ export default async function SCProfileContent({
 }: SCProfileContentProps) {
   const { page, tab, status } = await searchParams;
   const isStudyTab = currentTab === "study";
-  const currentPage = parseInt(page || "1", 10);
-  const blogs = await getProfileBlog();
-
-  const allBlogData = blogs;
-
-  const ITEMS_PER_PAGE = 5;
-
   return (
     <div className="lg:col-span-2">
-      <CCTabBar currentTab={currentTab} />
-
       {isStudyTab && (
         <Suspense
           key={`${tab}-${status}-${page}`}
@@ -50,12 +38,6 @@ export default async function SCProfileContent({
           >
             <SCBlogList searchParams={searchParams} />
           </Suspense>
-
-          <CCProfilePagination
-            currentPage={currentPage}
-            totalItems={allBlogData.length}
-            itemsPerPage={ITEMS_PER_PAGE}
-          />
         </>
       )}
     </div>

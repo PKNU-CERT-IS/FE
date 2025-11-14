@@ -14,7 +14,6 @@ interface LoginButtonProps {
 export default function LoginButton({
   className = "",
   href = "/login", // 기본값
-  initialIsLogin,
 }: LoginButtonProps) {
   const { isLogin, logout } = useAuthStore();
 
@@ -24,7 +23,7 @@ export default function LoginButton({
     window.location.href = "/login"; // ✅ 강제 새로고침 + 리다이렉트
   }
 
-  const effectiveLogin = isLogin || initialIsLogin;
+  const effectiveLogin = isLogin;
 
   if (effectiveLogin) {
     return (

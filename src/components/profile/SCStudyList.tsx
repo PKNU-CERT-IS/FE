@@ -175,7 +175,7 @@ export default async function SCStudyList({ searchParams }: SCStudyListProps) {
             </div>
           ))
         ) : (
-          <div className="text-center text-sm text-gray-500 py-8 dark:text-gray-400">
+          <div className="text-center py-16 text-gray-500 dark:text-gray-400  ">
             해당 상태의 스터디/프로젝트가 없습니다.
           </div>
         )}
