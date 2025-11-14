@@ -57,7 +57,6 @@ export async function generateMetadata({
   };
 }
 
-// --- Page Component ---
 export default async function BoardPage({ searchParams }: BoardPageProps) {
   const { page, keyword, category } = await searchParams;
 
@@ -91,7 +90,7 @@ export default async function BoardPage({ searchParams }: BoardPageProps) {
       <Suspense fallback={<SCBoardSkeleton />}>
         <BoardContents
           keyword={currentSearch}
-          category={currentCategory} // 한글 카테고리 그대로 전달
+          category={currentCategory}
           page={currentPage}
           size={ITEMS_PER_PAGE}
         />
