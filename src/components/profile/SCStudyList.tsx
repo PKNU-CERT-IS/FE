@@ -17,10 +17,10 @@ import {
 } from "@/app/api/profile/SCprofileApi";
 
 interface SCStudyListProps {
-  searchParams: Promise<{
+  searchParams: {
     tab?: string;
     status?: string;
-  }>;
+  };
 }
 
 interface StudyType {
