@@ -1,18 +1,15 @@
 import { Metadata } from "next";
 import BoardSearchBar from "@/components/board/CCBoardSearchBar";
 import BoardCategory from "@/components/board/CCBoardCategory";
-import BoardCardList from "@/components/board/SCBoardCardList";
-import BoardPagination from "@/components/board/SCBoardPagination";
+import BoardContents from "@/components/board/SCBoardContents";
 import PlusSVG from "/public/icons/plus.svg";
 import {
   boardCategoriesEN,
   BoardCategoryType,
   BoardCategoryTypeEN,
-  toEnglishCategory,
   toKoreanCategory,
 } from "@/types/board";
 import Link from "next/link";
-import { getBoards } from "@/app/api/board/SCBoardApi";
 import { Suspense } from "react";
 import SCBoardSkeleton from "@/components/board/ScBoardSkeleton";
 
@@ -60,41 +57,28 @@ export async function generateMetadata({
   };
 }
 
+// --- Page Component ---
 export default async function BoardPage({ searchParams }: BoardPageProps) {
   const { page, keyword, category } = await searchParams;
+
   const currentPage = parseInt(page || "1", 10);
   const currentSearch = keyword || "";
+
   const currentCategory: BoardCategoryType =
     category && isValidCategory(category)
       ? toKoreanCategory(category as BoardCategoryTypeEN)
       : "전체";
 
-  const getBoardList = async (
-    keyword?: string,
-    category?: string,
-    page?: number,
-    size?: number
-  ) => {
-    const data = await getBoards(keyword, category, page, size);
-    return {
-      contents: data.content ?? [],
-      totalItems: data.totalElements ?? data.totalCount ?? 0,
-    };
-  };
-
-  const { contents, totalItems } = await getBoardList(
-    currentSearch,
-    currentCategory !== "전체" ? toEnglishCategory(currentCategory) : "",
-    currentPage - 1,
-    ITEMS_PER_PAGE
-  );
   return (
     <div className="space-y-6">
+      {/* 검색/카테고리 영역 */}
       <div className="mb-6 flex flex-col sm:flex-row gap-4 items-center">
         <div className="flex-1 w-full">
           <BoardSearchBar currentSearch={currentSearch} />
         </div>
+
         <BoardCategory selectedCategory={currentCategory} />
+
         <Link
           scroll={false}
           href="/board/write"
@@ -104,19 +88,14 @@ export default async function BoardPage({ searchParams }: BoardPageProps) {
         </Link>
       </div>
 
-      <Suspense
-        key={JSON.stringify({ keyword, category, page })}
-        fallback={<SCBoardSkeleton />}
-      >
-        <BoardCardList contents={contents} />
+      <Suspense fallback={<SCBoardSkeleton />}>
+        <BoardContents
+          keyword={currentSearch}
+          category={currentCategory} // 한글 카테고리 그대로 전달
+          page={currentPage}
+          size={ITEMS_PER_PAGE}
+        />
       </Suspense>
-      <BoardPagination
-        currentPage={currentPage}
-        totalItems={totalItems}
-        itemsPerPage={ITEMS_PER_PAGE}
-        currentSearch={currentSearch}
-        currentCategory={currentCategory}
-      />
     </div>
   );
 }
