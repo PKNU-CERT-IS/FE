@@ -7,11 +7,11 @@ import { Suspense } from "react";
 import DefaultSuspnenseComponent from "@/components/ui/CCDefaultSuspnenseComponent";
 interface SCProfileContentProps {
   currentTab: string;
-  searchParams: {
+  searchParams: Promise<{
     tab?: string;
     page?: string;
     status?: StudyStatusType;
-  };
+  }>;
 }
 export default async function SCProfileContent({
   currentTab,

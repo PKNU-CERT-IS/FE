@@ -13,10 +13,10 @@ import { fromOffsetDateTime } from "@/utils/transfromResponseValue";
 import CCProfilePagination from "./CCProfilePagination";
 
 interface SCBlogListProps {
-  searchParams: {
+  searchParams: Promise<{
     tab?: string;
     page?: string;
-  };
+  }>;
 }
 
 export default async function SCBlogList({ searchParams }: SCBlogListProps) {

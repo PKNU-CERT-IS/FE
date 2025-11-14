@@ -10,9 +10,9 @@ import { Suspense } from "react";
 import { Metadata } from "next";
 
 interface ProfilePageProps {
-  searchParams: {
+  searchParams: Promise<{
     tab?: string;
-  };
+  }>;
 }
 
 export async function generateMetadata({
@@ -46,7 +46,7 @@ function capitalize(str: string) {
 }
 
 export default async function ProfilePage({ searchParams }: ProfilePageProps) {
-  const currentTab = searchParams.tab || "study";
+  const currentTab = (await searchParams).tab || "study";
 
   return (
     <div className="min-h-screentransition-colors duration-300">

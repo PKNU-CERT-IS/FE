@@ -6,11 +6,11 @@ import { StudyStatusType } from "@/types/profile";
 
 interface SCProfileContentWrapperProps {
   currentTab: string;
-  searchParams: {
+  searchParams: Promise<{
     tab?: string;
     page?: string;
     status?: StudyStatusType;
-  };
+  }>;
 }
 
 export default async function SCProfileContentWrapper({
