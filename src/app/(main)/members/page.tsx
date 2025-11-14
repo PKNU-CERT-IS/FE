@@ -4,11 +4,6 @@ import MembersGradeDropdown from "@/components/members/CCMembersGradeDown";
 import MembersRoleDropdown from "@/components/members/CCMembersRoleDropDown";
 import { isValidRole, isValidGrade } from "@/utils/membersUtils";
 import { Metadata } from "next";
-import { getMembers } from "@/app/api/member/SCmemberApi";
-import {
-  translateKoreanToGrade,
-  translateKoreanToRole,
-} from "@/utils/transformRequestValue";
 import { Suspense } from "react";
 import SCMembersSkeleton from "@/components/members/SCMemberSkeleton";
 interface MembersPageProps {
@@ -51,26 +46,13 @@ export async function generateMetadata({
     },
   };
 }
-
 export default async function MembersPage({ searchParams }: MembersPageProps) {
-  const { role, keyword, grade } = await searchParams;
-
-  const currentRole =
-    role && isValidRole(role) ? translateKoreanToRole(role) : "전체";
-  const currentKeyword = keyword || "";
-  const currentGrade =
-    grade && isValidGrade(grade) ? translateKoreanToGrade(grade) : "전체";
-
-  const members = await getMembers({
-    role: currentRole === "전체" ? "" : currentRole,
-    grade: currentGrade === "전체" ? "" : currentGrade,
-    keyword: currentKeyword,
-  });
+  const resolvedParams = await searchParams;
 
   return (
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row gap-4">
-        <MembersSearchBar currentKeyword={currentKeyword} />
+        <MembersSearchBar currentKeyword={resolvedParams.keyword ?? ""} />
         <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-row">
           <div className="w-full sm:w-auto">
             <MembersGradeDropdown />
@@ -80,11 +62,9 @@ export default async function MembersPage({ searchParams }: MembersPageProps) {
           </div>
         </div>
       </div>
-      <Suspense
-        key={JSON.stringify({ keyword, role, grade })}
-        fallback={<SCMembersSkeleton />}
-      >
-        <MembersCardList members={members} />
+
+      <Suspense fallback={<SCMembersSkeleton />}>
+        <MembersCardList searchParams={resolvedParams} />
       </Suspense>
     </div>
   );

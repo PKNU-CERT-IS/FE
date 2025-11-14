@@ -92,7 +92,7 @@ export default async function StudyPage({ searchParams }: StudyPageProps) {
         key={JSON.stringify({ search, category, page, studyStatus, semester })}
         fallback={<SCStudySkeleton />}
       >
-        <SCStudyContent searchParams={searchParams} />
+        <SCStudyContent searchParams={resolvedSearchParams} />
       </Suspense>
     </div>
   );

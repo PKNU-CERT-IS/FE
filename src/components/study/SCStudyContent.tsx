@@ -17,14 +17,14 @@ import { Calendar } from "lucide-react";
 import DownloadButton from "@/components/detail/SCDownloadButton";
 
 interface SCStudyContentProps {
-  searchParams: Promise<{
+  searchParams: {
     search?: string;
     semester?: string;
     category?: string;
     subCategory?: string;
     studyStatus?: string;
     page?: string;
-  }>;
+  };
 }
 
 export default async function SCStudyContent({
