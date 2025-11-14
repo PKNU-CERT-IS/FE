@@ -6,10 +6,11 @@ import ProfileSVG from "/public/icons/profile.svg";
 import { loginAction } from "@/actions/auth/LoginServerAction";
 import { useAuth } from "@/hooks/useAuth";
 import { Eye, EyeOff, LockOpen, Loader2 } from "lucide-react";
-import { useTransition } from "react";
+import { useTransition, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/store/authStore";
 import { useEffect } from "react";
+import { set } from "date-fns";
 
 export default function CCLoginInput() {
   const { showPassword, setShowPassword, loginFormData, setLoginFormData } =
@@ -17,6 +18,8 @@ export default function CCLoginInput() {
   const setAuth = useAuthStore((state) => state.setAuth);
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
+
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
   // savedId → 초기 렌더에만 적용
   useEffect(() => {
@@ -33,6 +36,9 @@ export default function CCLoginInput() {
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault(); // 브라우저 기본 submit 동작 차단 이전 DOM rollaback 방지
+
+    setErrorMessage("");
+
     const formData = new FormData(e.currentTarget);
 
     startTransition(async () => {
@@ -42,7 +48,7 @@ export default function CCLoginInput() {
           setAuth(true, result.role);
           router.push("/");
         } else {
-          console.log(result.message);
+          setErrorMessage("아이디 또는 비밀번호 입력이 올바르지 않습니다.");
         }
       } catch (err) {
         console.log(err);
@@ -131,9 +137,13 @@ export default function CCLoginInput() {
             )}
           </button>
         </div>
+        {errorMessage && (
+          <p className="text-sm text-red-600 font-medium pl-1">
+            {errorMessage}
+          </p>
+        )}
       </div>
 
-      {/* 추가 옵션 */}
       <div className="space-y-3">
         <label className="flex items-center space-x-2 pt-1 pb-1 pl-1 cursor-pointer">
           <input
