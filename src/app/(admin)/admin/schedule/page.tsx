@@ -1,7 +1,7 @@
 "server-only";
 
 import SCScheduleList from "@/components/schedule/SCScheduleList";
-import Calendar from "@/components/schedule/calendar";
+import Calendar from "@/components/schedule/CCCalendar";
 import SCAdminScheduleInfo from "@/components/admin/schedule/SCAdminScheduleInfo";
 import SCAdminScheduleRequestList from "@/components/admin/schedule/SCAdminScheduleRequestList";
 import CCScrollScheduleList from "@/components/schedule/CCScrollScheduleList";

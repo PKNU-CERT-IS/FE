@@ -5,6 +5,8 @@ import SCProfileContent from "@/components/profile/SCProfileContent";
 import SCPenaltyStatus from "@/components/profile/SCPenaltyStatus";
 import SCTodaySchedule from "@/components/profile/SCTodaySchedule";
 import CCTabBar from "@/components/profile/CCTabBar";
+import SCProfileGroupSkeleton from "@/components/profile/SCProfileGroupSkeleton";
+import { Suspense } from "react";
 import { Metadata } from "next";
 
 interface ProfilePageProps {
@@ -51,9 +53,11 @@ export default async function ProfilePage({ searchParams }: ProfilePageProps) {
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-1">
-            <SCProfileCard />
-            <SCPenaltyStatus />
-            <SCTodaySchedule />
+            <Suspense fallback={<SCProfileGroupSkeleton />}>
+              <SCProfileCard />
+              <SCPenaltyStatus />
+              <SCTodaySchedule />
+            </Suspense>
           </div>
           <div className="lg:col-span-2">
             <CCTabBar currentTab={currentTab} />

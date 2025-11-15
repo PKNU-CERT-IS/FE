@@ -1,19 +1,18 @@
 "server-only";
 
 import { Suspense } from "react";
-import SCScheduleInfo from "@/components/schedule/SCScheduleInfo";
-import SCScheduleList from "@/components/schedule/SCScheduleList";
-import Calendar from "@/components/schedule/calendar";
 import CCScrollScheduleList from "@/components/schedule/CCScrollScheduleList";
-import { Metadata } from "next";
-import { getSchedules } from "@/app/api/schedule/SCscheduleApi";
-import { ScheduleInfo } from "@/types/schedule";
-import SCScheduleRequestList from "@/components/schedule/SCScheduleRequestList";
-import CCAddScheduleCard from "@/components/schedule/CCAddScheduleCard";
 import SCScheduleSkeleton from "@/components/schedule/SCScheduleSkeleton";
+import ScheduleContents from "@/components/schedule/SCScheduleContents";
+import { Metadata } from "next";
 
 interface SearchPageProps {
   searchParams: Promise<{ date: string }>;
+}
+
+function toLocalDate(date: string | Date) {
+  const d = typeof date === "string" ? new Date(date) : date;
+  return d.toISOString().split("T")[0];
 }
 
 export async function generateMetadata({
@@ -22,6 +21,7 @@ export async function generateMetadata({
   searchParams: Promise<{ date?: string }>;
 }): Promise<Metadata> {
   const { date } = await searchParams;
+
   let title = "CERT-IS Schedule";
   let description = "CERT-IS 동아리 일정을 관리하는 공간입니다.";
 
@@ -33,6 +33,7 @@ export async function generateMetadata({
       description = `CERT-IS 동아리의 ${formatted} 일정을 확인하세요.`;
     }
   }
+
   return {
     title,
     description,
@@ -44,19 +45,12 @@ export async function generateMetadata({
   };
 }
 
-function toLocalDate(date: string | Date) {
-  const d = typeof date === "string" ? new Date(date) : date;
-  return d.toISOString().split("T")[0];
-}
-
 export default async function SchedulePage({ searchParams }: SearchPageProps) {
-  const resolvedSearchParams = await searchParams;
+  const params = await searchParams;
 
-  const selectedDate = resolvedSearchParams?.date
-    ? toLocalDate(resolvedSearchParams.date)
+  const selectedDate = params?.date
+    ? toLocalDate(params.date)
     : toLocalDate(new Date());
-
-  const schedules: ScheduleInfo[] = await getSchedules(selectedDate);
 
   return (
     <div className="min-h-screen">
@@ -65,21 +59,9 @@ export default async function SchedulePage({ searchParams }: SearchPageProps) {
           <CCScrollScheduleList />
         </div>
 
+        {/* 🔥 Streaming 활성화 */}
         <Suspense fallback={<SCScheduleSkeleton />}>
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div className="md:col-span-2">
-              <Calendar schedules={schedules} selectedDate={selectedDate} />
-            </div>
-            <div>
-              <CCAddScheduleCard />
-              <div className="relative">
-                <SCScheduleInfo selectedDate={selectedDate} />
-              </div>
-              <SCScheduleRequestList />
-            </div>
-          </div>
-
-          <SCScheduleList id="all-schedule-list" date={selectedDate ?? ""} />
+          <ScheduleContents date={selectedDate} />
         </Suspense>
       </div>
     </div>

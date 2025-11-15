@@ -1,16 +1,19 @@
+"server-only";
+
 import { Metadata } from "next";
-import CCBlogPagination from "@/components/blog/CCBlogPagination";
-import CCBlogCategoryFilter from "@/components/blog/CCBlogCategoryFilter";
-import { Plus } from "lucide-react";
-import { BlogCategory } from "@/types/blog";
-import { isValidCategory } from "@/utils/blogUtils";
+import { Suspense } from "react";
 import Link from "next/link";
+import { Plus } from "lucide-react";
+
 import BlogSearchBar from "@/components/blog/CCBlogSearchBar";
-import SCSearchResultNotFound from "@/components/ui/SCSearchResultNotFound";
-import { searchBlogsByKeyword } from "@/app/api/blog/SCblogApi";
+import CCBlogCategoryFilter from "@/components/blog/CCBlogCategoryFilter";
 import BlogCardList from "@/components/blog/SCBlogCardList";
 import SCBlogSkeleton from "@/components/blog/SCBlogSkeleton";
-import { Suspense } from "react";
+import BlogPagination from "@/components/blog/CCBlogPagination";
+
+import { BlogCategory } from "@/types/blog";
+import { isValidCategory } from "@/utils/blogUtils";
+import { searchBlogsByKeyword } from "@/app/api/blog/SCblogApi";
 
 interface BlogPageProps {
   searchParams: Promise<{
@@ -19,8 +22,10 @@ interface BlogPageProps {
     category?: string;
   }>;
 }
+
 const ITEMS_PER_PAGE = 9;
 
+// Metadata
 export async function generateMetadata({
   searchParams,
 }: {
@@ -51,14 +56,15 @@ export async function generateMetadata({
   };
 }
 
-// children 매개변수 제거
 export default async function BlogPage({ searchParams }: BlogPageProps) {
-  const { page, keyword, category } = await searchParams;
+  const resolved = await searchParams;
 
-  const currentPage = Math.max(1, parseInt(page || "0", 10));
-  const currentKeyword = keyword?.trim() || "";
+  const currentPage = Math.max(1, parseInt(resolved.page || "1", 10));
+  const currentKeyword = resolved.keyword?.trim() || "";
   const currentCategory: BlogCategory =
-    category && isValidCategory(category) ? category : "전체";
+    resolved.category && isValidCategory(resolved.category)
+      ? resolved.category
+      : "전체";
 
   const response = await searchBlogsByKeyword(
     {
@@ -71,29 +77,24 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
       sort: "createdAt,desc",
     }
   );
-  const blogs = response.content;
+
   const totalItems = response.totalElements;
-  const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
-  const validCurrentPage = Math.min(currentPage, Math.max(1, totalPages));
+
   return (
     <div className="min-h-screen">
       <div className="max-w-7xl mx-auto">
-        {/* 메인 헤더 */}
-
-        {/* 검색 및 필터 바 */}
-        <div className=" rounded-lg mb-6">
+        {/* 검색/필터 */}
+        <div className="rounded-lg mb-6">
           <div className="flex flex-col lg:flex-row gap-4 items-center">
-            {/* 검색바 */}
             <div className="flex-1 w-full">
               <BlogSearchBar currentKeyword={currentKeyword} />
             </div>
-            {/* 카테고리 필터 - 클라이언트 컴포넌트로 분리 */}
+
             <CCBlogCategoryFilter
               currentCategory={currentCategory}
               currentKeyword={currentKeyword}
             />
 
-            {/* 새 글 작성 버튼 */}
             <Link
               href="/blog/write"
               className="action-button inline-flex gap-2 px-4 py-2 whitespace-nowrap sm:w-auto w-full justify-center"
@@ -103,23 +104,16 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
           </div>
         </div>
 
-        {/* 블로그 카드 목록 */}
-        {blogs.length > 0 ? (
-          <Suspense
-            key={JSON.stringify({ keyword, category, page })}
-            fallback={<SCBlogSkeleton />}
-          >
-            <BlogCardList blogs={blogs} />
-          </Suspense>
-        ) : (
-          <SCSearchResultNotFound mode="blog" />
-        )}
+        {/* 콘텐츠 */}
+        <Suspense fallback={<SCBlogSkeleton />}>
+          <BlogCardList searchParams={resolved} />
+        </Suspense>
 
         {/* 페이지네이션 */}
         {totalItems > 0 && (
           <div className="flex justify-center">
-            <CCBlogPagination
-              currentPage={validCurrentPage}
+            <BlogPagination
+              currentPage={currentPage}
               totalItems={totalItems}
               itemsPerPage={ITEMS_PER_PAGE}
               currentKeyword={currentKeyword}
