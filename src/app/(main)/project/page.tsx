@@ -1,3 +1,5 @@
+"server-only";
+
 import { Metadata } from "next";
 import { ProjectCurrentFilters } from "@/types/project";
 import SCProjectList from "@/components/project/SCProjectList";

@@ -1,3 +1,5 @@
+"server-only";
+
 import MembersCardList from "@/components/members/SCMembersCardList";
 import MembersSearchBar from "@/components/members/CCMembersSearchBar";
 import MembersGradeDropdown from "@/components/members/CCMembersGradeDown";

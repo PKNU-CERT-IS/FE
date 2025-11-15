@@ -1,4 +1,4 @@
-"use server";
+"server-only";
 
 import { Suspense } from "react";
 import CCScrollScheduleList from "@/components/schedule/CCScrollScheduleList";

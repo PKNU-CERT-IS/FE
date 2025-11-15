@@ -1,3 +1,5 @@
+"server-only";
+
 import { Metadata } from "next";
 import BoardSearchBar from "@/components/board/CCBoardSearchBar";
 import BoardCategory from "@/components/board/CCBoardCategory";
