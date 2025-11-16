@@ -89,7 +89,10 @@ export default async function BoardPage({ searchParams }: BoardPageProps) {
         </Link>
       </div>
 
-      <Suspense fallback={<SCBoardSkeleton />}>
+      <Suspense
+        key={JSON.stringify({ page, keyword, category })}
+        fallback={<SCBoardSkeleton />}
+      >
         <BoardContents
           keyword={currentSearch}
           category={currentCategory}

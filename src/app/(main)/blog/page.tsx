@@ -9,11 +9,9 @@ import BlogSearchBar from "@/components/blog/CCBlogSearchBar";
 import CCBlogCategoryFilter from "@/components/blog/CCBlogCategoryFilter";
 import BlogCardList from "@/components/blog/SCBlogCardList";
 import SCBlogSkeleton from "@/components/blog/SCBlogSkeleton";
-import BlogPagination from "@/components/blog/CCBlogPagination";
 
 import { BlogCategory } from "@/types/blog";
 import { isValidCategory } from "@/utils/blogUtils";
-import { searchBlogsByKeyword } from "@/app/api/blog/SCblogApi";
 
 interface BlogPageProps {
   searchParams: Promise<{
@@ -22,8 +20,6 @@ interface BlogPageProps {
     category?: string;
   }>;
 }
-
-const ITEMS_PER_PAGE = 9;
 
 // Metadata
 export async function generateMetadata({
@@ -59,26 +55,11 @@ export async function generateMetadata({
 export default async function BlogPage({ searchParams }: BlogPageProps) {
   const resolved = await searchParams;
 
-  const currentPage = Math.max(1, parseInt(resolved.page || "1", 10));
   const currentKeyword = resolved.keyword?.trim() || "";
   const currentCategory: BlogCategory =
     resolved.category && isValidCategory(resolved.category)
       ? resolved.category
       : "전체";
-
-  const response = await searchBlogsByKeyword(
-    {
-      keyword: currentKeyword,
-      category: currentCategory === "전체" ? "" : currentCategory,
-    },
-    {
-      page: currentPage - 1,
-      size: ITEMS_PER_PAGE,
-      sort: "createdAt,desc",
-    }
-  );
-
-  const totalItems = response.totalElements;
 
   return (
     <div className="min-h-screen">
@@ -105,22 +86,9 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
         </div>
 
         {/* 콘텐츠 */}
-        <Suspense fallback={<SCBlogSkeleton />}>
+        <Suspense key={JSON.stringify(resolved)} fallback={<SCBlogSkeleton />}>
           <BlogCardList searchParams={resolved} />
         </Suspense>
-
-        {/* 페이지네이션 */}
-        {totalItems > 0 && (
-          <div className="flex justify-center">
-            <BlogPagination
-              currentPage={currentPage}
-              totalItems={totalItems}
-              itemsPerPage={ITEMS_PER_PAGE}
-              currentKeyword={currentKeyword}
-              currentCategory={currentCategory}
-            />
-          </div>
-        )}
       </div>
     </div>
   );
