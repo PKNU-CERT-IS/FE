@@ -36,18 +36,18 @@ export default function CCStudyTabBar({
 
   return (
     <div className="grid grid-cols-2 gap-10">
-      <div className="grid grid-cols-2 w-full h-10 rounded-md p-1 bg-gray-100 text-muted-foreground">
+      <div className="grid grid-cols-2 w-full h-10 rounded-md p-1 bg-gray-100 dark:bg-gray-800">
         {MAIN_TABS.map((tab) => {
           const isActive = currentTab === tab;
           return (
             <button
               key={tab}
               onClick={() => handleMainTabClick(tab)}
-              className={`inline-flex items-center justify-center gap-2 rounded-sm px-3 py-1.5 text-sm font-medium transition-all cursor-pointer
+              className={`inline-flex items-center justify-center gap-2 rounded-sm px-3 py-1.5 text-sm font-medium transition-all duration-150 cursor-pointer
                 ${
                   isActive
                     ? "bg-cert-red text-white shadow-sm"
-                    : "text-gray-500"
+                    : "text-gray-500 dark:text-gray-400"
                 }`}
             >
               {TAB_CONFIG[tab].label}
@@ -56,18 +56,18 @@ export default function CCStudyTabBar({
         })}
       </div>
 
-      <div className="grid grid-cols-3 w-full h-10 rounded-md p-1 bg-gray-100">
+      <div className="grid grid-cols-3 w-full h-10 rounded-md p-1 bg-gray-100 dark:bg-gray-800">
         {SUB_TABS.map((view) => {
           const isActive = currentView === view;
           return (
             <button
               key={view}
               onClick={() => handleSubTabClick(view)}
-              className={`inline-flex items-center justify-center gap-2 rounded-sm px-3 py-1.5 text-sm font-medium transition-all cursor-pointer
+              className={`inline-flex items-center justify-center gap-2 rounded-sm px-3 py-1.5 text-sm font-medium transition-all duration-150 cursor-pointer
                 ${
                   isActive
                     ? "bg-cert-red text-white shadow-sm"
-                    : "text-gray-500"
+                    : "text-gray-500 dark:text-gray-400"
                 }`}
             >
               {SUBTAB_CONFIG[view].label}

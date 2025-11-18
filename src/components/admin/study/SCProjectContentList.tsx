@@ -124,7 +124,7 @@ export default async function SCProjectContentList({
     <>
       {currentTab === "project" && currentView === "pending" && (
         <>
-          <div className="mt-4 text-lg text-gray-600">
+          <div className="mt-4 text-lg text-gray-600 dark:text-gray-300">
             ✔️ 프로젝트 개설 승인 대기 목록
           </div>
           {projectMaterials.map((project) => {
@@ -136,12 +136,12 @@ export default async function SCProjectContentList({
                 key={project.id}
                 href={`/admin/study/${project.id}?tab=project`}
               >
-                <div className="mt-4 card-list">
+                <div className="mt-4 card-list dark-default">
                   <div className="pb-4 flex flex-col space-y-1.5 p-6">
                     <div className="flex justify-between items-start">
                       <div className="space-y-3">
                         <div className="flex gap-3 sm:flex-row sm:items-center flex-col items-start">
-                          <div className="text-xl font-medium">
+                          <div className="text-xl font-medium text-gray-900 dark:text-gray-200">
                             {project.title}
                           </div>
                           <div className="flex items-center gap-2">
@@ -155,38 +155,43 @@ export default async function SCProjectContentList({
                                 ]
                               }
                             </DefaultBadge>
-                            <DefaultBadge className="bg-gray-100 h-6 border border-gray-200 text-gray-700 dark:bg-gray-600 dark:border-gray-500 dark:text-gray-200">
+                            <DefaultBadge
+                              className="bg-gray-100 h-6 border border-gray-200 text-gray-700 
+                            dark:bg-gray-600 dark:border-gray-500 dark:text-gray-200"
+                            >
                               {project.category}
                             </DefaultBadge>
-                            <DefaultBadge className="bg-gray-100 h-6 border border-gray-200 text-gray-700 dark:bg-gray-600 dark:border-gray-500 dark:text-gray-200">
+                            <DefaultBadge
+                              className="bg-gray-100 h-6 border border-gray-200 text-gray-700 
+                            dark:bg-gray-600 dark:border-gray-500 dark:text-gray-200"
+                            >
                               {SUBCATEGORY_FROM_EN[project.subcategory] ??
                                 project.subcategory}
                             </DefaultBadge>
                           </div>
                         </div>
-                        <div className="text-base text-gray-600">
+                        <div className="text-base text-gray-600 dark:text-gray-300">
                           {project.description}
                         </div>
                       </div>
                     </div>
                   </div>
 
-                  {/* 본문 */}
                   <div className="p-6 pt-0">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 items-stretch">
                       <div className="grid grid-cols-1 md:grid-cols-2">
                         <div className="space-y-1">
                           <div className="flex items-center gap-2">
-                            <User className="w-4 h-4 text-gray-500" />
-                            <span className="text-sm">
-                              프로젝트장: {project.projectCreatorName} (
+                            <User className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+                            <span className="text-sm text-gray-700 dark:text-gray-300">
+                              프로젝트장 (학년): {project.projectCreatorName} (
                               {MEMBER_GRADE_LABELS[project.projectCreatorGrade]}
                               )
                             </span>
                           </div>
                           <div className="flex items-center gap-2">
-                            <Users className="w-4 h-4 text-gray-500" />
-                            <span className="text-sm">
+                            <Users className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+                            <span className="text-sm text-gray-700 dark:text-gray-300">
                               현재 인원: {project.currentParticipantNumber}/
                               {project.maxParticipantNumber}명
                             </span>
@@ -195,15 +200,15 @@ export default async function SCProjectContentList({
 
                         <div className="space-y-1">
                           <div className="flex items-center gap-2">
-                            <Calendar className="w-4 h-4 text-gray-500" />
-                            <span className="text-sm">
+                            <Calendar className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+                            <span className="text-sm text-gray-700 dark:text-gray-300">
                               {formatDate(project.startDate, "dot")} ~{" "}
                               {formatDate(project.endDate, "dot")}
                             </span>
                           </div>
                           <div className="flex items-center gap-2">
-                            <Target className="w-4 h-4 text-gray-500" />
-                            <span className="text-sm">
+                            <Target className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+                            <span className="text-sm text-gray-700 dark:text-gray-300">
                               진행률:{" "}
                               {calculateProgress(
                                 project.startDate,
@@ -221,15 +226,16 @@ export default async function SCProjectContentList({
                           {project.attachments?.map((file, index) => (
                             <div
                               key={index}
-                              className="flex items-center justify-between bg-gray-50 rounded-lg p-3 w-78 sm:w-[25rem] flex-shrink-0"
+                              className="flex items-center justify-between bg-gray-50 rounded-lg p-3 w-78 sm:w-[25rem] flex-shrink-0 
+                            dark:bg-gray-700"
                             >
                               <div className="flex items-center gap-3">
                                 <PdfSVG className="w-5 h-5 text-red-500" />
                                 <div>
-                                  <p className="text-sm font-medium text-gray-900">
+                                  <p className="text-sm font-medium text-gray-900 dark:text-gray-200">
                                     {file.name}
                                   </p>
-                                  <p className="text-xs text-gray-500">
+                                  <p className="text-xs text-gray-500 dark:text-gray-400">
                                     {formatFileSize(file.size)}
                                   </p>
                                 </div>
@@ -242,7 +248,7 @@ export default async function SCProjectContentList({
                               />
                               <input
                                 type="hidden"
-                                name="studyId"
+                                name="projectId"
                                 value={project.id}
                               />
                               <DownloadButton file={file} />
@@ -266,7 +272,7 @@ export default async function SCProjectContentList({
 
       {currentTab === "project" && currentView === "end" && (
         <>
-          <div className="mt-4 text-lg text-gray-600">
+          <div className="mt-4 text-lg text-gray-600 dark:text-gray-300">
             ✔️ 프로젝트 종료 승인 대기 목록
           </div>
 
@@ -275,12 +281,12 @@ export default async function SCProjectContentList({
               key={project.projectId}
               href={`/admin/study/${project.projectId}?tab=project`}
             >
-              <div className="mt-4 card-list">
+              <div className="mt-4 card-list dark-default">
                 <div className="pb-4 flex flex-col space-y-1.5 p-6">
                   <div className="flex justify-between items-start">
                     <div className="space-y-3">
                       <div className="flex gap-3 sm:flex-row sm:items-center flex-col items-start">
-                        <div className="text-xl font-medium">
+                        <div className="text-xl font-medium text-gray-900 dark:text-gray-200">
                           {project.title}
                         </div>
                         <div className="flex items-center gap-2">
@@ -294,37 +300,42 @@ export default async function SCProjectContentList({
                               ]
                             }
                           </DefaultBadge>
-                          <DefaultBadge className="bg-gray-100 h-6 border border-gray-200 text-gray-700 dark:bg-gray-600 dark:border-gray-500 dark:text-gray-200">
+                          <DefaultBadge
+                            className="bg-gray-100 h-6 border border-gray-200 text-gray-700 
+                          dark:bg-gray-600 dark:border-gray-500 dark:text-gray-200"
+                          >
                             {project.category}
                           </DefaultBadge>
-                          <DefaultBadge className="bg-gray-100 h-6 border border-gray-200 text-gray-700 dark:bg-gray-600 dark:border-gray-500 dark:text-gray-200">
+                          <DefaultBadge
+                            className="bg-gray-100 h-6 border border-gray-200 text-gray-700 
+                          dark:bg-gray-600 dark:border-gray-500 dark:text-gray-200"
+                          >
                             {SUBCATEGORY_FROM_EN[project.subCategory] ??
                               project.subCategory}
                           </DefaultBadge>
                         </div>
                       </div>
-                      <div className="text-base text-gray-600">
+                      <div className="text-base text-gray-600 dark:text-gray-300">
                         {project.description}
                       </div>
                     </div>
                   </div>
                 </div>
 
-                {/* 본문 */}
                 <div className="p-6 pt-0">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 items-stretch">
                     <div className="grid grid-cols-1 md:grid-cols-2">
                       <div className="space-y-1">
                         <div className="flex items-center gap-2">
-                          <User className="w-4 h-4 text-gray-500" />
-                          <span className="text-sm">
-                            프로젝트장: {project.projectCreatorName} (
+                          <User className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+                          <span className="text-sm text-gray-700 dark:text-gray-300">
+                            프로젝트장 (학년): {project.projectCreatorName} (
                             {MEMBER_GRADE_LABELS[project.projectCreatorGrade]})
                           </span>
                         </div>
                         <div className="flex items-center gap-2">
-                          <Users className="w-4 h-4 text-gray-500" />
-                          <span className="text-sm">
+                          <Users className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+                          <span className="text-sm text-gray-700 dark:text-gray-300">
                             현재 인원: {project.currentParticipantNumber}/
                             {project.maxParticipantNumber}명
                           </span>
@@ -333,15 +344,15 @@ export default async function SCProjectContentList({
 
                       <div className="space-y-1">
                         <div className="flex items-center gap-2">
-                          <Calendar className="w-4 h-4 text-gray-500" />
-                          <span className="text-sm">
+                          <Calendar className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+                          <span className="text-sm text-gray-700 dark:text-gray-300">
                             {formatDate(project.startedAt, "dot")} ~{" "}
                             {formatDate(project.endedAt, "dot")}
                           </span>
                         </div>
                         <div className="flex items-center gap-2">
-                          <Target className="w-4 h-4 text-gray-500" />
-                          <span className="text-sm">
+                          <Target className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+                          <span className="text-sm text-gray-700 dark:text-gray-300">
                             진행률:{" "}
                             {calculateProgress(
                               project.startedAt,
@@ -359,15 +370,16 @@ export default async function SCProjectContentList({
                         {project.attachment && (
                           <div
                             key={project.attachment.id}
-                            className="flex items-center justify-between bg-gray-50 rounded-lg p-3 w-78 sm:w-[25rem] flex-shrink-0"
+                            className="flex items-center justify-between bg-gray-50 rounded-lg p-3 w-78 sm:w-[25rem] flex-shrink-0 
+                          dark:bg-gray-700"
                           >
                             <div className="flex items-center gap-3">
                               <PdfSVG className="w-5 h-5 text-red-500" />
                               <div>
-                                <p className="text-sm font-medium text-gray-900">
+                                <p className="text-sm font-medium text-gray-900 dark:text-gray-200">
                                   {project.attachment.name}
                                 </p>
-                                <p className="text-xs text-gray-500">
+                                <p className="text-xs text-gray-500 dark:text-gray-400">
                                   {formatFileSize(
                                     Number(project.attachment.size)
                                   )}
@@ -405,19 +417,20 @@ export default async function SCProjectContentList({
 
       {currentTab === "project" && currentView === "list" && (
         <>
-          <div className="mt-4 text-lg text-gray-600">📁 프로젝트 목록</div>
+          <div className="mt-4 text-lg text-gray-600 dark:text-gray-300">
+            📁 프로젝트 목록
+          </div>
           {projectMaterials.map((project) => (
             <Link
               key={project.id}
               href={`/admin/study/${project.id}?tab=project`}
             >
-              <div className="mt-4 card-list">
-                {/* 헤더 */}
+              <div className="mt-4 card-list dark-default">
                 <div className="pb-4 flex flex-col space-y-1.5 p-6">
                   <div className="flex justify-between items-start">
                     <div className="space-y-3">
                       <div className="flex gap-3 sm:flex-row sm:items-center flex-col items-start">
-                        <div className="text-xl font-medium">
+                        <div className="text-xl font-medium text-gray-900 dark:text-gray-200">
                           {project.title}
                         </div>
                         <div className="flex items-center gap-2">
@@ -431,37 +444,42 @@ export default async function SCProjectContentList({
                               ]
                             }
                           </DefaultBadge>
-                          <DefaultBadge className="bg-gray-100 h-6 border border-gray-200 text-gray-700 dark:bg-gray-600 dark:border-gray-500 dark:text-gray-200">
+                          <DefaultBadge
+                            className="bg-gray-100 h-6 border border-gray-200 text-gray-700 
+                          dark:bg-gray-600 dark:border-gray-500 dark:text-gray-200"
+                          >
                             {project.category}
                           </DefaultBadge>
-                          <DefaultBadge className="bg-gray-100 h-6 border border-gray-200 text-gray-700 dark:bg-gray-600 dark:border-gray-500 dark:text-gray-200">
+                          <DefaultBadge
+                            className="bg-gray-100 h-6 border border-gray-200 text-gray-700 
+                          dark:bg-gray-600 dark:border-gray-500 dark:text-gray-200"
+                          >
                             {SUBCATEGORY_FROM_EN[project.subcategory] ??
                               project.subcategory}
                           </DefaultBadge>
                         </div>
                       </div>
-                      <div className="text-base text-gray-600">
+                      <div className="text-base text-gray-600 dark:text-gray-300">
                         {project.description}
                       </div>
                     </div>
                   </div>
                 </div>
 
-                {/* 본문 */}
                 <div className="p-6 pt-0">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 items-stretch">
                     <div className="grid grid-cols-1 md:grid-cols-2">
                       <div className="space-y-1">
                         <div className="flex items-center gap-2">
-                          <User className="w-4 h-4 text-gray-500" />
-                          <span className="text-sm">
+                          <User className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+                          <span className="text-sm text-gray-700 dark:text-gray-300">
                             프로젝트장 (학년): {project.projectCreatorName} (
                             {MEMBER_GRADE_LABELS[project.projectCreatorGrade]})
                           </span>
                         </div>
                         <div className="flex items-center gap-2">
-                          <Users className="w-4 h-4 text-gray-500" />
-                          <span className="text-sm">
+                          <Users className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+                          <span className="text-sm text-gray-700 dark:text-gray-300">
                             현재 인원: {project.currentParticipantNumber}/
                             {project.maxParticipantNumber}명
                           </span>
@@ -470,15 +488,15 @@ export default async function SCProjectContentList({
 
                       <div className="space-y-1">
                         <div className="flex items-center gap-2">
-                          <Calendar className="w-4 h-4 text-gray-500" />
-                          <span className="text-sm">
+                          <Calendar className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+                          <span className="text-sm text-gray-700 dark:text-gray-300">
                             {formatDate(project.startDate, "dot")} ~{" "}
                             {formatDate(project.endDate, "dot")}
                           </span>
                         </div>
                         <div className="flex items-center gap-2">
-                          <Target className="w-4 h-4 text-gray-500" />
-                          <span className="text-sm">
+                          <Target className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+                          <span className="text-sm text-gray-700 dark:text-gray-300">
                             진행률:{" "}
                             {calculateProgress(
                               project.startDate,
@@ -496,15 +514,16 @@ export default async function SCProjectContentList({
                         {project.attachments?.map((file, index) => (
                           <div
                             key={index}
-                            className="flex items-center justify-between bg-gray-50 rounded-lg p-3 w-78 sm:w-[25rem] flex-shrink-0"
+                            className="flex items-center justify-between bg-gray-50 rounded-lg p-3 w-78 sm:w-[25rem] flex-shrink-0 
+                          dark:bg-gray-700"
                           >
                             <div className="flex items-center gap-3">
                               <PdfSVG className="w-5 h-5 text-red-500" />
                               <div>
-                                <p className="text-sm font-medium text-gray-900">
+                                <p className="text-sm font-medium text-gray-900 dark:text-gray-200">
                                   {file.name}
                                 </p>
-                                <p className="text-xs text-gray-500">
+                                <p className="text-xs text-gray-500 dark:text-gray-400">
                                   {formatFileSize(file.size)}
                                 </p>
                               </div>
@@ -517,7 +536,7 @@ export default async function SCProjectContentList({
                             />
                             <input
                               type="hidden"
-                              name="studyId"
+                              name="projectId"
                               value={project.id}
                             />
                             <DownloadButton file={file} />

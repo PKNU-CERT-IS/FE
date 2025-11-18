@@ -124,19 +124,19 @@ export default async function SCStudyContentList({
     <>
       {currentTab === "study" && currentView === "pending" && (
         <>
-          <div className="mt-4 text-lg text-gray-600">
+          <div className="mt-4 text-lg text-gray-600 dark:text-gray-300">
             ✔️ 스터디 개설 승인 대기 목록
           </div>
 
           {studyMaterials.map((study) => {
             return (
               <Link key={study.id} href={`/admin/study/${study.id}?tab=study`}>
-                <div className="mt-4 card-list">
+                <div className="mt-4 card-list dark-default">
                   <div className="pb-4 flex flex-col space-y-1.5 p-6">
                     <div className="flex justify-between items-start">
                       <div className="space-y-3">
                         <div className="flex gap-3 sm:flex-row sm:items-center flex-col items-start">
-                          <div className="text-xl font-medium">
+                          <div className="text-xl font-medium text-gray-900 dark:text-gray-200">
                             {study.title}
                           </div>
 
@@ -152,38 +152,43 @@ export default async function SCStudyContentList({
                               }
                             </DefaultBadge>
 
-                            <DefaultBadge className="bg-gray-100 h-6 border border-gray-200 text-gray-700 dark:bg-gray-600 dark:border-gray-500 dark:text-gray-200">
+                            <DefaultBadge
+                              className="bg-gray-100 h-6 border border-gray-200 text-gray-700 
+                            dark:bg-gray-600 dark:border-gray-500 dark:text-gray-200"
+                            >
                               {study.category}
                             </DefaultBadge>
 
-                            <DefaultBadge className="bg-gray-100 h-6 border border-gray-200 text-gray-700 dark:bg-gray-600 dark:border-gray-500 dark:text-gray-200">
+                            <DefaultBadge
+                              className="bg-gray-100 h-6 border border-gray-200 text-gray-700 
+                            dark:bg-gray-600 dark:border-gray-500 dark:text-gray-200"
+                            >
                               {SUBCATEGORY_FROM_EN[study.subcategory] ??
                                 study.subcategory}
                             </DefaultBadge>
                           </div>
                         </div>
-                        <div className="text-base text-gray-600">
+                        <div className="text-base text-gray-600 dark:text-gray-300">
                           {study.description}
                         </div>
                       </div>
                     </div>
                   </div>
 
-                  {/* 본문 */}
                   <div className="p-6 pt-0">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 items-stretch">
                       <div className="grid grid-cols-1 md:grid-cols-2">
                         <div className="space-y-1">
                           <div className="flex items-center gap-2">
-                            <User className="w-4 h-4 text-gray-500" />
-                            <span className="text-sm">
-                              스터디장: {study.studyCreatorName} (
+                            <User className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+                            <span className="text-sm text-gray-700 dark:text-gray-300">
+                              스터디장 (학년): {study.studyCreatorName} (
                               {MEMBER_GRADE_LABELS[study.studyCreatorGrade]})
                             </span>
                           </div>
                           <div className="flex items-center gap-2">
-                            <Users className="w-4 h-4 text-gray-500" />
-                            <span className="text-sm">
+                            <Users className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+                            <span className="text-sm text-gray-700 dark:text-gray-300">
                               현재 인원: {study.currentParticipantNumber}/
                               {study.maxParticipantNumber}명
                             </span>
@@ -192,15 +197,15 @@ export default async function SCStudyContentList({
 
                         <div className="space-y-1">
                           <div className="flex items-center gap-2">
-                            <Calendar className="w-4 h-4 text-gray-500" />
-                            <span className="text-sm">
+                            <Calendar className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+                            <span className="text-sm text-gray-700 dark:text-gray-300">
                               {formatDate(study.startDate, "dot")} ~{" "}
                               {formatDate(study.endDate, "dot")}
                             </span>
                           </div>
                           <div className="flex items-center gap-2">
-                            <Target className="w-4 h-4 text-gray-500" />
-                            <span className="text-sm">
+                            <Target className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+                            <span className="text-sm text-gray-700 dark:text-gray-300">
                               진행률:{" "}
                               {calculateProgress(
                                 study.startDate,
@@ -219,15 +224,16 @@ export default async function SCStudyContentList({
                           {study.attachments?.map((file, index) => (
                             <div
                               key={index}
-                              className="flex items-center justify-between bg-gray-50 rounded-lg p-3 w-78 sm:w-[25rem] flex-shrink-0"
+                              className="flex items-center justify-between bg-gray-50 rounded-lg p-3
+                            dark:bg-gray-700"
                             >
                               <div className="flex items-center gap-3">
                                 <PdfSVG className="w-5 h-5 text-red-500" />
                                 <div>
-                                  <p className="text-sm font-medium text-gray-900">
+                                  <p className="text-sm font-medium text-gray-900 dark:text-gray-200">
                                     {file.name}
                                   </p>
-                                  <p className="text-xs text-gray-500">
+                                  <p className="text-xs text-gray-500 dark:text-gray-400">
                                     {formatFileSize(file.size)}
                                   </p>
                                 </div>
@@ -263,7 +269,7 @@ export default async function SCStudyContentList({
       )}
       {currentTab === "study" && currentView === "end" && (
         <>
-          <div className="mt-4 text-lg text-gray-600">
+          <div className="mt-4 text-lg text-gray-600 dark:text-gray-300">
             ✔️ 스터디 종료 승인 대기 목록
           </div>
 
@@ -272,12 +278,14 @@ export default async function SCStudyContentList({
               key={study.studyId}
               href={`/admin/study/${study.studyId}?tab=study`}
             >
-              <div key={study.studyId} className="mt-4 card-list">
+              <div key={study.studyId} className="mt-4 card-list dark-default">
                 <div className="pb-4 flex flex-col space-y-1.5 p-6">
                   <div className="flex justify-between items-start">
                     <div className="space-y-3">
                       <div className="flex gap-3 sm:flex-row sm:items-center flex-col items-start">
-                        <div className="text-xl font-medium">{study.title}</div>
+                        <div className="text-xl font-medium text-gray-900 dark:text-gray-200">
+                          {study.title}
+                        </div>
                         <div className="flex items-center gap-2">
                           <DefaultBadge
                             variant="custom"
@@ -289,37 +297,42 @@ export default async function SCStudyContentList({
                               ]
                             }
                           </DefaultBadge>
-                          <DefaultBadge className="bg-gray-100 h-6 border border-gray-200 text-gray-700 dark:bg-gray-600 dark:border-gray-500 dark:text-gray-200">
+                          <DefaultBadge
+                            className="bg-gray-100 h-6 border border-gray-200 text-gray-700 
+                          dark:bg-gray-600 dark:border-gray-500 dark:text-gray-200"
+                          >
                             {study.category}
                           </DefaultBadge>
-                          <DefaultBadge className="bg-gray-100 h-6 border border-gray-200 text-gray-700 dark:bg-gray-600 dark:border-gray-500 dark:text-gray-200">
+                          <DefaultBadge
+                            className="bg-gray-100 h-6 border border-gray-200 text-gray-700 
+                          dark:bg-gray-600 dark:border-gray-500 dark:text-gray-200"
+                          >
                             {SUBCATEGORY_FROM_EN[study.subCategory] ??
                               study.subCategory}
                           </DefaultBadge>
                         </div>
                       </div>
-                      <div className="text-base text-gray-600">
+                      <div className="text-base text-gray-600 dark:text-gray-300">
                         {study.description}
                       </div>
                     </div>
                   </div>
                 </div>
 
-                {/* 본문 */}
                 <div className="p-6 pt-0">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 items-stretch">
                     <div className="grid grid-cols-1 md:grid-cols-2">
                       <div className="space-y-1">
                         <div className="flex items-center gap-2">
-                          <User className="w-4 h-4 text-gray-500" />
-                          <span className="text-sm">
-                            스터디장: {study.studyCreatorName} (
+                          <User className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+                          <span className="text-sm text-gray-700 dark:text-gray-300">
+                            스터디장 (학년): {study.studyCreatorName} (
                             {MEMBER_GRADE_LABELS[study.studyCreatorGrade]})
                           </span>
                         </div>
                         <div className="flex items-center gap-2">
-                          <Users className="w-4 h-4 text-gray-500" />
-                          <span className="text-sm">
+                          <Users className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+                          <span className="text-sm text-gray-700 dark:text-gray-300">
                             현재 인원: {study.currentParticipantNumber}/
                             {study.maxParticipantNumber}명
                           </span>
@@ -328,8 +341,8 @@ export default async function SCStudyContentList({
 
                       <div className="space-y-1">
                         <div className="flex items-center gap-2">
-                          <Calendar className="w-4 h-4 text-gray-500" />
-                          <span className="text-sm">
+                          <Calendar className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+                          <span className="text-sm text-gray-700 dark:text-gray-300">
                             {formatDate(study.startedAt, "dot")} ~{" "}
                             {formatDate(study.endedAt, "dot")}
                           </span>
@@ -344,15 +357,16 @@ export default async function SCStudyContentList({
                         {study.attachment && (
                           <div
                             key={study.attachment.id}
-                            className="flex items-center justify-between bg-gray-50 rounded-lg p-3 w-78 sm:w-[25rem] flex-shrink-0"
+                            className="flex items-center justify-between bg-gray-50 rounded-lg p-3 w-78 sm:w-[25rem] flex-shrink-0
+                          dark:bg-gray-700"
                           >
                             <div className="flex items-center gap-3">
                               <PdfSVG className="w-5 h-5 text-red-500" />
                               <div>
-                                <p className="text-sm font-medium text-gray-900">
+                                <p className="text-sm font-medium text-gray-900 dark:text-gray-200">
                                   {study.attachment.name}
                                 </p>
-                                <p className="text-xs text-gray-500">
+                                <p className="text-xs text-gray-500 dark:text-gray-400">
                                   {formatFileSize(study.attachment.size)}
                                 </p>
                               </div>
@@ -364,7 +378,7 @@ export default async function SCStudyContentList({
                             />
                             <input
                               type="hidden"
-                              name="projectId"
+                              name="studyId"
                               value={study.studyId}
                             />
                             <DownloadButton file={study.attachment} />
@@ -386,16 +400,20 @@ export default async function SCStudyContentList({
 
       {currentTab === "study" && currentView === "list" && (
         <>
-          <div className="mt-4 text-lg text-gray-600">📁 스터디 목록</div>
+          <div className="mt-4 text-lg text-gray-600 dark:text-gray-300">
+            📁 스터디 목록
+          </div>
 
           {studyMaterials.map((study) => (
             <Link key={study.id} href={`/admin/study/${study.id}?tab=study`}>
-              <div key={study.id} className="mt-4 card-list">
+              <div key={study.id} className="mt-4 card-list dark-default">
                 <div className="pb-4 flex flex-col space-y-1.5 p-6">
                   <div className="flex justify-between items-start">
                     <div className="space-y-3">
                       <div className="flex gap-3 sm:flex-row sm:items-center flex-col items-start">
-                        <div className="text-xl font-medium">{study.title}</div>
+                        <div className="text-xl font-medium text-gray-900 dark:text-gray-200">
+                          {study.title}
+                        </div>
 
                         <div className="flex items-center gap-2">
                           <DefaultBadge
@@ -408,37 +426,43 @@ export default async function SCStudyContentList({
                               ]
                             }
                           </DefaultBadge>
-                          <DefaultBadge className="bg-gray-100 h-6 border border-gray-200 text-gray-700 dark:bg-gray-600 dark:border-gray-500 dark:text-gray-200">
+                          <DefaultBadge
+                            className="bg-gray-100 h-6 border border-gray-200 text-gray-700 
+                          dark:bg-gray-600 dark:border-gray-500 dark:text-gray-200"
+                          >
                             {study.category}
                           </DefaultBadge>
-                          <DefaultBadge className="bg-gray-100 h-6 border border-gray-200 text-gray-700 dark:bg-gray-600 dark:border-gray-500 dark:text-gray-200">
+                          <DefaultBadge
+                            className="bg-gray-100 h-6 border border-gray-200 text-gray-700 
+                          dark:bg-gray-600 dark:border-gray-500 dark:text-gray-200"
+                          >
                             {SUBCATEGORY_FROM_EN[study.subcategory] ??
                               study.subcategory}
                           </DefaultBadge>
                         </div>
                       </div>
-                      <div className="text-base text-gray-600">
+                      <div className="text-base text-gray-600 dark:text-gray-300">
                         {study.description}
                       </div>
                     </div>
                   </div>
                 </div>
 
-                {/* 본문 */}
                 <div className="p-6 pt-0">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 items-stretch">
                     <div className="grid grid-cols-1 md:grid-cols-2">
                       <div className="space-y-1">
                         <div className="flex items-center gap-2">
-                          <User className="w-4 h-4 text-gray-500" />
-                          <span className="text-sm">
+                          <User className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+                          <span className="text-sm text-gray-700 dark:text-gray-300">
                             스터디장 (학년): {study.studyCreatorName} (
                             {MEMBER_GRADE_LABELS[study.studyCreatorGrade]})
                           </span>
                         </div>
+
                         <div className="flex items-center gap-2">
-                          <Users className="w-4 h-4 text-gray-500" />
-                          <span className="text-sm">
+                          <Users className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+                          <span className="text-sm text-gray-700 dark:text-gray-300">
                             현재 인원: {study.currentParticipantNumber}/
                             {study.maxParticipantNumber}명
                           </span>
@@ -447,15 +471,15 @@ export default async function SCStudyContentList({
 
                       <div className="space-y-1">
                         <div className="flex items-center gap-2">
-                          <Calendar className="w-4 h-4 text-gray-500" />
-                          <span className="text-sm">
+                          <Calendar className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+                          <span className="text-sm text-gray-700 dark:text-gray-300">
                             {formatDate(study.startDate, "dot")} ~{" "}
                             {formatDate(study.endDate, "dot")}
                           </span>
                         </div>
                         <div className="flex items-center gap-2">
-                          <Target className="w-4 h-4 text-gray-500" />
-                          <span className="text-sm">
+                          <Target className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+                          <span className="text-sm text-gray-700 dark:text-gray-300">
                             진행률:{" "}
                             {calculateProgress(study.startDate, study.endDate)}%
                           </span>
@@ -463,21 +487,23 @@ export default async function SCStudyContentList({
                       </div>
                     </div>
                   </div>
+
                   <div className="space-y-0 mt-4 flex flex-col md:flex-row gap-5">
                     <div className="w-full overflow-x-auto">
                       <div className="flex gap-5 min-w-max">
                         {study.attachments?.map((file, index) => (
                           <div
                             key={index}
-                            className="flex items-center justify-between bg-gray-50 rounded-lg p-3 w-78 sm:w-[25rem] flex-shrink-0"
+                            className="flex items-center justify-between bg-gray-50 rounded-lg p-3 w-78 sm:w-[25rem] flex-shrink-0
+                          dark:bg-gray-700"
                           >
                             <div className="flex items-center gap-3">
                               <PdfSVG className="w-5 h-5 text-red-500" />
                               <div>
-                                <p className="text-sm font-medium text-gray-900">
+                                <p className="text-sm font-medium text-gray-900 dark:text-gray-200">
                                   {file.name}
                                 </p>
-                                <p className="text-xs text-gray-500">
+                                <p className="text-xs text-gray-500 dark:text-gray-400">
                                   {formatFileSize(file.size)}
                                 </p>
                               </div>
@@ -505,6 +531,7 @@ export default async function SCStudyContentList({
           ))}
         </>
       )}
+
       {totalItems > 0 && (
         <CCAdminStudyPagination
           currentPage={currentValidPage}
