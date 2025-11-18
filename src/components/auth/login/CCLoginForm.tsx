@@ -126,7 +126,7 @@ export default function CCLoginInput() {
           />
           <button
             type="button"
-            className="absolute right-0 top-0 h-10 px-3 text-gray-400 hover:text-gray-600"
+            className="absolute right-0 top-0 h-9 px-3 text-gray-400 hover:text-gray-600"
             onClick={() => setShowPassword(!showPassword)}
           >
             {showPassword ? (
