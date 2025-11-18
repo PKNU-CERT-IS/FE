@@ -36,7 +36,7 @@ export default function CCBlogDeleteButton({
     <>
       <DefaultButton
         size="sm"
-        className="z-10 bg-white border border-cert-red/50 text-cert-red hover:bg-cert-red/20 duration-300"
+        className="z-10 bg-white border border-cert-red/50 text-cert-red hover:bg-cert-red/20 duration-300 dark:bg-gray-700"
         type="button"
         onClick={openModal}
       >

@@ -54,10 +54,10 @@ export default async function AdminBlogPage({ searchParams }: AdminBlogProps) {
   const validCurrentPage = Math.min(page, Math.max(1, totalPages));
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen">
       <div className="max-w-7xl mx-auto">
         {/* 검색 + 카테고리 필터 */}
-        <div className="bg-white rounded-lg mb-5">
+        <div className="rounded-lg mb-5">
           <div className="flex flex-col lg:flex-row gap-4 items-center">
             <div className="flex-1 w-full">
               <BlogSearchBar currentKeyword={searchParam} />
