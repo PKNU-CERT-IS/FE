@@ -35,7 +35,7 @@ export default async function SCAdminScheduleInfo({
     : null;
 
   return (
-    <div className="mt-6 p-6 rounded-lg border bg-white border-gray-200 shadow-sm h-min">
+    <div className="mt-6 p-6 rounded-lg border shadow-sm h-min dark-default">
       <p className="text-lg font-semibold mb-4">
         {formattedSelectedDate ? `${formattedSelectedDate} 일정` : "일정"}
       </p>
@@ -47,14 +47,14 @@ export default async function SCAdminScheduleInfo({
         ) : (
           selectedDateSchedules.map((schedule) => (
             <div key={schedule.scheduleId} className="text-sm text-gray-700">
-              <div className="relative flex items-start border p-3 rounded-lg border-gray-200 bg-gray-50 gap-3">
+              <div className="relative flex items-start border p-3 rounded-lg border-gray-200 bg-gray-50 gap-3 dark:bg-gray-700 dark:border-gray-600">
                 <div className="flex-1 min-w-0">
-                  <p className="text-md font-semibold text-gray-700 mb-3">
+                  <p className="text-md font-semibold text-gray-700 mb-3 dark:text-gray-200">
                     {schedule.title}
                   </p>
-                  <div className="space-y-2 text-sm text-gray-600">
+                  <div className="space-y-2 text-sm text-gray-600 dark:text-gray-300">
                     <div className="flex flex-row items-center">
-                      <ScheduleSVG className="w-4 mr-2 stroke-gray-700" />
+                      <ScheduleSVG className="w-4 mr-2 stroke-gray-700 dark:stroke-gray-300" />
                       {formatDateRange(
                         schedule.startedAt,
                         schedule.endedAt,
