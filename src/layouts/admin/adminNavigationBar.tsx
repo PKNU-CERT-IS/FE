@@ -19,7 +19,7 @@ export default function AdminNavigationBar() {
 
   return (
     <>
-      <nav className="fixed w-full bg-white/95 backdrop-blur-md border-b border-gray-200 top-0 z-20 transition-colors duration-300">
+      <nav className="fixed w-full bg-white/95 backdrop-blur-md border-b border-gray-200 top-0 z-20 transition-colors duration-300 dark:bg-cert-darker dark:border-gray-700">
         <div className="max-w-7xl mx-auto px-4 lg:px-2 flex justify-between items-center">
           <Link href="/admin" className="flex items-center group h-16 ">
             <div className="relative w-10 h-10 mr-2">
@@ -30,7 +30,7 @@ export default function AdminNavigationBar() {
               <div className="absolute inset-0 rounded-full blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-cert-dark-red/20" />
             </div>
             <div className="flex flex-col min-w-[13.75rem] max-w-fit whitespace-nowrap">
-              <span className="text-2xl font-bold text-gray-900 tracking-wider drop-shadow-lg">
+              <span className="text-2xl font-bold text-gray-900 tracking-wider drop-shadow-lg dark:text-gray-200">
                 CERT-IS
               </span>
             </div>
@@ -39,7 +39,7 @@ export default function AdminNavigationBar() {
           {/* 데스크탑 메뉴 */}
           <div className="hidden md:flex flex-row items-center">
             <NavBarItems navBarList={navBarList} pathname={pathname} />
-            <div className="pl-6 ml-2 border-l border-gray-300">
+            <div className="pl-6 ml-2 border-l border-gray-300 dark:border-gray-700 flex-shrink-0">
               <LoginButton href="/admin/login" className="text-sm" />
             </div>
           </div>
