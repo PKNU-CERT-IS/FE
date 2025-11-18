@@ -18,8 +18,8 @@ export default function CCMebersRow({
 }: MemberRowProps) {
   return (
     <tr
-      className={`cursor-pointer hover:bg-gray-50 ${
-        selectedMember?.id === member.id ? "bg-blue-50" : ""
+      className={`cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 ${
+        selectedMember?.id === member.id ? "bg-blue-50 dark:bg-gray-800" : ""
       }`}
       onClick={() => setSelectedMember(member)}
     >
@@ -34,7 +34,7 @@ export default function CCMebersRow({
           </DefaultBadge>
         </div>
       </td>
-      <td className="px-4 py-3 text-xs text-gray-600 w-48 sm:w-56 md:w-64 lg:w-72">
+      <td className="px-4 py-3 text-xs text-gray-600 w-48 sm:w-56 md:w-64 lg:w-72 dark:text-gray-300 ">
         <div className="flex flex-col">
           <span>{member.major} / </span>
           <span>{member.studentNumber}</span>
@@ -72,7 +72,9 @@ export default function CCMebersRow({
         <div className="flex items-center justify-center">
           <span
             className={`text-sm font-medium ${
-              member.penaltyPoints >= 2 ? "text-cert-red" : "text-gray-900"
+              member.penaltyPoints >= 2
+                ? "text-cert-red"
+                : "text-gray-900 dark:text-gray-300"
             }`}
           >
             {member.penaltyPoints}점
@@ -82,7 +84,7 @@ export default function CCMebersRow({
           )}
         </div>
       </td>
-      <td className="px-4 py-3 text-center text-xs text-gray-500 w-20 sm:w-24 md:w-28">
+      <td className="px-4 py-3 text-center text-xs text-gray-500 w-20 sm:w-24 md:w-28 dark:text-gray-400 ">
         {member.gracePeriod == null
           ? "-"
           : penaltyGracePeriod(member.gracePeriod)}

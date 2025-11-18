@@ -105,27 +105,29 @@ export default function CCRoleEditModal({
   return (
     <div
       ref={modalRef}
-      className="fixed inset-0 bg-cert-black/50 flex justify-center items-center z-20"
+      className="fixed inset-0 bg-cert-black/50 flex justify-center items-center z-30"
     >
-      <div className="flex flex-col space-y-1.5 p-6 text-center rounded-lg border bg-white border-gray-200 shadow-sm w-96 relative animate-pop-in">
-        <div className="flex flex-col space-y-1.5 text-center sm:text-left">
-          <button
-            onClick={handleCancel}
-            className="absolute top-4 right-4 text-md text-gray-400 hover:text-gray-600 flex items-center justify-center"
-          >
-            <X />
-          </button>
-          <p className="text-gray-900">학년 / 직급 수정</p>
-          <p className="text-gray-500 text-sm">
-            {member.name}님의 학년 및 직급을 수정합니다.
-          </p>
-        </div>
+      <div className="rounded-lg border shadow-sm w-96 relative animate-pop-in dark-default">
+        <div className="flex flex-col space-y-1.5 p-6 text-center pb-6">
+          <div className="flex flex-col space-y-1.5 text-center sm:text-left">
+            <button
+              onClick={handleCancel}
+              className="absolute top-4 right-4 text-md text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 flex items-center justify-center"
+            >
+              <X />
+            </button>
+            <p className="text-gray-900 dark:text-gray-200">학년 / 직급 수정</p>
+            <p className="text-gray-500 text-sm dark:text-gray-400">
+              {member.name}님의 학년 및 직급을 수정합니다.
+            </p>
+          </div>
 
-        <div className="space-y-4 text-left pt-6">
-          <div className="grid grid-cols-1 gap-4">
+          <div className="space-y-4 text-left my-6">
             {/* 학년 */}
             <div>
-              <p className="text-sm mb-1.5 font-medium text-gray-700">학년</p>
+              <p className="text-sm mb-1.5 font-medium text-gray-700 dark:text-gray-200">
+                학년
+              </p>
               <div className="relative" ref={gradeRef}>
                 <DefaultButton
                   variant="outline"
@@ -133,14 +135,15 @@ export default function CCRoleEditModal({
                   className={cn(
                     "w-full justify-between text-left font-normal transition-all duration-200 cursor-pointer h-10",
                     "bg-white border-gray-300 hover:border-cert-red hover:bg-white hover:text-cert-black",
-                    "focus:border-cert-red focus:ring-2 focus:ring-cert-red/20"
+                    "focus:border-cert-red focus:ring-2 focus:ring-cert-red/20",
+                    "dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-800"
                   )}
                   onClick={() => {
                     setShowGradeDropdown((p) => !p);
                     setShowRoleDropdown(false);
                   }}
                 >
-                  <span className="text-gray-900 truncate pr-1 text-sm">
+                  <span className="text-gray-900 truncate pr-1 text-sm dark:text-gray-200">
                     {gradeOptions.find(
                       (option) =>
                         option.value ===
@@ -150,19 +153,18 @@ export default function CCRoleEditModal({
                     )?.label || editedMember.grade}
                   </span>
                   <ChevronDown
-                    className={`h-4 w-4 transition-transform duration-300 text-gray-400 ${
+                    className={`h-4 w-4 transition-transform duration-300 text-gray-400 dark:text-gray-300 ${
                       showGradeDropdown ? "rotate-180" : ""
                     }`}
                   />
                 </DefaultButton>
 
                 {showGradeDropdown && (
-                  <div className="absolute top-full mt-1 w-full bg-white border border-gray-300 rounded-lg shadow-lg z-20 max-h-48 overflow-y-auto">
+                  <div className="absolute border border-gray-300 bg-white w-full rounded-md dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 z-20 max-h-48 overflow-y-auto">
                     {gradeOptions.map((option) => (
                       <button
                         key={option.value}
-                        type="button"
-                        className="w-full px-4 py-2 text-left text-gray-900 first:rounded-t-lg last:rounded-b-lg text-sm hover:bg-cert-red hover:text-white duration-100 hover:first:rounded-md hover:rounded-md cursor-pointer"
+                        className="text-sm items-center flex h-10 w-full rounded-md px-3 py-2 text-gray-900 dark:text-gray-200 hover:bg-cert-red hover:text-white dark:hover:bg-cert-red duration-100 cursor-pointer"
                         onClick={() => {
                           setEditedMember((prev) => ({
                             ...prev,
@@ -181,7 +183,7 @@ export default function CCRoleEditModal({
 
             {/* 직급 */}
             <div>
-              <p className="text-sm mb-1.5 font-medium text-gray-700">직급</p>
+              <p className="text-sm mb-1.5 dark:text-gray-200">직급</p>
               <div className="relative" ref={roleRef}>
                 <DefaultButton
                   variant="outline"
@@ -189,30 +191,30 @@ export default function CCRoleEditModal({
                   className={cn(
                     "w-full justify-between text-left font-normal transition-all duration-200 cursor-pointer h-10",
                     "bg-white border-gray-300 hover:border-cert-red hover:bg-white hover:text-cert-black",
-                    "focus:border-cert-red focus:ring-2 focus:ring-cert-red/20"
+                    "focus:border-cert-red focus:ring-2 focus:ring-cert-red/20",
+                    "dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-800"
                   )}
                   onClick={() => {
                     setShowRoleDropdown((p) => !p);
                     setShowGradeDropdown(false);
                   }}
                 >
-                  <span className="text-gray-900 truncate pr-1 text-sm">
+                  <span className="text-gray-700 dark:text-gray-200 truncate">
                     {editedMember.role}
                   </span>
                   <ChevronDown
-                    className={`h-4 w-4 transition-transform duration-300 text-gray-400 ${
+                    className={`h-4 w-4 transition-transform duration-300 text-gray-400 dark:text-gray-300 ${
                       showRoleDropdown ? "rotate-180" : ""
                     }`}
                   />
                 </DefaultButton>
 
                 {showRoleDropdown && (
-                  <div className="absolute top-full mt-1 w-full bg-white border border-gray-300 rounded-lg shadow-lg z-20 max-h-48 overflow-y-auto">
+                  <div className="absolute border border-gray-300 bg-white w-full rounded-md dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 z-20 max-h-48 overflow-y-auto">
                     {roleOptions.map((option) => (
                       <button
                         key={option.value}
-                        type="button"
-                        className="w-full px-4 py-2 text-left text-gray-900 first:rounded-t-lg last:rounded-b-lg text-sm hover:bg-cert-red hover:text-white duration-100 hover:first:rounded-md hover:rounded-md cursor-pointer"
+                        className="text-sm items-center flex h-10 w-full rounded-md px-3 py-2 text-gray-900 dark:text-gray-200 hover:bg-cert-red hover:text-white dark:hover:bg-cert-red duration-100 cursor-pointer"
                         onClick={() => {
                           setEditedMember((prev) => ({
                             ...prev,
@@ -230,13 +232,8 @@ export default function CCRoleEditModal({
             </div>
           </div>
 
-          {/* 버튼 */}
           <div className="flex justify-end gap-2">
-            <DefaultButton
-              variant="outline"
-              onClick={handleCancel}
-              className="border-gray-300 text-gray-600 hover:border-red-400 hover:bg-cert-red/0 hover:text-cert-red"
-            >
+            <DefaultButton variant="outline" onClick={handleCancel}>
               취소
             </DefaultButton>
             <DefaultButton

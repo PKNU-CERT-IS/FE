@@ -125,16 +125,15 @@ export default function CCMembersList({ filteredMembers }: CCMembersListProps) {
 
   return (
     <div className="flex gap-8 w-full">
-      <div className="flex-1 rounded-lg border border-gray-200 shadow-sm">
-        <div className="px-6 py-4 border-b border-gray-300 flex items-center justify-between">
-          <h2 className="text-base font-semibold text-gray-800 flex items-center">
+      <div className="flex-1 rounded-lg border border-gray-200 shadow-sm dark:bg-gray-800 dark:border-gray-700">
+        <div className="px-6 py-4 border-b border-gray-300 dark:border-gray-600 flex items-center justify-between">
+          <h2 className="text-base font-semibold text-gray-800 dark:text-gray-200 flex items-center">
             전체 회원
-            <span className="text-sm text-gray-500 ml-1">
+            <span className="text-sm text-gray-500 dark:text-gray-400 ml-1">
               ({filteredMembers.length}명)
             </span>
           </h2>
 
-          {/* 추출 버튼*/}
           <div className="flex gap-2">
             <button
               onClick={handleExportCSV}
@@ -158,8 +157,8 @@ export default function CCMembersList({ filteredMembers }: CCMembersListProps) {
         </div>
 
         <div className="p-0 overflow-y-auto max-h-[40rem]">
-          <table className="w-full text-sm text-gray-600">
-            <thead className="bg-gray-50 text-left">
+          <table className="w-full text-sm text-gray-600 dark:text-gray-300">
+            <thead className="bg-gray-50 dark:bg-gray-700 text-left">
               <tr>
                 <th className="px-4 py-2">이름</th>
                 <th className="px-4 py-2">전공 / 학번</th>
@@ -168,7 +167,7 @@ export default function CCMembersList({ filteredMembers }: CCMembersListProps) {
                 <th className="px-4 py-2 text-center">유예 기간</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-200">
+            <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
               {membersRoleCategories.map((role) => {
                 const sorted = filteredMembers.filter(
                   (member) => translateMemberRole(member.role) === role
@@ -177,10 +176,10 @@ export default function CCMembersList({ filteredMembers }: CCMembersListProps) {
 
                 return (
                   <React.Fragment key={role}>
-                    <tr className="bg-gray-100">
+                    <tr className="bg-gray-100 dark:bg-gray-600">
                       <td
                         colSpan={5}
-                        className="px-4 py-2 font-semibold text-gray-700"
+                        className="px-4 py-2 font-semibold text-gray-700 dark:text-gray-200"
                       >
                         {role}
                       </td>

@@ -40,7 +40,7 @@ export default function RegisterActionButtons({
       </button>
       <button
         onClick={() => setIsRejectOpen(true)}
-        className="w-full flex items-center justify-center px-3 py-1 border border-red-500 text-cert-red hover:text-red-700 hover:bg-red-50 text-xs rounded h-7 transition-colors cursor-pointer"
+        className="w-full flex items-center justify-center px-3 py-1 border border-red-500 text-cert-red hover:text-red-700 hover:bg-red-50 text-xs rounded h-7 transition-colors cursor-pointer dark:hover:bg-red-800/20"
       >
         <XCircle className="w-3 h-3 mr-1" />
         거절
