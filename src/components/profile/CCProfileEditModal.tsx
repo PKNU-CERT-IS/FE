@@ -333,7 +333,7 @@ export default function CCProfileModal({
                     onChange={handleImageChange}
                     className="hidden"
                   />
-                  <div className="flex items-center h-8 gap-1 px-2 text-xs border border-gray-300 rounded-md hover:bg-gray-50 dark:border-gray-600 dark:hover:bg-gray-800 dark:text-gray-200 transition-colors focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent">
+                  <div className="flex items-center h-8 gap-1 px-2 text-xs border border-gray-300 rounded-md hover:bg-gray-50 dark:border-gray-600 dark:hover:bg-gray-900 dark:text-gray-200 transition-colors focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent">
                     <Upload className="w-3 h-3" />
                     업로드
                   </div>

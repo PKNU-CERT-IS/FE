@@ -675,10 +675,10 @@ export default function WriteForm({ type, initialReferences }: WriteFormProps) {
             </div>
 
             {/* 기간 정책 안내 */}
-            <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+            <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg dark:bg-blue-900/30 dark:border-blue-700">
               <div className="flex items-start gap-2">
-                <Info className="w-5 h-5 text-blue-600 mt-0.5" />
-                <div className="text-sm text-blue-800">
+                <Info className="w-5 h-5 text-blue-600 mt-0.5 dark:text-blue-300" />
+                <div className="text-sm text-blue-800 dark:text-blue-200">
                   <p className="font-medium mb-1">
                     {getPeriodPolicyInfo(type)?.title}
                   </p>
