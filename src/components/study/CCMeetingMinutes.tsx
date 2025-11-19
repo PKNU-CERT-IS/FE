@@ -1,27 +1,8 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
-import {
-  Plus,
-  Users,
-  Edit,
-  Trash2,
-  Calendar,
-  X,
-  ChevronDown,
-  ChevronUp,
-  User,
-} from "lucide-react";
-import DefaultButton from "@/components/ui/defaultButton";
-import ConfirmModal from "@/components/ui/defaultConfirmModal";
-import { formatDate } from "@/utils/formatDateUtil";
+import { useEffect, useRef, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import {
-  createStudyMeeting,
-  deleteStudyMeeting,
-  getStudyDetailMeeting,
-  updateStudyMeeting,
-} from "@/app/api/CCStudyMeetingApi";
+import { AxiosError } from "axios";
 import {
   CreateProjectMeeting,
   CreateStudyMeeting,
@@ -29,14 +10,33 @@ import {
   MeetingResponse,
   UpdateMeeting,
 } from "@/types/meeting";
+import { formatDate } from "@/utils/formatDateUtil";
 import {
   createProjectMeeting,
   deleteProjectMeeting,
   getProjectDetailMeeting,
   updateProjectMeeting,
 } from "@/app/api/CCProjectMeetingApi";
-import { AxiosError } from "axios";
+import {
+  createStudyMeeting,
+  deleteStudyMeeting,
+  getStudyDetailMeeting,
+  updateStudyMeeting,
+} from "@/app/api/CCStudyMeetingApi";
 import AlertModal from "@/components/ui/defaultAlertModal";
+import DefaultButton from "@/components/ui/defaultButton";
+import ConfirmModal from "@/components/ui/defaultConfirmModal";
+import {
+  Calendar,
+  ChevronDown,
+  ChevronUp,
+  Edit,
+  Plus,
+  Trash2,
+  User,
+  Users,
+  X,
+} from "lucide-react";
 
 interface MeetingMinutesProps {
   dataId: number;
@@ -66,7 +66,7 @@ export default function MeetingMinutes({
   const [meetingMinutes, setMeetingMinutes] = useState(initialData);
   const [showAddModal, setShowAddModal] = useState<boolean>(false);
   const [editingMinute, setEditingMinute] = useState<MeetingResponse | null>(
-    null
+    null,
   );
   const [newMinute, setNewMinute] = useState({
     title: "",
@@ -140,7 +140,7 @@ export default function MeetingMinutes({
   const updateLink = (index: number, field: "title" | "url", value: string) => {
     setNewMinute((prev) => {
       const updatedLinks = prev.links.map((link, i) =>
-        i === index ? { ...link, [field]: value } : link
+        i === index ? { ...link, [field]: value } : link,
       );
       return { ...prev, links: updatedLinks };
     });
@@ -198,7 +198,7 @@ export default function MeetingMinutes({
             : await getProjectDetailMeeting(minute.id);
 
         setMeetingMinutes((prev) =>
-          prev.map((m) => (m.id === minute.id ? { ...m, ...detailData } : m))
+          prev.map((m) => (m.id === minute.id ? { ...m, ...detailData } : m)),
         );
       }
       setNewMinute({
@@ -213,7 +213,7 @@ export default function MeetingMinutes({
     } catch (error) {
       const err = error as AxiosError<{ message?: string }>;
       setAlertMessage(
-        err.response?.data?.message || "회의록 정보를 불러오는데 실패했습니다."
+        err.response?.data?.message || "회의록 정보를 불러오는데 실패했습니다.",
       );
       setAlertOpen(true);
     }
@@ -223,7 +223,7 @@ export default function MeetingMinutes({
     if (!editingMinute) return;
 
     const validLinks = newMinute.links.filter(
-      (link) => link.title.trim() && link.url.trim()
+      (link) => link.title.trim() && link.url.trim(),
     );
 
     const body: UpdateMeeting = {
@@ -252,8 +252,8 @@ export default function MeetingMinutes({
                 participantNumber: body.participantNumber,
                 links: validLinks,
               }
-            : minute
-        )
+            : minute,
+        ),
       );
 
       closeModal();
@@ -267,7 +267,7 @@ export default function MeetingMinutes({
     } catch (error) {
       const err = error as AxiosError<{ message?: string }>;
       setAlertMessage(
-        err.response?.data?.message || "회의록 수정에 실패했습니다."
+        err.response?.data?.message || "회의록 수정에 실패했습니다.",
       );
       setAlertOpen(true);
     }
@@ -285,13 +285,13 @@ export default function MeetingMinutes({
       }
 
       setMeetingMinutes(
-        meetingMinutes.filter((minute) => minute.id !== deleteMinuteId)
+        meetingMinutes.filter((minute) => minute.id !== deleteMinuteId),
       );
       setDeleteMinuteId(null);
     } catch (error) {
       const err = error as AxiosError<{ message?: string }>;
       setAlertMessage(
-        err.response?.data?.message || "회의록 삭제에 실패했습니다."
+        err.response?.data?.message || "회의록 삭제에 실패했습니다.",
       );
       setAlertOpen(true);
     }
@@ -320,7 +320,7 @@ export default function MeetingMinutes({
             : await getProjectDetailMeeting(meetingId);
 
         setMeetingMinutes((prev) =>
-          prev.map((m) => (m.id === meetingId ? { ...m, ...detail } : m))
+          prev.map((m) => (m.id === meetingId ? { ...m, ...detail } : m)),
         );
       } catch (error) {
         throw error;

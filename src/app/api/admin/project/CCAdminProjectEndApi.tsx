@@ -6,7 +6,7 @@ export async function approveAdminProjectEnd(projectId: number) {
     const res = await apiClient.post(
       `/admin/project/end/approve`,
       { projectId },
-      { headers: { "Content-Type": "application/json" } }
+      { headers: { "Content-Type": "application/json" } },
     );
     return res.data;
   } catch (error) {
@@ -19,7 +19,7 @@ export async function rejectAdminProjectEnd(projectId: number) {
     const res = await apiClient.post(
       `/admin/project/end/reject`,
       { projectId },
-      { headers: { "Content-Type": "application/json" } }
+      { headers: { "Content-Type": "application/json" } },
     );
     return res.data;
   } catch (error) {

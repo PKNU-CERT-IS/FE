@@ -1,26 +1,26 @@
 "server-only";
 
 import Link from "next/link";
-import TypingAnimation from "@/components/typingAnimation";
+import { Metadata } from "next";
+import { ScheduleInfo } from "@/types/schedule";
+import { getSchedules } from "@/app/api/schedule/SCscheduleApi";
 import DefaultCard from "@/components/defaultCard";
-import LogoSVG from "/public/icons/logo-white.svg";
-import ShieldSVG from "/public/icons/shield.svg";
-import LockSVG from "/public/icons/lock.svg";
-import EyeSVG from "/public/icons/eye.svg";
-import PeopleSVG from "/public/icons/people.svg";
-import ScheduleSVG from "/public/icons/schedule.svg";
-import StudySVG from "/public/icons/study.svg";
+import MiniCalendar from "@/components/miniCalendar";
+import SectionBadge from "@/components/sectionBadge";
+import TypingAnimation from "@/components/typingAnimation";
+import DefaultButton from "@/components/ui/defaultButton";
 import BlogSVG from "/public/icons/blog.svg";
 import BugSVG from "/public/icons/bug.svg";
-import ThunderSVG from "/public/icons/thunder.svg";
+import EyeSVG from "/public/icons/eye.svg";
 import GlobeRedSVG from "/public/icons/globe-red.svg";
+import LockSVG from "/public/icons/lock.svg";
+import LogoSVG from "/public/icons/logo-white.svg";
+import PeopleSVG from "/public/icons/people.svg";
+import ScheduleSVG from "/public/icons/schedule.svg";
 import ServerSVG from "/public/icons/server.svg";
-import SectionBadge from "@/components/sectionBadge";
-import MiniCalendar from "@/components/miniCalendar";
-import DefaultButton from "@/components/ui/defaultButton";
-import { Metadata } from "next";
-import { getSchedules } from "@/app/api/schedule/SCscheduleApi";
-import { ScheduleInfo } from "@/types/schedule";
+import ShieldSVG from "/public/icons/shield.svg";
+import StudySVG from "/public/icons/study.svg";
+import ThunderSVG from "/public/icons/thunder.svg";
 
 export const metadata: Metadata = {
   title: "CERT-IS",
@@ -40,7 +40,7 @@ export default async function HomePage() {
     .filter((s) => new Date(s.startedAt) > new Date())
     .sort(
       (a, b) =>
-        new Date(a.startedAt).getTime() - new Date(b.startedAt).getTime()
+        new Date(a.startedAt).getTime() - new Date(b.startedAt).getTime(),
     );
   return (
     <>

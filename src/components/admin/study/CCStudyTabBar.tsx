@@ -1,14 +1,14 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import {
   MAIN_TABS,
   MainTab,
+  SUBTAB_CONFIG,
   SUB_TABS,
   SubTab,
-  SUBTAB_CONFIG,
   TAB_CONFIG,
 } from "@/types/admin/adminStudyTab";
-import { useRouter } from "next/navigation";
 
 interface CCStudyTabBarProps {
   currentTab: MainTab;

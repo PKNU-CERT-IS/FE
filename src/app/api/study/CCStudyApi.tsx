@@ -1,10 +1,10 @@
-import { apiClient } from "@/lib/clientIntercept";
 import { CreateStudyFormData, UpdateStudyFormData } from "@/types/study";
+import { apiClient } from "@/lib/clientIntercept";
 
 // 스터디 수정
 export async function updateStudy(
   studyId: number,
-  payload: UpdateStudyFormData
+  payload: UpdateStudyFormData,
 ) {
   try {
     const res = await apiClient.put(`/study/update`, payload, {
@@ -63,7 +63,7 @@ export async function endStudy(
     type: string;
     attachedUrl: string;
     size: number;
-  }
+  },
 ) {
   try {
     const res = await apiClient.post(
@@ -74,7 +74,7 @@ export async function endStudy(
       },
       {
         headers: { "Content-Type": "application/json" },
-      }
+      },
     );
     return res.data;
   } catch (error) {

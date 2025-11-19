@@ -1,8 +1,8 @@
 "server-only";
 
-import CCSignUpForm from "@/components/auth/signup/CCSignUpForm";
-import SCAuthTitle from "@/components/auth/SCAuthTitle";
 import SCAuthSwitchButton from "@/components/auth/SCAuthSwitchButton";
+import SCAuthTitle from "@/components/auth/SCAuthTitle";
+import CCSignUpForm from "@/components/auth/signup/CCSignUpForm";
 
 export default function SCSignUpContainer() {
   return (

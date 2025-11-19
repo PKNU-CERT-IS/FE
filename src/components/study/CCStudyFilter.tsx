@@ -1,14 +1,7 @@
 "use client";
 
-import { useState, useTransition, useRef, useCallback, useEffect } from "react";
+import { useCallback, useEffect, useRef, useState, useTransition } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { ChevronDown, X } from "lucide-react";
-import DefaultSearchBar from "@/components/ui/defaultSearchBar";
-import SearchSVG from "/public/icons/search.svg";
-import type { StudyFilterProps, FilterKey } from "@/types/study";
-import { SEMESTER_OPTIONS, SEMESTER_LABELS } from "@/types/study";
-import DefaultButton from "@/components/ui/defaultButton";
-import { cn } from "@/lib/utils";
 import {
   CATEGORY_LABELS,
   CATEGORY_OPTIONS,
@@ -16,7 +9,14 @@ import {
   SUBCATEGORY_MAP,
   SubCategoryKey,
 } from "@/types/category";
-import { STATUS_LABELS, STATUS_FILTER_OPTIONS } from "@/types/progressStatus";
+import { STATUS_FILTER_OPTIONS, STATUS_LABELS } from "@/types/progressStatus";
+import type { FilterKey, StudyFilterProps } from "@/types/study";
+import { SEMESTER_LABELS, SEMESTER_OPTIONS } from "@/types/study";
+import { cn } from "@/lib/utils";
+import DefaultButton from "@/components/ui/defaultButton";
+import DefaultSearchBar from "@/components/ui/defaultSearchBar";
+import { ChevronDown, X } from "lucide-react";
+import SearchSVG from "/public/icons/search.svg";
 
 interface CCStudyFilterProps extends StudyFilterProps {
   isAdmin?: boolean;
@@ -45,7 +45,7 @@ export default function CCStudyFilter({
   const [showStatusDropdown, setShowStatusDropdown] = useState<boolean>(false);
 
   const [searchValue, setSearchValue] = useState<string>(
-    studyCurrentFilters.search || ""
+    studyCurrentFilters.search || "",
   );
   useEffect(() => {
     setSearchValue(studyCurrentFilters.search || "");
@@ -78,7 +78,7 @@ export default function CCStudyFilter({
         }
       });
     },
-    [searchParams, router, isAdmin]
+    [searchParams, router, isAdmin],
   );
 
   // 메인카테고리에서 다른 카테고리 선택 시 서브 카테고리 리셋
@@ -105,7 +105,7 @@ export default function CCStudyFilter({
         }
       });
     },
-    [searchParams, router, isAdmin]
+    [searchParams, router, isAdmin],
   );
 
   // 검색 디바운스 처리 (개선된 버전)
@@ -123,7 +123,7 @@ export default function CCStudyFilter({
         updateFilter("search", searchTerm);
       }, 300);
     },
-    [updateFilter]
+    [updateFilter],
   );
   // 검색어 초기화 함수
   const handleClearSearch = useCallback(() => {
@@ -194,7 +194,7 @@ export default function CCStudyFilter({
                 "w-full justify-between text-left font-normal transition-all duration-200 cursor-pointer",
                 "border-gray-300 bg-white hover:border-cert-red hover:text-cert-black hover:bg-white",
                 "focus:border-cert-red focus:ring-2 focus:ring-cert-red/20",
-                "dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-800"
+                "dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-800",
               )}
               onClick={() => {
                 setShowSemesterDropdown(!showSemesterDropdown);
@@ -245,7 +245,7 @@ export default function CCStudyFilter({
                 "w-full justify-between text-left font-normal transition-all duration-200 cursor-pointer",
                 "border-gray-300 bg-white hover:border-cert-red hover:text-cert-black hover:bg-white",
                 "focus:border-cert-red focus:ring-2 focus:ring-cert-red/20",
-                "dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-800"
+                "dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-800",
               )}
               onClick={() => {
                 setShowCategoryDropdown(!showCategoryDropdown);
@@ -296,7 +296,7 @@ export default function CCStudyFilter({
                 "w-full justify-between text-left font-normal transition-all duration-200 cursor-pointer",
                 "border-gray-300 bg-white hover:border-cert-red hover:text-cert-black hover:bg-white",
                 "focus:border-cert-red focus:ring-2 focus:ring-cert-red/20",
-                "dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-800"
+                "dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-800",
               )}
               onClick={() => {
                 setShowSubCategoryDropdown(!showSubCategoryDropdown);
@@ -364,7 +364,7 @@ export default function CCStudyFilter({
                 "w-full justify-between text-left font-normal transition-all duration-200",
                 (isAdmin && view === "pending") || (isAdmin && view === "end")
                   ? "bg-gray-100 text-gray-400 cursor-not-allowed dark:bg-gray-700 dark:text-gray-500"
-                  : "cursor-pointer border-gray-300 bg-white hover:border-cert-red hover:text-cert-black hover:bg-white focus:border-cert-red focus:ring-2 focus:ring-cert-red/20 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-800"
+                  : "cursor-pointer border-gray-300 bg-white hover:border-cert-red hover:text-cert-black hover:bg-white focus:border-cert-red focus:ring-2 focus:ring-cert-red/20 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-800",
               )}
               onClick={() => {
                 if (

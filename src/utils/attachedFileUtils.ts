@@ -16,7 +16,7 @@ export const formatFileSize = (sizeInBytes: number | string) => {
  * MIME 타입이나 파일명 확장자를 AttachedType enum 값으로 변환
  */
 export function mapToAttachedType(
-  file: File | { type: string; name: string; id: number }
+  file: File | { type: string; name: string; id: number },
 ): AttachedType {
   const mime = file.type?.toLowerCase() ?? "";
   const ext = file.name?.split(".").pop()?.toLowerCase() ?? "";
@@ -49,7 +49,7 @@ export function mapToAttachedType(
 }
 
 export async function convertFileToAttachedFile(
-  file: File
+  file: File,
 ): Promise<AttachedFile> {
   const reader = new FileReader();
   const base64 = await new Promise<string>((resolve, reject) => {
@@ -105,6 +105,6 @@ export const convertBoardFileToAttachedFile = (file: File) => ({
   size: file.size,
   type: file.type,
   attachedUrl: `https://www.cert-is.com/uploads/${encodeURIComponent(
-    file.name
+    file.name,
   )}`,
 });

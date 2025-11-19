@@ -1,11 +1,11 @@
 "use client";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { AxiosError } from "axios";
+import { postLike } from "@/app/api/board/CCboardApi";
+import AlertModal from "@/components/ui/defaultAlertModal";
 import DefaultButton from "@/components/ui/defaultButton";
 import { Heart } from "lucide-react";
-import { postLike } from "@/app/api/board/CCboardApi";
-import { useRouter } from "next/navigation";
-import AlertModal from "@/components/ui/defaultAlertModal";
-import { AxiosError } from "axios";
 
 interface LikeButtonProps {
   currentLikes: number;

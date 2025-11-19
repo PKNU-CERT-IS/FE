@@ -1,4 +1,4 @@
-import { BlogCategory, BLOG_CATEGORIES } from "@/types/blog";
+import { BLOG_CATEGORIES, BlogCategory } from "@/types/blog";
 import { formatDate } from "@/utils/formatDateUtil";
 
 /**
@@ -58,7 +58,7 @@ export const calculateReadingTime = (content: string): number => {
  */
 export const highlightSearchTerm = (
   text: string,
-  searchTerm: string
+  searchTerm: string,
 ): string => {
   if (!searchTerm.trim()) return text;
 
@@ -71,7 +71,7 @@ export const highlightSearchTerm = (
  */
 export const generateExcerpt = (
   content: string,
-  maxLength: number = 150
+  maxLength: number = 150,
 ): string => {
   // HTML 태그 제거
   const plainText = content.replace(/<[^>]*>/g, "");

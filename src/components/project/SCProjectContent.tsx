@@ -2,16 +2,16 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import GithubSVG from "/public/icons/github.svg";
-import ChainSVG from "/public/icons/chain.svg";
-import type { ProjectList } from "@/types/project";
-import DefaultBadge from "@/components/ui/defaultBadge";
-import { getCategoryColor, getStatusColor } from "@/utils/badgeUtils";
-import { STATUS_LABELS } from "@/types/progressStatus";
-import { getProgressColor } from "@/utils/studyHelper";
-import { MEMBER_GRADE_LABELS } from "@/types/study";
 import { SUBCATEGORY_FROM_EN } from "@/types/category";
+import { STATUS_LABELS } from "@/types/progressStatus";
+import type { ProjectList } from "@/types/project";
+import { MEMBER_GRADE_LABELS } from "@/types/study";
+import { getCategoryColor, getStatusColor } from "@/utils/badgeUtils";
+import { getProgressColor } from "@/utils/studyHelper";
+import DefaultBadge from "@/components/ui/defaultBadge";
 import { Calendar } from "lucide-react";
+import ChainSVG from "/public/icons/chain.svg";
+import GithubSVG from "/public/icons/github.svg";
 
 interface SCProjectContentProps {
   materials: ProjectList[];
@@ -24,7 +24,7 @@ export default function SCProjectContent({ materials }: SCProjectContentProps) {
         {materials.map((project) => {
           const participationRate = Math.round(
             (project.currentParticipantNumber / project.maxParticipantNumber) *
-              100
+              100,
           );
           const progressColor = getProgressColor(participationRate);
 
@@ -94,7 +94,7 @@ export default function SCProjectContent({ materials }: SCProjectContentProps) {
                       className={`inline-flex items-center px-2 py-1 rounded text-xs font-medium border-none
                         ${getCategoryColor(
                           SUBCATEGORY_FROM_EN[project.subcategory] ??
-                            project.subcategory
+                            project.subcategory,
                         )}`}
                     >
                       {SUBCATEGORY_FROM_EN[project.subcategory] ??
@@ -142,8 +142,8 @@ export default function SCProjectContent({ materials }: SCProjectContentProps) {
                       project.projectCreatorGrade === "NONE"
                         ? "bg-gray-100 text-gray-800"
                         : project.projectCreatorGrade === "GRADUATED"
-                        ? "bg-purple-100 text-black"
-                        : "bg-blue-100 text-blue-800"
+                          ? "bg-purple-100 text-black"
+                          : "bg-blue-100 text-blue-800"
                     }`}
                   >
                     {MEMBER_GRADE_LABELS[project.projectCreatorGrade]}

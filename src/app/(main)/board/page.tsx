@@ -1,19 +1,19 @@
 "server-only";
 
+import { Suspense } from "react";
+import Link from "next/link";
 import { Metadata } from "next";
-import BoardSearchBar from "@/components/board/CCBoardSearchBar";
-import BoardCategory from "@/components/board/CCBoardCategory";
-import BoardContents from "@/components/board/SCBoardContents";
-import PlusSVG from "/public/icons/plus.svg";
 import {
-  boardCategoriesEN,
   BoardCategoryType,
   BoardCategoryTypeEN,
+  boardCategoriesEN,
   toKoreanCategory,
 } from "@/types/board";
-import Link from "next/link";
-import { Suspense } from "react";
+import BoardCategory from "@/components/board/CCBoardCategory";
+import BoardSearchBar from "@/components/board/CCBoardSearchBar";
+import BoardContents from "@/components/board/SCBoardContents";
 import SCBoardSkeleton from "@/components/board/ScBoardSkeleton";
+import PlusSVG from "/public/icons/plus.svg";
 
 const ITEMS_PER_PAGE = 5;
 
@@ -47,10 +47,10 @@ export async function generateMetadata({
       keyword && validCategory !== "전체"
         ? `'${keyword}', '${validCategory}' 관련 보안 게시판 글 목록입니다.`
         : keyword
-        ? `'${keyword}' 관련 보안 게시판 글 목록입니다.`
-        : validCategory !== "전체"
-        ? `'${validCategory}' 관련 보안 게시판 글 목록입니다.`
-        : "CERT-IS 동아리 보안 게시판 글 목록입니다.",
+          ? `'${keyword}' 관련 보안 게시판 글 목록입니다.`
+          : validCategory !== "전체"
+            ? `'${validCategory}' 관련 보안 게시판 글 목록입니다.`
+            : "CERT-IS 동아리 보안 게시판 글 목록입니다.",
     openGraph: {
       title: "CERT-IS Board",
       description: "보안 정보와 기술 자료를 공유하는 전문 게시판입니다.",

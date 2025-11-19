@@ -1,13 +1,13 @@
 "server-only";
 
-import SCScheduleList from "@/components/schedule/SCScheduleList";
-import Calendar from "@/components/schedule/CCCalendar";
-import SCAdminScheduleInfo from "@/components/admin/schedule/SCAdminScheduleInfo";
-import SCAdminScheduleRequestList from "@/components/admin/schedule/SCAdminScheduleRequestList";
-import CCScrollScheduleList from "@/components/schedule/CCScrollScheduleList";
 import { ScheduleInfo } from "@/types/schedule";
 import { getSchedules } from "@/app/api/schedule/SCscheduleApi";
+import SCAdminScheduleInfo from "@/components/admin/schedule/SCAdminScheduleInfo";
+import SCAdminScheduleRequestList from "@/components/admin/schedule/SCAdminScheduleRequestList";
 import CCAddScheduleCard from "@/components/schedule/CCAddScheduleCard";
+import Calendar from "@/components/schedule/CCCalendar";
+import CCScrollScheduleList from "@/components/schedule/CCScrollScheduleList";
+import SCScheduleList from "@/components/schedule/SCScheduleList";
 
 interface SearchPageProps {
   searchParams: Promise<{ date: string }>;

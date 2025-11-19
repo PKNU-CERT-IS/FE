@@ -1,23 +1,23 @@
 "server-only";
 import Image from "next/image";
-import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import BackToListButton from "@/components/detail/SCBackToListButton";
-import MarkdownRenderer from "@/components/ui/defaultMarkdownRenderer";
-import DownloadButton from "@/components/detail/SCDownloadButton";
-import { Calendar, Eye, Heart, Pin, Download } from "lucide-react";
-import DefaultBadge from "@/components/ui/defaultBadge";
-import KebabMenuButton from "@/components/detail/CCKebabMenu";
-import LikeButton from "@/components/detail/CCLikeButton";
-import ShareButton from "@/components/detail/CCShareButton";
+import { Metadata } from "next";
+import { AttachedFile, getFileKey } from "@/types/attachedFile";
+import { toKoreanCategory } from "@/types/board";
 import { formatFileSize } from "@/utils/attachedFileUtils";
 import { getFileIcon } from "@/utils/attachedFileUtils";
 import { getBoardCategoryColor } from "@/utils/boardUtils";
-import { getDetailBoard } from "@/app/api/board/SCBoardApi";
-import { toKoreanCategory } from "@/types/board";
 import { formatDate } from "@/utils/formatDateUtil";
-import { AttachedFile, getFileKey } from "@/types/attachedFile";
 import { translateRoleToKorean } from "@/utils/transformRequestValue";
+import { getDetailBoard } from "@/app/api/board/SCBoardApi";
+import KebabMenuButton from "@/components/detail/CCKebabMenu";
+import LikeButton from "@/components/detail/CCLikeButton";
+import ShareButton from "@/components/detail/CCShareButton";
+import BackToListButton from "@/components/detail/SCBackToListButton";
+import DownloadButton from "@/components/detail/SCDownloadButton";
+import DefaultBadge from "@/components/ui/defaultBadge";
+import MarkdownRenderer from "@/components/ui/defaultMarkdownRenderer";
+import { Calendar, Download, Eye, Heart, Pin } from "lucide-react";
 import LogoSVG from "/public/icons/logo.svg";
 
 export async function generateMetadata({

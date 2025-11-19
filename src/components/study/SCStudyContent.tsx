@@ -1,20 +1,20 @@
 "server-only";
 
+import Link from "next/link";
+import { SUBCATEGORY_FROM_EN, SUBCATEGORY_TO_EN } from "@/types/category";
+import { STATUS_LABELS } from "@/types/progressStatus";
 import type { StudyList } from "@/types/study";
 import { MEMBER_GRADE_LABELS } from "@/types/study";
+import { formatFileSize } from "@/utils/attachedFileUtils";
+import { getCategoryColor, getStatusColor } from "@/utils/badgeUtils";
+import { getProgressColor, parseSearchParams } from "@/utils/studyHelper";
+import { getStudies, searchStudies } from "@/app/api/study/SCStudyApi";
+import DownloadButton from "@/components/detail/SCDownloadButton";
 import CCStudyPagination from "@/components/study/CCStudyPagination";
 import SCSearchResultNotFound from "@/components/ui/SCSearchResultNotFound";
-import { getProgressColor, parseSearchParams } from "@/utils/studyHelper";
-import PdfSVG from "/public/icons/pdf.svg";
-import Link from "next/link";
 import DefaultBadge from "@/components/ui/defaultBadge";
-import { getCategoryColor, getStatusColor } from "@/utils/badgeUtils";
-import { formatFileSize } from "@/utils/attachedFileUtils";
-import { STATUS_LABELS } from "@/types/progressStatus";
-import { searchStudies, getStudies } from "@/app/api/study/SCStudyApi";
-import { SUBCATEGORY_FROM_EN, SUBCATEGORY_TO_EN } from "@/types/category";
 import { Calendar } from "lucide-react";
-import DownloadButton from "@/components/detail/SCDownloadButton";
+import PdfSVG from "/public/icons/pdf.svg";
 
 interface SCStudyContentProps {
   searchParams: {
@@ -58,7 +58,7 @@ export default async function SCStudyContent({
         },
         {
           page: (currentFilters.page ?? 1) - 1,
-        }
+        },
       );
     }
 
@@ -84,7 +84,7 @@ export default async function SCStudyContent({
             const participationRate = Math.round(
               (material.currentParticipantNumber /
                 material.maxParticipantNumber) *
-                100
+                100,
             );
             const progressColor = getProgressColor(participationRate);
 
@@ -129,7 +129,7 @@ export default async function SCStudyContent({
                       className={`inline-flex items-center px-2 py-1 rounded text-xs font-medium border-none
                         ${getCategoryColor(
                           SUBCATEGORY_FROM_EN[material.subcategory] ??
-                            material.subcategory
+                            material.subcategory,
                         )}`}
                     >
                       {SUBCATEGORY_FROM_EN[material.subcategory] ??

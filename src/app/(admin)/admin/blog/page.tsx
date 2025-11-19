@@ -1,16 +1,16 @@
 "server-only";
 
-import BlogSearchBar from "@/components/blog/CCBlogSearchBar";
-import CCBlogCategoryFilter from "@/components/blog/CCBlogCategoryFilter";
+import { blogTabCategoryType } from "@/types/admin/adminBlog";
+import { BlogCategory } from "@/types/blog";
+import { isValidTab } from "@/utils/adminBlogUtils";
+import { isValidCategory } from "@/utils/blogUtils";
+import { searchBlogsByAdmin } from "@/app/api/blog/SCblogApi";
 import CCBlogTabBar from "@/components/admin/blog/CCBlogTabBar";
 import SCBlogContentList from "@/components/admin/blog/SCBlogContentList";
+import CCBlogCategoryFilter from "@/components/blog/CCBlogCategoryFilter";
 import CCBlogPagination from "@/components/blog/CCBlogPagination";
-import { BlogCategory } from "@/types/blog";
-import { blogTabCategoryType } from "@/types/admin/adminBlog";
-import { isValidCategory } from "@/utils/blogUtils";
-import { isValidTab } from "@/utils/adminBlogUtils";
+import BlogSearchBar from "@/components/blog/CCBlogSearchBar";
 import SCSearchResultNotFound from "@/components/ui/SCSearchResultNotFound";
-import { searchBlogsByAdmin } from "@/app/api/blog/SCblogApi";
 
 interface AdminBlogProps {
   searchParams: Promise<{
@@ -45,7 +45,7 @@ export default async function AdminBlogPage({ searchParams }: AdminBlogProps) {
       category: currentCategory === "전체" ? "" : currentCategory,
       isPublic: isPublic,
     },
-    { page: page - 1, size: ITEMS_PER_PAGE, sort: "createdAt,desc" }
+    { page: page - 1, size: ITEMS_PER_PAGE, sort: "createdAt,desc" },
   );
   const blogs = data.content;
   // ⚠️ 백엔드 응답 구조에 따라 조정 필요

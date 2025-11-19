@@ -1,6 +1,6 @@
 "server-only";
-import SCAuthTitle from "@/components/auth/SCAuthTitle";
 import CCAdminLoginForm from "@/components/admin/login/CCAdminLoginForm";
+import SCAuthTitle from "@/components/auth/SCAuthTitle";
 
 export default function SCAdminLogin() {
   return (

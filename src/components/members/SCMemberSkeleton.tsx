@@ -45,8 +45,8 @@ export default function SCMembersSkeleton() {
                       index % 3 === 0
                         ? "w-12"
                         : index % 3 === 1
-                        ? "w-16"
-                        : "w-10"
+                          ? "w-16"
+                          : "w-10"
                     }`}
                   ></div>
                 ))}

@@ -11,7 +11,7 @@
  */
 export const formatDate = (
   dateInput: Date | string,
-  format: "short" | "medium" | "long" | "dot" = "short"
+  format: "short" | "medium" | "long" | "dot" = "short",
 ): string => {
   try {
     // 문자열일 경우 포맷 정규화
@@ -81,7 +81,7 @@ export const formatDate = (
  */
 export const formatTime = (
   dateInput: Date | string,
-  format: "hm" | "hms" = "hm"
+  format: "hm" | "hms" = "hm",
 ): string => {
   try {
     const date =
@@ -113,7 +113,7 @@ export const formatTime = (
 export const formatDateRange = (
   startInput: Date | string,
   endInput: Date | string,
-  format: "dot" | "short" | "medium" | "long" = "dot"
+  format: "dot" | "short" | "medium" | "long" = "dot",
 ): string => {
   const startDate =
     typeof startInput === "string" ? new Date(startInput) : startInput;

@@ -1,10 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { AlertTriangle, CheckCircle2, X } from "lucide-react";
+import { AttachedFile } from "@/types/attachedFile";
 import DefaultButton from "@/components/ui/defaultButton";
 import FileUpload from "@/components/write/CCFileUpload";
-import { AttachedFile } from "@/types/attachedFile";
+import { AlertTriangle, CheckCircle2, X } from "lucide-react";
 
 interface ConfirmModalProps {
   isOpen: boolean;

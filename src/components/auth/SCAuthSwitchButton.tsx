@@ -1,7 +1,7 @@
 "server-only";
 
 import Link from "next/link";
-import { UserPlus, LockOpen } from "lucide-react";
+import { LockOpen, UserPlus } from "lucide-react";
 
 type AuthSwitchPromptProps = {
   type: "login" | "signup";

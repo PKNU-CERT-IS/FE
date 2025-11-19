@@ -1,10 +1,10 @@
 "server-only";
 
 import { Suspense } from "react";
-import CCScrollScheduleList from "@/components/schedule/CCScrollScheduleList";
-import SCScheduleSkeleton from "@/components/schedule/SCScheduleSkeleton";
-import ScheduleContents from "@/components/schedule/SCScheduleContents";
 import { Metadata } from "next";
+import CCScrollScheduleList from "@/components/schedule/CCScrollScheduleList";
+import ScheduleContents from "@/components/schedule/SCScheduleContents";
+import SCScheduleSkeleton from "@/components/schedule/SCScheduleSkeleton";
 
 interface SearchPageProps {
   searchParams: Promise<{ date: string }>;

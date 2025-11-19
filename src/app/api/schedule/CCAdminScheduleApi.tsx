@@ -1,8 +1,8 @@
-import { apiClient } from "@/lib/clientIntercept";
 import {
   AdminScheduleCreateRequest,
   AdminScheduleInfo,
 } from "@/types/schedule";
+import { apiClient } from "@/lib/clientIntercept";
 
 // 스케줄 호출
 export async function getCCAdminSchedules() {

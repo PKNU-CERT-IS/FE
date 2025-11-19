@@ -1,13 +1,13 @@
 "server-only";
 
-import ScheduleSVG from "/public/icons/schedule.svg";
-import LocationSVG from "/public/icons/location.svg";
-import TimeSVG from "/public/icons/time.svg";
-import { getTypeColor, getTypeLabel } from "@/utils/scheduleUtils";
 import { ScheduleInfo } from "@/types/schedule";
 import { formatDateRange, formatTime } from "@/utils/formatDateUtil";
-import { MessageSquareText } from "lucide-react";
+import { getTypeColor, getTypeLabel } from "@/utils/scheduleUtils";
 import { getSchedules } from "@/app/api/schedule/SCscheduleApi";
+import { MessageSquareText } from "lucide-react";
+import LocationSVG from "/public/icons/location.svg";
+import ScheduleSVG from "/public/icons/schedule.svg";
+import TimeSVG from "/public/icons/time.svg";
 
 interface SCScheduleListProps {
   date: string;
@@ -55,14 +55,14 @@ export default async function SCScheduleList({
                         {formatDateRange(
                           schedule.startedAt,
                           schedule.endedAt,
-                          "dot"
+                          "dot",
                         )}
                       </div>
                       <div className="flex items-center">
                         <TimeSVG className="mr-2" />
                         {`${formatTime(
                           schedule.startedAt,
-                          "hm"
+                          "hm",
                         )} - ${formatTime(schedule.endedAt, "hm")}`}
                       </div>
                       <div className="flex items-center">
@@ -80,7 +80,7 @@ export default async function SCScheduleList({
                     <div className="flex items-center gap-2">
                       <div
                         className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold ${getTypeColor(
-                          schedule.type
+                          schedule.type,
                         )}`}
                       >
                         {getTypeLabel(schedule.type)}

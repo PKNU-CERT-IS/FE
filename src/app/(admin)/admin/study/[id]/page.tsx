@@ -1,7 +1,7 @@
 "server-only";
 
-import StudyDetailPage from "@/app/(admin)/admin/study/[id]/studyDetailPage";
 import ProjectDetailPage from "@/app/(admin)/admin/study/[id]/projectDetailPage";
+import StudyDetailPage from "@/app/(admin)/admin/study/[id]/studyDetailPage";
 
 interface AdminStudyDetailPageProps {
   params: Promise<{ id: string }>;

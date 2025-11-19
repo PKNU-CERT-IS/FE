@@ -1,12 +1,12 @@
 "use client";
 
+import { useRouter, useSearchParams } from "next/navigation";
 import {
+  TAB_CONFIG,
   blogTabCategory,
   blogTabCategoryType,
-  TAB_CONFIG,
 } from "@/types/admin/adminBlog";
 import { isValidTab } from "@/utils/adminBlogUtils";
-import { useRouter, useSearchParams } from "next/navigation";
 
 export default function CCBlogTabBar() {
   const searchParams = useSearchParams();

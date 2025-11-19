@@ -1,7 +1,7 @@
-import CCThemeSwitch from "@/components/ui/CCThemeSwitch";
-import CCTopButton from "@/components/ui/CCTopButton";
 import Footer from "@/layouts/footer";
 import NavigationBar from "@/layouts/navigationBar";
+import CCThemeSwitch from "@/components/ui/CCThemeSwitch";
+import CCTopButton from "@/components/ui/CCTopButton";
 
 export default function MainLayout({
   children,

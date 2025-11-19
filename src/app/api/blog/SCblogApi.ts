@@ -1,9 +1,9 @@
-import { fetchWithAuth } from "@/lib/serverIntercept";
 import { BlogsKeywordSearch, BlogsSearchByAdmin } from "@/types/blog";
+import { fetchWithAuth } from "@/lib/serverIntercept";
 
 export async function searchBlogsByKeyword(
   filters: BlogsKeywordSearch,
-  options: { page?: number; size?: number; sort?: string }
+  options: { page?: number; size?: number; sort?: string },
 ) {
   const params = new URLSearchParams();
   if (filters.keyword) params.append("keyword", filters.keyword);
@@ -18,7 +18,7 @@ export async function searchBlogsByKeyword(
       method: "GET",
       headers: { "Content-Type": "application/json" },
       cache: "no-store",
-    }
+    },
   );
   if (!response.ok) {
     throw new Error(`Failed to fetch blogs: ${response.statusText}`);
@@ -30,7 +30,7 @@ export async function searchBlogsByKeyword(
 
 export async function searchBlogsByAdmin(
   filters: BlogsSearchByAdmin,
-  options: { page?: number; size?: number; sort?: string }
+  options: { page?: number; size?: number; sort?: string },
 ) {
   const params = new URLSearchParams();
   if (filters.keyword) params.append("keyword", filters.keyword);
@@ -61,7 +61,7 @@ export async function searchBlogDetail(blogId: number) {
       method: "GET",
       headers: { "Content-Type": "application/json" },
       cache: "no-store",
-    }
+    },
   );
 
   console.log(response);

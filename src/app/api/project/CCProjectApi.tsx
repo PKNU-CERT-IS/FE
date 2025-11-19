@@ -1,6 +1,6 @@
-import { apiClient } from "@/lib/clientIntercept";
 import { AttachedFile } from "@/types/attachedFile";
 import { SemesterType } from "@/types/project";
+import { apiClient } from "@/lib/clientIntercept";
 
 export interface CreateProjectFormData {
   title: string;
@@ -50,7 +50,7 @@ export async function getCCDetailProject(projectId: number) {
 
 export async function updateProject(
   projectId: number,
-  payload: UpdateProjectFormData
+  payload: UpdateProjectFormData,
 ) {
   try {
     const res = await apiClient.put(`/project/update`, payload, {
@@ -83,7 +83,7 @@ export async function endProject(
     type: string;
     attachedUrl: string;
     size: number;
-  }
+  },
 ) {
   try {
     const res = await apiClient.post(
@@ -94,7 +94,7 @@ export async function endProject(
       },
       {
         headers: { "Content-Type": "application/json" },
-      }
+      },
     );
     return res.data;
   } catch (error) {

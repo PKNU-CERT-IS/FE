@@ -1,9 +1,9 @@
 "use client";
 
-import { AlertTriangle } from "lucide-react";
-import DefaultBadge from "@/components/ui/defaultBadge";
 import { AdminMemberDetailInfoType } from "@/types/admin/adminMembers";
 import { penaltyGracePeriod } from "@/utils/adminPenaltyGracePeriodUtils";
+import DefaultBadge from "@/components/ui/defaultBadge";
+import { AlertTriangle } from "lucide-react";
 
 interface MemberRowProps {
   member: AdminMemberDetailInfoType;

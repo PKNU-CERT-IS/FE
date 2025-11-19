@@ -1,14 +1,14 @@
 "use client";
 
 import { AttachedFile, getFileKey } from "@/types/attachedFile";
-import DefaultButton from "@/components/ui/defaultButton";
-import { Upload, Trash2 } from "lucide-react";
-import { cn } from "@/lib/utils";
 import {
   convertFileToAttachedFile,
   formatFileSize,
   getFileIcon,
 } from "@/utils/attachedFileUtils";
+import { cn } from "@/lib/utils";
+import DefaultButton from "@/components/ui/defaultButton";
+import { Trash2, Upload } from "lucide-react";
 
 interface FileUploadProps {
   attachments: AttachedFile[];
@@ -26,7 +26,7 @@ export default function FileUpload({
     if (!files) return;
 
     const newAttachedFiles = await Promise.all(
-      Array.from(files).map((file) => convertFileToAttachedFile(file))
+      Array.from(files).map((file) => convertFileToAttachedFile(file)),
     );
     onAttachmentsChange([...attachments, ...newAttachedFiles]);
     e.target.value = "";
@@ -42,7 +42,7 @@ export default function FileUpload({
         className={cn(
           "border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-cert-red transition-colors",
           "dark:border-gray-600 dark:hover:border-cert-red dark:bg-gray-800/40",
-          className
+          className,
         )}
       >
         <input

@@ -1,5 +1,5 @@
-import PageLayout from "@/layouts/pageLayout";
 import { Metadata } from "next";
+import PageLayout from "@/layouts/pageLayout";
 import ChatLargeSVG from "/public/icons/chat.svg";
 
 export const metadata: Metadata = {

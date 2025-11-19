@@ -1,8 +1,8 @@
 "use client";
 
 import { ScheduleInfo } from "@/types/schedule";
-import CCEditButton from "@/components/admin/schedule/CCEditButton";
 import CCDeleteButton from "@/components/admin/schedule/CCDeleteButton";
+import CCEditButton from "@/components/admin/schedule/CCEditButton";
 
 interface CCEditDeleteButtonsWrapperProps {
   schedule: ScheduleInfo;

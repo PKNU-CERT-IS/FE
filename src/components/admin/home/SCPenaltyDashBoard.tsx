@@ -1,8 +1,8 @@
+import { groupMembersByPenalty } from "@/utils/membersUtils";
+import { getMembersForStaff } from "@/app/api/member/SCadminMemberApi";
+import CCPenaltyBarCharts from "@/components/admin/home/CCPenaltyCharts";
 import DefaultBadge from "@/components/ui/defaultBadge";
 import { AlertTriangle } from "lucide-react";
-import CCPenaltyBarCharts from "@/components/admin/home/CCPenaltyCharts";
-import { getMembersForStaff } from "@/app/api/member/SCadminMemberApi";
-import { groupMembersByPenalty } from "@/utils/membersUtils";
 
 export default async function SCPenaltyDashBoard() {
   const members = await getMembersForStaff();

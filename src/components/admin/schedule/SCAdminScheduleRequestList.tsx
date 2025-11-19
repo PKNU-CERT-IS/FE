@@ -1,18 +1,18 @@
 "server-only";
 
+import { formatDateRange, formatTime } from "@/utils/formatDateUtil";
+import { getPendingSchedules } from "@/app/api/schedule/SCAdminScheduleApi";
 import {
   approveReservation,
   rejectReservation,
 } from "@/actions/admin/schedule/AdminScheduleRequestServerAction";
-import { getPendingSchedules } from "@/app/api/schedule/SCAdminScheduleApi";
 import RequestActionButtons from "@/components/ui/requestActionButtons";
-import { formatDateRange, formatTime } from "@/utils/formatDateUtil";
 import {
+  Calendar,
   CheckCircle,
   Clock,
-  User,
-  Calendar,
   MessageSquareText,
+  User,
 } from "lucide-react";
 
 export default async function CCAdminScheduleRequestList() {
@@ -60,7 +60,7 @@ export default async function CCAdminScheduleRequestList() {
                         {formatDateRange(
                           reservation.startedAt,
                           reservation.endedAt,
-                          "dot"
+                          "dot",
                         )}
                       </span>
                     </div>

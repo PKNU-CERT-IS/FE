@@ -1,31 +1,32 @@
 "use client";
 
-import LockSVG from "/public/icons/lock.svg";
-import ProfileSVG from "/public/icons/profile.svg";
+import { useEffect, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import MajorDropdown from "@/components/auth/signup/CCMajotDropdownProps"; // 위에서 만든 컴포넌트
-import {
-  Eye,
-  EyeOff,
-  IdCard,
-  UserPlus,
-  ChevronDown,
-  Mail,
-  Phone,
-  Calendar,
-  GraduationCap,
-  User,
-  Loader2,
-} from "lucide-react";
-import DefaultButton from "@/components/ui/defaultButton";
-import { useAuth } from "@/hooks/useAuth";
-import { signupAction } from "@/actions/auth/SignUpServerAction";
 import { GENDER_OPTIONS } from "@/types/login";
 import { SelectedMajorInfo, getMajorUtils } from "@/types/major";
 import { membersGradeCategories } from "@/types/members";
-import AlertModal from "@/components/ui/defaultAlertModal";
-import { useState, useTransition, useEffect } from "react";
 import { formatPhoneNumber } from "@/utils/formEditUtils";
+import { signupAction } from "@/actions/auth/SignUpServerAction";
+import MajorDropdown from "@/components/auth/signup/CCMajotDropdownProps";
+import AlertModal from "@/components/ui/defaultAlertModal";
+import DefaultButton from "@/components/ui/defaultButton";
+import { useAuth } from "@/hooks/useAuth";
+// 위에서 만든 컴포넌트
+import {
+  Calendar,
+  ChevronDown,
+  Eye,
+  EyeOff,
+  GraduationCap,
+  IdCard,
+  Loader2,
+  Mail,
+  Phone,
+  User,
+  UserPlus,
+} from "lucide-react";
+import LockSVG from "/public/icons/lock.svg";
+import ProfileSVG from "/public/icons/profile.svg";
 
 export default function CCSignUpForm() {
   const {
@@ -51,7 +52,7 @@ export default function CCSignUpForm() {
   const [alertMessage, setAlertMessage] = useState<string>("");
   const [isPending, startTransition] = useTransition();
   const [selectedMajorInfo, setSelectedMajorInfo] = useState<SelectedMajorInfo>(
-    {}
+    {},
   );
 
   // signupFormData.phone이 변경될 때 formattedPhone 업데이트
@@ -492,7 +493,7 @@ export default function CCSignUpForm() {
                   : null,
                 selectedMajorInfo.department
                   ? getMajorUtils.getDepartmentName(
-                      selectedMajorInfo.department
+                      selectedMajorInfo.department,
                     )
                   : null,
                 selectedMajorInfo.major

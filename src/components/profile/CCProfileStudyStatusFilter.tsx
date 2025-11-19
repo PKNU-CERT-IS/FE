@@ -1,8 +1,8 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
+import { StudyStatusType, studyStatus } from "@/types/profile";
 import DefaultButton from "@/components/ui/defaultButton";
-import { studyStatus, StudyStatusType } from "@/types/profile";
 
 interface CCProfileStudyStatusFilterProps {
   selectedStatus: StudyStatusType;

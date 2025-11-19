@@ -1,11 +1,11 @@
 "server-only";
 
 import Link from "next/link";
-import ProgressBar from "@/components/ui/progressBar";
-import { searchStudies } from "@/app/api/study/SCStudyApi";
-import { searchProjects } from "@/app/api/project/SCProjectApi";
-import { StudyList } from "@/types/study";
 import { ProjectList } from "@/types/project";
+import { StudyList } from "@/types/study";
+import { searchProjects } from "@/app/api/project/SCProjectApi";
+import { searchStudies } from "@/app/api/study/SCStudyApi";
+import ProgressBar from "@/components/ui/progressBar";
 
 function isThisMonth(date: string) {
   const now = new Date();
@@ -23,10 +23,10 @@ export default async function SCActivityDashBoard() {
   const projects = projectData?.content ?? [];
 
   const thisMonthStudyCreated = studies.filter((s: StudyList) =>
-    isThisMonth(s.startDate)
+    isThisMonth(s.startDate),
   ).length;
   const thisMonthStudyCompleted = studies.filter(
-    (s: StudyList) => s.status === "COMPLETED" && isThisMonth(s.endDate)
+    (s: StudyList) => s.status === "COMPLETED" && isThisMonth(s.endDate),
   ).length;
   const studySuccessRate =
     thisMonthStudyCreated > 0
@@ -34,10 +34,10 @@ export default async function SCActivityDashBoard() {
       : 0;
 
   const thisMonthProjectCreated = projects.filter((p: ProjectList) =>
-    isThisMonth(p.startDate)
+    isThisMonth(p.startDate),
   ).length;
   const thisMonthProjectCompleted = projects.filter(
-    (p: ProjectList) => p.status === "COMPLETED" && isThisMonth(p.endDate)
+    (p: ProjectList) => p.status === "COMPLETED" && isThisMonth(p.endDate),
   ).length;
   const projectSuccessRate =
     thisMonthProjectCreated > 0
@@ -62,12 +62,12 @@ export default async function SCActivityDashBoard() {
       completionRate: Math.round(
         ((thisMonthStudyCompleted + thisMonthProjectCompleted) /
           (thisMonthStudyCreated + thisMonthProjectCreated || 1)) *
-          100
+          100,
       ),
       overallProgress: Math.round(
         ((thisMonthStudyCompleted + thisMonthProjectCompleted) /
           (studies.length + projects.length || 1)) *
-          100
+          100,
       ),
     },
   };

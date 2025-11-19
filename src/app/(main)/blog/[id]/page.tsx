@@ -1,17 +1,18 @@
-import { Metadata } from "next";
-import { Calendar, User, Eye } from "lucide-react";
-import BackToListButton from "@/components/detail/SCBackToListButton";
-import KebabMenuButton from "@/components/detail/CCKebabMenu";
-import ShareButton from "@/components/detail/CCShareButton";
-import { formatDate } from "@/utils/formatDateUtil";
-import { getCategoryColor } from "@/utils/badgeUtils";
-import DefaultBadge from "@/components/ui/defaultBadge";
-import MarkdownRenderer from "@/components/ui/defaultMarkdownRenderer";
-import { searchBlogDetail } from "@/app/api/blog/SCblogApi";
-import { BlogDetailDataType } from "@/types/blog";
 import { cookies } from "next/headers";
+import { Metadata } from "next";
+import { BlogDetailDataType } from "@/types/blog";
+import { getCategoryColor } from "@/utils/badgeUtils";
+import { formatDate } from "@/utils/formatDateUtil";
+import { searchBlogDetail } from "@/app/api/blog/SCblogApi";
 import { verifyJwt } from "@/lib/auth/jwt";
 import Unauthorized from "@/components/blog/SCUnauthorized";
+import KebabMenuButton from "@/components/detail/CCKebabMenu";
+import ShareButton from "@/components/detail/CCShareButton";
+import BackToListButton from "@/components/detail/SCBackToListButton";
+import DefaultBadge from "@/components/ui/defaultBadge";
+import MarkdownRenderer from "@/components/ui/defaultMarkdownRenderer";
+import { Calendar, Eye, User } from "lucide-react";
+
 interface BlogDetailPageProps {
   params: Promise<{
     id: string;
@@ -89,7 +90,7 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
                 <DefaultBadge
                   variant="custom"
                   className={`${getCategoryColor(
-                    blogData.category
+                    blogData.category,
                   )} cursor-default`}
                 >
                   {blogData.category}

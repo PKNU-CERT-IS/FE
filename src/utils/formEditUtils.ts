@@ -15,7 +15,7 @@ export const formatPhoneNumber = (value: string): string => {
   } else {
     return `${numbers.slice(0, 3)}-${numbers.slice(3, 7)}-${numbers.slice(
       7,
-      11
+      11,
     )}`;
   }
 };
@@ -26,7 +26,7 @@ export const formatPhoneNumber = (value: string): string => {
  * @returns 파싱된 객체 { college, department, major }
  */
 export const parseMajorString = (
-  majorString: string | undefined
+  majorString: string | undefined,
 ): {
   college?: string;
   department?: string;

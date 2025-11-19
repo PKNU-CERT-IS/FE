@@ -1,6 +1,6 @@
-import { apiClient } from "@/lib/clientIntercept";
 import { AttachedFile } from "@/types/attachedFile";
 import { SemesterType } from "@/types/project";
+import { apiClient } from "@/lib/clientIntercept";
 
 export interface CreateProjectFormData {
   title: string;
@@ -25,7 +25,7 @@ export interface UpdateProjectFormData extends CreateProjectFormData {
 // admin 프로젝트 수정
 export async function updateAdminProject(
   projectId: number,
-  payload: UpdateProjectFormData
+  payload: UpdateProjectFormData,
 ) {
   try {
     const res = await apiClient.put(`/admin/project/update`, payload, {

@@ -1,7 +1,7 @@
+import React from "react";
+import { BlogDetailDataType } from "@/types/blog";
 import { getBlogReference, searchBlogDetail } from "@/app/api/blog/SCblogApi";
 import EditForm from "@/components/write/CCEditForm";
-import { BlogDetailDataType } from "@/types/blog";
-import React from "react";
 
 function getId(id: string) {
   const dataId = parseInt(id, 10);

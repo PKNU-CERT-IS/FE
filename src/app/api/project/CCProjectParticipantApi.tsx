@@ -10,7 +10,7 @@ export async function joinProjectRegister(projectId: number) {
         headers: {
           "Content-Type": "application/json",
         },
-      }
+      },
     );
     return res.data;
   } catch (error) {
@@ -36,7 +36,7 @@ export async function cancelProjectRegister(projectId: number) {
 // 참가 신청 승인
 export async function approveProjectParticipant(
   memberId: number,
-  projectId: number
+  projectId: number,
 ) {
   try {
     const res = await apiClient.post(
@@ -46,7 +46,7 @@ export async function approveProjectParticipant(
         headers: {
           "Content-Type": "application/json",
         },
-      }
+      },
     );
     return res.data;
   } catch (error) {
@@ -55,13 +55,13 @@ export async function approveProjectParticipant(
 }
 export async function rejectProjectParticipant(
   memberId: number,
-  projectId: number
+  projectId: number,
 ) {
   try {
     const res = await apiClient.post(
       `/project/participant/join/reject`,
       { memberId, projectId },
-      { headers: { "Content-Type": "application/json" } }
+      { headers: { "Content-Type": "application/json" } },
     );
     return res.data;
   } catch (error) {
@@ -73,11 +73,11 @@ export async function rejectProjectParticipant(
 export async function getProjectApprovedParticipants(
   projectId: number,
   page = 0,
-  size = 10
+  size = 10,
 ) {
   const res = await apiClient.get(
     `/project/participant/${projectId}/participants/approved`,
-    { params: { page, size, sort: "createdAt,desc" } }
+    { params: { page, size, sort: "createdAt,desc" } },
   );
   return res.data.data;
 }
@@ -86,11 +86,11 @@ export async function getProjectApprovedParticipants(
 export async function getProjectPendingParticipants(
   projectId: number,
   page = 0,
-  size = 10
+  size = 10,
 ) {
   const res = await apiClient.get(
     `/project/participant/${projectId}/participants/pending`,
-    { params: { page, size, sort: "createdAt,desc" } }
+    { params: { page, size, sort: "createdAt,desc" } },
   );
   return res.data.data;
 }

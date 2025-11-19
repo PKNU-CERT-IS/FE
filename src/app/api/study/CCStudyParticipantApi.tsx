@@ -10,7 +10,7 @@ export async function joinStudyRegister(studyId: number) {
         headers: {
           "Content-Type": "application/json",
         },
-      }
+      },
     );
     return res.data;
   } catch (error) {
@@ -36,7 +36,7 @@ export async function cancelStudyRegister(studyId: number) {
 // 참가 신청 승인
 export async function approveStudyParticipant(
   memberId: number,
-  studyId: number
+  studyId: number,
 ) {
   try {
     const res = await apiClient.post(
@@ -46,7 +46,7 @@ export async function approveStudyParticipant(
         headers: {
           "Content-Type": "application/json",
         },
-      }
+      },
     );
     return res.data;
   } catch (error) {
@@ -55,13 +55,13 @@ export async function approveStudyParticipant(
 }
 export async function rejectStudyParticipant(
   memberId: number,
-  studyId: number
+  studyId: number,
 ) {
   try {
     const res = await apiClient.post(
       `/study/participant/join/reject`,
       { memberId, studyId },
-      { headers: { "Content-Type": "application/json" } }
+      { headers: { "Content-Type": "application/json" } },
     );
     return res.data;
   } catch (error) {
@@ -73,11 +73,11 @@ export async function rejectStudyParticipant(
 export async function getStudyApprovedParticipants(
   studyId: number,
   page = 0,
-  size = 10
+  size = 10,
 ) {
   const res = await apiClient.get(
     `/study/participant/${studyId}/participants/approved`,
-    { params: { page, size, sort: "createdAt,desc" } }
+    { params: { page, size, sort: "createdAt,desc" } },
   );
   return res.data.data;
 }
@@ -86,11 +86,11 @@ export async function getStudyApprovedParticipants(
 export async function getStudyPendingParticipants(
   studyId: number,
   page = 0,
-  size = 10
+  size = 10,
 ) {
   const res = await apiClient.get(
     `/study/participant/${studyId}/participants/pending`,
-    { params: { page, size, sort: "createdAt,desc" } }
+    { params: { page, size, sort: "createdAt,desc" } },
   );
   return res.data.data;
 }

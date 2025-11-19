@@ -1,11 +1,11 @@
 // components/schedule/ScheduleContents.tsx
+import { ScheduleInfo } from "@/types/schedule";
 import { getSchedules } from "@/app/api/schedule/SCscheduleApi";
+import CCAddScheduleCard from "@/components/schedule/CCAddScheduleCard";
 import Calendar from "@/components/schedule/CCCalendar";
 import SCScheduleInfo from "@/components/schedule/SCScheduleInfo";
-import SCScheduleRequestList from "@/components/schedule/SCScheduleRequestList";
 import SCScheduleList from "@/components/schedule/SCScheduleList";
-import CCAddScheduleCard from "@/components/schedule/CCAddScheduleCard";
-import { ScheduleInfo } from "@/types/schedule";
+import SCScheduleRequestList from "@/components/schedule/SCScheduleRequestList";
 
 export default async function ScheduleContents({ date }: { date: string }) {
   const schedules: ScheduleInfo[] = await getSchedules(date);

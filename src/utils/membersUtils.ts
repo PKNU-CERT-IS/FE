@@ -1,14 +1,14 @@
-import {
-  MembersRoleCategoryType,
-  membersRoleCategories,
-  membersGradeCategories,
-  MembersGradeCategoryType,
-  MembersDataType,
-} from "@/types/members";
 import { AdminMemberDetailInfoType } from "@/types/admin/adminMembers";
+import {
+  MembersDataType,
+  MembersGradeCategoryType,
+  MembersRoleCategoryType,
+  membersGradeCategories,
+  membersRoleCategories,
+} from "@/types/members";
 
 export const getRoleBadgeStyle = (
-  role: MembersRoleCategoryType | "전체" | "NONE"
+  role: MembersRoleCategoryType | "전체" | "NONE",
 ) => {
   switch (role) {
     case "회장":
@@ -29,7 +29,7 @@ export const getRoleBadgeStyle = (
   }
 };
 export const getRoleBorderStyle = (
-  role: MembersRoleCategoryType | "전체" | "NONE"
+  role: MembersRoleCategoryType | "전체" | "NONE",
 ) => {
   switch (role) {
     case "회장":
@@ -92,7 +92,7 @@ const filterBySearch = (member: MembersDataType, search: string) => {
 // 역할 필터
 const filterByRole = (
   member: AdminMemberDetailInfoType,
-  role: MembersRoleCategoryType | "전체" | "NONE"
+  role: MembersRoleCategoryType | "전체" | "NONE",
 ) => {
   switch (role) {
     case "회장":
@@ -117,7 +117,7 @@ const filterByRole = (
 // 학년 필터
 const filterByGrade = (
   member: MembersDataType,
-  grade: MembersGradeCategoryType | "전체"
+  grade: MembersGradeCategoryType | "전체",
 ) => {
   return grade === "전체" || member.grade === grade;
 };
@@ -127,14 +127,14 @@ export const filterMembers = (
   members: AdminMemberDetailInfoType[],
   search: string,
   role: MembersRoleCategoryType | "전체",
-  grade: MembersGradeCategoryType | "전체"
+  grade: MembersGradeCategoryType | "전체",
 ) => {
   return members
     .filter(
       (member) =>
         filterBySearch(member, search) &&
         filterByRole(member, role) &&
-        filterByGrade(member, grade)
+        filterByGrade(member, grade),
     )
     .sort((a, b) => {
       const roleDiff =
@@ -164,7 +164,7 @@ export function groupMembersByPenalty(members: AdminMemberDetailInfoType[]) {
 }
 
 export function groupMembersWaitingForApproval(
-  members: AdminMemberDetailInfoType[]
+  members: AdminMemberDetailInfoType[],
 ) {
   return members.filter((member) => member.role === "NONE");
 }
@@ -189,7 +189,7 @@ const roleOrder: Record<Role, number> = {
 };
 
 export function sortMembersByRole(
-  members: AdminMemberDetailInfoType[]
+  members: AdminMemberDetailInfoType[],
 ): AdminMemberDetailInfoType[] {
   return [...members].sort((a, b) => {
     const aRole = roleOrder[a.role as Role] ?? roleOrder["NONE"];

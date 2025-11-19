@@ -1,12 +1,12 @@
 "use client";
 
 import { useState } from "react";
+import { usePathname, useSearchParams } from "next/navigation";
+import { AttachedFile } from "@/types/attachedFile";
+import { endProject } from "@/app/api/project/CCProjectApi";
+import { endStudy } from "@/app/api/study/CCStudyApi";
 import DefaultButton from "@/components/ui/defaultButton";
 import ConfirmModal from "@/components/ui/defaultConfirmModal";
-import { usePathname, useSearchParams } from "next/navigation";
-import { endProject } from "@/app/api/project/CCProjectApi";
-import { AttachedFile } from "@/types/attachedFile";
-import { endStudy } from "@/app/api/study/CCStudyApi";
 
 export default function EndRequestButton({ id }: { id: number }) {
   const [isOpenModal, setIsOpenModal] = useState(false);
@@ -20,8 +20,8 @@ export default function EndRequestButton({ id }: { id: number }) {
     tab === "study" || tab === "project"
       ? (tab as "study" | "project")
       : pathname.startsWith("/admin/study") || pathname.startsWith("/study")
-      ? "study"
-      : "project";
+        ? "study"
+        : "project";
 
   const pageLabel = pageType === "study" ? "스터디" : "프로젝트";
 

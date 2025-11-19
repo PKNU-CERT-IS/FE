@@ -1,13 +1,13 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
-import { ChevronDown, GraduationCap } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import {
   COLLEGE_DATA,
-  getMajorUtils,
-  SelectedMajorInfo,
   MajorDropdownState,
+  SelectedMajorInfo,
+  getMajorUtils,
 } from "@/types/major";
+import { ChevronDown, GraduationCap } from "lucide-react";
 
 interface MajorDropdownProps {
   selectedMajor: SelectedMajorInfo;

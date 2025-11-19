@@ -1,4 +1,5 @@
 import WriteForm from "@/components/write/CCWriteForm";
+
 export default function ProjectWrtiePage() {
   return (
     <div className="space-y-6">

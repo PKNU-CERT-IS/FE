@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { getPageNumbers } from "@/utils/paginationUtils";
 import { BoardCategoryType, categoryMappingToEN } from "@/types/board";
+import { getPageNumbers } from "@/utils/paginationUtils";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 interface BoardPaginationProps {

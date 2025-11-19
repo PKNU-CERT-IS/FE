@@ -1,19 +1,19 @@
 "server-only";
 
-import { MessageSquareText } from "lucide-react";
-import ScheduleSVG from "/public/icons/schedule.svg";
-import LocationSVG from "/public/icons/location.svg";
-import TimeSVG from "/public/icons/time.svg";
+import { ScheduleInfo } from "@/types/schedule";
+import { formatDateRange, formatTime } from "@/utils/formatDateUtil";
 import {
   getStatusColor,
   getStatusLabel,
   getTypeColor,
   getTypeLabel,
 } from "@/utils/scheduleUtils";
-import CCDeleteButton from "@/components/admin/schedule/CCDeleteButton";
-import { ScheduleInfo } from "@/types/schedule";
-import { formatDateRange, formatTime } from "@/utils/formatDateUtil";
 import { getMySchedules } from "@/app/api/schedule/SCscheduleApi";
+import CCDeleteButton from "@/components/admin/schedule/CCDeleteButton";
+import { MessageSquareText } from "lucide-react";
+import LocationSVG from "/public/icons/location.svg";
+import ScheduleSVG from "/public/icons/schedule.svg";
+import TimeSVG from "/public/icons/time.svg";
 
 export default async function SCScheduleRequestList() {
   const requests: ScheduleInfo[] = await getMySchedules();
@@ -42,13 +42,13 @@ export default async function SCScheduleRequestList() {
                       {formatDateRange(
                         request.startedAt,
                         request.endedAt,
-                        "dot"
+                        "dot",
                       )}
                     </div>
                     <div className="flex flex-row items-center">
                       <TimeSVG className="mr-2" />
                       {`${formatTime(request.startedAt)} - ${formatTime(
-                        request.endedAt
+                        request.endedAt,
                       )}`}
                     </div>
                     <div className="flex flex-row items-center">
@@ -67,14 +67,14 @@ export default async function SCScheduleRequestList() {
                 <div className="absolute right-3 top-3 flex flex-row items-center gap-2">
                   <div
                     className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold whitespace-nowrap ${getStatusColor(
-                      request.status
+                      request.status,
                     )}`}
                   >
                     {getStatusLabel(request.status)}
                   </div>
                   <div
                     className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors whitespace-nowrap ${getTypeColor(
-                      request.type
+                      request.type,
                     )}`}
                   >
                     {getTypeLabel(request.type)}

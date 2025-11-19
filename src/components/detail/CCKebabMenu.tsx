@@ -1,14 +1,14 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import DefaultButton from "@/components/ui/defaultButton";
-import { MoreVertical, Edit, Trash2 } from "lucide-react";
-import ConfirmModal from "@/components/ui/defaultConfirmModal";
-import { deleteBoard } from "@/app/api/board/CCboardApi";
-import AlertModal from "@/components/ui/defaultAlertModal";
-import { deleteStudy } from "@/app/api/study/CCStudyApi";
-import { deleteProject } from "@/app/api/project/CCProjectApi";
 import { deleteBlog } from "@/app/api/blog/CCblogApi";
+import { deleteBoard } from "@/app/api/board/CCboardApi";
+import { deleteProject } from "@/app/api/project/CCProjectApi";
+import { deleteStudy } from "@/app/api/study/CCStudyApi";
+import AlertModal from "@/components/ui/defaultAlertModal";
+import DefaultButton from "@/components/ui/defaultButton";
+import ConfirmModal from "@/components/ui/defaultConfirmModal";
+import { Edit, MoreVertical, Trash2 } from "lucide-react";
 
 interface KebabMenuProps {
   currentId: number;

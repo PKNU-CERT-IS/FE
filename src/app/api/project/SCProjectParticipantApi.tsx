@@ -5,7 +5,7 @@ export async function getProjectApprovedParticipants(
   projectId: number,
   page: number = 0,
   size: number = 10,
-  sort: string[] = ["id,desc"]
+  sort: string[] = ["id,desc"],
 ) {
   try {
     const params = new URLSearchParams();
@@ -18,7 +18,7 @@ export async function getProjectApprovedParticipants(
       {
         method: "GET",
         headers: { "Content-Type": "application/json" },
-      }
+      },
     );
 
     if (!res.ok) {
@@ -37,7 +37,7 @@ export async function getProjectPendingParticipants(
   projectId: number,
   page: number = 0,
   size: number = 10,
-  sort: string[] = ["id,desc"]
+  sort: string[] = ["id,desc"],
 ) {
   try {
     const params = new URLSearchParams();
@@ -50,7 +50,7 @@ export async function getProjectPendingParticipants(
       {
         method: "GET",
         headers: { "Content-Type": "application/json" },
-      }
+      },
     );
 
     if (!res.ok) {

@@ -1,9 +1,10 @@
 "use client";
 
-import { AttachedFile } from "@/types/attachedFile";
-import { Download } from "lucide-react";
 import { usePathname } from "next/navigation";
+import { AttachedFile } from "@/types/attachedFile";
 import DefaultButton from "@/components/ui/defaultButton";
+import { Download } from "lucide-react";
+
 export interface EndAttchedFile {
   id: number;
   name: string;

@@ -1,8 +1,8 @@
 import {
-  BoardDataType,
   BoardCategoryType,
-  categoryMappingToKO,
   BoardCategoryTypeEN,
+  BoardDataType,
+  categoryMappingToKO,
   toKoreanCategory,
 } from "@/types/board";
 
@@ -21,7 +21,7 @@ const filterBySearch = (board: BoardDataType, search: string) => {
 // 카테고리 필터
 const filterByCategory = (
   board: BoardDataType,
-  category: BoardCategoryType
+  category: BoardCategoryType,
 ) => {
   if (category === "전체") return true;
 
@@ -35,11 +35,11 @@ const filterByCategory = (
 export const filterBoardData = (
   boardData: BoardDataType[],
   search: string,
-  category: BoardCategoryType
+  category: BoardCategoryType,
 ): BoardDataType[] => {
   return boardData.filter(
     (board) =>
-      filterBySearch(board, search) && filterByCategory(board, category)
+      filterBySearch(board, search) && filterByCategory(board, category),
   );
 };
 

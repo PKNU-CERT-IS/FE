@@ -1,14 +1,14 @@
 "server-only";
 
 import Link from "next/link";
-import EyeSVG from "/public/icons/eye.svg";
-import DefaultBadge from "@/components/ui/defaultBadge";
 import {
   BoardCategoryTypeEN,
   BoardDataType,
   toKoreanCategory,
 } from "@/types/board";
 import { getBoardCategoryColor } from "@/utils/boardUtils";
+import { formatDate } from "@/utils/formatDateUtil";
+import DefaultBadge from "@/components/ui/defaultBadge";
 import {
   AlertCircle,
   BookOpen,
@@ -17,7 +17,7 @@ import {
   Info,
   ShieldAlert,
 } from "lucide-react";
-import { formatDate } from "@/utils/formatDateUtil";
+import EyeSVG from "/public/icons/eye.svg";
 
 // 카테고리 종류에 따라 svg 변경 uitl
 const getCategoryIcon = (category: BoardCategoryTypeEN) => {

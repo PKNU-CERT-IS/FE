@@ -47,13 +47,13 @@ export const categoryMappingToKO: Record<
 };
 
 export const toEnglishCategory = (
-  category: BoardCategoryType
+  category: BoardCategoryType,
 ): BoardCategoryTypeEN => {
   return categoryMappingToEN[category];
 };
 
 export const toKoreanCategory = (
-  category: BoardCategoryTypeEN
+  category: BoardCategoryTypeEN,
 ): BoardCategoryType => {
   return categoryMappingToKO[category];
 };

@@ -1,10 +1,10 @@
 "use client";
 
-import AddSVG from "/public/icons/add.svg";
-import { useModal } from "@/hooks/useModal";
-import CCScheduleFormModal from "@/components/schedule/CCScheduleFormModal";
-import { usePathname } from "next/navigation";
 import { useEffect } from "react";
+import { usePathname } from "next/navigation";
+import CCScheduleFormModal from "@/components/schedule/CCScheduleFormModal";
+import { useModal } from "@/hooks/useModal";
+import AddSVG from "/public/icons/add.svg";
 
 export default function CCAddScheduleCard() {
   const { isOpenModal, setIsOpenModal, modalOutsideRef } = useModal();

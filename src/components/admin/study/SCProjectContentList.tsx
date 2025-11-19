@@ -1,27 +1,27 @@
 "server-only";
 
-import DefaultBadge from "@/components/ui/defaultBadge";
-import { AlertCircle, Calendar, Target, User, Users } from "lucide-react";
-import { MainTab, SubTab } from "@/types/admin/adminStudyTab";
 import Link from "next/link";
-import PdfSVG from "/public/icons/pdf.svg";
-import CCAdminStudyPagination from "@/components/admin/study/CCAdminStudyPagination";
-import SCSearchResultNotFound from "@/components/ui/SCSearchResultNotFound";
-import { formatFileSize } from "@/utils/attachedFileUtils";
-import { ProjectCurrentFilters, ProjectList } from "@/types/project";
-import { getProjects, searchProjects } from "@/app/api/project/SCProjectApi";
+import { MainTab, SubTab } from "@/types/admin/adminStudyTab";
 import { SUBCATEGORY_FROM_EN, SUBCATEGORY_TO_EN } from "@/types/category";
-import { calculateProgress } from "@/utils/adminProgressUtil";
+import { STATUS_LABELS } from "@/types/progressStatus";
+import { ProjectCurrentFilters, ProjectList } from "@/types/project";
 import { MEMBER_GRADE_LABELS } from "@/types/study";
+import { calculateProgress } from "@/utils/adminProgressUtil";
+import { formatFileSize } from "@/utils/attachedFileUtils";
+import { getStatusColor } from "@/utils/badgeUtils";
 import { formatDate } from "@/utils/formatDateUtil";
 import {
-  getProjectAllEndRequest,
   ProjectEndRequest,
+  getProjectAllEndRequest,
 } from "@/app/api/admin/project/SCAdminProjectEndGetApi";
-import { getStatusColor } from "@/utils/badgeUtils";
-import { STATUS_LABELS } from "@/types/progressStatus";
+import { getProjects, searchProjects } from "@/app/api/project/SCProjectApi";
+import CCAdminStudyPagination from "@/components/admin/study/CCAdminStudyPagination";
 import DownloadButton from "@/components/detail/SCDownloadButton";
 import CCAdminStudyProjectActionButtons from "@/components/ui/CCAdminActionButtons";
+import SCSearchResultNotFound from "@/components/ui/SCSearchResultNotFound";
+import DefaultBadge from "@/components/ui/defaultBadge";
+import { AlertCircle, Calendar, Target, User, Users } from "lucide-react";
+import PdfSVG from "/public/icons/pdf.svg";
 
 interface SCProjectContentListProps {
   currentTab: MainTab;
@@ -42,8 +42,8 @@ export default async function SCProjectContentList({
     !currentView || currentView === "pending"
       ? "READY"
       : currentView === "list"
-      ? "ALL"
-      : "";
+        ? "ALL"
+        : "";
 
   const isDefaultFilters =
     (!currentSearch || currentSearch === "ALL") &&
@@ -88,7 +88,7 @@ export default async function SCProjectContentList({
       },
       {
         page: (currentPage ?? 1) - 1,
-      }
+      },
     );
     projectMaterials = searchData.content ?? [];
 
@@ -212,7 +212,7 @@ export default async function SCProjectContentList({
                               진행률:{" "}
                               {calculateProgress(
                                 project.startDate,
-                                project.endDate
+                                project.endDate,
                               )}
                               %
                             </span>
@@ -356,7 +356,7 @@ export default async function SCProjectContentList({
                             진행률:{" "}
                             {calculateProgress(
                               project.startedAt,
-                              project.endedAt
+                              project.endedAt,
                             )}
                             %
                           </span>
@@ -381,7 +381,7 @@ export default async function SCProjectContentList({
                                 </p>
                                 <p className="text-xs text-gray-500 dark:text-gray-400">
                                   {formatFileSize(
-                                    Number(project.attachment.size)
+                                    Number(project.attachment.size),
                                   )}
                                 </p>
                               </div>
@@ -500,7 +500,7 @@ export default async function SCProjectContentList({
                             진행률:{" "}
                             {calculateProgress(
                               project.startDate,
-                              project.endDate
+                              project.endDate,
                             )}
                             %
                           </span>

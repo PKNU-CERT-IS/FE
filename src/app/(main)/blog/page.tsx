@@ -1,17 +1,15 @@
 "server-only";
 
-import { Metadata } from "next";
 import { Suspense } from "react";
 import Link from "next/link";
-import { Plus } from "lucide-react";
-
-import BlogSearchBar from "@/components/blog/CCBlogSearchBar";
-import CCBlogCategoryFilter from "@/components/blog/CCBlogCategoryFilter";
-import BlogCardList from "@/components/blog/SCBlogCardList";
-import SCBlogSkeleton from "@/components/blog/SCBlogSkeleton";
-
+import { Metadata } from "next";
 import { BlogCategory } from "@/types/blog";
 import { isValidCategory } from "@/utils/blogUtils";
+import CCBlogCategoryFilter from "@/components/blog/CCBlogCategoryFilter";
+import BlogSearchBar from "@/components/blog/CCBlogSearchBar";
+import BlogCardList from "@/components/blog/SCBlogCardList";
+import SCBlogSkeleton from "@/components/blog/SCBlogSkeleton";
+import { Plus } from "lucide-react";
 
 interface BlogPageProps {
   searchParams: Promise<{
@@ -40,10 +38,10 @@ export async function generateMetadata({
       keyword && validCategory !== "전체"
         ? `'${keyword}', '${validCategory}' 관련 블로그 글 목록입니다.`
         : keyword
-        ? `'${keyword}' 관련 블로그 글 목록입니다.`
-        : validCategory !== "전체"
-        ? `'${validCategory}' 관련 블로그 글 목록입니다.`
-        : "CERT-IS 동아리 블로그 글 목록입니다.",
+          ? `'${keyword}' 관련 블로그 글 목록입니다.`
+          : validCategory !== "전체"
+            ? `'${validCategory}' 관련 블로그 글 목록입니다.`
+            : "CERT-IS 동아리 블로그 글 목록입니다.",
     openGraph: {
       title: "CERT-IS Blog",
       description: "동아리 멤버들의 경험과 지식을 공유하는 공간입니다.",

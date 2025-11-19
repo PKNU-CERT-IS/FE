@@ -1,26 +1,25 @@
 "use client";
 
-import DefaultButton from "@/components/ui/defaultButton";
-import { getRoleBadgeStyle, gradeOptions } from "@/utils/membersUtils";
-import { MembersDataType, MembersGradeCategoryType } from "@/types/members";
-import Image from "next/image";
 import { RefObject, useCallback, useEffect, useRef, useState } from "react";
-import { X, Upload, Trash2, ChevronDown } from "lucide-react";
-import { cn } from "@/lib/utils";
-import DefaultBadge from "@/components/ui/defaultBadge";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { COLLEGE_DATA, SelectedMajorInfo, getMajorUtils } from "@/types/major";
+import { MembersDataType, MembersGradeCategoryType } from "@/types/members";
 import { ProfileDataType } from "@/types/profile";
+import { formatPhoneNumber, parseMajorString } from "@/utils/formEditUtils";
+import { getRoleBadgeStyle, gradeOptions } from "@/utils/membersUtils";
+import { toOffsetDateTime } from "@/utils/transformRequestValue";
+import { translateKoreanToGrade } from "@/utils/transformRequestValue";
 import {
-  translateMemberRole,
   translateGradeToKorean,
   // fromOffsetDateTime,
+  translateMemberRole,
 } from "@/utils/transfromResponseValue";
 import { updateProfile } from "@/app/api/profile/CCprofileApi";
-import { toOffsetDateTime } from "@/utils/transformRequestValue";
-import { useRouter } from "next/navigation";
-import { translateKoreanToGrade } from "@/utils/transformRequestValue";
-
-import { formatPhoneNumber, parseMajorString } from "@/utils/formEditUtils";
-import { COLLEGE_DATA, getMajorUtils, SelectedMajorInfo } from "@/types/major";
+import { cn } from "@/lib/utils";
+import DefaultBadge from "@/components/ui/defaultBadge";
+import DefaultButton from "@/components/ui/defaultButton";
+import { ChevronDown, Trash2, Upload, X } from "lucide-react";
 
 interface ModalProps {
   closeModal: () => void;
@@ -45,7 +44,7 @@ export default function CCProfileModal({
       : undefined,
     department: parsedMajor.department
       ? COLLEGE_DATA.flatMap((c) => c.departments).find(
-          (d) => d.name === parsedMajor.department
+          (d) => d.name === parsedMajor.department,
         )?.id
       : undefined,
     major: parsedMajor.major
@@ -64,11 +63,11 @@ export default function CCProfileModal({
   });
 
   const [previewImage, setPreviewImage] = useState<string | null>(
-    initialProfileData.profileImage || null
+    initialProfileData.profileImage || null,
   );
   const [showGradeDropdown, setShowGradeDropdown] = useState<boolean>(false);
   const [formattedPhone, setFormattedPhone] = useState<string>(
-    formatPhoneNumber(initialProfileData.phoneNumber ?? "")
+    formatPhoneNumber(initialProfileData.phoneNumber ?? ""),
   );
   const [selectedMajorInfo, setSelectedMajorInfo] =
     useState<SelectedMajorInfo>(initialMajorInfo);
@@ -84,7 +83,7 @@ export default function CCProfileModal({
   const majorDropdownRef = useRef<HTMLDivElement>(null);
 
   const [skillInput, setSkillInput] = useState<string>(
-    editedUser.skills?.join(", ") || ""
+    editedUser.skills?.join(", ") || "",
   );
 
   const role = translateMemberRole(editedUser.memberRole);
@@ -128,7 +127,7 @@ export default function CCProfileModal({
     (
       e: React.ChangeEvent<
         HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-      >
+      >,
     ) => {
       setEditedUser((prev) => ({
         ...prev,
@@ -378,14 +377,14 @@ export default function CCProfileModal({
                       "w-full justify-between text-left font-normal transition-all duration-200 cursor-pointer h-10",
                       "bg-white border-gray-300 hover:border-cert-red hover:bg-white hover:text-cert-black",
                       "focus:border-cert-red focus:ring-2 focus:ring-cert-red/20",
-                      "dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-800"
+                      "dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-800",
                     )}
                     onClick={() => setShowGradeDropdown((p) => !p)}
                   >
                     <span className="text-gray-900 truncate pr-1 text-sm dark:text-gray-200">
                       {gradeOptions.find(
                         (option) =>
-                          option.value === (editedUser.memberGrade ?? "")
+                          option.value === (editedUser.memberGrade ?? ""),
                       )?.label || "선택"}
                     </span>
                     <ChevronDown
@@ -729,7 +728,7 @@ export default function CCProfileModal({
                       : null,
                     selectedMajorInfo.department
                       ? getMajorUtils.getDepartmentName(
-                          selectedMajorInfo.department
+                          selectedMajorInfo.department,
                         )
                       : null,
                     selectedMajorInfo.major

@@ -1,11 +1,12 @@
 "use client";
 
-import ApproveModal from "@/components/admin/members/CCApprovalModal";
-import { CheckCircle, XCircle } from "lucide-react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { deleteMember } from "@/app/api/member/CCadminMemberApi";
+import ApproveModal from "@/components/admin/members/CCApprovalModal";
 import ConfirmModal from "@/components/ui/defaultConfirmModal";
+import { CheckCircle, XCircle } from "lucide-react";
+
 interface RequestActionButtonsProps {
   id: number;
   grade: string;

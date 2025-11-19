@@ -1,6 +1,6 @@
-import { fetchWithAuth } from "@/lib/serverIntercept";
 import { StatusType } from "@/types/progressStatus";
 import { MemberGrade } from "@/types/study";
+import { fetchWithAuth } from "@/lib/serverIntercept";
 
 // 종료 요청 전용 -> 이제 새로 추가되는 이름,학년 추가해야함
 export interface ProjectEndRequest {

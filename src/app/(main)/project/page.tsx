@@ -1,20 +1,20 @@
 "server-only";
 
+import { Suspense } from "react";
+import Link from "next/link";
 import { Metadata } from "next";
+import {
+  CATEGORY_OPTIONS,
+  CategoryType,
+  SUBCATEGORY_OPTIONS,
+  SubCategoryType,
+} from "@/types/category";
 import { ProjectCurrentFilters } from "@/types/project";
-import SCProjectList from "@/components/project/SCProjectList";
 import { parseSearchParams } from "@/utils/projectUtils";
 import CCProjectFilter from "@/components/project/CCProjectFilter";
-import Link from "next/link";
-import { Plus } from "lucide-react";
-import {
-  CategoryType,
-  CATEGORY_OPTIONS,
-  SubCategoryType,
-  SUBCATEGORY_OPTIONS,
-} from "@/types/category";
-import { Suspense } from "react";
+import SCProjectList from "@/components/project/SCProjectList";
 import SCProjectSkeleton from "@/components/project/SCProjectSkeleton";
+import { Plus } from "lucide-react";
 
 interface ProjectPageProps {
   searchParams: Promise<{
@@ -31,7 +31,7 @@ const isValidCategory = (category: string): category is CategoryType => {
   return CATEGORY_OPTIONS.includes(category as CategoryType);
 };
 const isValidSubCategory = (
-  subCategory: string
+  subCategory: string,
 ): subCategory is SubCategoryType => {
   return SUBCATEGORY_OPTIONS.includes(subCategory as SubCategoryType);
 };
@@ -61,10 +61,10 @@ export async function generateMetadata({
       search && validCategory !== "전체"
         ? `'${search}', '${validCategory} - ${validSubCategory}' 관련 프로젝트 목록입니다.`
         : search
-        ? `'${search}' 관련 프로젝트 목록입니다.`
-        : validCategory !== "전체"
-        ? `'${validCategory} - ${validSubCategory}' 관련 프로젝트 목록입니다.`
-        : "CERT-IS 동아리 프로젝트 목록입니다.",
+          ? `'${search}' 관련 프로젝트 목록입니다.`
+          : validCategory !== "전체"
+            ? `'${validCategory} - ${validSubCategory}' 관련 프로젝트 목록입니다.`
+            : "CERT-IS 동아리 프로젝트 목록입니다.",
     openGraph: {
       title: "CERT-IS Project",
       description: "다양한 보안 프로젝트와 연구 결과를 공유하는 공간입니다.",

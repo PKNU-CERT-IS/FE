@@ -1,11 +1,11 @@
 "use client";
 
-import { useModal } from "@/hooks/useModal";
-import DefaultButton from "@/components/ui/defaultButton";
-import EditSVG from "/public/icons/edit.svg";
-import CCProfileEditModal from "@/components/profile/CCProfileEditModal";
 import { useEffect } from "react";
 import { ProfileDataType } from "@/types/profile";
+import CCProfileEditModal from "@/components/profile/CCProfileEditModal";
+import DefaultButton from "@/components/ui/defaultButton";
+import { useModal } from "@/hooks/useModal";
+import EditSVG from "/public/icons/edit.svg";
 
 interface CCEditProfileCardProps {
   profile: ProfileDataType;

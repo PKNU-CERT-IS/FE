@@ -1,30 +1,30 @@
 "server-only";
 
-import DefaultBadge from "@/components/ui/defaultBadge";
-import { Calendar, User, Users, Target, AlertCircle } from "lucide-react";
-import { MainTab, SubTab } from "@/types/admin/adminStudyTab";
 import Link from "next/link";
-import PdfSVG from "/public/icons/pdf.svg";
-import CCAdminStudyPagination from "@/components/admin/study/CCAdminStudyPagination";
-import SCSearchResultNotFound from "@/components/ui/SCSearchResultNotFound";
-import { formatFileSize } from "@/utils/attachedFileUtils";
+import { MainTab, SubTab } from "@/types/admin/adminStudyTab";
+import { SUBCATEGORY_FROM_EN, SUBCATEGORY_TO_EN } from "@/types/category";
+import { STATUS_LABELS } from "@/types/progressStatus";
 import {
-  StudyCurrentFilters,
   MEMBER_GRADE_LABELS,
+  StudyCurrentFilters,
   StudyList,
 } from "@/types/study";
-import { SUBCATEGORY_FROM_EN, SUBCATEGORY_TO_EN } from "@/types/category";
-import { getStudies, searchStudies } from "@/app/api/study/SCStudyApi";
 import { calculateProgress } from "@/utils/adminProgressUtil";
+import { formatFileSize } from "@/utils/attachedFileUtils";
+import { getStatusColor } from "@/utils/badgeUtils";
 import { formatDate } from "@/utils/formatDateUtil";
 import {
-  getStudyAllEndRequest,
   StudyEndRequest,
+  getStudyAllEndRequest,
 } from "@/app/api/admin/study/SCAdminStudyEndGetApi";
-import { getStatusColor } from "@/utils/badgeUtils";
-import { STATUS_LABELS } from "@/types/progressStatus";
+import { getStudies, searchStudies } from "@/app/api/study/SCStudyApi";
+import CCAdminStudyPagination from "@/components/admin/study/CCAdminStudyPagination";
 import DownloadButton from "@/components/detail/SCDownloadButton";
 import CCAdminStudyProjectActionButtons from "@/components/ui/CCAdminActionButtons";
+import SCSearchResultNotFound from "@/components/ui/SCSearchResultNotFound";
+import DefaultBadge from "@/components/ui/defaultBadge";
+import { AlertCircle, Calendar, Target, User, Users } from "lucide-react";
+import PdfSVG from "/public/icons/pdf.svg";
 
 interface SCStudyContentListProps {
   currentTab: MainTab;
@@ -45,8 +45,8 @@ export default async function SCStudyContentList({
     !currentView || currentView === "pending"
       ? "READY"
       : currentView === "list"
-      ? "ALL"
-      : "";
+        ? "ALL"
+        : "";
 
   const isDefaultFilters =
     (!currentSearch || currentSearch === "ALL") &&
@@ -87,7 +87,7 @@ export default async function SCStudyContentList({
       },
       {
         page: (currentPage ?? 1) - 1,
-      }
+      },
     );
     studyMaterials = searchData.content ?? [];
 
@@ -209,7 +209,7 @@ export default async function SCStudyContentList({
                               진행률:{" "}
                               {calculateProgress(
                                 study.startDate,
-                                study.endDate
+                                study.endDate,
                               )}
                               %
                             </span>

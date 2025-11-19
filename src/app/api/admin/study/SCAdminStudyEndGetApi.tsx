@@ -1,6 +1,6 @@
-import { fetchWithAuth } from "@/lib/serverIntercept";
 import { StatusType } from "@/types/progressStatus";
 import { MemberGrade } from "@/types/study";
+import { fetchWithAuth } from "@/lib/serverIntercept";
 
 export interface StudyEndRequest {
   studyId: number;

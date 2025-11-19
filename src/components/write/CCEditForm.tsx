@@ -1,30 +1,20 @@
 "use client";
-import { useState, useEffect, useRef, useCallback } from "react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import DefaultButton from "@/components/ui/defaultButton";
-import { Info, ChevronDown, X } from "lucide-react";
-import FileUpload from "@/components/write/CCFileUpload";
-import MarkdownEditor from "@/components/write/CCMarkdownEditor";
-import { NewPageCategoryType } from "@/types/newPageForm";
-import {
-  getCategories,
-  getPeriodPolicyInfo,
-  getDescriptionPlaceholder,
-  isFormValid,
-  getSubCategories,
-} from "@/utils/newPageFormUtils";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { AxiosError } from "axios";
 import { AttachedFile } from "@/types/attachedFile";
-import { updateBoard, getCCDetailBoard } from "@/app/api/board/CCboardApi";
+import {
+  BlogDetailDataType,
+  BlogReferenceType,
+  BlogUpdateRequest,
+} from "@/types/blog";
 import {
   BoardCategoryType,
   BoardCategoryTypeEN,
   categoryMappingToEN,
   categoryMappingToKO,
 } from "@/types/board";
-import { getCCDetailStudy, updateStudy } from "@/app/api/study/CCStudyApi";
-import { formatDate } from "@/utils/formatDateUtil";
-import { toOffset } from "@/utils/transformRequestValue";
 import {
   CATEGORY_TO_EN,
   CategoryType,
@@ -32,21 +22,31 @@ import {
   SUBCATEGORY_TO_EN,
   SubCategoryType,
 } from "@/types/category";
+import { NewPageCategoryType } from "@/types/newPageForm";
+import { getNextMonday, getNextSunday } from "@/utils/dateUtils";
+import { formatDate } from "@/utils/formatDateUtil";
+import {
+  getCategories,
+  getDescriptionPlaceholder,
+  getPeriodPolicyInfo,
+  getSubCategories,
+  isFormValid,
+} from "@/utils/newPageFormUtils";
+import { toOffset } from "@/utils/transformRequestValue";
+import { updateAdminProject } from "@/app/api/admin/project/CCAdminProjectUpdateApi";
+import { updateAdminStudy } from "@/app/api/admin/study/CCAdminStudyUpdateApi";
+import { updateBlog } from "@/app/api/blog/CCblogApi";
+import { getCCDetailBoard, updateBoard } from "@/app/api/board/CCboardApi";
 import {
   getCCDetailProject,
   updateProject,
 } from "@/app/api/project/CCProjectApi";
-import {
-  BlogDetailDataType,
-  BlogReferenceType,
-  BlogUpdateRequest,
-} from "@/types/blog";
-import { updateBlog } from "@/app/api/blog/CCblogApi";
+import { getCCDetailStudy, updateStudy } from "@/app/api/study/CCStudyApi";
 import AlertModal from "@/components/ui/defaultAlertModal";
-import { getNextMonday, getNextSunday } from "@/utils/dateUtils";
-import { updateAdminStudy } from "@/app/api/admin/study/CCAdminStudyUpdateApi";
-import { updateAdminProject } from "@/app/api/admin/project/CCAdminProjectUpdateApi";
-import { AxiosError } from "axios";
+import DefaultButton from "@/components/ui/defaultButton";
+import FileUpload from "@/components/write/CCFileUpload";
+import MarkdownEditor from "@/components/write/CCMarkdownEditor";
+import { ChevronDown, Info, X } from "lucide-react";
 
 interface EditFormProps {
   type: NewPageCategoryType;
@@ -66,7 +66,7 @@ export default function EditForm({
   const isAdmin = pathname.startsWith("/admin");
   const [title, setTitle] = useState(initialData?.title || "");
   const [description, setDescription] = useState(
-    initialData?.description || ""
+    initialData?.description || "",
   );
   const [content, setContent] = useState(initialData?.content || "");
   const [category, setCategory] = useState(initialData?.category || "");
@@ -84,7 +84,7 @@ export default function EditForm({
             referenceTitle: initialData.referenceTitle ?? "",
             referenceId: initialData.referenceId,
           }
-        : null
+        : null,
     );
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isCategoryOpen, setIsCategoryOpen] = useState<boolean>(false);
@@ -137,7 +137,7 @@ export default function EditForm({
   }, []);
 
   const [isPublic, setIsPublic] = useState<boolean>(
-    initialData?.isPublic ?? false
+    initialData?.isPublic ?? false,
   );
   const searchParams = useSearchParams();
   const from = searchParams.get("from");
@@ -226,7 +226,7 @@ export default function EditForm({
           setThumbnailUrl(initialData.thumbnailUrl || "");
           if ("reference" in initialData) {
             setSelectedReference(
-              (initialData.reference as BlogReferenceType) || null
+              (initialData.reference as BlogReferenceType) || null,
             );
           } else {
             setSelectedReference(null);
@@ -337,7 +337,7 @@ export default function EditForm({
 
           if (response?.statusCode === 200) {
             router.push(
-              isAdmin ? `/admin/study/${dataId}?tab=study` : `/study/${dataId}`
+              isAdmin ? `/admin/study/${dataId}?tab=study` : `/study/${dataId}`,
             );
             router.refresh();
           } else {
@@ -370,7 +370,7 @@ export default function EditForm({
             router.push(
               isAdmin
                 ? `/admin/study/${dataId}?tab=project`
-                : `/project/${dataId}`
+                : `/project/${dataId}`,
             );
             router.refresh();
           } else {
@@ -385,7 +385,7 @@ export default function EditForm({
     } catch (error) {
       const err = error as AxiosError<{ message?: string }>;
       setAlertMessage(
-        err.response?.data?.message || "요청 처리 중 오류가 발생했습니다."
+        err.response?.data?.message || "요청 처리 중 오류가 발생했습니다.",
       );
       setAlertOpen(true);
     }
@@ -618,10 +618,10 @@ export default function EditForm({
                     }
                   >
                     {subCategory
-                      ? SUBCATEGORY_FROM_EN[subCategory] ?? subCategory
+                      ? (SUBCATEGORY_FROM_EN[subCategory] ?? subCategory)
                       : category
-                      ? "하위 카테고리 선택"
-                      : "상위 카테고리 선택 필수"}
+                        ? "하위 카테고리 선택"
+                        : "상위 카테고리 선택 필수"}
                   </span>
                   <ChevronDown
                     className={`h-4 w-4 transition-transform duration-200 ${
@@ -662,7 +662,7 @@ export default function EditForm({
                 value={maxParticipants ?? ""}
                 onChange={(e) =>
                   setMaxParticipants(
-                    e.target.value ? Number(e.target.value) : undefined
+                    e.target.value ? Number(e.target.value) : undefined,
                   )
                 }
                 className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent dark:border-gray-600"
@@ -936,7 +936,7 @@ export default function EditForm({
                   maxParticipants,
                   startDate,
                   endDate,
-                  attachments
+                  attachments,
                 )
               }
             >

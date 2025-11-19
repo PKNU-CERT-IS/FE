@@ -1,9 +1,9 @@
+import Link from "next/link";
+import { groupMembersByPenalty } from "@/utils/membersUtils";
+import { getMembersForStaff } from "@/app/api/member/SCadminMemberApi";
 import { searchProjects } from "@/app/api/project/SCProjectApi";
 import { searchStudies } from "@/app/api/study/SCStudyApi";
 import { AlertTriangle, BookOpen, TrendingUp, Users } from "lucide-react";
-import Link from "next/link";
-import { getMembersForStaff } from "@/app/api/member/SCadminMemberApi";
-import { groupMembersByPenalty } from "@/utils/membersUtils";
 
 export default async function SCTotalDashBoard() {
   const studyData = await searchStudies({ studyStatus: "INPROGRESS" });

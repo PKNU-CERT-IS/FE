@@ -1,8 +1,8 @@
 "use client";
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Shield, ShieldX, Home, ArrowLeft, Eye } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { ArrowLeft, Eye, Home, Shield, ShieldX } from "lucide-react";
 
 // ✅ Hook: 글리치 효과
 function useGlitchEffect(interval = 3000, duration = 200) {

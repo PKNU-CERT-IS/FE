@@ -1,11 +1,11 @@
 "use client";
 
-import { ScheduleInfo } from "@/types/schedule";
 import { useState } from "react";
+import { ScheduleInfo } from "@/types/schedule";
 
 export const useSchedule = () => {
   const [selectedSchedule, setSelectedSchedule] = useState<ScheduleInfo | null>(
-    null
+    null,
   );
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
   // 30분 간격으로 시간 배열 생성 (00:00 ~ 23:30) + 23:59 추가

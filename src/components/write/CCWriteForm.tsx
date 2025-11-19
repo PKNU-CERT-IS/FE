@@ -1,35 +1,35 @@
 "use client";
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import DefaultButton from "@/components/ui/defaultButton";
-import { ChevronDown, Download, FileText, Info } from "lucide-react";
-import FileUpload from "@/components/write/CCFileUpload";
-import MarkdownEditor from "@/components/write/CCMarkdownEditor";
-import { NewPageCategoryType } from "@/types/newPageForm";
-import {
-  getCategories,
-  getPeriodPolicyInfo,
-  getDescriptionPlaceholder,
-  isFormValid,
-  getSubCategories,
-} from "@/utils/newPageFormUtils";
+import { AxiosError } from "axios";
 import { AttachedFile } from "@/types/attachedFile";
-import { createBoard } from "@/app/api/board/CCboardApi";
-import { BlogReferenceType, BlogCreateRequest } from "@/types/blog";
-import { createBlog } from "@/app/api/blog/CCblogApi";
-import AlertModal from "@/components/ui/defaultAlertModal";
-import { createStudy } from "@/app/api/study/CCStudyApi";
-import { toOffset } from "@/utils/transformRequestValue";
+import { BlogCreateRequest, BlogReferenceType } from "@/types/blog";
+import { BoardCategoryType, categoryMappingToEN } from "@/types/board";
 import {
   CATEGORY_TO_EN,
   CategoryType,
   SUBCATEGORY_TO_EN,
   SubCategoryType,
 } from "@/types/category";
-import { BoardCategoryType, categoryMappingToEN } from "@/types/board";
-import { createProject } from "@/app/api/project/CCProjectApi";
+import { NewPageCategoryType } from "@/types/newPageForm";
 import { getNextMonday, getNextSunday } from "@/utils/dateUtils";
-import { AxiosError } from "axios";
+import {
+  getCategories,
+  getDescriptionPlaceholder,
+  getPeriodPolicyInfo,
+  getSubCategories,
+  isFormValid,
+} from "@/utils/newPageFormUtils";
+import { toOffset } from "@/utils/transformRequestValue";
+import { createBlog } from "@/app/api/blog/CCblogApi";
+import { createBoard } from "@/app/api/board/CCboardApi";
+import { createProject } from "@/app/api/project/CCProjectApi";
+import { createStudy } from "@/app/api/study/CCStudyApi";
+import AlertModal from "@/components/ui/defaultAlertModal";
+import DefaultButton from "@/components/ui/defaultButton";
+import FileUpload from "@/components/write/CCFileUpload";
+import MarkdownEditor from "@/components/write/CCMarkdownEditor";
+import { ChevronDown, Download, FileText, Info } from "lucide-react";
 
 interface WriteFormProps {
   type: NewPageCategoryType;
@@ -244,7 +244,7 @@ export default function WriteForm({ type, initialReferences }: WriteFormProps) {
     } catch (error) {
       const err = error as AxiosError<{ message?: string }>;
       setAlertMessage(
-        err.response?.data?.message || "요청 처리 중 오류가 발생했습니다."
+        err.response?.data?.message || "요청 처리 중 오류가 발생했습니다.",
       );
       setAlertOpen(true);
     }
@@ -524,7 +524,7 @@ export default function WriteForm({ type, initialReferences }: WriteFormProps) {
                 value={maxParticipants ?? ""}
                 onChange={(e) =>
                   setMaxParticipants(
-                    e.target.value ? Number(e.target.value) : undefined
+                    e.target.value ? Number(e.target.value) : undefined,
                   )
                 }
                 className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent dark:border-gray-600"
@@ -767,15 +767,15 @@ export default function WriteForm({ type, initialReferences }: WriteFormProps) {
                   maxParticipants,
                   startDate,
                   endDate,
-                  attachments
+                  attachments,
                 )
               }
             >
               {type === "study"
                 ? "스터디 개설"
                 : type === "project"
-                ? "프로젝트 생성"
-                : "게시하기"}
+                  ? "프로젝트 생성"
+                  : "게시하기"}
             </DefaultButton>
           </div>
         </div>

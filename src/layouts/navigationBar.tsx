@@ -1,12 +1,12 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import BugReport from "@/components/nav/bugReport";
+import HamburgerMenu from "@/components/nav/hamburgerMenu";
+import LoginButton from "@/components/nav/loginButton";
 import NavBarItems from "@/components/nav/navBarItems";
 import LogoSVG from "/public/icons/logo-white.svg";
-import LoginButton from "@/components/nav/loginButton";
-import HamburgerMenu from "@/components/nav/hamburgerMenu";
-import { usePathname } from "next/navigation";
 
 const navBarList = [
   { name: "Home", href: "/" },

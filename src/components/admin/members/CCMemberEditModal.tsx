@@ -1,23 +1,23 @@
 "use client";
 
-import DefaultButton from "@/components/ui/defaultButton";
-import { RefObject, useState, useEffect, useRef, useCallback } from "react";
-import { X, ChevronDown } from "lucide-react";
+import { RefObject, useCallback, useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import { AdminMemberDetailInfoType } from "@/types/admin/adminMembers";
-import { cn } from "@/lib/utils";
 import {
-  membersRoleCategories,
+  MembersGradeCategoryType,
   MembersRoleCategoryType,
   membersGradeCategories,
-  MembersGradeCategoryType,
+  membersRoleCategories,
 } from "@/types/members";
-import { translateGradeToKorean } from "@/utils/transfromResponseValue";
 import {
   translateKoreanToGrade,
   translateKoreanToRole,
 } from "@/utils/transformRequestValue";
+import { translateGradeToKorean } from "@/utils/transfromResponseValue";
 import { updateMemberGradeRole } from "@/app/api/member/CCadminMemberApi";
-import { useRouter } from "next/navigation";
+import { cn } from "@/lib/utils";
+import DefaultButton from "@/components/ui/defaultButton";
+import { ChevronDown, X } from "lucide-react";
 
 interface CCRoleEditModalProps {
   member: AdminMemberDetailInfoType;
@@ -136,7 +136,7 @@ export default function CCRoleEditModal({
                     "w-full justify-between text-left font-normal transition-all duration-200 cursor-pointer h-10",
                     "bg-white border-gray-300 hover:border-cert-red hover:bg-white hover:text-cert-black",
                     "focus:border-cert-red focus:ring-2 focus:ring-cert-red/20",
-                    "dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-800"
+                    "dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-800",
                   )}
                   onClick={() => {
                     setShowGradeDropdown((p) => !p);
@@ -148,8 +148,8 @@ export default function CCRoleEditModal({
                       (option) =>
                         option.value ===
                         (translateGradeToKorean(
-                          editedMember.grade
-                        ) as MembersGradeCategoryType)
+                          editedMember.grade,
+                        ) as MembersGradeCategoryType),
                     )?.label || editedMember.grade}
                   </span>
                   <ChevronDown
@@ -192,7 +192,7 @@ export default function CCRoleEditModal({
                     "w-full justify-between text-left font-normal transition-all duration-200 cursor-pointer h-10",
                     "bg-white border-gray-300 hover:border-cert-red hover:bg-white hover:text-cert-black",
                     "focus:border-cert-red focus:ring-2 focus:ring-cert-red/20",
-                    "dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-800"
+                    "dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-800",
                   )}
                   onClick={() => {
                     setShowRoleDropdown((p) => !p);

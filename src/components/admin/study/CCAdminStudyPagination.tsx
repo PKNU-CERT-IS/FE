@@ -1,10 +1,10 @@
 "use client";
 
-import Link from "next/link";
-import { getPageNumbers } from "@/utils/paginationUtils";
-import { MainTab, SubTab } from "@/types/admin/adminStudyTab";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useEffect } from "react";
+import Link from "next/link";
+import { MainTab, SubTab } from "@/types/admin/adminStudyTab";
+import { getPageNumbers } from "@/utils/paginationUtils";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 interface CCStudyPaginationProps {
   currentPage: number;

@@ -1,25 +1,25 @@
 "server-only";
-import { notFound } from "next/navigation";
-import { ProjectMaterial } from "@/types/project";
-import AttachedFilesDownload from "@/components/project/CCAttachedFilesDownload";
-import { Globe } from "lucide-react";
 import Image from "next/image";
-import BackToListButton from "@/components/detail/SCBackToListButton";
-import KebabMenu from "@/components/detail/CCKebabMenu";
-import ShareButton from "@/components/detail/CCShareButton";
-import DefaultBadge from "@/components/ui/defaultBadge";
-import SCProjectMeetingMinutes from "@/components/project/SCProjectMeetingMinutes";
-import EndRequestButton from "@/components/ui/endRequestButton";
-import { STATUS_LABELS } from "@/types/progressStatus";
-import { getStatusColor } from "@/utils/badgeUtils";
-import { MEMBER_GRADE_LABELS } from "@/types/study";
-import MarkdownRenderer from "@/components/ui/defaultMarkdownRenderer";
-import { formatDate } from "@/utils/formatDateUtil";
+import { notFound } from "next/navigation";
 import { SUBCATEGORY_FROM_EN } from "@/types/category";
+import { STATUS_LABELS } from "@/types/progressStatus";
+import { ProjectMaterial } from "@/types/project";
+import { MEMBER_GRADE_LABELS } from "@/types/study";
+import { getStatusColor } from "@/utils/badgeUtils";
+import { formatDate } from "@/utils/formatDateUtil";
+import { getStudyPeriodLabel } from "@/utils/studyHelper";
 import { getDetailProject } from "@/app/api/project/SCProjectApi";
 import { getCurrentUser } from "@/lib/auth/currentUser";
-import { getStudyPeriodLabel } from "@/utils/studyHelper";
+import KebabMenu from "@/components/detail/CCKebabMenu";
 import CCParticipantsList from "@/components/detail/CCParticipantsList";
+import ShareButton from "@/components/detail/CCShareButton";
+import BackToListButton from "@/components/detail/SCBackToListButton";
+import AttachedFilesDownload from "@/components/project/CCAttachedFilesDownload";
+import SCProjectMeetingMinutes from "@/components/project/SCProjectMeetingMinutes";
+import DefaultBadge from "@/components/ui/defaultBadge";
+import MarkdownRenderer from "@/components/ui/defaultMarkdownRenderer";
+import EndRequestButton from "@/components/ui/endRequestButton";
+import { Globe } from "lucide-react";
 
 interface ProjectDetailPageProps {
   params: { id: string };
@@ -93,8 +93,8 @@ export default async function ProjectDetailPage({
                   project.projectCreatorGrade === "NONE"
                     ? "bg-gray-100 text-gray-800"
                     : project.projectCreatorGrade === "GRADUATED"
-                    ? "bg-purple-100 text-black"
-                    : "bg-blue-100 text-blue-800"
+                      ? "bg-purple-100 text-black"
+                      : "bg-blue-100 text-blue-800"
                 }`}
               >
                 {MEMBER_GRADE_LABELS[project.projectCreatorGrade]}

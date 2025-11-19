@@ -1,19 +1,19 @@
 "use client";
 
 import React, { useId, useState } from "react";
+import { AttachedFile, AttachedType } from "@/types/attachedFile";
 import {
-  Download,
-  File,
-  FileText,
-  Image as ImageIcon,
   Archive,
-  Presentation,
-  Folder,
   ChevronDown,
   ChevronUp,
+  Download,
+  File,
   FileSpreadsheet,
+  FileText,
+  Folder,
+  Image as ImageIcon,
+  Presentation,
 } from "lucide-react";
-import { AttachedFile, AttachedType } from "@/types/attachedFile";
 
 interface AttachedFilesDownloadProps {
   files: AttachedFile[];
@@ -83,7 +83,7 @@ export const getCategoryColor = (type: AttachedType): string => {
 
 export const mapMimeToCategory = (
   mime: string,
-  filename?: string
+  filename?: string,
 ): AttachedType => {
   const lowerMime = mime.toLowerCase();
   const ext = filename?.split(".").pop()?.toLowerCase();
@@ -197,7 +197,7 @@ export default function AttachedFilesDownload({
                     <div className="flex items-center gap-2 sm:gap-4 flex-1 min-w-0">
                       <div
                         className={`p-1.5 sm:p-2 rounded-lg border ${getCategoryColor(
-                          mapMimeToCategory(file.type)
+                          mapMimeToCategory(file.type),
                         )}`}
                       >
                         {getFileIcon(mapMimeToCategory(file.type))}

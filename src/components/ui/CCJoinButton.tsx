@@ -1,18 +1,18 @@
 "use client";
 
-import { useTransition, useState } from "react";
+import { useState, useTransition } from "react";
 import { usePathname } from "next/navigation";
-import {
-  joinStudyRegister,
-  cancelStudyRegister,
-} from "@/app/api/study/CCStudyParticipantApi";
-import {
-  joinProjectRegister,
-  cancelProjectRegister,
-} from "@/app/api/project/CCProjectParticipantApi";
-import AlertModal from "@/components/ui/defaultAlertModal";
 import { AxiosError } from "axios";
 import { ErrorResponse } from "@/types/errorResponse";
+import {
+  cancelProjectRegister,
+  joinProjectRegister,
+} from "@/app/api/project/CCProjectParticipantApi";
+import {
+  cancelStudyRegister,
+  joinStudyRegister,
+} from "@/app/api/study/CCStudyParticipantApi";
+import AlertModal from "@/components/ui/defaultAlertModal";
 
 type JoinState = "NONE" | "PENDING" | "APPROVED" | "REJECTED";
 

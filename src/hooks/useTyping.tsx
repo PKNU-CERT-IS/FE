@@ -1,12 +1,12 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function useTyping(firstLine: string, secondLine: string) {
   const [firstText, setFirstText] = useState("");
   const [secondText, setSecondText] = useState("");
   const [step, setStep] = useState<"firstStep" | "secondStep" | "isDeleting">(
-    "firstStep"
+    "firstStep",
   );
   const [count, setCount] = useState(0);
   const [cursorLine, setCursorLine] = useState<

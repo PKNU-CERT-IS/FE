@@ -5,7 +5,7 @@ export async function getStudyApprovedParticipants(
   studyId: number,
   page: number = 0,
   size: number = 10,
-  sort: string[] = ["createdAt,desc"]
+  sort: string[] = ["createdAt,desc"],
 ) {
   try {
     const params = new URLSearchParams();
@@ -18,7 +18,7 @@ export async function getStudyApprovedParticipants(
       {
         method: "GET",
         headers: { "Content-Type": "application/json" },
-      }
+      },
     );
 
     if (!res.ok) {
@@ -37,7 +37,7 @@ export async function getStudyPendingParticipants(
   studyId: number,
   page: number = 0,
   size: number = 10,
-  sort: string[] = ["createdAt,desc"]
+  sort: string[] = ["createdAt,desc"],
 ) {
   try {
     const params = new URLSearchParams();
@@ -50,7 +50,7 @@ export async function getStudyPendingParticipants(
       {
         method: "GET",
         headers: { "Content-Type": "application/json" },
-      }
+      },
     );
 
     if (!res.ok) {

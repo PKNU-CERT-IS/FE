@@ -1,6 +1,6 @@
-import { fetchWithAuth } from "@/lib/serverIntercept";
 import { ScheduleInfo } from "@/types/schedule";
 import { toOffset } from "@/utils/transformRequestValue";
+import { fetchWithAuth } from "@/lib/serverIntercept";
 
 // 스케줄 조회
 export async function getSchedules(date: string): Promise<ScheduleInfo[]> {

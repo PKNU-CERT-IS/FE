@@ -2,23 +2,23 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import DefaultBadge from "@/components/ui/defaultBadge";
-import { User, Minus, Plus, X, Cake, Phone, Mail } from "lucide-react";
-import EditSVG from "/public/icons/edit.svg";
-import DefaultButton from "@/components/ui/defaultButton";
-import ConfirmModal from "@/components/ui/defaultConfirmModal";
-import CCMemberEditModal from "@/components/admin/members/CCMemberEditModal";
 import { AdminMemberDetailInfoType } from "@/types/admin/adminMembers";
 import { penaltyGracePeriod } from "@/utils/adminPenaltyGracePeriodUtils";
-import { useModal } from "@/hooks/useModal";
-import { translateGradeToKorean } from "@/utils/transfromResponseValue";
 import { toOffsetDateTime } from "@/utils/transformRequestValue";
+import { translateGradeToKorean } from "@/utils/transfromResponseValue";
+import { translateGenderToKorean } from "@/utils/transfromResponseValue";
 import {
   assignPenalty,
-  grantGracePeriod,
   deleteMember,
+  grantGracePeriod,
 } from "@/app/api/member/CCadminMemberApi";
-import { translateGenderToKorean } from "@/utils/transfromResponseValue";
+import CCMemberEditModal from "@/components/admin/members/CCMemberEditModal";
+import DefaultBadge from "@/components/ui/defaultBadge";
+import DefaultButton from "@/components/ui/defaultButton";
+import ConfirmModal from "@/components/ui/defaultConfirmModal";
+import { useModal } from "@/hooks/useModal";
+import { Cake, Mail, Minus, Phone, Plus, User, X } from "lucide-react";
+import EditSVG from "/public/icons/edit.svg";
 
 interface CCMemberDetailCardProps {
   selectedMember: AdminMemberDetailInfoType | null;
@@ -37,7 +37,7 @@ export default function CCMemberDetailCard({
   const [isOpenKickModal, setIsOpenKickModal] = useState(false);
   const [isOpenGracePeriodModal, setIsOpenGracePeriodModal] = useState(false);
   const [newGracePeriod, setNewGracePeriod] = useState(
-    selectedMember?.gracePeriod || ""
+    selectedMember?.gracePeriod || "",
   );
   const [penaltyCount, setPenaltyCount] = useState(0);
 
@@ -251,7 +251,7 @@ export default function CCMemberDetailCard({
                 message={`${
                   selectedMember.name
                 }님의 유예 기간을 ${newGracePeriod} (${penaltyGracePeriod(
-                  newGracePeriod
+                  newGracePeriod,
                 )})로 수정하시겠습니까?`}
                 confirmText="확인"
                 cancelText="취소"

@@ -1,9 +1,9 @@
 "server-only";
 
+import { groupMembersWaitingForApproval } from "@/utils/membersUtils";
+import { getMembersForStaff } from "@/app/api/member/SCadminMemberApi";
 import RegisterActionButtons from "@/components/admin/members/CCRegisterActionButtons";
 import { User } from "lucide-react";
-import { getMembersForStaff } from "@/app/api/member/SCadminMemberApi";
-import { groupMembersWaitingForApproval } from "@/utils/membersUtils";
 
 export default async function CCSignUpList() {
   const members = await getMembersForStaff();

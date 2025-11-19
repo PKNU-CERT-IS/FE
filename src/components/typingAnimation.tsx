@@ -5,7 +5,7 @@ import useTyping from "@/hooks/useTyping";
 export default function TypingAnimation() {
   const { firstText, secondText, cursorLine } = useTyping(
     "Computer Emergency Response Team",
-    "Information Security"
+    "Information Security",
   );
 
   return (

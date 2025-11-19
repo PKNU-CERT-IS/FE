@@ -18,6 +18,6 @@ export const useAuthStore = create<AuthState>()(
     }),
     {
       name: "auth-storage", // 로컬스토리지 키 이름
-    }
-  )
+    },
+  ),
 );

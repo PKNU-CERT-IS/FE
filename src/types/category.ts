@@ -597,12 +597,15 @@ export const SUBCATEGORY_LABELS = {
 
 // 소카테고리를 대카테고리로 매핑하는 객체 생성 -> badge color 맵핑을 위해 생성
 export const SUBCATEGORY_TO_CATEGORY: Record<SubCategoryType, CategoryType> =
-  Object.entries(SUBCATEGORY_MAP).reduce((acc, [category, subcategories]) => {
-    subcategories.forEach((sub) => {
-      acc[sub] = category as CategoryType;
-    });
-    return acc;
-  }, {} as Record<SubCategoryType, CategoryType>);
+  Object.entries(SUBCATEGORY_MAP).reduce(
+    (acc, [category, subcategories]) => {
+      subcategories.forEach((sub) => {
+        acc[sub] = category as CategoryType;
+      });
+      return acc;
+    },
+    {} as Record<SubCategoryType, CategoryType>,
+  );
 
 export type SubCategoryKey = keyof typeof SUBCATEGORY_LABELS;
 
@@ -746,7 +749,10 @@ export const SUBCATEGORY_TO_EN: Record<SubCategoryType, string> = {
 
 // 반대 매핑 (영문 → 한글)
 export const SUBCATEGORY_FROM_EN: Record<string, SubCategoryType> =
-  Object.entries(SUBCATEGORY_TO_EN).reduce((acc, [kor, eng]) => {
-    acc[eng] = kor as SubCategoryType;
-    return acc;
-  }, {} as Record<string, SubCategoryType>);
+  Object.entries(SUBCATEGORY_TO_EN).reduce(
+    (acc, [kor, eng]) => {
+      acc[eng] = kor as SubCategoryType;
+      return acc;
+    },
+    {} as Record<string, SubCategoryType>,
+  );

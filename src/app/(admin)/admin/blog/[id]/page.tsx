@@ -1,14 +1,14 @@
-import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { Calendar, User, Eye, ExternalLink } from "lucide-react";
-import BackToListButton from "@/components/detail/SCBackToListButton";
+import { Metadata } from "next";
+import { BlogDetailDataType } from "@/types/blog";
+import { getCategoryColor } from "@/utils/badgeUtils";
+import { formatDate } from "@/utils/formatDateUtil";
+import { searchBlogDetail } from "@/app/api/blog/SCblogApi";
 import KebabMenuButton from "@/components/detail/CCKebabMenu";
 import ShareButton from "@/components/detail/CCShareButton";
+import BackToListButton from "@/components/detail/SCBackToListButton";
 import DefaultBadge from "@/components/ui/defaultBadge";
-import { formatDate } from "@/utils/formatDateUtil";
-import { getCategoryColor } from "@/utils/badgeUtils";
-import { searchBlogDetail } from "@/app/api/blog/SCblogApi";
-import { BlogDetailDataType } from "@/types/blog";
+import { Calendar, ExternalLink, Eye, User } from "lucide-react";
 
 interface BlogDetailPageProps {
   params: Promise<{

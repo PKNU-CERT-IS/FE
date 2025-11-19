@@ -1,9 +1,9 @@
 "use client";
 
+import { useEffect, useState } from "react";
+import Link from "next/link";
 import { motion } from "framer-motion";
 import LogoSVG from "/public/icons/logo.svg";
-import Link from "next/link";
-import { useEffect, useState } from "react";
 
 function getRandom(min: number, max: number) {
   return Math.random() * (max - min) + min;

@@ -6,7 +6,7 @@ export async function approveAdminStudyCreate(studyId: number) {
     const res = await apiClient.post(
       `/admin/study/create/approve`,
       { studyId },
-      { headers: { "Content-Type": "application/json" } }
+      { headers: { "Content-Type": "application/json" } },
     );
     return res.data;
   } catch (error) {
@@ -19,7 +19,7 @@ export async function rejectAdminStudyCreate(studyId: number) {
     const res = await apiClient.post(
       `/admin/study/create/reject`,
       { studyId },
-      { headers: { "Content-Type": "application/json" } }
+      { headers: { "Content-Type": "application/json" } },
     );
     return res.data;
   } catch (error) {

@@ -1,20 +1,20 @@
 "server-only";
 
-import DefaultBadge from "@/components/ui/defaultBadge";
-import { getStudyCategoryColor } from "@/utils/profileUtils";
-import { StudyTabType } from "@/types/profile";
 import Link from "next/link";
-import CCProfileStudyStatusFilter from "@/components/profile/CCProfileStudyStatusFilter";
-import CCCreateDropdown from "@/components/profile/CCCreateDropdown";
+import { CategoryType, SubCategoryType } from "@/types/category";
+import { StudyTabType } from "@/types/profile";
 import { StudyStatusType, studyStatus } from "@/types/profile";
 import { getCategoryColor } from "@/utils/badgeUtils";
+import { getStudyCategoryColor } from "@/utils/profileUtils";
 import { translateStudyProjectStatusToKorean } from "@/utils/profileUtils";
 import { fromOffsetDateTime } from "@/utils/transfromResponseValue";
-import { CategoryType, SubCategoryType } from "@/types/category";
 import {
-  getProfileStudy,
   getProfileProject,
+  getProfileStudy,
 } from "@/app/api/profile/SCprofileApi";
+import CCCreateDropdown from "@/components/profile/CCCreateDropdown";
+import CCProfileStudyStatusFilter from "@/components/profile/CCProfileStudyStatusFilter";
+import DefaultBadge from "@/components/ui/defaultBadge";
 
 interface SCStudyListProps {
   searchParams: Promise<{
@@ -81,7 +81,7 @@ export default async function SCStudyList({ searchParams }: SCStudyListProps) {
   ];
 
   const materialsByTab = allMaterials.filter(
-    (m) => currentTab === "study" || m.tab === currentTab
+    (m) => currentTab === "study" || m.tab === currentTab,
   );
 
   let filteredMaterials =
@@ -89,7 +89,7 @@ export default async function SCStudyList({ searchParams }: SCStudyListProps) {
       ? materialsByTab
       : materialsByTab.filter(
           (m) =>
-            translateStudyProjectStatusToKorean(m.status) === selectedStatus
+            translateStudyProjectStatusToKorean(m.status) === selectedStatus,
         );
 
   if (selectedStatus === "진행중") {
@@ -144,7 +144,7 @@ export default async function SCStudyList({ searchParams }: SCStudyListProps) {
                         <span>{material.startDate}</span>
                         <DefaultBadge
                           className={`border-gray-200 text-gray-600 ${getStudyCategoryColor(
-                            material.tab as StudyTabType
+                            material.tab as StudyTabType,
                           )}`}
                         >
                           {material.tab}
@@ -157,7 +157,7 @@ export default async function SCStudyList({ searchParams }: SCStudyListProps) {
                   <DefaultBadge
                     variant="custom"
                     className={getCategoryColor(
-                      material.category as CategoryType
+                      material.category as CategoryType,
                     )}
                   >
                     {material.category}
@@ -165,7 +165,7 @@ export default async function SCStudyList({ searchParams }: SCStudyListProps) {
                   <DefaultBadge
                     variant="custom"
                     className={getCategoryColor(
-                      material.subCategory as SubCategoryType
+                      material.subCategory as SubCategoryType,
                     )}
                   >
                     {material.subCategory}

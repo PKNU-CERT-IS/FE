@@ -1,11 +1,11 @@
 // utils/projectUtils.ts
 import { CategoryType, SubCategoryType } from "@/types/category";
+import { StatusType } from "@/types/progressStatus";
 import {
-  ProjectMaterial,
   ProjectCurrentFilters,
+  ProjectMaterial,
   SemesterType,
 } from "@/types/project";
-import { StatusType } from "@/types/progressStatus";
 
 /**
  * URL 검색 파라미터를 CurrentFilters 타입으로 파싱하는 함수
@@ -35,7 +35,7 @@ export function parseSearchParams(searchParams: {
 export function filterProjectData(
   projects: ProjectMaterial[],
   searchTerm: string,
-  category: CategoryType
+  category: CategoryType,
 ): ProjectMaterial[] {
   return projects.filter((project) => {
     // 카테고리 필터링
@@ -59,7 +59,7 @@ export function filterProjectData(
 export function paginateProjects(
   projects: ProjectMaterial[],
   page: number,
-  itemsPerPage: number
+  itemsPerPage: number,
 ): {
   paginatedProjects: ProjectMaterial[];
   totalPages: number;

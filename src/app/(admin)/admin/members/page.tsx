@@ -1,7 +1,7 @@
 "server-only";
 
-import MembersSearchBar from "@/components/members/CCMembersSearchBar";
 import SCMembersContentWrapper from "@/components/admin/members/SCMembersContentWrapper";
+import MembersSearchBar from "@/components/members/CCMembersSearchBar";
 
 interface AdminMembersProps {
   searchParams: Promise<{

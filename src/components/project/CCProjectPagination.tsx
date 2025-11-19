@@ -1,7 +1,7 @@
 "use client";
 
+import { useCallback, useEffect, useMemo } from "react";
 import Link from "next/link";
-import { useEffect, useMemo, useCallback } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 // 프로젝트 검색 파라미터
@@ -61,7 +61,7 @@ export default function ProjectPagination({
       const queryString = params.toString();
       return queryString ? `?${queryString}` : "";
     },
-    []
+    [],
   );
 
   const createSafePageUrl = useCallback(
@@ -73,7 +73,7 @@ export default function ProjectPagination({
         return `/project?page=${page}`;
       }
     },
-    [searchParams, createPageUrl]
+    [searchParams, createPageUrl],
   );
 
   if (visiblePages.length === 0) return null; // ← 여기서 조건부 렌더링

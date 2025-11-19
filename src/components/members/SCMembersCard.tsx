@@ -1,17 +1,18 @@
 "server-only";
-import DefaultBadge from "@/components/ui/defaultBadge";
-import { getRoleBadgeStyle, getRoleBorderStyle } from "@/utils/membersUtils";
 import Image from "next/image";
-import GithubSVG from "/public/icons/github.svg";
+import { AdminMemberDetailInfoType } from "@/types/admin/adminMembers";
+import { getRoleBadgeStyle, getRoleBorderStyle } from "@/utils/membersUtils";
+import {
+  translateGradeToKorean,
+  translateMemberRole,
+} from "@/utils/transfromResponseValue";
+import ClipboardButton from "@/components/ui/CCClipboardButton";
+import DefaultBadge from "@/components/ui/defaultBadge";
 import EmailSVG from "/public/icons/email.svg";
+import GithubSVG from "/public/icons/github.svg";
 import LinkedinSVG from "/public/icons/linkedIn.svg";
 import LogoSVG from "/public/icons/logo.svg";
-import {
-  translateMemberRole,
-  translateGradeToKorean,
-} from "@/utils/transfromResponseValue";
-import { AdminMemberDetailInfoType } from "@/types/admin/adminMembers";
-import ClipboardButton from "@/components/ui/CCClipboardButton";
+
 export default function MembersCard({
   members,
 }: {
@@ -21,14 +22,14 @@ export default function MembersCard({
   return (
     <div
       className={`card-list p-6 group transform hover:-translate-y-2 hover:shadow-2xl hover:shadow-gray-300/50 shadow-sm cursor-default dark:bg-gray-800 dark:border-gray-700 ${getRoleBorderStyle(
-        role
+        role,
       )} flex flex-col h-full`}
     >
       <div className="flex-1">
         <div className="text-center mb-4">
           <div
             className={`relative mb-4 w-20 h-20 mx-auto rounded-full border-2 border-gray-200 flex items-center justify-center text-lg font-medium text-gray-600 transition-colors duration-300  dark:border-gray-600 ${getRoleBorderStyle(
-              role
+              role,
             )}`}
           >
             {members.profileImage ? (

@@ -5,7 +5,7 @@ export async function getBoards(
   keyword?: string,
   category?: string,
   page: number = 0,
-  size: number = 10
+  size: number = 10,
 ) {
   try {
     const params = new URLSearchParams();

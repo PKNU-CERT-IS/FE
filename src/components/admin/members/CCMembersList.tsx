@@ -1,13 +1,13 @@
 "use client";
 
 import React, { useState } from "react";
-import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
-import { membersRoleCategories } from "@/types/members";
+import * as XLSX from "xlsx";
 import { AdminMemberDetailInfoType } from "@/types/admin/adminMembers";
-import CCMembersRow from "@/components/admin/members/CCMembersRow";
-import CCMemberDetailCard from "@/components/admin/members/CCMemberDetailCard";
+import { membersRoleCategories } from "@/types/members";
 import { translateMemberRole } from "@/utils/transfromResponseValue";
+import CCMemberDetailCard from "@/components/admin/members/CCMemberDetailCard";
+import CCMembersRow from "@/components/admin/members/CCMembersRow";
 
 interface CCMembersListProps {
   filteredMembers: AdminMemberDetailInfoType[];
@@ -63,7 +63,7 @@ export default function CCMembersList({ filteredMembers }: CCMembersListProps) {
       ...rows.map((r) =>
         r
           .map((v) => (typeof v === "string" && v.includes(",") ? `"${v}"` : v))
-          .join(",")
+          .join(","),
       ),
     ].join("\n");
 
@@ -170,7 +170,7 @@ export default function CCMembersList({ filteredMembers }: CCMembersListProps) {
             <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
               {membersRoleCategories.map((role) => {
                 const sorted = filteredMembers.filter(
-                  (member) => translateMemberRole(member.role) === role
+                  (member) => translateMemberRole(member.role) === role,
                 );
                 if (sorted.length === 0) return null;
 

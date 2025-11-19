@@ -1,10 +1,10 @@
 "use client";
 
-import { useState, useRef, useEffect, useCallback } from "react";
-import { Plus } from "lucide-react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import DefaultButton from "@/components/ui/defaultButton";
 import { cn } from "@/lib/utils";
+import DefaultButton from "@/components/ui/defaultButton";
+import { Plus } from "lucide-react";
 
 export default function CCCreateDropdown() {
   const [isOpen, setIsOpen] = useState(false);
@@ -34,7 +34,7 @@ export default function CCCreateDropdown() {
         className={cn(
           "w-full justify-between text-left font-normal transition-all duration-200 cursor-pointer",
           "bg-cert-red border-cert-red hover:bg-cert-red/90 text-white",
-          "focus:ring-2 focus:ring-cert-red/20"
+          "focus:ring-2 focus:ring-cert-red/20",
         )}
         onClick={() => setIsOpen(!isOpen)}
       >

@@ -1,16 +1,16 @@
 "server-only";
 
-import DefaultButton from "@/components/ui/defaultButton";
-import DefaultBadge from "@/components/ui/defaultBadge";
-import EyeSVG from "/public/icons/eye.svg";
 import Link from "next/link";
-import { Plus } from "lucide-react";
 import { BlogCategory, BlogInPrfoileDataType } from "@/types/blog";
 import { getCategoryColor } from "@/utils/badgeUtils";
-import { cn } from "@/lib/utils";
-import { getProfileBlog } from "@/app/api/profile/SCprofileApi";
 import { fromOffsetDateTime } from "@/utils/transfromResponseValue";
+import { getProfileBlog } from "@/app/api/profile/SCprofileApi";
+import { cn } from "@/lib/utils";
+import DefaultBadge from "@/components/ui/defaultBadge";
+import DefaultButton from "@/components/ui/defaultButton";
+import { Plus } from "lucide-react";
 import CCProfilePagination from "./CCProfilePagination";
+import EyeSVG from "/public/icons/eye.svg";
 
 interface SCBlogListProps {
   searchParams: Promise<{
@@ -36,7 +36,7 @@ export default async function SCBlogList({ searchParams }: SCBlogListProps) {
   // 페이지 처리
   const paginatedBlogs = blogs.slice(
     (currentPage - 1) * ITEMS_PER_PAGE,
-    currentPage * ITEMS_PER_PAGE
+    currentPage * ITEMS_PER_PAGE,
   );
 
   if (!blogs || blogs.length === 0) {
@@ -94,7 +94,7 @@ export default async function SCBlogList({ searchParams }: SCBlogListProps) {
                           "rounded-full inline-flex items-center px-2 py-0.5 text-[11px] sm:text-xs font-medium border",
                           blog.referenceType === "STUDY"
                             ? "badge-green border-green-300 dark:border-green-600"
-                            : "badge-blue border-blue-300 dark:border-blue-600"
+                            : "badge-blue border-blue-300 dark:border-blue-600",
                         )}
                       >
                         {blog.referenceType === "STUDY" ? "스터디" : "프로젝트"}{" "}
@@ -107,7 +107,7 @@ export default async function SCBlogList({ searchParams }: SCBlogListProps) {
                     <DefaultBadge
                       variant="custom"
                       className={getCategoryColor(
-                        blog.category as BlogCategory
+                        blog.category as BlogCategory,
                       )}
                     >
                       {blog.category}

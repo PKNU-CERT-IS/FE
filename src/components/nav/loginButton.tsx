@@ -1,9 +1,12 @@
 "use client";
 
-import { LogIn, LogOut } from "lucide-react";
+// ✅ zustand 전역 상태
 import Link from "next/link";
-import { useAuthStore } from "@/store/authStore"; // ✅ zustand 전역 상태
-import { logoutAction } from "@/actions/auth/LogoutServerAction"; // ✅ 서버 로그아웃
+import { logoutAction } from "@/actions/auth/LogoutServerAction";
+import { useAuthStore } from "@/store/authStore";
+import { LogIn, LogOut } from "lucide-react";
+
+// ✅ 서버 로그아웃
 
 interface LoginButtonProps {
   className?: string;

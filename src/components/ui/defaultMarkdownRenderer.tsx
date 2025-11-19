@@ -1,7 +1,9 @@
+import "highlight.js/styles/github.css";
 import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
 import rehypeHighlight from "rehype-highlight";
-import "highlight.js/styles/github.css"; // 코드 하이라이트 스타일
+import remarkGfm from "remark-gfm";
+
+// 코드 하이라이트 스타일
 
 interface MarkdownRendererProps {
   content: string;
