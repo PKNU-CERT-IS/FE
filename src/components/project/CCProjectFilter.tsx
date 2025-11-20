@@ -1,17 +1,7 @@
 "use client";
 
-import { useState, useTransition, useRef, useCallback, useEffect } from "react";
+import { useCallback, useEffect, useRef, useState, useTransition } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { ChevronDown, X } from "lucide-react";
-import CCProjectSearchBar from "@/components/project/CCProjectSearchBar";
-import {
-  SEMESTER_OPTIONS,
-  SEMESTER_LABELS,
-  FilterKey,
-  ProjectCurrentFilters,
-} from "@/types/project";
-import DefaultButton from "@/components/ui/defaultButton";
-import { cn } from "@/lib/utils";
 import {
   CATEGORY_LABELS,
   CATEGORY_OPTIONS,
@@ -20,6 +10,16 @@ import {
   SubCategoryKey,
 } from "@/types/category";
 import { STATUS_FILTER_OPTIONS, STATUS_LABELS } from "@/types/progressStatus";
+import {
+  FilterKey,
+  ProjectCurrentFilters,
+  SEMESTER_LABELS,
+  SEMESTER_OPTIONS,
+} from "@/types/project";
+import { cn } from "@/lib/utils";
+import CCProjectSearchBar from "@/components/project/CCProjectSearchBar";
+import DefaultButton from "@/components/ui/defaultButton";
+import { ChevronDown, X } from "lucide-react";
 
 interface ProjectCategoryProps {
   projectCurrentFilters: ProjectCurrentFilters;
@@ -68,7 +68,7 @@ export default function CCProjectFilter({
         }
       });
     },
-    [searchParams, router, isAdmin]
+    [searchParams, router, isAdmin],
   );
   // 메인카테고리에서 다른 카테고리 선택 시 서브 카테고리 리셋
   const resetSubCategory = useCallback(
@@ -94,7 +94,7 @@ export default function CCProjectFilter({
         }
       });
     },
-    [searchParams, router, isAdmin]
+    [searchParams, router, isAdmin],
   );
   const closeAllDropdowns = useCallback(() => {
     setShowSemesterDropdown(false);
@@ -139,7 +139,7 @@ export default function CCProjectFilter({
                 "w-full justify-between text-left font-normal transition-all duration-200 cursor-pointer",
                 "bg-white border-gray-300 hover:border-cert-red hover:bg-white hover:text-cert-black",
                 "focus:border-cert-red focus:ring-2 focus:ring-cert-red/20",
-                "dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-800"
+                "dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-800",
               )}
               onClick={() => {
                 setShowSemesterDropdown(!showSemesterDropdown);
@@ -190,7 +190,7 @@ export default function CCProjectFilter({
                 "w-full justify-between text-left font-normal transition-all duration-200 cursor-pointer",
                 "border-gray-300 bg-white hover:border-cert-red hover:text-cert-black hover:bg-white",
                 "focus:border-cert-red focus:ring-2 focus:ring-cert-red/20",
-                "dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-800"
+                "dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-800",
               )}
               onClick={() => {
                 setShowCategoryDropdown(!showCategoryDropdown);
@@ -241,7 +241,7 @@ export default function CCProjectFilter({
                 "w-full justify-between text-left font-normal transition-all duration-200 cursor-pointer",
                 "bg-white border-gray-300 hover:border-cert-red hover:bg-white hover:text-cert-black",
                 "focus:border-cert-red focus:ring-2 focus:ring-cert-red/20",
-                "dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-800"
+                "dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-800",
               )}
               onClick={() => {
                 setShowSubCategoryDropdown(!showSubCategoryDropdown);
@@ -280,7 +280,7 @@ export default function CCProjectFilter({
                     >
                       {SUBCATEGORY_LABELS[option as SubCategoryKey]}
                     </button>
-                  )
+                  ),
                 )}
               </div>
             )}
@@ -298,7 +298,7 @@ export default function CCProjectFilter({
                 "w-full justify-between text-left font-normal transition-all duration-200",
                 (isAdmin && view === "pending") || (isAdmin && view === "end")
                   ? "bg-gray-100 text-gray-400 cursor-not-allowed dark:bg-gray-700 dark:text-gray-500"
-                  : "cursor-pointer border-gray-300 bg-white hover:border-cert-red hover:text-cert-black hover:bg-white focus:border-cert-red focus:ring-2 focus:ring-cert-red/20 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-800"
+                  : "cursor-pointer border-gray-300 bg-white hover:border-cert-red hover:text-cert-black hover:bg-white focus:border-cert-red focus:ring-2 focus:ring-cert-red/20 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-800",
               )}
               disabled={
                 (isAdmin && view === "pending") ||

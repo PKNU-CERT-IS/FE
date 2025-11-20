@@ -1,20 +1,20 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 import Image from "next/image";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import LogoSVG from "/public/icons/logo.svg";
-import {
-  getStudyApprovedParticipants,
-  getStudyPendingParticipants,
-} from "@/app/api/study/CCStudyParticipantApi";
+import { usePathname } from "next/navigation";
+import { MEMBER_GRADE_LABELS, ParticipantType } from "@/types/study";
 import {
   getProjectApprovedParticipants,
   getProjectPendingParticipants,
 } from "@/app/api/project/CCProjectParticipantApi";
-import { ParticipantType, MEMBER_GRADE_LABELS } from "@/types/study";
+import {
+  getStudyApprovedParticipants,
+  getStudyPendingParticipants,
+} from "@/app/api/study/CCStudyParticipantApi";
 import CCParticipantActionButtons from "@/components/ui/CCParticipantActionButtons";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import LogoSVG from "/public/icons/logo.svg";
 
 interface CCParticipantsListProps {
   type: "study" | "project";
@@ -82,7 +82,7 @@ export default function CCParticipantsList({
   // 승인 처리
   const handleApprove = (member: ParticipantType) => {
     setPendingMembers((prev) =>
-      prev.filter((m) => m.memberId !== member.memberId)
+      prev.filter((m) => m.memberId !== member.memberId),
     );
     setPendingTotalElements((prev) => Math.max(prev - 1, 0));
     // 마지막 페이지의 마지막 멤버일 경우 첫 페이지로 이동
@@ -105,7 +105,7 @@ export default function CCParticipantsList({
     }
     // 페이지 수 재계산
     setPendingTotalPages(
-      Math.max(1, Math.ceil((pendingTotalElements - 1) / size))
+      Math.max(1, Math.ceil((pendingTotalElements - 1) / size)),
     );
   };
 

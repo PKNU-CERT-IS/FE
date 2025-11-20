@@ -4,7 +4,7 @@ import { fetchWithAuth } from "@/lib/serverIntercept";
 export async function getStudyAllMeetings(
   studyId: number,
   page = 0,
-  size = 10
+  size = 10,
 ) {
   const params = new URLSearchParams();
   params.append("studyId", studyId.toString());
@@ -35,7 +35,7 @@ export async function getStudyDetailMeeting(meetingId: number) {
     {
       method: "GET",
       headers: { "Content-Type": "application/json" },
-    }
+    },
   );
 
   if (!res.ok) {
@@ -51,7 +51,7 @@ export async function getStudyDetailMeeting(meetingId: number) {
 export async function getProjectAllMeetings(
   projectId: number,
   page = 0,
-  size = 10
+  size = 10,
 ) {
   const params = new URLSearchParams();
   params.append("projectId", projectId.toString());

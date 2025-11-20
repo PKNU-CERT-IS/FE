@@ -16,7 +16,7 @@ export async function fetchWithAuth(url: string, options: RequestInit = {}) {
         ...options.headers,
         Authorization: accessToken ? `Bearer ${accessToken}` : "",
       },
-    }
+    },
   );
 
   return res;

@@ -1,7 +1,7 @@
-import { ProjectSearchParams } from "@/components/project/CCProjectPagination";
 import { CategoryType, SubCategoryType } from "@/types/category";
 import { StatusType } from "@/types/progressStatus";
 import type { SemesterType, StudySearchParams } from "@/types/study";
+import { ProjectSearchParams } from "@/components/project/CCProjectPagination";
 
 export function isCategoryType(value: string): value is CategoryType {
   const validCategories: CategoryType[] = [
@@ -208,7 +208,7 @@ export const calculateDaysFromNow = (targetDate: string): number => {
  */
 export const getStatusDateInfo = (
   startDate?: string,
-  endDate?: string
+  endDate?: string,
 ): { status: StatusType; label: string } => {
   const now = new Date();
   const start = startDate ? new Date(startDate) : null;
@@ -279,14 +279,14 @@ export function calculateDDay(startDate: string): string {
  */
 export const calculateParticipationRate = (
   current: number,
-  max: number
+  max: number,
 ): number => {
   if (max === 0) return 0;
   return Math.round((current / max) * 100);
 };
 
 export function parseSearchParams(
-  searchParams?: StudySearchParams | ProjectSearchParams
+  searchParams?: StudySearchParams | ProjectSearchParams,
 ) {
   if (!searchParams) {
     return {
@@ -323,7 +323,7 @@ export function parseSearchParams(
  */
 export function createPageUrl(
   page: number,
-  searchParams: StudySearchParams
+  searchParams: StudySearchParams,
 ): string {
   const params = new URLSearchParams();
   const safeSearchParams = searchParams || {};

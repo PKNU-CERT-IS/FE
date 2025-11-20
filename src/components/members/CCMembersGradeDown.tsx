@@ -1,10 +1,10 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
 import { useTransition } from "react";
-import MembersDropdown from "@/components/members/CCMembersDropdown";
+import { useRouter, useSearchParams } from "next/navigation";
 import { MembersGradeCategoryType } from "@/types/members";
 import { gradeOptions } from "@/utils/membersUtils";
+import MembersDropdown from "@/components/members/CCMembersDropdown";
 
 export default function MembersGradeDropdown() {
   const router = useRouter();

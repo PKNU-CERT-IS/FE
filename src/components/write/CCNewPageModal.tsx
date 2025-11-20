@@ -1,7 +1,7 @@
 "use client";
-import { createPortal } from "react-dom";
 import { ReactNode, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { createPortal } from "react-dom";
 
 export default function NewPageModal({ children }: { children: ReactNode }) {
   const router = useRouter();
@@ -52,6 +52,6 @@ export default function NewPageModal({ children }: { children: ReactNode }) {
         </div>
       </div>
     </div>,
-    document.getElementById("modal-root") as HTMLElement
+    document.getElementById("modal-root") as HTMLElement,
   );
 }

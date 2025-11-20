@@ -1,7 +1,7 @@
-import CCThemeSwitch from "@/components/ui/CCThemeSwitch";
-import CCTopButton from "@/components/ui/CCTopButton";
 import AdminNavigationBar from "@/layouts/admin/adminNavigationBar";
 import Footer from "@/layouts/footer";
+import CCThemeSwitch from "@/components/ui/CCThemeSwitch";
+import CCTopButton from "@/components/ui/CCTopButton";
 
 export const metadata = {
   title: "Admin | CERT-IS",

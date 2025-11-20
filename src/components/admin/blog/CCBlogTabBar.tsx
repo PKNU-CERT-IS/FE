@@ -1,12 +1,12 @@
 "use client";
 
+import { useRouter, useSearchParams } from "next/navigation";
 import {
+  TAB_CONFIG,
   blogTabCategory,
   blogTabCategoryType,
-  TAB_CONFIG,
 } from "@/types/admin/adminBlog";
 import { isValidTab } from "@/utils/adminBlogUtils";
-import { useRouter, useSearchParams } from "next/navigation";
 
 export default function CCBlogTabBar() {
   const searchParams = useSearchParams();
@@ -20,7 +20,7 @@ export default function CCBlogTabBar() {
     router.replace(`?${params.toString()}`, { scroll: false });
   };
   return (
-    <div className="h-10 items-center justify-center rounded-md p-1 text-muted-foreground grid w-full grid-cols-2 bg-gray-100 ">
+    <div className="h-10 items-center justify-center rounded-md p-1 text-muted-foreground grid w-full grid-cols-2 bg-gray-100 dark:bg-gray-800">
       {blogTabCategory.map((tabKey) => {
         const { label } = TAB_CONFIG[tabKey];
         const isActive = currentTab === tabKey;
@@ -29,7 +29,9 @@ export default function CCBlogTabBar() {
             key={tabKey}
             onClick={() => handleTabClick(tabKey)}
             className={`inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium transition-all duration-300 cursor-pointer ${
-              isActive ? "bg-cert-red text-white shadow-sm" : "text-gray-500"
+              isActive
+                ? "bg-cert-red text-white shadow-sm"
+                : "text-gray-500 dark:text-gray-400"
             }`}
           >
             {label}

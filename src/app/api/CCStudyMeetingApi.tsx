@@ -1,5 +1,5 @@
-import { apiClient } from "@/lib/clientIntercept";
 import { CreateStudyMeeting, UpdateMeeting } from "@/types/meeting";
+import { apiClient } from "@/lib/clientIntercept";
 
 // 회의록 디테일 페이지 조회 -> 수정 위해서 필요
 export async function getStudyDetailMeeting(meetingId: number) {

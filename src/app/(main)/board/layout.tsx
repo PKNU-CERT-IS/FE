@@ -1,5 +1,5 @@
-import PageLayout from "@/layouts/pageLayout";
 import { Metadata } from "next";
+import PageLayout from "@/layouts/pageLayout";
 import ShieldSVG from "/public/icons/shield.svg";
 
 export const metadata: Metadata = {

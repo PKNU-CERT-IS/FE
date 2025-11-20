@@ -1,11 +1,11 @@
-import { fetchWithAuth } from "@/lib/serverIntercept";
 import { normalizeSemester } from "@/types/study";
+import { fetchWithAuth } from "@/lib/serverIntercept";
 
 // 프로젝트 조회
 export async function getProjects(
   page = 1,
   size = 10,
-  sort = "createdAt,desc"
+  sort = "createdAt,desc",
 ) {
   try {
     const params = new URLSearchParams();
@@ -38,7 +38,7 @@ export async function searchProjects(
     projectStatus?: string;
     semester?: string;
   } = {},
-  options: { page?: number; size?: number; sort?: string[] } = {}
+  options: { page?: number; size?: number; sort?: string[] } = {},
 ) {
   try {
     const params = new URLSearchParams();
@@ -63,7 +63,7 @@ export async function searchProjects(
       params.append("size", String(options.size));
     }
     (options.sort ?? ["createdAt,desc"]).forEach((s) =>
-      params.append("sort", s)
+      params.append("sort", s),
     );
 
     const res = await fetchWithAuth(`/project/search?${params.toString()}`, {

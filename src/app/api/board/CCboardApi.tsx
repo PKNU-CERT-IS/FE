@@ -1,8 +1,9 @@
 "use client";
 
-import { apiClient } from "@/lib/clientIntercept";
-import { NewBoardFormData } from "@/types/board";
 import { AttachedFile } from "@/types/attachedFile";
+import { NewBoardFormData } from "@/types/board";
+import { apiClient } from "@/lib/clientIntercept";
+
 // board 전용
 export interface BoardAttachedFile {
   name: string;
@@ -60,7 +61,7 @@ export async function deleteBoard(boardId: number) {
 // 게시글 수정
 export async function updateBoard(
   boardId: number,
-  payload: UpdateBoardPayload
+  payload: UpdateBoardPayload,
 ) {
   try {
     const res = await apiClient.put(`/board/edit/${boardId}`, payload, {

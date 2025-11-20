@@ -84,8 +84,8 @@
   );
 
   /* NavBar Shadow 커스텀 */
-  --shadow-cert-navbar: 0 4px 6px -1px rgba(158, 1, 1, 0.1),
-    0 2px 4px -1px rgba(158, 1, 1, 0.06);
+  --shadow-cert-navbar:
+    0 4px 6px -1px rgba(158, 1, 1, 0.1), 0 2px 4px -1px rgba(158, 1, 1, 0.06);
 }
 
 /* CSS 변수 정의 (루트에서) */

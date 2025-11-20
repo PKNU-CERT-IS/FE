@@ -48,7 +48,7 @@ export const useModal = () => {
         setTimeError("시작 시간과 종료 시간이 같을 수 없습니다.");
       } else if (startMinutes > endMinutes) {
         setTimeError(
-          "시작 시간은 종료 시간보다 빨라야 합니다. (자정을 넘어가는 예약의 경우는 제외)"
+          "시작 시간은 종료 시간보다 빨라야 합니다. (자정을 넘어가는 예약의 경우는 제외)",
         );
       } else {
         setTimeError("");
@@ -67,7 +67,7 @@ export const useModal = () => {
         setTimeError("시작 시간과 종료 시간이 같을 수 없습니다.");
       } else if (endMinutes < startMinutes) {
         setTimeError(
-          "시작 시간은 종료 시간보다 빨라야 합니다. (자정을 넘어가는 예약의 경우는 제외)"
+          "시작 시간은 종료 시간보다 빨라야 합니다. (자정을 넘어가는 예약의 경우는 제외)",
         );
       } else {
         setTimeError("");

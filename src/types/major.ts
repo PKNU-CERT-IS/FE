@@ -959,7 +959,7 @@ export const getMajorUtils = {
   // 선택값 초기화 유틸리티
   resetSelection: (
     currentSelection: SelectedMajorInfo,
-    level: "college" | "department"
+    level: "college" | "department",
   ): SelectedMajorInfo => {
     if (level === "college") {
       return { college: currentSelection.college };

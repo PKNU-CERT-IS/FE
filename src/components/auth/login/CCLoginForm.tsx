@@ -1,15 +1,15 @@
 "use client";
 
+import { useState, useTransition } from "react";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { loginAction } from "@/actions/auth/LoginServerAction";
+import { useAuthStore } from "@/store/authStore";
 import DefaultButton from "@/components/ui/defaultButton";
+import { useAuth } from "@/hooks/useAuth";
+import { Eye, EyeOff, Loader2, LockOpen } from "lucide-react";
 import LockSVG from "/public/icons/lock.svg";
 import ProfileSVG from "/public/icons/profile.svg";
-import { loginAction } from "@/actions/auth/LoginServerAction";
-import { useAuth } from "@/hooks/useAuth";
-import { Eye, EyeOff, LockOpen, Loader2 } from "lucide-react";
-import { useTransition, useState } from "react";
-import { useRouter } from "next/navigation";
-import { useAuthStore } from "@/store/authStore";
-import { useEffect } from "react";
 
 export default function CCLoginInput() {
   const { showPassword, setShowPassword, loginFormData, setLoginFormData } =
@@ -126,7 +126,7 @@ export default function CCLoginInput() {
           />
           <button
             type="button"
-            className="absolute right-0 top-0 h-10 px-3 text-gray-400 hover:text-gray-600"
+            className="absolute right-0 top-0 h-9 px-3 text-gray-400 hover:text-gray-600"
             onClick={() => setShowPassword(!showPassword)}
           >
             {showPassword ? (

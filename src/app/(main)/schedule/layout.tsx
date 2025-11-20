@@ -1,6 +1,6 @@
+import { Metadata } from "next";
 import PageLayout from "@/layouts/pageLayout";
 import ScheduleSVG from "/public/icons/schedule.svg";
-import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Schedule",

@@ -1,17 +1,17 @@
 "server-only";
 
-import ScheduleSVG from "/public/icons/schedule.svg";
-import LocationSVG from "/public/icons/location.svg";
-import TimeSVG from "/public/icons/time.svg";
 import { ScheduleInfo } from "@/types/schedule";
-import { getTypeColor, getTypeLabel } from "@/utils/scheduleUtils";
 import {
   formatDate,
   formatDateRange,
   formatTime,
 } from "@/utils/formatDateUtil";
-import { MessageSquareText } from "lucide-react";
+import { getTypeColor, getTypeLabel } from "@/utils/scheduleUtils";
 import { getSchedules } from "@/app/api/schedule/SCscheduleApi";
+import { MessageSquareText } from "lucide-react";
+import LocationSVG from "/public/icons/location.svg";
+import ScheduleSVG from "/public/icons/schedule.svg";
+import TimeSVG from "/public/icons/time.svg";
 
 interface SCScheduleInfoProps {
   selectedDate: string;
@@ -23,7 +23,7 @@ export default async function SCScheduleInfo({
   const allSchedules: ScheduleInfo[] = await getSchedules(selectedDate);
   const selectedDateSchedules = selectedDate
     ? allSchedules.filter(
-        (sc) => formatDate(sc.startedAt, "short") === selectedDate
+        (sc) => formatDate(sc.startedAt, "short") === selectedDate,
       )
     : [];
 
@@ -58,13 +58,13 @@ export default async function SCScheduleInfo({
                       {formatDateRange(
                         schedule.startedAt,
                         schedule.endedAt,
-                        "dot"
+                        "dot",
                       )}
                     </div>
                     <div className="flex flex-row items-center">
                       <TimeSVG className="mr-2" />
                       {`${formatTime(schedule.startedAt)} - ${formatTime(
-                        schedule.endedAt
+                        schedule.endedAt,
                       )}`}
                     </div>
                     <div className="flex flex-row items-center">
@@ -82,7 +82,7 @@ export default async function SCScheduleInfo({
 
                 <div
                   className={`absolute right-3 top-3 inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors shrink-0 whitespace-nowrap ${getTypeColor(
-                    schedule.type
+                    schedule.type,
                   )}`}
                 >
                   {getTypeLabel(schedule.type)}

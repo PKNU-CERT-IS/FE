@@ -1,11 +1,11 @@
 "use client";
+import { useCallback, useEffect, useRef, useState } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import BugReport from "@/components/nav/bugReport";
 import LoginButton from "@/components/nav/loginButton";
 import DefaultButton from "@/components/ui/defaultButton";
 import { Menu, X } from "lucide-react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useCallback, useEffect, useRef, useState } from "react";
 
 interface NavItem {
   name: string;

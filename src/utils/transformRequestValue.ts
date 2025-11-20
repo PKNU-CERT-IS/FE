@@ -6,7 +6,7 @@
  */
 export function toOffsetDateTime(
   date: string,
-  offset: string = "+00:00"
+  offset: string = "+00:00",
 ): string {
   if (!date) return "";
   return `${date}T00:00:00${offset}`;
@@ -16,7 +16,7 @@ export function toOffsetDateTime(
  * "남", "여" 값을 "MALE", "FEMALE"로 변환
  */
 export function toGenderCode(
-  gender: string
+  gender: string,
 ): "MALE" | "FEMALE" | "UNKNOWN" | "NONE" {
   if (!gender) return "UNKNOWN";
   if (gender === "남") return "MALE";
@@ -29,7 +29,7 @@ export function toGenderCode(
  */
 export function toOffset(
   date: string | Date,
-  offset: string = "+09:00"
+  offset: string = "+09:00",
 ): string {
   if (!date) return "";
 

@@ -1,5 +1,5 @@
-import { fetchWithAuth } from "@/lib/serverIntercept";
 import { normalizeSemester } from "@/types/study";
+import { fetchWithAuth } from "@/lib/serverIntercept";
 
 // 스터디 조회
 export async function getStudies(page: number = 0, size?: number) {
@@ -37,7 +37,7 @@ export async function searchStudies(
   pagination: {
     page?: number;
     size?: number;
-  } = {}
+  } = {},
 ) {
   try {
     const params = new URLSearchParams();

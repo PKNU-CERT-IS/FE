@@ -39,7 +39,7 @@ export default function MembersDropdown<T>({
           "bg-white border-gray-300 hover:border-cert-red hover:bg-white hover:text-cert-black",
           "focus:border-cert-red focus:ring-2 focus:ring-cert-red/20",
           "dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-800",
-          disabled && "cursor-not-allowed opacity-50 bg-cert-dark-red/5"
+          disabled && "cursor-not-allowed opacity-50 bg-cert-dark-red/5",
         )}
         onClick={() => !disabled && setIsOpen(!isOpen)}
         disabled={disabled}
@@ -47,7 +47,7 @@ export default function MembersDropdown<T>({
         <span
           className={cn(
             !selectedOption && "text-gray-400",
-            "dark:text-gray-200"
+            "dark:text-gray-200",
           )}
         >
           {selectedOption?.label || placeholder}
@@ -69,7 +69,7 @@ export default function MembersDropdown<T>({
             className={cn(
               "absolute top-full left-0 right-0 z-50 mt-1 max-h-60 overflow-auto",
               "rounded-lg border border-gray-200 bg-white shadow-xl",
-              "dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200"
+              "dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200",
             )}
           >
             {options.map((option) => (
@@ -82,7 +82,7 @@ export default function MembersDropdown<T>({
                   "hover:bg-cert-red hover:text-white dark:hover:bg-cert-red",
                   "focus:bg-cert-red focus:text-white",
                   "first:rounded-t-md last:rounded-b-md",
-                  "hover:first:rounded-md hover:rounded-md"
+                  "hover:first:rounded-md hover:rounded-md",
                 )}
                 onClick={() => {
                   onValueChange(option.value as T);

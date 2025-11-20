@@ -1,22 +1,22 @@
 "use client";
 
-import { useRouter, usePathname, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import {
-  approveStudyParticipant,
-  rejectStudyParticipant,
-} from "@/app/api/study/CCStudyParticipantApi";
-import {
-  approveProjectParticipant,
-  rejectProjectParticipant,
-} from "@/app/api/project/CCProjectParticipantApi";
+  approveAdminProjectParticipant,
+  rejectAdminProjectParticipant,
+} from "@/app/api/admin/project/CCAdminProjectParticipantApi";
 import {
   approveAdminStudyParticipant,
   rejectAdminStudyParticipant,
 } from "@/app/api/admin/study/CCAdminStudyParticipantApi";
 import {
-  approveAdminProjectParticipant,
-  rejectAdminProjectParticipant,
-} from "@/app/api/admin/project/CCAdminProjectParticipantApi";
+  approveProjectParticipant,
+  rejectProjectParticipant,
+} from "@/app/api/project/CCProjectParticipantApi";
+import {
+  approveStudyParticipant,
+  rejectStudyParticipant,
+} from "@/app/api/study/CCStudyParticipantApi";
 
 interface CCParticipantActionButtonsProps {
   memberId: number;

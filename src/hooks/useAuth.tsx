@@ -1,6 +1,6 @@
-import { LoginFormData, SignupFormData, GenderType } from "@/types/login";
+import { useEffect, useRef, useState } from "react";
+import { GenderType, LoginFormData, SignupFormData } from "@/types/login";
 import { MembersGradeCategoryType } from "@/types/members";
-import { useState, useRef, useEffect } from "react";
 
 export const useAuth = () => {
   const [loginFormData, setLoginFormData] = useState<LoginFormData>({

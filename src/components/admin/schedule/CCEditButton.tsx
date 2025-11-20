@@ -1,7 +1,7 @@
 "use client";
 
-import CCScheduleFormModal from "@/components/schedule/CCScheduleFormModal";
 import { ScheduleInfo } from "@/types/schedule";
+import CCScheduleFormModal from "@/components/schedule/CCScheduleFormModal";
 import { useModal } from "@/hooks/useModal";
 import { useSchedule } from "@/hooks/useSchedule";
 import EditSVG from "/public/icons/edit.svg";

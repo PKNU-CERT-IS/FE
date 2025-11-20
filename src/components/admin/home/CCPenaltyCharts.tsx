@@ -1,17 +1,18 @@
 "use client";
 
 import {
-  BarChart,
   Bar,
+  BarChart,
+  CartesianGrid,
+  Cell,
+  ResponsiveContainer,
+  Tooltip,
   XAxis,
   YAxis,
-  Tooltip,
-  CartesianGrid,
-  ResponsiveContainer,
-  Cell,
 } from "recharts";
-import { groupMembersByPenalty } from "@/utils/membersUtils";
 import { AdminMemberDetailInfoType } from "@/types/admin/adminMembers";
+import { groupMembersByPenalty } from "@/utils/membersUtils";
+
 interface CCPenaltyBarChartProps {
   members: AdminMemberDetailInfoType[];
 }

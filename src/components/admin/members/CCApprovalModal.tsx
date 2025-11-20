@@ -1,8 +1,8 @@
 "use client";
 
-import { updateMemberGradeRole } from "@/app/api/member/CCadminMemberApi";
 import { useRouter } from "next/navigation";
-import { X, ShieldCheck, User } from "lucide-react";
+import { updateMemberGradeRole } from "@/app/api/member/CCadminMemberApi";
+import { ShieldCheck, User, X } from "lucide-react";
 
 interface ApproveModalProps {
   id: number;

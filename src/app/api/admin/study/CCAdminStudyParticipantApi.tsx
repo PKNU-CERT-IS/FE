@@ -4,13 +4,13 @@ import { apiClient } from "@/lib/clientIntercept";
 export async function approveAdminStudyParticipant(
   memberId: number,
   studyId: number,
-  reason = ""
+  reason = "",
 ) {
   try {
     const res = await apiClient.post(
       `/admin/study/participant/approve`,
       { memberId, studyId, reason },
-      { headers: { "Content-Type": "application/json" } }
+      { headers: { "Content-Type": "application/json" } },
     );
     return res.data;
   } catch (error) {
@@ -22,13 +22,13 @@ export async function approveAdminStudyParticipant(
 export async function rejectAdminStudyParticipant(
   memberId: number,
   studyId: number,
-  reason = ""
+  reason = "",
 ) {
   try {
     const res = await apiClient.post(
       `/admin/study/participant/reject`,
       { memberId, studyId, reason },
-      { headers: { "Content-Type": "application/json" } }
+      { headers: { "Content-Type": "application/json" } },
     );
     return res.data;
   } catch (error) {

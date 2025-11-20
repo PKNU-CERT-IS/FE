@@ -1,8 +1,8 @@
 "server-only";
 
-import SCSearchResultNotFound from "@/components/ui/SCSearchResultNotFound";
-import CCMembersList from "@/components/admin/members/CCMembersList";
 import { getMembersForStaff } from "@/app/api/member/SCadminMemberApi";
+import CCMembersList from "@/components/admin/members/CCMembersList";
+import SCSearchResultNotFound from "@/components/ui/SCSearchResultNotFound";
 
 interface SCMembersContentWrapperProps {
   currentKeyword: string;
@@ -15,7 +15,7 @@ export default async function SCMembersContentWrapper({
 
   const sortKorean = (a: string, b: string) => a.localeCompare(b, "ko-KR");
   const sortedMembers = [...(await members)].sort((a, b) =>
-    sortKorean(a.name, b.name)
+    sortKorean(a.name, b.name),
   );
 
   const filtered = sortedMembers;

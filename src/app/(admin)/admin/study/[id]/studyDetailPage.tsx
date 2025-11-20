@@ -1,28 +1,28 @@
 "server-only";
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import { Calendar, Users, Download } from "lucide-react";
-import DefaultBadge from "@/components/ui/defaultBadge";
-import MarkdownRenderer from "@/components/ui/defaultMarkdownRenderer";
-import BackToListButton from "@/components/detail/SCBackToListButton";
-import KebabMenu from "@/components/detail/CCKebabMenu";
-import SCStudyMeetingMinutes from "@/components/study/SCStudyMeetingMinutes";
-import DownloadButton from "@/components/detail/SCDownloadButton";
+import { AttachedFile } from "@/types/attachedFile";
+import { SUBCATEGORY_FROM_EN } from "@/types/category";
+import { STATUS_LABELS } from "@/types/progressStatus";
+import { MEMBER_GRADE_LABELS, StudyMaterial } from "@/types/study";
 import { formatFileSize } from "@/utils/attachedFileUtils";
 import { getFileIcon } from "@/utils/attachedFileUtils";
-import { getStudyPeriodLabel } from "@/utils/studyHelper";
-import EndRequestButton from "@/components/ui/endRequestButton";
 import { getStatusColor } from "@/utils/badgeUtils";
-import { STATUS_LABELS } from "@/types/progressStatus";
 import { formatDate } from "@/utils/formatDateUtil";
-import { MEMBER_GRADE_LABELS, StudyMaterial } from "@/types/study";
-import CCShareButton from "@/components/detail/CCShareButton";
-import { SUBCATEGORY_FROM_EN } from "@/types/category";
-import { AttachedFile } from "@/types/attachedFile";
-import { getCurrentUser } from "@/lib/auth/currentUser";
+import { getStudyPeriodLabel } from "@/utils/studyHelper";
 import { getDetailStudy } from "@/app/api/study/SCStudyApi";
-import LogoSVG from "/public/icons/logo.svg";
+import { getCurrentUser } from "@/lib/auth/currentUser";
+import KebabMenu from "@/components/detail/CCKebabMenu";
 import CCParticipantsList from "@/components/detail/CCParticipantsList";
+import CCShareButton from "@/components/detail/CCShareButton";
+import BackToListButton from "@/components/detail/SCBackToListButton";
+import DownloadButton from "@/components/detail/SCDownloadButton";
+import SCStudyMeetingMinutes from "@/components/study/SCStudyMeetingMinutes";
+import DefaultBadge from "@/components/ui/defaultBadge";
+import MarkdownRenderer from "@/components/ui/defaultMarkdownRenderer";
+import EndRequestButton from "@/components/ui/endRequestButton";
+import { Calendar, Download, Users } from "lucide-react";
+import LogoSVG from "/public/icons/logo.svg";
 
 interface StudyDetailPageProps {
   params: { id: string };
@@ -150,7 +150,7 @@ export default async function StudyDetailPage({
                           </div>
                           <DownloadButton file={file} />
                         </div>
-                      )
+                      ),
                     )}
                   </div>
                 </div>

@@ -1,12 +1,11 @@
 "server-only";
 
-import DefaultBadge from "@/components/ui/defaultBadge";
-import { ExternalLink, Eye, FileText, BookOpen, Code } from "lucide-react";
 import Link from "next/link";
-import CCBlogDeleteButton from "@/components/admin/blog/CCBlogDeleteButton";
-// import CCPublishedCheckbox from "@/components/admin/blog/CCPublishedCheckbox";
-import { getCategoryColor } from "@/utils/badgeUtils";
 import { BlogDetailDataType } from "@/types/blog";
+import { getCategoryColor } from "@/utils/badgeUtils";
+import CCBlogDeleteButton from "@/components/admin/blog/CCBlogDeleteButton";
+import DefaultBadge from "@/components/ui/defaultBadge";
+import { BookOpen, Code, ExternalLink, Eye, FileText } from "lucide-react";
 
 interface SCBlogContentListProps {
   paginatedContents: BlogDetailDataType[];
@@ -18,7 +17,10 @@ export default function SCBlogContentList({
   return (
     <>
       {paginatedContents.map((blog) => (
-        <div key={blog.id} className="mb-6 card-list">
+        <div
+          key={blog.id}
+          className="mb-6 card-list dark-default hover:shadow-md transition-shadow"
+        >
           <div className="pb-4 flex flex-col space-y-1.5 p-6">
             <div className="flex justify-between items-start">
               <Link
@@ -27,7 +29,7 @@ export default function SCBlogContentList({
               >
                 <div className="flex items-center gap-2 flex-wrap">
                   <FileText className="w-5 h-5 text-cert-red" />
-                  <span className="text-xl font-medium leading-none tracking-tight">
+                  <span className="text-xl font-medium leading-none tracking-tight dark:text-gray-200">
                     {blog.title}
                   </span>
 
@@ -44,8 +46,8 @@ export default function SCBlogContentList({
                       variant="outline"
                       className={`flex items-center gap-1 ${
                         blog.referenceType === "STUDY"
-                          ? "text-green-700 bg-green-50 border-green-200"
-                          : "text-blue-700 bg-blue-50 border-blue-200"
+                          ? "text-green-700 bg-green-50 border-green-200 dark:text-green-300 dark:bg-green-900/30 dark:border-green-700"
+                          : "text-blue-700 bg-blue-50 border-blue-200 dark:text-blue-300 dark:bg-blue-900/30 dark:border-blue-700"
                       }`}
                     >
                       {blog.referenceType === "STUDY" ? (
@@ -62,7 +64,7 @@ export default function SCBlogContentList({
                   {blog.isPublic && (
                     <DefaultBadge
                       variant="outline"
-                      className="bg-cert-red text-red-700 border-red-300"
+                      className="bg-cert-red text-red-700 border-red-300 dark:bg-red-900/40 dark:text-red-300 dark:border-red-700"
                     >
                       <ExternalLink className="w-3 h-3 mr-1" />
                       외부 공개
@@ -71,11 +73,11 @@ export default function SCBlogContentList({
                 </div>
 
                 {/* 작성자 + 날짜 + 조회수 */}
-                <div className="text-base text-gray-700 flex flex-row">
+                <div className="text-base text-gray-700 dark:text-gray-300 flex flex-row">
                   <span className="font-semibold mr-1">{blog.creatorName}</span>{" "}
                   • {blog.createdAt}
                   <span className="flex flex-row items-center mx-2">
-                    <Eye className="w-4 h-4 mr-1 text-gray-600" />
+                    <Eye className="w-4 h-4 mr-1 text-gray-600 dark:text-gray-400" />
                     {blog.views}
                   </span>
                 </div>
@@ -90,7 +92,7 @@ export default function SCBlogContentList({
           <div className="p-6 pt-0">
             <div className="space-y-4">
               <Link href={`/admin/blog/${blog.id}`} className="block">
-                <p className="text-gray-600 line-clamp-2 text-base">
+                <p className="text-gray-600 dark:text-gray-300 line-clamp-2 text-base">
                   {blog.description ||
                     (blog.content &&
                       blog.content
@@ -104,7 +106,7 @@ export default function SCBlogContentList({
               <div className="flex justify-between">
                 <Link
                   href={`/admin/blog/${blog.id}`}
-                  className="block flex-1 min-w-0 text-sm text-gray-500"
+                  className="block flex-1 min-w-0 text-sm text-gray-500 dark:text-gray-400"
                 >
                   마지막 수정: {blog.createdAt}
                 </Link>

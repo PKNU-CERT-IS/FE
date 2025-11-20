@@ -1,15 +1,14 @@
 "server-only";
 
-import Link from "next/link";
 import Image from "next/image";
-import { searchBlogsByKeyword } from "@/app/api/blog/SCblogApi";
-import SCSearchResultNotFound from "@/components/ui/SCSearchResultNotFound";
-import BlogPagination from "@/components/blog/CCBlogPagination";
-
+import Link from "next/link";
 import { BlogCategory, BlogDataType } from "@/types/blog";
-import { isValidCategory } from "@/utils/blogUtils";
 import { getCategoryColor } from "@/utils/badgeUtils";
+import { isValidCategory } from "@/utils/blogUtils";
 import { formatDate } from "@/utils/formatDateUtil";
+import { searchBlogsByKeyword } from "@/app/api/blog/SCblogApi";
+import BlogPagination from "@/components/blog/CCBlogPagination";
+import SCSearchResultNotFound from "@/components/ui/SCSearchResultNotFound";
 import LogoSVG from "/public/icons/logo.svg";
 
 interface BlogCardListProps {
@@ -38,7 +37,7 @@ export default async function BlogCardList({
       keyword,
       category: category === "전체" ? "" : category,
     },
-    { page: page - 1, size: 9, sort: "createdAt,desc" }
+    { page: page - 1, size: 9, sort: "createdAt,desc" },
   );
 
   const blogs: BlogDataType[] = response.content;
@@ -61,7 +60,7 @@ export default async function BlogCardList({
               <div className="flex items-center justify-between mb-3">
                 <span
                   className={`inline-flex items-center px-2 py-1 rounded text-xs font-medium ${getCategoryColor(
-                    blog.category
+                    blog.category,
                   )}`}
                 >
                   {blog.category}

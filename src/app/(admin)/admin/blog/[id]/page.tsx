@@ -1,14 +1,14 @@
-import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { Calendar, User, Eye, ExternalLink } from "lucide-react";
-import BackToListButton from "@/components/detail/SCBackToListButton";
+import { Metadata } from "next";
+import { BlogDetailDataType } from "@/types/blog";
+import { getCategoryColor } from "@/utils/badgeUtils";
+import { formatDate } from "@/utils/formatDateUtil";
+import { searchBlogDetail } from "@/app/api/blog/SCblogApi";
 import KebabMenuButton from "@/components/detail/CCKebabMenu";
 import ShareButton from "@/components/detail/CCShareButton";
+import BackToListButton from "@/components/detail/SCBackToListButton";
 import DefaultBadge from "@/components/ui/defaultBadge";
-import { formatDate } from "@/utils/formatDateUtil";
-import { getCategoryColor } from "@/utils/badgeUtils";
-import { searchBlogDetail } from "@/app/api/blog/SCblogApi";
-import { BlogDetailDataType } from "@/types/blog";
+import { Calendar, ExternalLink, Eye, User } from "lucide-react";
 
 interface BlogDetailPageProps {
   params: Promise<{
@@ -66,9 +66,9 @@ export default async function AdminBlogDetailPage({
       <BackToListButton currentUrl={"admin/blog"} />
 
       {/* 메인 콘텐츠 */}
-      <article className="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-lg p-4 mt-6">
+      <article className="rounded-lg border border-gray-200 overflow-hidden shadow-lg p-4 mt-6 dark:bg-gray-800 dark:border-gray-700">
         {/* 헤더 */}
-        <header className="p-8 border-b border-gray-200">
+        <header className="p-8 border-b border-gray-200 dark:border-gray-700">
           {/* 카테고리와 케밥 메뉴 */}
           <div className="flex items-start justify-between mb-4">
             <div className="flex items-center gap-2">
@@ -105,13 +105,13 @@ export default async function AdminBlogDetailPage({
           </div>
 
           {/* 제목 */}
-          <h1 className="text-3xl font-bold text-gray-900 mb-4 leading-tight">
+          <h1 className="text-3xl font-bold text-gray-900 mb-4 leading-tight dark:text-gray-200">
             {post.title}
           </h1>
 
           {/* 요약 */}
           {post.description && (
-            <p className="text-lg text-gray-600 mb-3 leading-relaxed">
+            <p className="text-lg text-gray-600 mb-3 leading-relaxed dark:text-gray-300">
               {post.description}
             </p>
           )}
@@ -123,8 +123,8 @@ export default async function AdminBlogDetailPage({
                 className={`inline-flex items-center px-3 py-1 text-sm font-medium rounded-md transition-colors
         ${
           post.referenceType === "STUDY"
-            ? "text-green-700 bg-green-50 border border-green-200 hover:bg-green-100 hover:text-green-800"
-            : "text-blue-700 bg-blue-50 border border-blue-200 hover:bg-blue-100 hover:text-blue-800"
+            ? "badge-green hover:bg-green-100 hover:text-green-800"
+            : "badge-blue hover:bg-blue-100 hover:text-blue-800"
         }`}
               >
                 {post.referenceType === "STUDY" ? "스터디" : "프로젝트"} ·{" "}
@@ -134,7 +134,7 @@ export default async function AdminBlogDetailPage({
           )}
 
           {/* 메타 정보 */}
-          <div className="flex flex-wrap items-center gap-6 text-sm text-gray-600">
+          <div className="flex flex-wrap items-center gap-6 text-sm text-gray-600 dark:text-gray-300">
             <div className="flex items-center gap-2">
               <User className="w-4 h-4" />
               <span>{post.creatorName}</span>
@@ -157,7 +157,7 @@ export default async function AdminBlogDetailPage({
           <div className="prose prose-lg max-w-none">
             {post.content ? (
               <div
-                className="text-gray-800 leading-relaxed"
+                className="text-gray-800 leading-relaxed dark:border-gray-700"
                 dangerouslySetInnerHTML={{ __html: post.content }}
               />
             ) : (
@@ -167,7 +167,7 @@ export default async function AdminBlogDetailPage({
             )}
           </div>
 
-          <div className="pt-6 border-t border-gray-200 flex justify-end">
+          <div className="pt-6 border-t border-gray-200 flex justify-end dark:border-gray-700">
             <ShareButton />
           </div>
         </div>

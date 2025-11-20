@@ -1,5 +1,5 @@
-import { apiClient } from "@/lib/clientIntercept";
 import { ScheduleCreateRequest, ScheduleInfo } from "@/types/schedule";
+import { apiClient } from "@/lib/clientIntercept";
 
 //  스케줄 생성
 export async function createSchedule(body: ScheduleCreateRequest) {

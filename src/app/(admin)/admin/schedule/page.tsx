@@ -1,13 +1,13 @@
 "server-only";
 
-import SCScheduleList from "@/components/schedule/SCScheduleList";
-import Calendar from "@/components/schedule/CCCalendar";
-import SCAdminScheduleInfo from "@/components/admin/schedule/SCAdminScheduleInfo";
-import SCAdminScheduleRequestList from "@/components/admin/schedule/SCAdminScheduleRequestList";
-import CCScrollScheduleList from "@/components/schedule/CCScrollScheduleList";
 import { ScheduleInfo } from "@/types/schedule";
 import { getSchedules } from "@/app/api/schedule/SCscheduleApi";
+import SCAdminScheduleInfo from "@/components/admin/schedule/SCAdminScheduleInfo";
+import SCAdminScheduleRequestList from "@/components/admin/schedule/SCAdminScheduleRequestList";
 import CCAddScheduleCard from "@/components/schedule/CCAddScheduleCard";
+import Calendar from "@/components/schedule/CCCalendar";
+import CCScrollScheduleList from "@/components/schedule/CCScrollScheduleList";
+import SCScheduleList from "@/components/schedule/SCScheduleList";
 
 interface SearchPageProps {
   searchParams: Promise<{ date: string }>;
@@ -28,7 +28,7 @@ export default async function AdminSchedulePage({
 
   const schedules: ScheduleInfo[] = await getSchedules(selectedDate);
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen">
       <div className="max-w-7xl mx-auto">
         <div className="absolute right-4 top-40 sm:hidden z-10">
           <CCScrollScheduleList />

@@ -1,16 +1,16 @@
 "use client";
 
 import { useCallback, useMemo, useState } from "react";
-import AngleSVG from "/public/icons/angle.svg";
+import { useRouter, useSearchParams } from "next/navigation";
+import { ScheduleInfo } from "@/types/schedule";
+import { formatDate } from "@/utils/formatDateUtil";
 import {
   DAY_NAMES,
   generateCalendarDays,
   getTypeColor,
 } from "@/utils/scheduleUtils";
-import { useSearchParams, useRouter } from "next/navigation";
-import { formatDate } from "@/utils/formatDateUtil";
 import CCScrollScheduleList from "@/components/schedule/CCScrollScheduleList";
-import { ScheduleInfo } from "@/types/schedule";
+import AngleSVG from "/public/icons/angle.svg";
 
 interface CalendarProps {
   schedules: ScheduleInfo[];
@@ -34,7 +34,7 @@ export default function Calendar({ schedules, selectedDate }: CalendarProps) {
       router.replace(`?${params.toString()}`);
       setCurrentDate(newDate);
     },
-    [currentParams, router]
+    [currentParams, router],
   );
 
   const handleDateClick = useCallback(
@@ -46,7 +46,7 @@ export default function Calendar({ schedules, selectedDate }: CalendarProps) {
       }
       router.replace(`?${params.toString()}`);
     },
-    [currentParams, router]
+    [currentParams, router],
   );
 
   const year = currentDate.getFullYear();
@@ -67,10 +67,10 @@ export default function Calendar({ schedules, selectedDate }: CalendarProps) {
     (day: Date) => {
       const dayKey = formatDate(day, "short");
       return schedules.filter(
-        (s) => formatDate(s.startedAt, "short") === dayKey
+        (s) => formatDate(s.startedAt, "short") === dayKey,
       );
     },
-    [schedules]
+    [schedules],
   );
 
   return (
@@ -152,7 +152,7 @@ export default function Calendar({ schedules, selectedDate }: CalendarProps) {
                     <div
                       key={idx}
                       className={`text-xs text-center rounded-sm p-1 ${getTypeColor(
-                        s.type
+                        s.type,
                       )}`}
                     >
                       {s.title}

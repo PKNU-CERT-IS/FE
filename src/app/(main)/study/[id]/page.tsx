@@ -1,33 +1,33 @@
 "server-only";
 import Image from "next/image";
-import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { Calendar, Users, Download } from "lucide-react";
-import DefaultBadge from "@/components/ui/defaultBadge";
-import MarkdownRenderer from "@/components/ui/defaultMarkdownRenderer";
-import BackToListButton from "@/components/detail/SCBackToListButton";
-import KebabMenu from "@/components/detail/CCKebabMenu";
-import CCShareButton from "@/components/detail/CCShareButton";
-import DownloadButton from "@/components/detail/SCDownloadButton";
+import { Metadata } from "next";
+import { AttachedFile } from "@/types/attachedFile";
+import { SUBCATEGORY_FROM_EN } from "@/types/category";
+import { STATUS_LABELS } from "@/types/progressStatus";
+import { MEMBER_GRADE_LABELS, StudyMaterial } from "@/types/study";
 import { formatFileSize } from "@/utils/attachedFileUtils";
 import { getFileIcon } from "@/utils/attachedFileUtils";
-import { getStudyPeriodLabel } from "@/utils/studyHelper";
-import EndRequestButton from "@/components/ui/endRequestButton";
 import { getStatusColor } from "@/utils/badgeUtils";
-import { STATUS_LABELS } from "@/types/progressStatus";
-import { getDetailStudy } from "@/app/api/study/SCStudyApi";
 import { formatDate } from "@/utils/formatDateUtil";
-import { SUBCATEGORY_FROM_EN } from "@/types/category";
+import { getStudyPeriodLabel } from "@/utils/studyHelper";
+import { getDetailStudy } from "@/app/api/study/SCStudyApi";
 import {
   getStudyApprovedParticipants,
   getStudyPendingParticipants,
 } from "@/app/api/study/SCStudyParticipantApi";
-import { CCJoinButton } from "@/components/ui/CCJoinButton";
 import { getCurrentUser } from "@/lib/auth/currentUser";
-import MeetingMinutes from "@/components/study/SCStudyMeetingMinutes";
+import KebabMenu from "@/components/detail/CCKebabMenu";
 import CCParticipantsList from "@/components/detail/CCParticipantsList";
-import { AttachedFile } from "@/types/attachedFile";
-import { MEMBER_GRADE_LABELS, StudyMaterial } from "@/types/study";
+import CCShareButton from "@/components/detail/CCShareButton";
+import BackToListButton from "@/components/detail/SCBackToListButton";
+import DownloadButton from "@/components/detail/SCDownloadButton";
+import MeetingMinutes from "@/components/study/SCStudyMeetingMinutes";
+import { CCJoinButton } from "@/components/ui/CCJoinButton";
+import DefaultBadge from "@/components/ui/defaultBadge";
+import MarkdownRenderer from "@/components/ui/defaultMarkdownRenderer";
+import EndRequestButton from "@/components/ui/endRequestButton";
+import { Calendar, Download, Users } from "lucide-react";
 import LogoSVG from "/public/icons/logo.svg";
 
 // 메타데이터 생성
@@ -92,11 +92,13 @@ export default async function StudyMaterialDetailPage({
   const pendingData = await getStudyPendingParticipants(studyId, 0, 10);
   const pendingMember = pendingData.content ?? [];
   const isAlreadyApproved = approvedMember.some(
-    (m: { memberId: number }) => String(m.memberId) === String(currentUser?.sub)
+    (m: { memberId: number }) =>
+      String(m.memberId) === String(currentUser?.sub),
   );
 
   const isPending = pendingMember.some(
-    (m: { memberId: number }) => String(m.memberId) === String(currentUser?.sub)
+    (m: { memberId: number }) =>
+      String(m.memberId) === String(currentUser?.sub),
   );
   // 참가 버튼 렌더 조건
   const showJoinButton =
@@ -145,8 +147,8 @@ export default async function StudyMaterialDetailPage({
                           isAlreadyApproved
                             ? "APPROVED"
                             : isPending
-                            ? "PENDING"
-                            : "NONE"
+                              ? "PENDING"
+                              : "NONE"
                         }
                         className="px-4 py-2 sm:hidden ml-auto"
                       />
@@ -162,8 +164,8 @@ export default async function StudyMaterialDetailPage({
                         isAlreadyApproved
                           ? "APPROVED"
                           : isPending
-                          ? "PENDING"
-                          : "NONE"
+                            ? "PENDING"
+                            : "NONE"
                       }
                       className="px-4 py-2 hidden sm:inline-block"
                     />
@@ -238,7 +240,7 @@ export default async function StudyMaterialDetailPage({
                           </div>
                           <DownloadButton file={file} />
                         </div>
-                      )
+                      ),
                     )}
                   </div>
                 </div>

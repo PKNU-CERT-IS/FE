@@ -1,13 +1,13 @@
 "server-only";
 
-import SCProfileCard from "@/components/profile/SCProfileCard";
-import SCProfileContent from "@/components/profile/SCProfileContent";
-import SCPenaltyStatus from "@/components/profile/SCPenaltyStatus";
-import SCTodaySchedule from "@/components/profile/SCTodaySchedule";
-import CCTabBar from "@/components/profile/CCTabBar";
-import SCProfileGroupSkeleton from "@/components/profile/SCProfileGroupSkeleton";
 import { Suspense } from "react";
 import { Metadata } from "next";
+import CCTabBar from "@/components/profile/CCTabBar";
+import SCPenaltyStatus from "@/components/profile/SCPenaltyStatus";
+import SCProfileCard from "@/components/profile/SCProfileCard";
+import SCProfileContent from "@/components/profile/SCProfileContent";
+import SCProfileGroupSkeleton from "@/components/profile/SCProfileGroupSkeleton";
+import SCTodaySchedule from "@/components/profile/SCTodaySchedule";
 
 interface ProfilePageProps {
   searchParams: Promise<{

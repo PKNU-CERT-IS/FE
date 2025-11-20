@@ -1,5 +1,5 @@
-import BoardCard from "@/components/board/SCBoardCard";
 import { BoardDataType } from "@/types/board";
+import BoardCard from "@/components/board/SCBoardCard";
 import SCSearchResultNotFound from "@/components/ui/SCSearchResultNotFound";
 
 export default function BoardCardList({

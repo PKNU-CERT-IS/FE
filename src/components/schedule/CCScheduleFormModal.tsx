@@ -2,28 +2,28 @@
 
 import { RefObject, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { X, ChevronDown } from "lucide-react";
-import { cn } from "@/lib/utils";
-import DefaultButton from "@/components/ui/defaultButton";
 import {
   AdminScheduleCreateRequest,
   ScheduleCreateRequest,
   ScheduleInfo,
 } from "@/types/schedule";
 import { formatDate, formatTime } from "@/utils/formatDateUtil";
-import { useModal } from "@/hooks/useModal";
-import { useSchedule } from "@/hooks/useSchedule";
 import { getTypeLabel, labelToType } from "@/utils/scheduleUtils";
-import {
-  createSchedule,
-  deleteSchedule,
-} from "@/app/api/schedule/CCScheduleApi";
 import { toOffset } from "@/utils/transformRequestValue";
 import {
   createAdminSchedule,
   deleteAdminSchedule,
 } from "@/app/api/schedule/CCAdminScheduleApi";
+import {
+  createSchedule,
+  deleteSchedule,
+} from "@/app/api/schedule/CCScheduleApi";
+import { cn } from "@/lib/utils";
 import AlertModal from "@/components/ui/defaultAlertModal";
+import DefaultButton from "@/components/ui/defaultButton";
+import { useModal } from "@/hooks/useModal";
+import { useSchedule } from "@/hooks/useSchedule";
+import { ChevronDown, X } from "lucide-react";
 
 interface ScheduleFormModalProps {
   closeModal: () => void;
@@ -254,7 +254,7 @@ export default function CCScheduleFormModal({
                       "w-full justify-between text-left font-normal transition-all duration-200 cursor-pointer",
                       "bg-white border-gray-300 hover:border-cert-red hover:bg-white hover:text-cert-black",
                       "focus:border-cert-red focus:ring-2 focus:ring-cert-red/20",
-                      "dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-800"
+                      "dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-800",
                     )}
                     onClick={toggleDropdown}
                   >
@@ -294,7 +294,7 @@ export default function CCScheduleFormModal({
                       "w-full justify-between text-left font-normal transition-all duration-200 cursor-pointer",
                       "bg-white border-gray-300 hover:border-cert-red hover:bg-white hover:text-cert-black",
                       "focus:border-cert-red focus:ring-2 focus:ring-cert-red/20",
-                      "dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-800"
+                      "dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-800",
                     )}
                     onClick={toggleStartTimeDropdown}
                   >
@@ -331,7 +331,7 @@ export default function CCScheduleFormModal({
                       "w-full justify-between text-left font-normal transition-all duration-200 cursor-pointer",
                       "bg-white border-gray-300 hover:border-cert-red hover:bg-white hover:text-cert-black",
                       "focus:border-cert-red focus:ring-2 focus:ring-cert-red/20",
-                      "dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-800"
+                      "dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-800",
                     )}
                     onClick={toggleEndTimeDropdown}
                   >

@@ -1,8 +1,9 @@
-import type { Metadata } from "next";
-import "./globals.css";
 import { GoogleAnalytics } from "@next/third-parties/google";
+import type { Metadata } from "next";
 import { ThemeProvider } from "next-themes";
 import AuthInitializer from "@/components/auth/AuthInitializer";
+import "./globals.css";
+
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL as string),
   title: "CERT-IS",

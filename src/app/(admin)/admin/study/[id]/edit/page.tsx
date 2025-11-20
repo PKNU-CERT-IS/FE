@@ -1,5 +1,5 @@
-import EditForm from "@/components/write/CCEditForm";
 import React from "react";
+import EditForm from "@/components/write/CCEditForm";
 
 function getId(id: string) {
   const dataId = parseInt(id, 10);

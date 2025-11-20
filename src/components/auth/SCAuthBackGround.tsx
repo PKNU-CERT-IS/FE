@@ -1,9 +1,9 @@
 "server-only";
 
-import ShieldSVG from "/public/icons/shield.svg";
-import LockSVG from "/public/icons/lock.svg";
-import EyeSVG from "/public/icons/eye.svg";
 import { Fingerprint } from "lucide-react";
+import EyeSVG from "/public/icons/eye.svg";
+import LockSVG from "/public/icons/lock.svg";
+import ShieldSVG from "/public/icons/shield.svg";
 
 export default function SCAuthBackGround() {
   return (

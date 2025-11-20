@@ -1,12 +1,12 @@
 "server-only";
 
-import { parseSearchParams } from "@/utils/projectUtils";
-import type { ProjectList } from "@/types/project";
-import SCSearchResultNotFound from "@/components/ui/SCSearchResultNotFound";
-import SCProjectContent from "@/components/project/SCProjectContent";
-import CCProjectPagination from "@/components/project/CCProjectPagination";
 import { SUBCATEGORY_TO_EN } from "@/types/category";
+import type { ProjectList } from "@/types/project";
+import { parseSearchParams } from "@/utils/projectUtils";
 import { getProjects, searchProjects } from "@/app/api/project/SCProjectApi";
+import CCProjectPagination from "@/components/project/CCProjectPagination";
+import SCProjectContent from "@/components/project/SCProjectContent";
+import SCSearchResultNotFound from "@/components/ui/SCSearchResultNotFound";
 
 interface SCProjectListProps {
   searchParams: Promise<{

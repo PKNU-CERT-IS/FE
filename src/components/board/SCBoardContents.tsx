@@ -1,7 +1,7 @@
+import { BoardCategoryType, categoryMappingToEN } from "@/types/board";
 import { getBoards } from "@/app/api/board/SCBoardApi";
 import BoardCardList from "@/components/board/SCBoardCardList";
 import BoardPagination from "@/components/board/SCBoardPagination";
-import { BoardCategoryType, categoryMappingToEN } from "@/types/board";
 
 export default async function BoardContents({
   keyword,

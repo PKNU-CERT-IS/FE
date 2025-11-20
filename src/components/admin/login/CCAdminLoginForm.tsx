@@ -1,14 +1,14 @@
 "use client";
 
-import DefaultButton from "@/components/ui/defaultButton";
-import LockSVG from "/public/icons/lock.svg";
-import ProfileSVG from "/public/icons/profile.svg";
-import { useAuthStore } from "@/store/authStore";
-import { loginAction } from "@/actions/auth/LoginServerAction";
-import { useAuth } from "@/hooks/useAuth";
-import { Eye, EyeOff, LockOpen, Loader2 } from "lucide-react";
 import { useTransition } from "react";
 import { useRouter } from "next/navigation";
+import { loginAction } from "@/actions/auth/LoginServerAction";
+import { useAuthStore } from "@/store/authStore";
+import DefaultButton from "@/components/ui/defaultButton";
+import { useAuth } from "@/hooks/useAuth";
+import { Eye, EyeOff, Loader2, LockOpen } from "lucide-react";
+import LockSVG from "/public/icons/lock.svg";
+import ProfileSVG from "/public/icons/profile.svg";
 
 export default function CCAdminLoginForm() {
   const { showPassword, setShowPassword, loginFormData, setLoginFormData } =
@@ -39,9 +39,9 @@ export default function CCAdminLoginForm() {
       <div className="space-y-2">
         <label
           htmlFor="id"
-          className="font-medium text-gray-700 flex items-center gap-2"
+          className="font-medium text-gray-700 flex items-center gap-2 dark:text-gray-200"
         >
-          <ProfileSVG className="w-4 h-4 stroke-cert-dark-red" />
+          <ProfileSVG className="w-4 h-4 stroke-cert-dark-red dark:stroke-cert-red" />
           아이디
         </label>
         <input
@@ -54,7 +54,9 @@ export default function CCAdminLoginForm() {
             setLoginFormData({ ...loginFormData, id: e.target.value })
           }
           required
-          className="text-sm text-gray-700 h-11 border-gray-300 w-full rounded-md border bg-background px-3 py-2"
+          className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md 
+            focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent 
+            dark:border-gray-600"
         />
       </div>
 
@@ -62,9 +64,9 @@ export default function CCAdminLoginForm() {
       <div className="space-y-2">
         <label
           htmlFor="password"
-          className="font-medium text-gray-700 flex items-center gap-2"
+          className="font-medium text-gray-700 flex items-center gap-2 dark:text-gray-200"
         >
-          <LockSVG className="w-4 h-4 stroke-cert-dark-red" />
+          <LockSVG className="w-4 h-4 stroke-cert-dark-red dark:stroke-cert-red" />
           비밀번호
         </label>
         <div className="relative">
@@ -77,12 +79,14 @@ export default function CCAdminLoginForm() {
               setLoginFormData({ ...loginFormData, password: e.target.value })
             }
             placeholder="비밀번호를 입력하세요"
-            className="text-sm text-gray-700 h-11 pr-10 border-gray-300 flex w-full rounded-md border bg-background px-3 py-2 placeholder:text-muted-foreground"
+            className="w-full text-sm px-3 py-2 border border-gray-300 rounded-md 
+              focus:outline-none focus:ring-2 focus:ring-cert-red focus:border-transparent 
+              dark:border-gray-600"
             required
           />
           <button
             type="button"
-            className="absolute right-0 top-0 h-11 px-3 text-gray-400 hover:text-gray-600"
+            className="absolute right-0 top-0 h-9 px-3 text-gray-400 hover:text-gray-600"
             onClick={() => setShowPassword(!showPassword)}
           >
             {showPassword ? (

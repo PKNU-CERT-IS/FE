@@ -1,38 +1,38 @@
 "server-only";
 
+import { formatDateRange, formatTime } from "@/utils/formatDateUtil";
+import { getPendingSchedules } from "@/app/api/schedule/SCAdminScheduleApi";
 import {
   approveReservation,
   rejectReservation,
 } from "@/actions/admin/schedule/AdminScheduleRequestServerAction";
-import { getPendingSchedules } from "@/app/api/schedule/SCAdminScheduleApi";
 import RequestActionButtons from "@/components/ui/requestActionButtons";
-import { formatDateRange, formatTime } from "@/utils/formatDateUtil";
 import {
+  Calendar,
   CheckCircle,
   Clock,
-  User,
-  Calendar,
   MessageSquareText,
+  User,
 } from "lucide-react";
 
 export default async function CCAdminScheduleRequestList() {
   const pending = await getPendingSchedules();
 
   return (
-    <div className="p-6 rounded-lg border border-gray-200 shadow-sm mt-6">
+    <div className="p-6 rounded-lg border shadow-sm mt-6 dark-default">
       <div className="flex flex-col space-y-1.5 mb-4">
         <div className="text-lg font-semibold leading-none tracking-tight">
           승인/거절
         </div>
-        <div className="text-sm text-muted-foreground">
+        <div className="text-sm text-muted-foreground dark:text-gray-400">
           대기 중인 예약 요청 ({pending.length}건)
         </div>
       </div>
       <div className="pt-0 max-h-[18rem] overflow-y-auto">
         {pending.length === 0 ? (
           <div className="text-center py-8">
-            <CheckCircle className="w-8 h-8 text-green-600 mx-auto mb-3" />
-            <p className="text-sm text-gray-500">
+            <CheckCircle className="w-8 h-8 text-green-600 mx-auto mb-3 dark:text-green-400" />
+            <p className="text-sm text-gray-500 dark:text-gray-400">
               승인 대기 중인
               <br />
               예약이 없습니다
@@ -43,13 +43,13 @@ export default async function CCAdminScheduleRequestList() {
             {pending.map((reservation) => (
               <div
                 key={reservation.scheduleId}
-                className="border border-gray-200 rounded-lg p-3"
+                className="border border-gray-200 rounded-lg p-3 dark:bg-gray-700 dark:border-gray-600"
               >
                 <div className="mb-3">
-                  <h4 className="font-medium text-gray-900 text-sm mb-1">
+                  <h4 className="font-medium text-gray-900 text-sm mb-1 dark:text-gray-200">
                     {reservation.title}
                   </h4>
-                  <div className="text-xs text-gray-500 space-y-1">
+                  <div className="text-xs text-gray-500 space-y-1 dark:text-gray-300">
                     <div className="flex items-center gap-1">
                       <User className="w-3 h-3" />
                       <span>{reservation.memberInfo.memberName}</span>
@@ -60,7 +60,7 @@ export default async function CCAdminScheduleRequestList() {
                         {formatDateRange(
                           reservation.startedAt,
                           reservation.endedAt,
-                          "dot"
+                          "dot",
                         )}
                       </span>
                     </div>

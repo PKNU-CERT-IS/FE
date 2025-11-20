@@ -10,7 +10,7 @@ import { StatusType } from "@/types/progressStatus";
   Study, Project, Blog Category Util
  */
 export const getCategoryColor = (
-  category: BlogCategory | CategoryType | SubCategoryType
+  category: BlogCategory | CategoryType | SubCategoryType,
 ) => {
   // SubCategory라면 대Category로 변환
   const mainCategory: CategoryType =

@@ -1,7 +1,7 @@
 "use client";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 import { BlogCategory } from "@/types/blog";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 interface BlogPaginationProps {
   currentPage: number;

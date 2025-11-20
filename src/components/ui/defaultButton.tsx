@@ -1,5 +1,5 @@
 import * as React from "react";
-import { cva, type VariantProps } from "class-variance-authority";
+import { type VariantProps, cva } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const defaultButtonVariants = cva(
@@ -23,7 +23,7 @@ const defaultButtonVariants = cva(
       variant: "default",
       size: "default",
     },
-  }
+  },
 );
 
 export interface ButtonProps
@@ -40,7 +40,7 @@ const DefaultButton = React.forwardRef<HTMLButtonElement, ButtonProps>(
         {...props}
       />
     );
-  }
+  },
 );
 
 DefaultButton.displayName = "Button";

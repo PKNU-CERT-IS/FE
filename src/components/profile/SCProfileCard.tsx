@@ -1,17 +1,17 @@
 "server-only";
 
-import DefaultBadge from "@/components/ui/defaultBadge";
-import ScheduleSVG from "/public/icons/schedule.svg";
-import CCEditProfileCard from "@/components/profile/CCEditProfileCard";
 import Image from "next/image";
 import { getRoleBadgeStyle } from "@/utils/membersUtils";
-import { getProfile } from "@/app/api/profile/SCprofileApi";
 import {
-  translateMemberRole,
-  translateGradeToKorean,
   fromOffsetDateTime,
+  translateGradeToKorean,
+  translateMemberRole,
 } from "@/utils/transfromResponseValue";
+import { getProfile } from "@/app/api/profile/SCprofileApi";
+import CCEditProfileCard from "@/components/profile/CCEditProfileCard";
+import DefaultBadge from "@/components/ui/defaultBadge";
 import LogoSVG from "/public/icons/logo.svg";
+import ScheduleSVG from "/public/icons/schedule.svg";
 
 export default async function SCProfileCard() {
   const profile = await getProfile();

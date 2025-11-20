@@ -1,8 +1,8 @@
 "server-only";
 
+import { getDDay } from "@/utils/dateUtils";
 import { getProfile } from "@/app/api/profile/SCprofileApi";
 import WarningSVG from "/public/icons/warning.svg";
-import { getDDay } from "@/utils/dateUtils";
 
 export default async function SCPenaltyStatus() {
   const profile = await getProfile();

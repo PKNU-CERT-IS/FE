@@ -1,8 +1,8 @@
 "server-only";
 
-import SCStudyList from "@/components/profile/SCStudyList";
-import SCBlogList from "@/components/profile/SCBlogList";
 import { StudyStatusType } from "@/types/profile";
+import SCBlogList from "@/components/profile/SCBlogList";
+import SCStudyList from "@/components/profile/SCStudyList";
 
 interface SCProfileContentWrapperProps {
   currentTab: string;

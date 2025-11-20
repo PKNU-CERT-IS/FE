@@ -1,31 +1,31 @@
 "server-only";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
-import AttachedFilesDownload from "@/components/project/CCAttachedFilesDownload";
-import { Globe } from "lucide-react";
-import Image from "next/image";
-import BackToListButton from "@/components/detail/SCBackToListButton";
-import KebabMenu from "@/components/detail/CCKebabMenu";
-import ShareButton from "@/components/detail/CCShareButton";
-import DefaultBadge from "@/components/ui/defaultBadge";
-import MeetingMinutes from "@/components/project/SCProjectMeetingMinutes";
-import EndRequestButton from "@/components/ui/endRequestButton";
-import { getStatusColor } from "@/utils/badgeUtils";
+import { SUBCATEGORY_FROM_EN } from "@/types/category";
 import { STATUS_LABELS } from "@/types/progressStatus";
-import { getDetailProject } from "@/app/api/project/SCProjectApi";
+import { ProjectMaterial } from "@/types/project";
 import { MEMBER_GRADE_LABELS } from "@/types/study";
+import { getStatusColor } from "@/utils/badgeUtils";
 import { formatDate } from "@/utils/formatDateUtil";
-import { getCurrentUser } from "@/lib/auth/currentUser";
+import { getStudyPeriodLabel } from "@/utils/studyHelper";
+import { getDetailProject } from "@/app/api/project/SCProjectApi";
 import {
   getProjectApprovedParticipants,
   getProjectPendingParticipants,
 } from "@/app/api/project/SCProjectParticipantApi";
-import { CCJoinButton } from "@/components/ui/CCJoinButton";
-import { SUBCATEGORY_FROM_EN } from "@/types/category";
-import MarkdownRenderer from "@/components/ui/defaultMarkdownRenderer";
-import { ProjectMaterial } from "@/types/project";
-import { getStudyPeriodLabel } from "@/utils/studyHelper";
+import { getCurrentUser } from "@/lib/auth/currentUser";
+import KebabMenu from "@/components/detail/CCKebabMenu";
 import CCParticipantsList from "@/components/detail/CCParticipantsList";
+import ShareButton from "@/components/detail/CCShareButton";
+import BackToListButton from "@/components/detail/SCBackToListButton";
+import AttachedFilesDownload from "@/components/project/CCAttachedFilesDownload";
+import MeetingMinutes from "@/components/project/SCProjectMeetingMinutes";
+import { CCJoinButton } from "@/components/ui/CCJoinButton";
+import DefaultBadge from "@/components/ui/defaultBadge";
+import MarkdownRenderer from "@/components/ui/defaultMarkdownRenderer";
+import EndRequestButton from "@/components/ui/endRequestButton";
+import { Globe } from "lucide-react";
 
 interface ProjectDetailPageProps {
   params: Promise<{ id: string }>;
@@ -88,11 +88,13 @@ export default async function ProjectDetailPage({
   const pendingData = await getProjectPendingParticipants(projectId, 0, 10);
   const pendingMember = pendingData.content ?? [];
   const isAlreadyApproved = approvedMember.some(
-    (m: { memberId: number }) => String(m.memberId) === String(currentUser?.sub)
+    (m: { memberId: number }) =>
+      String(m.memberId) === String(currentUser?.sub),
   );
 
   const isPending = pendingMember.some(
-    (m: { memberId: number }) => String(m.memberId) === String(currentUser?.sub)
+    (m: { memberId: number }) =>
+      String(m.memberId) === String(currentUser?.sub),
   );
   // 참가 버튼 렌더 조건
   const showJoinButton =
@@ -155,8 +157,8 @@ export default async function ProjectDetailPage({
                   project.projectCreatorGrade === "NONE"
                     ? "bg-gray-100 text-gray-800"
                     : project.projectCreatorGrade === "GRADUATED"
-                    ? "bg-purple-100 text-black"
-                    : "bg-blue-100 text-blue-800"
+                      ? "bg-purple-100 text-black"
+                      : "bg-blue-100 text-blue-800"
                 }`}
               >
                 {MEMBER_GRADE_LABELS[project.projectCreatorGrade]}
@@ -308,8 +310,8 @@ export default async function ProjectDetailPage({
                   isAlreadyApproved
                     ? "APPROVED"
                     : isPending
-                    ? "PENDING"
-                    : "NONE"
+                      ? "PENDING"
+                      : "NONE"
                 }
               />
             )}

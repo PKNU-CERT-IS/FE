@@ -1,14 +1,14 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
 import { useTransition } from "react";
-import DefaultButton from "@/components/ui/defaultButton";
+import { useRouter, useSearchParams } from "next/navigation";
 import {
-  boardCategories,
   BoardCategoryType,
+  boardCategories,
   toEnglishCategory,
 } from "@/types/board";
 import { cn } from "@/lib/utils";
+import DefaultButton from "@/components/ui/defaultButton";
 
 interface BoardCategoryProps {
   selectedCategory: BoardCategoryType;
@@ -59,7 +59,9 @@ export default function BoardCategory({
                 isActive
                   ? "category-filter-active"
                   : "category-filte dark:text-gray-200",
-                isPending ? "cursor-wait pointer-events-none" : "cursor-pointer"
+                isPending
+                  ? "cursor-wait pointer-events-none"
+                  : "cursor-pointer",
               )}
             >
               {category}

@@ -215,7 +215,7 @@ export const isFormValid = (
   maxParticipants?: number,
   startDate?: string,
   endDate?: string,
-  attachments?: AttachedFile[]
+  attachments?: AttachedFile[],
 ) => {
   const baseValid =
     title.trim() && description.trim() && content.trim() && category;

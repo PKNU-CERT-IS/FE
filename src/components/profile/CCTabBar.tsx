@@ -1,11 +1,11 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState, useEffect } from "react";
 import {
-  profileTabCategory,
   ProfileTabCategoryType,
   TAB_CONFIG,
+  profileTabCategory,
 } from "@/types/profile";
 
 interface CCTabBarProps {

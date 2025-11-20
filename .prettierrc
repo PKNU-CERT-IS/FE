@@ -1,0 +1,32 @@
+{
+  "singleQuote": false,
+  "semi": true,
+  "useTabs": false,
+  "tabWidth": 2,
+  "printWidth": 80,
+  "bracketSpacing": true,
+  "arrowParens": "always",
+  "importOrderSeparation": false,
+  "importOrderSortSpecifiers": true,
+  "plugins": ["@trivago/prettier-plugin-sort-imports"],
+  "importOrder": [
+    "^react$",
+    "^next/",
+    "<THIRD_PARTY_MODULES>",
+    "^@/.*\\.css$",
+    "^@/types",
+    "^@/utils",
+    "^@/app/api",
+    "^@/actions",
+    "^@/lib",
+    "^@/store",
+    "^@/app",
+    "^@/layouts",
+    "^@/components",
+    "^@/hooks",
+    "^@/icons",
+    "^lucide-react$",
+    "^@/mocks",
+    "^[./]"
+  ]
+}

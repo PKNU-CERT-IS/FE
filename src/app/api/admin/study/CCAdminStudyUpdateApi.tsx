@@ -1,10 +1,10 @@
-import { apiClient } from "@/lib/clientIntercept";
 import { UpdateStudyFormData } from "@/types/study";
+import { apiClient } from "@/lib/clientIntercept";
 
 // admin 스터디 수정
 export async function updateAdminStudy(
   studyId: number,
-  payload: UpdateStudyFormData
+  payload: UpdateStudyFormData,
 ) {
   try {
     const res = await apiClient.put(`/admin/study/update`, payload, {

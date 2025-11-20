@@ -1,10 +1,10 @@
 "use client";
 
+import { useTransition } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { BLOG_CATEGORIES, BlogCategory } from "@/types/blog";
-import DefaultButton from "@/components/ui/defaultButton";
-import { useTransition } from "react";
 import { cn } from "@/lib/utils";
+import DefaultButton from "@/components/ui/defaultButton";
 
 interface CCBlogCategoryFilterProps {
   currentCategory: BlogCategory;
@@ -59,7 +59,7 @@ export default function CCBlogCategoryFilter({
               className={cn(
                 "whitespace-nowrap flex-shrink-0",
                 isActive ? "category-filter-active" : "category-filter",
-                isPending && "pointer-events-none cursor-wait"
+                isPending && "pointer-events-none cursor-wait",
               )}
             >
               {category}

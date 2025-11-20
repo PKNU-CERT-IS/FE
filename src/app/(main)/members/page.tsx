@@ -1,13 +1,14 @@
 "server-only";
 
-import MembersCardList from "@/components/members/SCMembersCardList";
-import MembersSearchBar from "@/components/members/CCMembersSearchBar";
+import { Suspense } from "react";
+import { Metadata } from "next";
+import { isValidGrade, isValidRole } from "@/utils/membersUtils";
 import MembersGradeDropdown from "@/components/members/CCMembersGradeDown";
 import MembersRoleDropdown from "@/components/members/CCMembersRoleDropDown";
-import { isValidRole, isValidGrade } from "@/utils/membersUtils";
-import { Metadata } from "next";
-import { Suspense } from "react";
+import MembersSearchBar from "@/components/members/CCMembersSearchBar";
 import SCMembersSkeleton from "@/components/members/SCMemberSkeleton";
+import MembersCardList from "@/components/members/SCMembersCardList";
+
 interface MembersPageProps {
   searchParams: Promise<{
     role?: string;

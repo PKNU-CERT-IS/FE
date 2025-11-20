@@ -1,6 +1,6 @@
+import { Metadata } from "next";
 import PageLayout from "@/layouts/pageLayout";
 import TerminalSVG from "/public/icons/terminal.svg";
-import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Admin | Study / Project",

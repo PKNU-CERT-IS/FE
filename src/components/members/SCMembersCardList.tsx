@@ -1,15 +1,15 @@
-import SCMembersCard from "@/components/members/SCMembersCard";
-import SCSearchResultNotFound from "@/components/ui/SCSearchResultNotFound";
-import { getMembers } from "@/app/api/member/SCmemberApi";
 import {
-  sortMembersByRole,
-  isValidRole,
   isValidGrade,
+  isValidRole,
+  sortMembersByRole,
 } from "@/utils/membersUtils";
 import {
   translateKoreanToGrade,
   translateKoreanToRole,
 } from "@/utils/transformRequestValue";
+import { getMembers } from "@/app/api/member/SCmemberApi";
+import SCMembersCard from "@/components/members/SCMembersCard";
+import SCSearchResultNotFound from "@/components/ui/SCSearchResultNotFound";
 
 interface MembersCardListProps {
   searchParams: {

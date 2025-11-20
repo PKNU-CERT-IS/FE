@@ -1,10 +1,10 @@
 "server-only";
 
-import SCProfileContentWrapper from "@/components/profile/SCProfileContentWrapper";
-
-import { StudyStatusType } from "@/types/profile";
 import { Suspense } from "react";
+import { StudyStatusType } from "@/types/profile";
+import SCProfileContentWrapper from "@/components/profile/SCProfileContentWrapper";
 import DefaultSuspnenseComponent from "@/components/ui/CCDefaultSuspnenseComponent";
+
 interface SCProfileContentProps {
   currentTab: string;
   searchParams: Promise<{

@@ -2,7 +2,7 @@ import { AdminMemberDetailInfoType } from "@/types/admin/adminMembers";
 import { fetchWithAuth } from "@/lib/serverIntercept";
 
 export async function getMembersForStaff(
-  search?: string
+  search?: string,
 ): Promise<AdminMemberDetailInfoType[]> {
   const query = search ? `?keyword=${encodeURIComponent(search)}` : "";
 

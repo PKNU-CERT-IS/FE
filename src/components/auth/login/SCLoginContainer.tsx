@@ -1,8 +1,8 @@
 "server-only";
 import SCAuthSwitchButton from "@/components/auth/SCAuthSwitchButton";
 import SCAuthTitle from "@/components/auth/SCAuthTitle";
-import { Fingerprint } from "lucide-react";
 import CCLoginForm from "@/components/auth/login/CCLoginForm";
+import { Fingerprint } from "lucide-react";
 
 export default function SCLoginContainer() {
   return (

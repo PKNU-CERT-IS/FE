@@ -1,13 +1,12 @@
 "server-only";
 
-import ScheduleSVG from "/public/icons/schedule.svg";
-import { Clock, MapPin } from "lucide-react";
-import DefaultBadge from "@/components/ui/defaultBadge";
-import { getTypeColor, getTypeLabel } from "@/utils/scheduleUtils";
-import { formatTime } from "@/utils/formatDateUtil";
-import { getProfile } from "@/app/api/profile/SCprofileApi";
-
 import { ScheduleInProfileData } from "@/types/schedule";
+import { formatTime } from "@/utils/formatDateUtil";
+import { getTypeColor, getTypeLabel } from "@/utils/scheduleUtils";
+import { getProfile } from "@/app/api/profile/SCprofileApi";
+import DefaultBadge from "@/components/ui/defaultBadge";
+import { Clock, MapPin } from "lucide-react";
+import ScheduleSVG from "/public/icons/schedule.svg";
 
 export default async function SCTodaySchedule() {
   const profile = await getProfile();
@@ -33,7 +32,7 @@ export default async function SCTodaySchedule() {
                     <div className="text-xs text-gray-600 dark:text-gray-400 flex items-center gap-1 transition-colors duration-300">
                       <Clock className="w-3 h-3" />
                       {`${formatTime(schedule.startTime)} - ${formatTime(
-                        schedule.endTime
+                        schedule.endTime,
                       )}`}
                     </div>
                     <div className="text-xs text-gray-600 dark:text-gray-400 flex items-center gap-1 transition-colors duration-300">
