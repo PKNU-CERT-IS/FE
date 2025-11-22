@@ -1,4 +1,3 @@
-// utils/projectUtils.ts
 import { CategoryType, SubCategoryType } from "@/types/category";
 import { StatusType } from "@/types/progressStatus";
 import {
@@ -25,7 +24,7 @@ export function parseSearchParams(searchParams: {
     category: (searchParams.category as CategoryType) || "ALL",
     subCategory: (searchParams.subCategory as SubCategoryType) || "ALL",
     projectStatus: (searchParams.projectStatus as StatusType) || "ALL",
-    // page: parseInt(searchParams.page || "1", 10),
+    page: parseInt(searchParams.page || "1", 10),
   };
 }
 
