@@ -3,17 +3,19 @@ import { getBoards } from "@/app/api/board/SCBoardApi";
 import BoardCardList from "@/components/board/SCBoardCardList";
 import BoardPagination from "@/components/board/SCBoardPagination";
 
+interface BoardContentsProps {
+  keyword: string;
+  category: BoardCategoryType;
+  page: number;
+  size: number;
+}
+
 export default async function BoardContents({
   keyword,
   category,
   page,
   size,
-}: {
-  keyword: string;
-  category: BoardCategoryType;
-  page: number;
-  size: number;
-}) {
+}: BoardContentsProps) {
   const enCategory = category !== "전체" ? categoryMappingToEN[category] : "";
 
   const data = await getBoards(keyword, enCategory, page - 1, size);

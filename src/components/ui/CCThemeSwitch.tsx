@@ -19,6 +19,7 @@ export default function CCTopButton() {
   return (
     <button
       onClick={toggleTheme}
+      aria-label="theme-switch"
       className="fixed bottom-6 right-6 z-50 p-3 rounded-full bg-white dark:bg-gray-800 border border-cert-red/40 text-cert-red/70 dark:text-yellow-400 shadow-lg hover:bg-cert-red/20 dark:hover:bg-gray-700 transition-colors cursor-pointer"
     >
       {theme === "dark" ? (

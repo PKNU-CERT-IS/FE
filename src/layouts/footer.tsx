@@ -8,7 +8,7 @@ const Footer = () => {
           <div className="flex items-center space-x-3 mb-4 md:mb-0">
             <LogoSVG width={30} />
             <div>
-              <h3 className="font-bold text-sm dark:text-gray-200">CERT-IS</h3>
+              <p className="font-bold text-sm dark:text-gray-200">CERT-IS</p>
               <p className="text-xs text-gray-500">
                 부경대학교 사이버 보안 동아리
               </p>

@@ -111,6 +111,7 @@ export default function KebabMenu({
           size="sm"
           className="cursor-pointer border-0 hover:bg-white hover:text-cert-dark-red dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-gray-200"
           onClick={() => setIsKebabOpen(!isKebabOpen)}
+          aria-label="kebab-button"
         >
           <MoreVertical className="w-4 h-4" />
         </DefaultButton>
