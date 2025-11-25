@@ -1,7 +1,6 @@
 "server-only";
 
 import { Suspense } from "react";
-import Link from "next/link";
 import { Metadata } from "next";
 import {
   CATEGORY_OPTIONS,
@@ -14,7 +13,7 @@ import { parseSearchParams } from "@/utils/projectUtils";
 import CCProjectFilter from "@/components/project/CCProjectFilter";
 import SCProjectList from "@/components/project/SCProjectList";
 import SCProjectSkeleton from "@/components/project/SCProjectSkeleton";
-import { Plus } from "lucide-react";
+import SCNewPostButton from "@/components/ui/SCNewPostButton";
 
 interface ProjectPageProps {
   searchParams: Promise<{
@@ -86,13 +85,11 @@ export default async function ProjectPage({ searchParams }: ProjectPageProps) {
         <div className="flex-1">
           <CCProjectFilter projectCurrentFilters={filters} />
         </div>
-        <Link
-          scroll={false}
+        <SCNewPostButton
           href="/project/write"
-          className="inline-flex items-center justify-center gap-2 px-6 h-10 action-button whitespace-nowrap"
-        >
-          <Plus className="w-4 h-4" />새 프로젝트 생성
-        </Link>
+          buttonText="새 프로젝트 생성"
+          className="px-6 h-10 sm:w-auto w-full items-center"
+        />
       </div>
       <Suspense
         key={JSON.stringify({

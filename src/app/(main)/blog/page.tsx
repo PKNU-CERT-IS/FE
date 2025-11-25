@@ -1,7 +1,6 @@
 "server-only";
 
 import { Suspense } from "react";
-import Link from "next/link";
 import { Metadata } from "next";
 import { BlogCategory } from "@/types/blog";
 import { isValidCategory } from "@/utils/blogUtils";
@@ -9,7 +8,7 @@ import CCBlogCategoryFilter from "@/components/blog/CCBlogCategoryFilter";
 import BlogSearchBar from "@/components/blog/CCBlogSearchBar";
 import BlogCardList from "@/components/blog/SCBlogCardList";
 import SCBlogSkeleton from "@/components/blog/SCBlogSkeleton";
-import { Plus } from "lucide-react";
+import SCNewPostButton from "@/components/ui/SCNewPostButton";
 
 interface BlogPageProps {
   searchParams: Promise<{
@@ -73,13 +72,7 @@ export default async function BlogPage({ searchParams }: BlogPageProps) {
               currentCategory={currentCategory}
               currentKeyword={currentKeyword}
             />
-
-            <Link
-              href="/blog/write"
-              className="action-button inline-flex gap-2 px-4 py-2 whitespace-nowrap sm:w-auto w-full justify-center"
-            >
-              <Plus className="w-4 h-4" />새 글 작성
-            </Link>
+            <SCNewPostButton href="/blog/write" buttonText="새 글 작성" />
           </div>
         </div>
 

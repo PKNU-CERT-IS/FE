@@ -1,6 +1,5 @@
 "server-only";
 import { Suspense } from "react";
-import Link from "next/link";
 import { Metadata } from "next";
 import {
   CATEGORY_OPTIONS,
@@ -13,7 +12,7 @@ import { parseSearchParams } from "@/utils/studyHelper";
 import CCStudyFilter from "@/components/study/CCStudyFilter";
 import SCStudyContent from "@/components/study/SCStudyContent";
 import SCStudySkeleton from "@/components/study/SCStudySkeleton";
-import { Plus } from "lucide-react";
+import SCNewPostButton from "@/components/ui/SCNewPostButton";
 
 const isValidCategory = (category: string): category is CategoryType => {
   return CATEGORY_OPTIONS.includes(category as CategoryType);
@@ -78,13 +77,11 @@ export default async function StudyPage({ searchParams }: StudyPageProps) {
         <div className="flex-1">
           <CCStudyFilter studyCurrentFilters={filters} />
         </div>
-        <Link
-          href={"/study/write"}
-          className="inline-flex items-center justify-center gap-2 px-6 h-10 action-button whitespace-nowrap"
-        >
-          <Plus className="w-4 h-4" />
-          <span>새 스터디 생성</span>
-        </Link>
+        <SCNewPostButton
+          href="/study/write"
+          buttonText="새 스터디 생성"
+          className="px-6 h-10 sm:w-auto w-full items-center"
+        />
       </div>
 
       {/* 콘텐츠 - Suspense로 감싼 카드 그리드 */}
