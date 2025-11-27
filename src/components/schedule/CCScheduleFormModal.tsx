@@ -18,12 +18,12 @@ import {
   createSchedule,
   deleteSchedule,
 } from "@/app/api/schedule/CCScheduleApi";
-import { cn } from "@/lib/utils";
+import CCScheduleModalDropdown from "@/components/schedule/CCScheduleModalDropdown";
 import AlertModal from "@/components/ui/defaultAlertModal";
 import DefaultButton from "@/components/ui/defaultButton";
 import { useModal } from "@/hooks/useModal";
 import { useSchedule } from "@/hooks/useSchedule";
-import { ChevronDown, X } from "lucide-react";
+import { X } from "lucide-react";
 
 interface ScheduleFormModalProps {
   closeModal: () => void;
@@ -245,119 +245,38 @@ export default function CCScheduleFormModal({
                   />
                 </div>
 
-                <div className="relative z-10" ref={typeDropdownRef}>
-                  <p className="text-sm mb-1.5 dark:text-gray-200">활동 유형</p>
-                  <DefaultButton
-                    variant="outline"
-                    size="default"
-                    className={cn(
-                      "w-full justify-between text-left font-normal transition-all duration-200 cursor-pointer",
-                      "bg-white border-gray-300 hover:border-cert-red hover:bg-white hover:text-cert-black",
-                      "focus:border-cert-red focus:ring-2 focus:ring-cert-red/20",
-                      "dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-800",
-                    )}
-                    onClick={toggleDropdown}
-                  >
-                    <span className="text-gray-700 dark:text-gray-200 truncate">
-                      {selectedType}
-                    </span>
-                    <ChevronDown
-                      className={`h-4 w-4 transition-transform duration-300 text-gray-400 ${
-                        isTypeDropdownOpen ? "rotate-180" : ""
-                      }`}
-                    />
-                  </DefaultButton>
-                  {isTypeDropdownOpen && (
-                    <div className="absolute border border-gray-300 bg-white w-full rounded-md dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200">
-                      {TYPE_LABELS.map((label) => (
-                        <button
-                          key={label}
-                          onClick={() => handleType(label)}
-                          className="text-sm items-center flex h-10 w-full rounded-md px-3 py-2 text-gray-900 dark:text-gray-200 hover:bg-cert-red hover:text-white dark:hover:bg-cert-red duration-100 cursor-pointer"
-                        >
-                          {label}
-                        </button>
-                      ))}
-                    </div>
-                  )}
-                </div>
+                <CCScheduleModalDropdown
+                  label="활동 유형"
+                  selectedValue={selectedType}
+                  options={TYPE_LABELS}
+                  isOpen={isTypeDropdownOpen}
+                  onToggle={toggleDropdown}
+                  onSelect={handleType}
+                  dropdownRef={typeDropdownRef}
+                />
               </div>
 
               {/* 시작/종료 시간 */}
               <div className="grid grid-cols-2 gap-4 z-10">
-                <div className="relative" ref={startTimeDropdownRef}>
-                  <p className="text-sm mb-1.5 dark:text-gray-200">시작 시간</p>
-                  <DefaultButton
-                    variant="outline"
-                    size="default"
-                    className={cn(
-                      "w-full justify-between text-left font-normal transition-all duration-200 cursor-pointer",
-                      "bg-white border-gray-300 hover:border-cert-red hover:bg-white hover:text-cert-black",
-                      "focus:border-cert-red focus:ring-2 focus:ring-cert-red/20",
-                      "dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-800",
-                    )}
-                    onClick={toggleStartTimeDropdown}
-                  >
-                    <span className="text-gray-700 dark:text-gray-200 truncate">
-                      {selectedStartTime}
-                    </span>
-                    <ChevronDown
-                      className={`h-4 w-4 transition-transform duration-300 text-gray-400 ${
-                        isStartTimeDropdownOpen ? "rotate-180" : ""
-                      }`}
-                    />
-                  </DefaultButton>
-                  {isStartTimeDropdownOpen && (
-                    <div className="absolute top-full left-0 right-0 z-10 bg-white border border-gray-300 shadow-md max-h-48 overflow-y-auto rounded-md dark:bg-gray-800 dark:border-gray-600 dark:text-gray-200">
-                      {timeOptions.map((time) => (
-                        <button
-                          key={time}
-                          onClick={() => handleStartTime(time)}
-                          className="text-sm items-center flex h-10 w-full rounded-md px-3 py-2 text-gray-900 dark:text-gray-200 hover:bg-cert-red hover:text-white dark:hover:bg-cert-red duration-100 cursor-pointer"
-                        >
-                          {time}
-                        </button>
-                      ))}
-                    </div>
-                  )}
-                </div>
+                <CCScheduleModalDropdown
+                  label="시작 시간"
+                  selectedValue={selectedStartTime}
+                  options={timeOptions}
+                  isOpen={isStartTimeDropdownOpen}
+                  onToggle={toggleStartTimeDropdown}
+                  onSelect={handleStartTime}
+                  dropdownRef={startTimeDropdownRef}
+                />
 
-                <div className="relative" ref={endTimeDropdownRef}>
-                  <p className="text-sm mb-1.5 dark:text-gray-200">종료 시간</p>
-                  <DefaultButton
-                    variant="outline"
-                    size="default"
-                    className={cn(
-                      "w-full justify-between text-left font-normal transition-all duration-200 cursor-pointer",
-                      "bg-white border-gray-300 hover:border-cert-red hover:bg-white hover:text-cert-black",
-                      "focus:border-cert-red focus:ring-2 focus:ring-cert-red/20",
-                      "dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-800",
-                    )}
-                    onClick={toggleEndTimeDropdown}
-                  >
-                    <span className="text-gray-700 dark:text-gray-200 truncate">
-                      {selectedEndTime}
-                    </span>
-                    <ChevronDown
-                      className={`h-4 w-4 transition-transform duration-300 text-gray-400 ${
-                        isEndTimeDropdownOpen ? "rotate-180" : ""
-                      }`}
-                    />
-                  </DefaultButton>
-                  {isEndTimeDropdownOpen && (
-                    <div className="absolute top-full left-0 right-0 z-10 bg-white border border-gray-300 shadow-md max-h-48 overflow-y-auto rounded-md dark:bg-gray-800 dark:border-gray-600 dark:text-gray-200">
-                      {timeOptions.map((time) => (
-                        <button
-                          key={time}
-                          onClick={() => handleEndTime(time)}
-                          className="text-sm items-center flex h-10 w-full rounded-md px-3 py-2 text-gray-900 dark:text-gray-200 hover:bg-cert-red hover:text-white dark:hover:bg-cert-red duration-100 cursor-pointer"
-                        >
-                          {time}
-                        </button>
-                      ))}
-                    </div>
-                  )}
-                </div>
+                <CCScheduleModalDropdown
+                  label="종료 시간"
+                  selectedValue={selectedEndTime}
+                  options={timeOptions}
+                  isOpen={isEndTimeDropdownOpen}
+                  onToggle={toggleEndTimeDropdown}
+                  onSelect={handleEndTime}
+                  dropdownRef={endTimeDropdownRef}
+                />
               </div>
               {timeError && (
                 <p className="text-cert-red text-sm">⚠️ {timeError}</p>
