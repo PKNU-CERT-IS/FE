@@ -3,8 +3,8 @@ import PageLayout from "@/layouts/pageLayout";
 import ShieldSVG from "/public/icons/shield.svg";
 
 export const metadata: Metadata = {
-  title: "Security Board",
-  description: "Security Board Layout",
+  title: "CERT-IS Board",
+  description: "CERT-IS Board Layout",
 };
 
 export default function BoardLayout({

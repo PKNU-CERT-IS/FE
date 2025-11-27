@@ -3,11 +3,11 @@ import PageLayout from "@/layouts/pageLayout";
 import TerminalSVG from "/public/icons/terminal.svg";
 
 export const metadata: Metadata = {
-  title: "Security Board",
-  description: "Security Board Layout",
+  title: "CERT-IS Project",
+  description: "CERT-IS Project Layout",
 };
 
-export default function BoardLayout({
+export default function ProjectLayout({
   children,
   modal,
 }: {
