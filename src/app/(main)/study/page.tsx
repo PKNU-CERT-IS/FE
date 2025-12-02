@@ -9,7 +9,7 @@ import {
 } from "@/types/category";
 import type { StudyPageProps } from "@/types/study";
 import { parseSearchParams } from "@/utils/studyHelper";
-import CCStudyFilter from "@/components/study/CCStudyFilter";
+import CCStudyFilterController from "@/components/study/CCStudyFilterController";
 import SCStudyContent from "@/components/study/SCStudyContent";
 import SCStudySkeleton from "@/components/study/SCStudySkeleton";
 import SCNewPostButton from "@/components/ui/SCNewPostButton";
@@ -75,7 +75,7 @@ export default async function StudyPage({ searchParams }: StudyPageProps) {
       {/* 검색 및 필터 - Client Component */}
       <div className="flex flex-col sm:flex-row gap-0 sm:gap-4">
         <div className="flex-1">
-          <CCStudyFilter studyCurrentFilters={filters} />
+          <CCStudyFilterController studyCurrentFilters={filters} />
         </div>
         <SCNewPostButton
           href="/study/write"
