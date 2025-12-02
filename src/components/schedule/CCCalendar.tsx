@@ -77,9 +77,9 @@ export default function Calendar({ schedules, selectedDate }: CalendarProps) {
     <div className="border border-gray-300 rounded-lg p-4 shadow-lg dark:bg-gray-800 dark:border-gray-700">
       <div className="flex items-center justify-between mb-4 p-2">
         <div className="flex flex-row">
-          <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-200">
+          <p className="text-xl font-semibold text-gray-900 dark:text-gray-200">
             {formatDate(currentDate, "long")}
-          </h3>
+          </p>
         </div>
         <div className="flex items-center">
           <div className="mr-2 sm:mr-4 hidden sm:block">
@@ -88,12 +88,14 @@ export default function Calendar({ schedules, selectedDate }: CalendarProps) {
           <button
             onClick={prevMonth}
             className="text-gray-600 p-1 sm:p-3 rounded-md hover:text-gray-900 hover:bg-gray-100 mr-3 duration-200 cursor-pointer dark:hover:bg-gray-700"
+            aria-label="이전 달"
           >
             <AngleSVG className="rotate-90 w-2.5 sm:w-3.5 dark:stroke-gray-300" />
           </button>
           <button
             onClick={nextMonth}
             className="text-gray-600 p-1 sm:p-3 rounded-md hover:text-gray-900 hover:bg-gray-100 duration-200 cursor-pointer dark:hover:bg-gray-700"
+            aria-label="다음 달"
           >
             <AngleSVG className="rotate-270 w-2.5 sm:w-3.5 dark:stroke-gray-300" />
           </button>

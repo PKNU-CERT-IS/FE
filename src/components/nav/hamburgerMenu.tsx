@@ -62,6 +62,7 @@ export default function HamburgerMenu({ navBarList }: HamburgerMenuProps) {
             }
           }}
           className="text-gray-900 p-2 transition-all duration-300 hover:text-cert-dark-red hover:bg-cert-dark-red/5 dark:text-gray-200 dark:hover:text-cert-red/30"
+          aria-label="모바일 메뉴"
         >
           {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
         </DefaultButton>
