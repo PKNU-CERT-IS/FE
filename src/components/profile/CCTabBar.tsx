@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { memo, useCallback, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import {
   ProfileTabCategoryType,
@@ -12,7 +12,7 @@ interface CCTabBarProps {
   currentTab: string;
 }
 
-export default function CCTabBar({ currentTab }: CCTabBarProps) {
+function CCTabBar({ currentTab }: CCTabBarProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -23,15 +23,18 @@ export default function CCTabBar({ currentTab }: CCTabBarProps) {
     setLocalTab(currentTab);
   }, [currentTab]);
 
-  const handleTabClick = (tab: ProfileTabCategoryType) => {
-    // 1) 클릭 즉시 UI 변경
-    setLocalTab(tab);
+  const handleTabClick = useCallback(
+    (tab: ProfileTabCategoryType) => {
+      // 1) 클릭 즉시 UI 변경
+      setLocalTab(tab);
 
-    // 2) URL만 변경 → 서버 fetch는 뒤에서 진행됨
-    const params = new URLSearchParams(searchParams.toString());
-    params.set("tab", tab);
-    router.replace(`?${params.toString()}`, { scroll: false });
-  };
+      // 2) URL만 변경 → 서버 fetch는 뒤에서 진행됨
+      const params = new URLSearchParams(searchParams.toString());
+      params.set("tab", tab);
+      router.replace(`?${params.toString()}`, { scroll: false });
+    },
+    [router, searchParams],
+  );
 
   return (
     <div className="h-10 items-center justify-center rounded-md p-1 grid w-full grid-cols-2 bg-gray-100 dark:bg-gray-800">
@@ -63,3 +66,4 @@ export default function CCTabBar({ currentTab }: CCTabBarProps) {
     </div>
   );
 }
+export default memo(CCTabBar);

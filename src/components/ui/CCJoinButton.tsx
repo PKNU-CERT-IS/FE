@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { memo, useState, useTransition } from "react";
 import { usePathname } from "next/navigation";
 import { AxiosError } from "axios";
 import { ErrorResponse } from "@/types/errorResponse";
@@ -16,16 +16,18 @@ import AlertModal from "@/components/ui/defaultAlertModal";
 
 type JoinState = "NONE" | "PENDING" | "APPROVED" | "REJECTED";
 
-export function CCJoinButton({
-  dataId,
-  initialState = "NONE",
-  className,
-}: {
+interface JoinButtonProps {
   dataId: number;
   initiallyJoined?: boolean;
   className?: string;
   initialState: JoinState;
-}) {
+}
+
+function CCJoinButton({
+  dataId,
+  initialState = "NONE",
+  className,
+}: JoinButtonProps) {
   const [isPending, startTransition] = useTransition();
   const pathname = usePathname();
   // 참가 상태
@@ -114,3 +116,4 @@ export function CCJoinButton({
     </>
   );
 }
+export default memo(CCJoinButton);

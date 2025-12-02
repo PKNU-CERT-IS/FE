@@ -6,8 +6,7 @@ import { AttachedFile } from "@/types/attachedFile";
 import { SUBCATEGORY_FROM_EN } from "@/types/category";
 import { STATUS_LABELS } from "@/types/progressStatus";
 import { MEMBER_GRADE_LABELS, StudyMaterial } from "@/types/study";
-import { formatFileSize } from "@/utils/attachedFileUtils";
-import { getFileIcon } from "@/utils/attachedFileUtils";
+import { formatFileSize, getFileIcon } from "@/utils/attachedFileUtils";
 import { getStatusColor } from "@/utils/badgeUtils";
 import { formatDate } from "@/utils/formatDateUtil";
 import { getStudyPeriodLabel } from "@/utils/studyHelper";
@@ -17,13 +16,13 @@ import {
   getStudyPendingParticipants,
 } from "@/app/api/study/SCStudyParticipantApi";
 import { getCurrentUser } from "@/lib/auth/currentUser";
+import DownloadButton from "@/components/detail/CCDownloadButton";
 import KebabMenu from "@/components/detail/CCKebabMenu";
 import CCParticipantsList from "@/components/detail/CCParticipantsList";
 import CCShareButton from "@/components/detail/CCShareButton";
 import BackToListButton from "@/components/detail/SCBackToListButton";
-import DownloadButton from "@/components/detail/SCDownloadButton";
 import MeetingMinutes from "@/components/study/SCStudyMeetingMinutes";
-import { CCJoinButton } from "@/components/ui/CCJoinButton";
+import CCJoinButton from "@/components/ui/CCJoinButton";
 import DefaultBadge from "@/components/ui/defaultBadge";
 import MarkdownRenderer from "@/components/ui/defaultMarkdownRenderer";
 import EndRequestButton from "@/components/ui/endRequestButton";
@@ -110,7 +109,7 @@ export default async function StudyMaterialDetailPage({
   return (
     <div>
       <div className="space-y-6">
-        <BackToListButton currentUrl={"study"} />
+        <BackToListButton currentUrl="study" />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-6">

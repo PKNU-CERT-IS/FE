@@ -9,7 +9,7 @@ import { formatFileSize } from "@/utils/attachedFileUtils";
 import { getCategoryColor, getStatusColor } from "@/utils/badgeUtils";
 import { getProgressColor, parseSearchParams } from "@/utils/studyHelper";
 import { getStudies, searchStudies } from "@/app/api/study/SCStudyApi";
-import DownloadButton from "@/components/detail/SCDownloadButton";
+import DownloadButton from "@/components/detail/CCDownloadButton";
 import CCStudyPagination from "@/components/study/CCStudyPagination";
 import SCSearchResultNotFound from "@/components/ui/SCSearchResultNotFound";
 import DefaultBadge from "@/components/ui/defaultBadge";

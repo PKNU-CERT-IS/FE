@@ -1,6 +1,5 @@
 "use client";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { memo, useState } from "react";
 import { AxiosError } from "axios";
 import { postLike } from "@/app/api/board/CCboardApi";
 import AlertModal from "@/components/ui/defaultAlertModal";
@@ -13,17 +12,11 @@ interface LikeButtonProps {
   liked: boolean;
 }
 
-export default function LikeButton({
-  currentLikes,
-  boardId,
-  liked,
-}: LikeButtonProps) {
+function LikeButton({ currentLikes, boardId, liked }: LikeButtonProps) {
   const [isLiked, setIsLiked] = useState<boolean>(liked);
   const [likes, setLikes] = useState<number>(currentLikes);
   const [loading, setLoading] = useState<boolean>(false);
   const [alertOpen, setAlertOpen] = useState(false);
-
-  const router = useRouter();
 
   const handleLike = async () => {
     if (loading) return;
@@ -33,7 +26,6 @@ export default function LikeButton({
       setIsLiked(!isLiked);
       setLikes(isLiked ? likes - 1 : likes + 1);
       await postLike(boardId);
-      router.refresh();
     } catch (error) {
       setIsLiked(isLiked);
       setLikes(likes);
@@ -72,3 +64,4 @@ export default function LikeButton({
     </>
   );
 }
+export default memo(LikeButton);

@@ -32,6 +32,8 @@ interface ScheduleFormModalProps {
   isAdmin?: boolean;
 }
 
+const TYPE_LABELS = ["정기 모임", "회의", "스터디", "컨퍼런스"];
+
 export default function CCScheduleFormModal({
   closeModal,
   schedule,
@@ -60,7 +62,7 @@ export default function CCScheduleFormModal({
   } = useModal();
 
   const { timeOptions } = useSchedule();
-  const TYPE_LABELS = ["정기 모임", "회의", "스터디", "컨퍼런스"];
+
   const [title, setTitle] = useState("");
   const [place, setPlace] = useState(isAdmin ? "" : "동아리방");
   const [date, setDate] = useState("");
@@ -175,7 +177,7 @@ export default function CCScheduleFormModal({
             <div className="flex flex-col space-y-1.5 text-center sm:text-left">
               <button
                 onClick={closeModal}
-                className="absolute top-4 right-4 text-md text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 flex items-center justify-center"
+                className="absolute top-4 right-4 text-md text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 flex items-center justify-center cursor-pointer"
               >
                 <X />
               </button>

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useId, useState } from "react";
+import { memo, useId, useState } from "react";
 import { AttachedFile, AttachedType } from "@/types/attachedFile";
 import {
   Archive,
@@ -117,7 +117,7 @@ export const mapMimeToCategory = (
   return "PDF";
 };
 
-export default function AttachedFilesDownload({
+function AttachedFilesDownload({
   files,
   collapsible = true,
   defaultOpen = false,
@@ -237,3 +237,4 @@ export default function AttachedFilesDownload({
     </div>
   );
 }
+export default memo(AttachedFilesDownload);

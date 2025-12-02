@@ -1,4 +1,5 @@
-// components/schedule/ScheduleContents.tsx
+"server-only";
+
 import { ScheduleInfo } from "@/types/schedule";
 import { getSchedules } from "@/app/api/schedule/SCscheduleApi";
 import CCAddScheduleCard from "@/components/schedule/CCAddScheduleCard";

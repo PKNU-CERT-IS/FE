@@ -1,4 +1,5 @@
 import * as React from "react";
+import { memo } from "react";
 import { type VariantProps, cva } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
@@ -45,4 +46,4 @@ const DefaultButton = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
 DefaultButton.displayName = "Button";
 
-export default DefaultButton;
+export default memo(DefaultButton);

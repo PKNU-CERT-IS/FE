@@ -1,7 +1,6 @@
 "use client";
 
-import { RefObject, useMemo } from "react";
-import React from "react";
+import { RefObject, memo, useMemo } from "react";
 import { cn } from "@/lib/utils";
 import DefaultButton from "@/components/ui/defaultButton";
 import { ChevronDown } from "lucide-react";
@@ -71,4 +70,4 @@ function CCScheduleModalDropdown({
     </div>
   );
 }
-export default React.memo(CCScheduleModalDropdown);
+export default memo(CCScheduleModalDropdown);

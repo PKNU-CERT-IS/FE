@@ -21,7 +21,7 @@ import ShareButton from "@/components/detail/CCShareButton";
 import BackToListButton from "@/components/detail/SCBackToListButton";
 import AttachedFilesDownload from "@/components/project/CCAttachedFilesDownload";
 import MeetingMinutes from "@/components/project/SCProjectMeetingMinutes";
-import { CCJoinButton } from "@/components/ui/CCJoinButton";
+import CCJoinButton from "@/components/ui/CCJoinButton";
 import DefaultBadge from "@/components/ui/defaultBadge";
 import MarkdownRenderer from "@/components/ui/defaultMarkdownRenderer";
 import EndRequestButton from "@/components/ui/endRequestButton";

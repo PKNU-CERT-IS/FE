@@ -1,8 +1,9 @@
 "use client";
 
+import { memo } from "react";
 import { ArrowDown } from "lucide-react";
 
-export default function CCScrollScheduleList() {
+function CCScrollScheduleList() {
   const ALL_SCHEDULE_LIST_ID = "all-schedule-list";
   const scrollToAllSchedules = () => {
     document.getElementById(ALL_SCHEDULE_LIST_ID)?.scrollIntoView({
@@ -26,3 +27,4 @@ export default function CCScrollScheduleList() {
     </div>
   );
 }
+export default memo(CCScrollScheduleList);
