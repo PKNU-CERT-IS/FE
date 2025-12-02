@@ -10,7 +10,7 @@ import {
 } from "@/types/category";
 import { ProjectCurrentFilters } from "@/types/project";
 import { parseSearchParams } from "@/utils/projectUtils";
-import CCProjectFilter from "@/components/project/CCProjectFilter";
+import CCProjectFilterController from "@/components/project/CCProjectFilterController";
 import SCProjectList from "@/components/project/SCProjectList";
 import SCProjectSkeleton from "@/components/project/SCProjectSkeleton";
 import SCNewPostButton from "@/components/ui/SCNewPostButton";
@@ -83,7 +83,7 @@ export default async function ProjectPage({ searchParams }: ProjectPageProps) {
     <div className="space-y-6 sm:space-y-0">
       <div className="flex flex-col sm:flex-row gap-0 sm:gap-4 ">
         <div className="flex-1">
-          <CCProjectFilter projectCurrentFilters={filters} />
+          <CCProjectFilterController projectCurrentFilters={filters} />
         </div>
         <SCNewPostButton
           href="/project/write"

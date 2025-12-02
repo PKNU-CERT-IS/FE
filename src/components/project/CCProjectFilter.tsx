@@ -17,18 +17,19 @@ import {
   SEMESTER_OPTIONS,
 } from "@/types/project";
 import { cn } from "@/lib/utils";
-import CCProjectSearchBar from "@/components/project/CCProjectSearchBar";
 import DefaultButton from "@/components/ui/defaultButton";
-import { ChevronDown, X } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 
 interface ProjectCategoryProps {
   projectCurrentFilters: ProjectCurrentFilters;
   isAdmin?: boolean;
+  updateFilter: (key: FilterKey, value: string) => void;
 }
 
 export default function CCProjectFilter({
   projectCurrentFilters,
   isAdmin = false,
+  updateFilter,
 }: ProjectCategoryProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -47,29 +48,6 @@ export default function CCProjectFilter({
   const subCategoryRef = useRef<HTMLDivElement>(null);
   const statusRef = useRef<HTMLDivElement>(null);
 
-  const updateFilter = useCallback(
-    (key: FilterKey, value: string): void => {
-      const params = new URLSearchParams(searchParams);
-
-      if (value === "ALL" || value === "") {
-        params.delete(key);
-      } else {
-        params.set(key, value);
-      }
-      params.delete("page");
-
-      startTransition(() => {
-        if (isAdmin) {
-          const tab = params.get("tab") || "project";
-          params.set("tab", tab);
-          router.push(`/admin/study?${params.toString()}`);
-        } else {
-          router.push(`/project?${params.toString()}`);
-        }
-      });
-    },
-    [searchParams, router, isAdmin],
-  );
   // 메인카테고리에서 다른 카테고리 선택 시 서브 카테고리 리셋
   const resetSubCategory = useCallback(
     (newCategory: string) => {
@@ -122,9 +100,7 @@ export default function CCProjectFilter({
 
   return (
     <div className="mb-1 sm:mb-4">
-      <div className="flex flex-col sm:flex-row gap-3 mb-4">
-        <CCProjectSearchBar currentSearch={projectCurrentFilters.search} />
-
+      <div className="flex flex-col sm:flex-row gap-3">
         {/* 필터 버튼들 */}
         <div className="grid grid-cols-2 gap-3 sm:flex sm:flex-row sm:flex-wrap">
           {/* 학기 필터 */}
@@ -350,70 +326,6 @@ export default function CCProjectFilter({
               )}
           </div>
         </div>
-      </div>
-
-      {/* 활성 필터 태그 */}
-      <div className="flex flex-wrap gap-2 mt-4">
-        {projectCurrentFilters.search && (
-          <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800 mb-3 sm:mb-0">
-            검색: {projectCurrentFilters.search}
-            <button
-              type="button"
-              onClick={() => updateFilter("search", "")}
-              className="ml-2 inline-flex items-center justify-center w-4 h-4 rounded-full hover:bg-purple-200"
-            >
-              <X className="w-3" />
-            </button>
-          </span>
-        )}
-        {projectCurrentFilters.semester !== "ALL" && (
-          <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800 mb-3 sm:mb-0">
-            {SEMESTER_LABELS[projectCurrentFilters.semester]}
-            <button
-              type="button"
-              onClick={() => updateFilter("semester", "ALL")}
-              className="ml-2 inline-flex items-center justify-center w-4 h-4 rounded-full hover:bg-red-200"
-            >
-              <X className="w-3" />
-            </button>
-          </span>
-        )}
-        {projectCurrentFilters.category !== "ALL" && (
-          <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 mb-3 sm:mb-0">
-            {projectCurrentFilters.category}
-            <button
-              type="button"
-              onClick={() => updateFilter("category", "ALL")}
-              className="ml-2 inline-flex items-center justify-center w-4 h-4 rounded-full hover:bg-blue-200"
-            >
-              <X className="w-3" />
-            </button>
-          </span>
-        )}
-        {projectCurrentFilters.subCategory !== "ALL" && (
-          <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 mb-3 sm:mb-0">
-            {projectCurrentFilters.subCategory}
-            <button
-              type="button"
-              onClick={() => updateFilter("subCategory", "ALL")}
-              className="ml-2 inline-flex items-center justify-center w-4 h-4 rounded-full hover:bg-blue-200"
-            >
-              <X className="w-3" />
-            </button>
-          </span>
-        )}
-        {projectCurrentFilters.projectStatus !== "ALL" && (
-          <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 mb-3 sm:mb-0">
-            {STATUS_LABELS[projectCurrentFilters.projectStatus]}
-            <button
-              type="button"
-              onClick={() => updateFilter("projectStatus", "ALL")}
-              className="ml-2 inline-flex items-center justify-center w-4 h-4 rounded-full hover:bg-green-200"
-            >
-              <X className="w-3" />
-            </button>
-          </span>
-        )}
       </div>
     </div>
   );

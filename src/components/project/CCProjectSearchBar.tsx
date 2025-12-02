@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import DefaultSearchBar from "@/components/ui/defaultSearchBar";
 import SearchSVG from "/public/icons/search.svg";
@@ -11,9 +11,7 @@ interface ProjectSearchBarProps {
   currentSearch: string;
 }
 
-export default function ProjectSearchBar({
-  currentSearch,
-}: ProjectSearchBarProps) {
+function ProjectSearchBar({ currentSearch }: ProjectSearchBarProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathname = usePathname();
@@ -53,14 +51,18 @@ export default function ProjectSearchBar({
   }, [searchInput, router, pathname, searchParams]);
 
   return (
-    <div className="relative flex-1">
-      <SearchSVG className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-      <DefaultSearchBar
-        placeholder={`${placeholder}`}
-        value={searchInput}
-        onChange={(e) => setSearchInput(e.target.value)}
-        className="pl-10"
-      />
+    <div className="flex-1">
+      <div className="w-full relative">
+        <SearchSVG className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+        <DefaultSearchBar
+          placeholder={`${placeholder}`}
+          value={searchInput}
+          onChange={(e) => setSearchInput(e.target.value)}
+          className="pl-10"
+        />
+      </div>
     </div>
   );
 }
+
+export default memo(ProjectSearchBar);
