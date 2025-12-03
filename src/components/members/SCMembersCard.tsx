@@ -102,6 +102,7 @@ export default function MembersCard({
               target="_blank"
               rel="noopener noreferrer"
               className="h-8 w-8 flex items-center justify-center text-gray-400 hover:text-gray-900 transition-colors duration-300 cursor-pointer"
+              aria-label="Github"
             >
               <GithubSVG className="w-4 h-4" />
             </a>

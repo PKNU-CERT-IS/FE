@@ -26,6 +26,7 @@ export default function ClipboardButton({
       <button
         onClick={copy}
         className={`h-8 w-8 flex items-center justify-center transition-colors duration-300 cursor-pointer ${className}`}
+        aria-label="copy"
       >
         {children}
       </button>

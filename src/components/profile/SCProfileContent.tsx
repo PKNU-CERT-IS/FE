@@ -17,9 +17,11 @@ export default async function SCProfileContent({
   currentTab,
   searchParams,
 }: SCProfileContentProps) {
+  const resolvedSearchParams = await searchParams;
+
   return (
     <Suspense
-      key={JSON.stringify(searchParams)}
+      key={JSON.stringify(resolvedSearchParams)}
       fallback={<DefaultSuspnenseComponent />}
     >
       <SCProfileContentWrapper
