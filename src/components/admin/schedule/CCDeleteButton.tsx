@@ -36,7 +36,11 @@ export default function CCDeleteButton({ schedule }: CCDeleteButtonProps) {
 
   return (
     <div className="flex">
-      <button onClick={openModal} className="cursor-pointer">
+      <button
+        onClick={openModal}
+        className="cursor-pointer"
+        aria-label="일정 삭제"
+      >
         <Trash2 className="w-4 h-4 stroke-gray-500 hover:stroke-gray-400 transition-all duration-200" />
       </button>
 

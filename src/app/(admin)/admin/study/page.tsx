@@ -10,8 +10,8 @@ import { parseSearchParams } from "@/utils/studyHelper";
 import CCStudyTabBar from "@/components/admin/study/CCStudyTabBar";
 import SCProjectContentList from "@/components/admin/study/SCProjectContentList";
 import SCStudyContentList from "@/components/admin/study/SCStudyContentList";
-import CCProjectFilter from "@/components/project/CCProjectFilter";
-import CCStudyFilter from "@/components/study/CCStudyFilter";
+import CCProjectFilterController from "@/components/project/CCProjectFilterController";
+import CCStudyFilterController from "@/components/study/CCStudyFilterController";
 
 interface AdminStudyProps {
   searchParams: Promise<{
@@ -56,11 +56,14 @@ export default async function AdminStudyPage({
   return (
     <div>
       {currentTab === "study" && (
-        <CCStudyFilter studyCurrentFilters={studyFilters} isAdmin />
+        <CCStudyFilterController studyCurrentFilters={studyFilters} isAdmin />
       )}
 
       {currentTab === "project" && (
-        <CCProjectFilter projectCurrentFilters={projectFilters} isAdmin />
+        <CCProjectFilterController
+          projectCurrentFilters={projectFilters}
+          isAdmin
+        />
       )}
 
       <CCStudyTabBar currentTab={currentTab} currentView={currentView} />

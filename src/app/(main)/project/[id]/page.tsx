@@ -21,7 +21,7 @@ import ShareButton from "@/components/detail/CCShareButton";
 import BackToListButton from "@/components/detail/SCBackToListButton";
 import AttachedFilesDownload from "@/components/project/CCAttachedFilesDownload";
 import MeetingMinutes from "@/components/project/SCProjectMeetingMinutes";
-import { CCJoinButton } from "@/components/ui/CCJoinButton";
+import CCJoinButton from "@/components/ui/CCJoinButton";
 import DefaultBadge from "@/components/ui/defaultBadge";
 import MarkdownRenderer from "@/components/ui/defaultMarkdownRenderer";
 import EndRequestButton from "@/components/ui/endRequestButton";
@@ -191,18 +191,18 @@ export default async function ProjectDetailPage({
           {/* 프로젝트 기간 및 참가 정보 */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 bg-gray-100 rounded-lg dark:bg-gray-800">
             <div>
-              <h4 className="font-semibold text-gray-700 mb-1 dark:text-gray-300">
+              <p className="font-semibold text-gray-700 mb-1 dark:text-gray-300">
                 프로젝트 기간
-              </h4>
+              </p>
               <p className="text-sm text-gray-600 dark:text-gray-400">
                 {formatDate(project.startDate, "dot")} ~{" "}
                 {formatDate(project.endDate, "dot")}
               </p>
             </div>
             <div>
-              <h4 className="font-semibold text-gray-700 mb-1 dark:text-gray-300">
+              <p className="font-semibold text-gray-700 mb-1 dark:text-gray-300">
                 참가 인원
-              </h4>
+              </p>
               <p className="text-sm text-gray-600 dark:text-gray-400">
                 {project.currentParticipantNumber} /{" "}
                 {project.maxParticipantNumber}명

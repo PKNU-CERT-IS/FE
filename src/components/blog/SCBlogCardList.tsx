@@ -70,9 +70,9 @@ export default async function BlogCardList({
                 </span>
               </div>
 
-              <h3 className="font-semibold text-gray-900 mb-3 text-base group-hover:text-cert-red transition-colors dark:text-gray-200">
+              <p className="font-semibold text-gray-900 mb-3 text-base group-hover:text-cert-red transition-colors dark:text-gray-200">
                 {blog.title}
-              </h3>
+              </p>
 
               <p className="text-gray-600 text-sm mb-2 line-clamp-3 dark:text-gray-300">
                 {blog.description}

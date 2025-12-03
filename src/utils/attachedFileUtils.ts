@@ -89,22 +89,3 @@ export function getFileIcon(type: string): string {
       return "📎";
   }
 }
-
-// 파일 아이콘
-export function getBoardFileIcon(type: string) {
-  if (type.includes("pdf")) return "📄";
-  if (type.includes("excel") || type.includes("spreadsheet")) return "📊";
-  if (type.includes("word") || type.includes("document")) return "📝";
-  if (type.includes("image")) return "🖼️";
-  return "📎";
-}
-
-// 파일을 AttachedFile 타입으로 변환
-export const convertBoardFileToAttachedFile = (file: File) => ({
-  name: file.name,
-  size: file.size,
-  type: file.type,
-  attachedUrl: `https://www.cert-is.com/uploads/${encodeURIComponent(
-    file.name,
-  )}`,
-});

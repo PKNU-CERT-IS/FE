@@ -4,11 +4,11 @@ import Link from "next/link";
 import { Metadata } from "next";
 import { ScheduleInfo } from "@/types/schedule";
 import { getSchedules } from "@/app/api/schedule/SCscheduleApi";
-import DefaultCard from "@/components/defaultCard";
-import MiniCalendar from "@/components/miniCalendar";
-import SectionBadge from "@/components/sectionBadge";
-import TypingAnimation from "@/components/typingAnimation";
+import MiniCalendar from "@/components/home/miniCalendar";
+import SectionBadge from "@/components/home/sectionBadge";
+import TypingWrapper from "@/components/home/typingWrapper";
 import DefaultButton from "@/components/ui/defaultButton";
+import DefaultCard from "@/components/ui/defaultCard";
 import BlogSVG from "/public/icons/blog.svg";
 import BugSVG from "/public/icons/bug.svg";
 import EyeSVG from "/public/icons/eye.svg";
@@ -42,6 +42,77 @@ export default async function HomePage() {
       (a, b) =>
         new Date(a.startedAt).getTime() - new Date(b.startedAt).getTime(),
     );
+
+  const aboutCard = [
+    {
+      id: 1,
+      title: "Penetration Testing",
+      text: "실제 시스템 취약점 분석과 모의해킹을 통한 보안 강화 기법을 학습합니다",
+      svgComponent: (
+        <ShieldSVG className="w-16 h-16 text-cert-dark-red dark:text-cert-red" />
+      ),
+    },
+    {
+      id: 2,
+      title: "Cryptography",
+      text: "암호학 이론과 실습을 통한 데이터 보호 기술 및 암호화 시스템을 구축합니다",
+      svgComponent: (
+        <LockSVG className="w-16 h-16 stroke-cert-dark-red dark:stroke-cert-red" />
+      ),
+    },
+    {
+      id: 3,
+      title: "Digital Forensics",
+      text: "디지털 증거 수집과 분석을 통한 사이버 범죄 수사 기법을 연구합니다",
+      svgComponent: (
+        <EyeSVG className="w-16 h-16 text-cert-dark-red dark:text-cert-red" />
+      ),
+    },
+    {
+      id: 4,
+      title: "Incident Response",
+      text: "보안 사고 대응과 복구를 위한 체계적인 프로세스와 절차를 학습합니다",
+      svgComponent: (
+        <StudySVG className="w-16 h-16 text-cert-dark-red dark:text-cert-red" />
+      ),
+    },
+  ];
+
+  const platformCard = [
+    {
+      id: 5,
+      title: "People",
+      text: "보안 전문가들과의 네트워킹",
+      svgComponent: (
+        <PeopleSVG className="text-cert-dark-red dark:text-cert-red" />
+      ),
+    },
+    {
+      id: 6,
+      title: "Schedule",
+      text: "체계적인 교육 일정 관리",
+      svgComponent: (
+        <ScheduleSVG className="w-12 h-12 stroke-cert-dark-red dark:stroke-cert-red" />
+      ),
+    },
+    {
+      id: 7,
+      title: "Study",
+      text: "최신 보안 기술 연구 자료",
+      svgComponent: (
+        <StudySVG className="w-12 h-12 text-cert-dark-red dark:text-cert-red" />
+      ),
+    },
+    {
+      id: 8,
+      title: "Blog",
+      text: "보안 지식 공유와 소통",
+      svgComponent: (
+        <BlogSVG className="text-cert-dark-red dark:text-cert-red" />
+      ),
+    },
+  ];
+
   return (
     <>
       <div className="mx-auto">
@@ -53,9 +124,9 @@ export default async function HomePage() {
                 CERT-IS
               </span>
             </div>
-            <TypingAnimation />
-          </>
-          <>
+
+            <TypingWrapper />
+
             <div className="absolute top-32 left-10 animate-bounce opacity-20">
               <LockSVG className="w-6 h-6 stroke-cert-dark-red dark:stroke-white" />
             </div>
@@ -85,42 +156,9 @@ export default async function HomePage() {
             </div>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <DefaultCard
-              title={"Penetration Testing"}
-              text={
-                "실제 시스템 취약점 분석과 모의해킹을 통한 보안 강화 기법을 학습합니다"
-              }
-              svgComponent={
-                <ShieldSVG className="w-16 h-16 text-cert-dark-red dark:text-cert-red" />
-              }
-            />
-            <DefaultCard
-              title={"Cryptography"}
-              text={
-                "암호학 이론과 실습을 통한 데이터 보호 기술 및 암호화 시스템을 구축합니다"
-              }
-              svgComponent={
-                <LockSVG className="w-16 h-16 stroke-cert-dark-red dark:stroke-cert-red" />
-              }
-            />
-            <DefaultCard
-              title={"Digital Forensics"}
-              text={
-                "디지털 증거 수집과 분석을 통한 사이버 범죄 수사 기법을 연구합니다"
-              }
-              svgComponent={
-                <EyeSVG className="w-16 h-16 text-cert-dark-red dark:text-cert-red" />
-              }
-            />
-            <DefaultCard
-              title={"Incident Response"}
-              text={
-                "보안 사고 대응과 복구를 위한 체계적인 프로세스와 절차를 학습합니다"
-              }
-              svgComponent={
-                <StudySVG className="w-16 h-16 text-cert-dark-red dark:text-cert-red" />
-              }
-            />
+            {aboutCard.map((card) => (
+              <DefaultCard key={card.id} {...card} />
+            ))}
           </div>
         </section>
 
@@ -201,34 +239,9 @@ export default async function HomePage() {
             </div>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <DefaultCard
-              title={"People"}
-              text={"보안 전문가들과의 네트워킹"}
-              svgComponent={
-                <PeopleSVG className="text-cert-dark-red dark:text-cert-red" />
-              }
-            />
-            <DefaultCard
-              title={"Schedule"}
-              text={"체계적인 교육 일정 관리"}
-              svgComponent={
-                <ScheduleSVG className="w-12 h-12 stroke-cert-dark-red dark:stroke-cert-red" />
-              }
-            />
-            <DefaultCard
-              title={"Study"}
-              text={"최신 보안 기술 연구 자료"}
-              svgComponent={
-                <StudySVG className="w-12 h-12 text-cert-dark-red dark:text-cert-red" />
-              }
-            />
-            <DefaultCard
-              title={"Blog"}
-              text={"보안 지식 공유와 소통"}
-              svgComponent={
-                <BlogSVG className="text-cert-dark-red dark:text-cert-red" />
-              }
-            />
+            {platformCard.map((card) => (
+              <DefaultCard key={card.id} {...card} />
+            ))}
           </div>
         </section>
 

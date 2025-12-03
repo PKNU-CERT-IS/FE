@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+
 const { withSentryConfig } = require("@sentry/nextjs");
 
 const nextConfig: NextConfig = {
@@ -27,6 +28,7 @@ const nextConfig: NextConfig = {
 
     return config;
   },
+  htmlLimitedBots: /.*/,
 };
 
 module.exports = withSentryConfig(nextConfig, {

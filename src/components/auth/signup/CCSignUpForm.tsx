@@ -185,7 +185,8 @@ export default function CCSignUpForm() {
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-3 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+              className="absolute right-3 top-3 p-3 -m-3 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+              aria-label="비밀번호"
             >
               {showPassword ? (
                 <EyeOff className="h-4 w-4 cursor-pointer" />
@@ -226,7 +227,8 @@ export default function CCSignUpForm() {
             <button
               type="button"
               onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-              className="absolute right-3 top-3 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+              className="absolute right-3 top-3 p-3 -m-3 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+              aria-label="비밀번호 확인"
             >
               {showConfirmPassword ? (
                 <EyeOff className="h-4 w-4 cursor-pointer" />

@@ -3,11 +3,11 @@ import PageLayout from "@/layouts/pageLayout";
 import ChatLargeSVG from "/public/icons/chat.svg";
 
 export const metadata: Metadata = {
-  title: "Security Board",
-  description: "Security Board Layout",
+  title: "CERT-IS Blog",
+  description: "CERT-IS Blog Layout",
 };
 
-export default function BoardLayout({
+export default function BlogLayout({
   children,
   modal,
 }: {

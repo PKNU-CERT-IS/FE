@@ -1,5 +1,6 @@
 "use client";
 
+import { memo } from "react";
 import { AttachedFile, getFileKey } from "@/types/attachedFile";
 import {
   convertFileToAttachedFile,
@@ -13,10 +14,10 @@ import { Trash2, Upload } from "lucide-react";
 interface FileUploadProps {
   attachments: AttachedFile[];
   onAttachmentsChange: (files: AttachedFile[]) => void;
-
   className?: string;
 }
-export default function FileUpload({
+
+function FileUpload({
   attachments,
   onAttachmentsChange,
   className,
@@ -104,3 +105,4 @@ export default function FileUpload({
     </div>
   );
 }
+export default memo(FileUpload);

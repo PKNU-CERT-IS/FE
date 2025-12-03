@@ -1,7 +1,6 @@
 "server-only";
 
 import { Suspense } from "react";
-import Link from "next/link";
 import { Metadata } from "next";
 import {
   BoardCategoryType,
@@ -13,7 +12,7 @@ import BoardCategory from "@/components/board/CCBoardCategory";
 import BoardSearchBar from "@/components/board/CCBoardSearchBar";
 import BoardContents from "@/components/board/SCBoardContents";
 import SCBoardSkeleton from "@/components/board/ScBoardSkeleton";
-import PlusSVG from "/public/icons/plus.svg";
+import SCNewPostButton from "@/components/ui/SCNewPostButton";
 
 const ITEMS_PER_PAGE = 5;
 
@@ -79,14 +78,7 @@ export default async function BoardPage({ searchParams }: BoardPageProps) {
         </div>
 
         <BoardCategory selectedCategory={currentCategory} />
-
-        <Link
-          scroll={false}
-          href="/board/write"
-          className="inline-flex gap-2 px-4 py-2 action-button whitespace-nowrap sm:w-auto w-full justify-center"
-        >
-          <PlusSVG className="w-4 h-4" />새 글 작성
-        </Link>
+        <SCNewPostButton href="/board/write" buttonText="새 글 작성" />
       </div>
 
       <Suspense

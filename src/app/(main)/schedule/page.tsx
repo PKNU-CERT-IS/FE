@@ -59,7 +59,6 @@ export default async function SchedulePage({ searchParams }: SearchPageProps) {
           <CCScrollScheduleList />
         </div>
 
-        {/* 🔥 Streaming 활성화 */}
         <Suspense fallback={<SCScheduleSkeleton />}>
           <ScheduleContents date={selectedDate} />
         </Suspense>

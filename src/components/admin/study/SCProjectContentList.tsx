@@ -16,7 +16,7 @@ import {
 } from "@/app/api/admin/project/SCAdminProjectEndGetApi";
 import { getProjects, searchProjects } from "@/app/api/project/SCProjectApi";
 import CCAdminStudyPagination from "@/components/admin/study/CCAdminStudyPagination";
-import DownloadButton from "@/components/detail/SCDownloadButton";
+import DownloadButton from "@/components/detail/CCDownloadButton";
 import CCAdminStudyProjectActionButtons from "@/components/ui/CCAdminActionButtons";
 import SCSearchResultNotFound from "@/components/ui/SCSearchResultNotFound";
 import DefaultBadge from "@/components/ui/defaultBadge";

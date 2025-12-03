@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { memo, useEffect } from "react";
 import { ProfileDataType } from "@/types/profile";
 import CCProfileEditModal from "@/components/profile/CCProfileEditModal";
 import DefaultButton from "@/components/ui/defaultButton";
@@ -11,7 +11,7 @@ interface CCEditProfileCardProps {
   profile: ProfileDataType;
 }
 
-export default function CCEditProfileCard({ profile }: CCEditProfileCardProps) {
+function CCEditProfileCard({ profile }: CCEditProfileCardProps) {
   const { setIsOpenModal, isOpenModal, modalOutsideRef } = useModal();
   // 모달 오픈 시 스크롤 잠금
   useEffect(() => {
@@ -41,3 +41,5 @@ export default function CCEditProfileCard({ profile }: CCEditProfileCardProps) {
     </div>
   );
 }
+
+export default memo(CCEditProfileCard);

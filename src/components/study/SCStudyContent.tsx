@@ -9,7 +9,7 @@ import { formatFileSize } from "@/utils/attachedFileUtils";
 import { getCategoryColor, getStatusColor } from "@/utils/badgeUtils";
 import { getProgressColor, parseSearchParams } from "@/utils/studyHelper";
 import { getStudies, searchStudies } from "@/app/api/study/SCStudyApi";
-import DownloadButton from "@/components/detail/SCDownloadButton";
+import DownloadButton from "@/components/detail/CCDownloadButton";
 import CCStudyPagination from "@/components/study/CCStudyPagination";
 import SCSearchResultNotFound from "@/components/ui/SCSearchResultNotFound";
 import DefaultBadge from "@/components/ui/defaultBadge";
@@ -109,9 +109,9 @@ export default async function SCStudyContent({
                     </div>
                   </div>
                   {/* 제목 및 설명 */}
-                  <h3 className="text-xl font-bold text-gray-900 mb-2 dark:text-gray-200">
+                  <p className="text-xl font-bold text-gray-900 mb-2 dark:text-gray-200">
                     {material.title}
-                  </h3>
+                  </p>
                   <p className="text-gray-600 text-sm leading-relaxed mb-4 dark:text-gray-300">
                     {material.description}
                   </p>
@@ -138,7 +138,7 @@ export default async function SCStudyContent({
                   </div>
                   {/* 파일 목록 */}
                   <div className="space-y-2 mb-4 h-[100px] overflow-y-auto">
-                    <h4 className="text-sm font-medium text-gray-900 flex items-center gap-2 dark:text-gray-200">
+                    <p className="text-sm font-medium text-gray-900 flex items-center gap-2 dark:text-gray-200">
                       <svg
                         className="w-4 h-4"
                         fill="none"
@@ -153,7 +153,7 @@ export default async function SCStudyContent({
                         />
                       </svg>
                       첨부 파일 ({material.attachments.length})
-                    </h4>
+                    </p>
                     {material.attachments?.map((file, index) => (
                       <div
                         key={index}

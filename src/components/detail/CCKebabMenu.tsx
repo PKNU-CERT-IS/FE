@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { deleteBlog } from "@/app/api/blog/CCblogApi";
 import { deleteBoard } from "@/app/api/board/CCboardApi";
@@ -16,11 +16,7 @@ interface KebabMenuProps {
   isAdmin?: boolean; // 수정후 어드민 페이지리다이렉팅을 위한 boolean값
 }
 
-export default function KebabMenu({
-  currentId,
-  currentUrl,
-  isAdmin,
-}: KebabMenuProps) {
+function KebabMenu({ currentId, currentUrl, isAdmin }: KebabMenuProps) {
   const router = useRouter();
   const pathname = usePathname();
   const [isKebabOpen, setIsKebabOpen] = useState<boolean>(false);
@@ -111,6 +107,7 @@ export default function KebabMenu({
           size="sm"
           className="cursor-pointer border-0 hover:bg-white hover:text-cert-dark-red dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-gray-200"
           onClick={() => setIsKebabOpen(!isKebabOpen)}
+          aria-label="kebab-button"
         >
           <MoreVertical className="w-4 h-4" />
         </DefaultButton>
@@ -157,3 +154,5 @@ export default function KebabMenu({
     </>
   );
 }
+
+export default memo(KebabMenu);

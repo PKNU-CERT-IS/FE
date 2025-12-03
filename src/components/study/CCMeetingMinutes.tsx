@@ -390,9 +390,9 @@ export default function MeetingMinutes({
                   >
                     {/* 상단: 제목 + 액션 */}
                     <div className="flex items-start justify-between gap-3">
-                      <h4 className="font-medium text-gray-900 leading-tight dark:text-gray-200">
+                      <p className="font-medium text-gray-900 leading-tight dark:text-gray-200">
                         {minute.title}
-                      </h4>
+                      </p>
                       {(isLeader || isAdmin) && (
                         <div className="flex gap-0 shrink-0">
                           <DefaultButton

@@ -14,26 +14,22 @@ import type { FilterKey, StudyFilterProps } from "@/types/study";
 import { SEMESTER_LABELS, SEMESTER_OPTIONS } from "@/types/study";
 import { cn } from "@/lib/utils";
 import DefaultButton from "@/components/ui/defaultButton";
-import DefaultSearchBar from "@/components/ui/defaultSearchBar";
-import { ChevronDown, X } from "lucide-react";
-import SearchSVG from "/public/icons/search.svg";
+import { ChevronDown } from "lucide-react";
 
 interface CCStudyFilterProps extends StudyFilterProps {
   isAdmin?: boolean;
+  updateFilter: (key: FilterKey, value: string) => void;
 }
 
 export default function CCStudyFilter({
   studyCurrentFilters,
   isAdmin = false,
+  updateFilter,
 }: CCStudyFilterProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const view = searchParams.get("view");
   const [isPending, startTransition] = useTransition();
-
-  // 검색 디바운스를 위한 ref
-  const searchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const searchInputRef = useRef<HTMLInputElement>(null);
 
   // 로컬 상태
   const [showSemesterDropdown, setShowSemesterDropdown] =
@@ -44,42 +40,10 @@ export default function CCStudyFilter({
     useState<boolean>(false);
   const [showStatusDropdown, setShowStatusDropdown] = useState<boolean>(false);
 
-  const [searchValue, setSearchValue] = useState<string>(
-    studyCurrentFilters.search || "",
-  );
-  useEffect(() => {
-    setSearchValue(studyCurrentFilters.search || "");
-  }, [studyCurrentFilters.search]);
-
   const semesterRef = useRef<HTMLDivElement>(null);
   const categoryRef = useRef<HTMLDivElement>(null);
   const subCategoryRef = useRef<HTMLDivElement>(null);
   const statusRef = useRef<HTMLDivElement>(null);
-
-  const updateFilter = useCallback(
-    (key: FilterKey, value: string): void => {
-      const params = new URLSearchParams(searchParams);
-
-      if (value === "ALL" || value === "") {
-        params.delete(key);
-      } else {
-        params.set(key, value);
-      }
-
-      params.delete("page");
-
-      startTransition(() => {
-        if (isAdmin) {
-          const tab = params.get("tab") || "study";
-          params.set("tab", tab);
-          router.push(`/admin/study?${params.toString()}`);
-        } else {
-          router.push(`/study?${params.toString()}`);
-        }
-      });
-    },
-    [searchParams, router, isAdmin],
-  );
 
   // 메인카테고리에서 다른 카테고리 선택 시 서브 카테고리 리셋
   const resetSubCategory = useCallback(
@@ -107,32 +71,6 @@ export default function CCStudyFilter({
     },
     [searchParams, router, isAdmin],
   );
-
-  // 검색 디바운스 처리 (개선된 버전)
-  const handleSearchChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>): void => {
-      const searchTerm: string = e.target.value;
-      setSearchValue(searchTerm); // 로컬 상태 업데이트
-      // 이전 타이머 클리어
-      if (searchTimeoutRef.current) {
-        clearTimeout(searchTimeoutRef.current);
-      }
-
-      // 새 타이머 설정
-      searchTimeoutRef.current = setTimeout(() => {
-        updateFilter("search", searchTerm);
-      }, 300);
-    },
-    [updateFilter],
-  );
-  // 검색어 초기화 함수
-  const handleClearSearch = useCallback(() => {
-    setSearchValue(""); // 로컬 상태 초기화
-    if (searchInputRef.current) {
-      searchInputRef.current.value = ""; // input value 직접 초기화
-    }
-    updateFilter("search", "");
-  }, [updateFilter]);
 
   // 드롭다운 닫기 함수
   const closeAllDropdowns = useCallback(() => {
@@ -164,22 +102,6 @@ export default function CCStudyFilter({
     <div className="mb-1 sm:mb-4">
       {/* 검색바와 필터들을 한 줄로 배치 */}
       <div className="flex flex-col sm:flex-row gap-3 ">
-        {/* 검색바 */}
-        <div className="flex-1 relative">
-          <SearchSVG className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-          <DefaultSearchBar
-            ref={searchInputRef}
-            placeholder={
-              isAdmin
-                ? "스터디/프로젝트 제목, 설명, 작성자로 검색하세요..."
-                : "스터디 제목, 설명, 작성자로 검색하세요..."
-            }
-            value={searchValue}
-            onChange={handleSearchChange}
-            className="pl-10 w-full"
-          />
-        </div>
-
         {/* 필터 버튼들 */}
         <div className="grid grid-cols-2 sm:flex sm:flex-row sm:flex-wrap gap-3">
           {/* 학기 필터 */}
@@ -410,72 +332,6 @@ export default function CCStudyFilter({
               )}
           </div>
         </div>
-      </div>
-
-      {/* 활성 필터 태그 */}
-      <div className="flex flex-wrap gap-2 mt-4">
-        {studyCurrentFilters.search && (
-          <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800 mb-3 sm:mb-0">
-            검색: {studyCurrentFilters.search}
-            <button
-              type="button"
-              onClick={handleClearSearch}
-              className="ml-2 inline-flex items-center justify-center w-4 h-4 rounded-full hover:bg-purple-200"
-            >
-              <X className="w-3" />
-            </button>
-          </span>
-        )}
-        {studyCurrentFilters.semester !== "ALL" && (
-          <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800 mb-3 sm:mb-0">
-            {SEMESTER_LABELS[studyCurrentFilters.semester]}
-            <button
-              type="button"
-              onClick={() => updateFilter("semester", "ALL")}
-              className="ml-2 inline-flex items-center justify-center w-4 h-4 rounded-full hover:bg-red-200"
-            >
-              <X className="w-3" />
-            </button>
-          </span>
-        )}
-
-        {studyCurrentFilters.category !== "ALL" && (
-          <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 mb-3 sm:mb-0">
-            {studyCurrentFilters.category}
-            <button
-              type="button"
-              onClick={() => updateFilter("category", "ALL")}
-              className="ml-2 inline-flex items-center justify-center w-4 h-4 rounded-full hover:bg-blue-200"
-            >
-              <X className="w-3" />
-            </button>
-          </span>
-        )}
-
-        {studyCurrentFilters.subCategory !== "ALL" && (
-          <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 mb-3 sm:mb-0">
-            {studyCurrentFilters.subCategory}
-            <button
-              type="button"
-              onClick={() => updateFilter("subCategory", "ALL")}
-              className="ml-2 inline-flex items-center justify-center w-4 h-4 rounded-full hover:bg-blue-200"
-            >
-              <X className="w-3" />
-            </button>
-          </span>
-        )}
-        {studyCurrentFilters.studyStatus !== "ALL" && (
-          <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 mb-3 sm:mb-0">
-            {STATUS_LABELS[studyCurrentFilters.studyStatus]}
-            <button
-              type="button"
-              onClick={() => updateFilter("studyStatus", "ALL")}
-              className="ml-2 inline-flex items-center justify-center w-4 h-4 rounded-full hover:bg-green-200"
-            >
-              <X className="w-3" />
-            </button>
-          </span>
-        )}
       </div>
     </div>
   );

@@ -1,5 +1,6 @@
 "use client";
 
+import { memo } from "react";
 import { usePathname } from "next/navigation";
 import { AttachedFile } from "@/types/attachedFile";
 import DefaultButton from "@/components/ui/defaultButton";
@@ -13,11 +14,7 @@ export interface EndAttchedFile {
   attachedUrl: string;
 }
 
-export default function DownloadButton({
-  file,
-}: {
-  file: AttachedFile | EndAttchedFile;
-}) {
+function DownloadButton({ file }: { file: AttachedFile | EndAttchedFile }) {
   const pathname = usePathname();
 
   const handleDownload = (e: React.MouseEvent) => {
@@ -58,3 +55,4 @@ export default function DownloadButton({
     </button>
   );
 }
+export default memo(DownloadButton);

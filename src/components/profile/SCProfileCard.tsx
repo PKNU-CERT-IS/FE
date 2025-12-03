@@ -69,9 +69,9 @@ export default async function SCProfileCard() {
           </div>
 
           <div>
-            <h4 className="text-sm font-medium text-gray-700 mb-2 dark:text-gray-300">
+            <p className="text-sm font-medium text-gray-700 mb-2 dark:text-gray-300">
               기술 스택
-            </h4>
+            </p>
             <div className="flex flex-wrap gap-1">
               {profile.skills?.map((skill: string) => (
                 <DefaultBadge

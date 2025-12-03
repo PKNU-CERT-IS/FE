@@ -7,11 +7,11 @@ import SearchSVG from "/public/icons/search.svg";
 
 const DEBOUNCE_DELAY = 200;
 
-interface ProjectSearchBarProps {
+interface StudySearchBarProps {
   currentSearch: string;
 }
 
-function ProjectSearchBar({ currentSearch }: ProjectSearchBarProps) {
+function CCStudySearchBar({ currentSearch }: StudySearchBarProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathname = usePathname();
@@ -21,7 +21,7 @@ function ProjectSearchBar({ currentSearch }: ProjectSearchBarProps) {
   const isAdmin = pathname.startsWith("/admin");
   const placeholder = isAdmin
     ? "스터디/프로젝트 제목, 설명, 작성자로 검색하세요..."
-    : "프로젝트 제목, 설명, 작성자로 검색하세요...";
+    : "스터디 제목, 설명, 작성자로 검색하세요...";
 
   useEffect(() => {
     setSearchInput(currentSearch);
@@ -48,7 +48,7 @@ function ProjectSearchBar({ currentSearch }: ProjectSearchBarProps) {
     }, DEBOUNCE_DELAY);
 
     return () => clearTimeout(debounceTimer);
-  }, [searchInput, router, pathname, searchParams]);
+  }, [searchInput, router, searchParams]);
 
   return (
     <div className="flex-1">
@@ -64,5 +64,4 @@ function ProjectSearchBar({ currentSearch }: ProjectSearchBarProps) {
     </div>
   );
 }
-
-export default memo(ProjectSearchBar);
+export default memo(CCStudySearchBar);

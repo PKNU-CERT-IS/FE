@@ -4,17 +4,16 @@ import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import { AttachedFile, getFileKey } from "@/types/attachedFile";
 import { toKoreanCategory } from "@/types/board";
-import { formatFileSize } from "@/utils/attachedFileUtils";
-import { getFileIcon } from "@/utils/attachedFileUtils";
+import { formatFileSize, getFileIcon } from "@/utils/attachedFileUtils";
 import { getBoardCategoryColor } from "@/utils/boardUtils";
 import { formatDate } from "@/utils/formatDateUtil";
 import { translateRoleToKorean } from "@/utils/transformRequestValue";
 import { getDetailBoard } from "@/app/api/board/SCBoardApi";
+import DownloadButton from "@/components/detail/CCDownloadButton";
 import KebabMenuButton from "@/components/detail/CCKebabMenu";
 import LikeButton from "@/components/detail/CCLikeButton";
 import ShareButton from "@/components/detail/CCShareButton";
 import BackToListButton from "@/components/detail/SCBackToListButton";
-import DownloadButton from "@/components/detail/SCDownloadButton";
 import DefaultBadge from "@/components/ui/defaultBadge";
 import MarkdownRenderer from "@/components/ui/defaultMarkdownRenderer";
 import { Calendar, Download, Eye, Heart, Pin } from "lucide-react";
@@ -151,10 +150,10 @@ export default async function DetailPage({
           {/* 첨부파일 */}
           {data.attachments && data.attachments.length > 0 && (
             <div className="border-t border-gray-300 pt-6 mb-6 dark:border-gray-700">
-              <h4 className="font-medium text-gray-900 mb-4 flex items-center gap-2 dark:text-gray-200">
+              <p className="font-medium text-gray-900 mb-4 flex items-center gap-2 dark:text-gray-200">
                 <Download className="w-4 h-4" />
                 첨부파일 ({data.attachments.length})
-              </h4>
+              </p>
               <div className="space-y-3">
                 {data.attachments.map((file: AttachedFile) => (
                   <div

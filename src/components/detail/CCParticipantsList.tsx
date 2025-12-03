@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { MEMBER_GRADE_LABELS, ParticipantType } from "@/types/study";
@@ -23,7 +23,7 @@ interface CCParticipantsListProps {
   canApproveOrReject?: boolean;
 }
 
-export default function CCParticipantsList({
+function CCParticipantsList({
   type,
   dataId,
   size = 10,
@@ -281,3 +281,4 @@ function Pagination({
     </div>
   );
 }
+export default memo(CCParticipantsList);

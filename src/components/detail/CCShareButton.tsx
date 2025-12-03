@@ -1,9 +1,10 @@
 "use client";
+import { memo } from "react";
 import DefaultButton from "@/components/ui/defaultButton";
 import { Share2 } from "lucide-react";
 
 // 공유 버튼
-export default function ShareButton() {
+function ShareButton() {
   const handleShare = async () => {
     if (navigator.share) {
       try {
@@ -33,3 +34,4 @@ export default function ShareButton() {
     </DefaultButton>
   );
 }
+export default memo(ShareButton);
