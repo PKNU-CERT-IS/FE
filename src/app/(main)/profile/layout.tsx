@@ -1,5 +1,11 @@
+import { Metadata } from "next";
 import PageLayout from "@/layouts/pageLayout";
 import ProfileSVG from "/public/icons/profile.svg";
+
+export const metadata: Metadata = {
+  title: "CERT-IS Profile",
+  description: "CERT-IS Profile Layout",
+};
 
 export default function ProfileLayout({
   children,

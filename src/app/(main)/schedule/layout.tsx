@@ -3,8 +3,8 @@ import PageLayout from "@/layouts/pageLayout";
 import ScheduleSVG from "/public/icons/schedule.svg";
 
 export const metadata: Metadata = {
-  title: "Schedule",
-  description: "동아리 일정을 관리하는 공간입니다.",
+  title: "CERT-IS Schedule",
+  description: "CERT-IS Schedule Layout",
 };
 
 export default function ScheduleLayout({

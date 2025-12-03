@@ -3,8 +3,8 @@ import PageLayout from "@/layouts/pageLayout";
 import MembersSVG from "/public/icons/members.svg";
 
 export const metadata: Metadata = {
-  title: "Members",
-  description: "우리 동아리의 멋진 멤버들을 소개합니다.",
+  title: "CERT-IS Members",
+  description: "CERT-IS Members Layout",
 };
 
 export default function MembersLayout({
