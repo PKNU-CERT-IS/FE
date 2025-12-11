@@ -42,6 +42,7 @@
         <img src="https://img.shields.io/badge/Next.js-000000?style=flat&logo=next.js&logoColor=white"/>
         <img src="https://img.shields.io/badge/TypeScript-3178C6?style=flat&logo=typescript&logoColor=white"/>
         <img src="https://img.shields.io/badge/TailwindCSS-06B6D4?style=flat&logo=tailwindcss&logoColor=white"/>
+        <img src="https://img.shields.io/badge/Zustand-443A3A?style=flat&logo=zustand&logoColor=white"/>
       </td>
     </tr>
     <tr>
@@ -57,7 +58,6 @@
       <td>
         <img src="https://img.shields.io/badge/PostgreSQL-4169E1?style=flat&logo=postgresql&logoColor=white"/>
         <img src="https://img.shields.io/badge/Redis-DC382D?style=flat&logo=redis&logoColor=white"/>
-        <img src="https://img.shields.io/badge/pgAdmin-FF6C37?style=flat&logo=postgresql&logoColor=white"/>
       </td>
     </tr>
     <tr>
@@ -68,6 +68,7 @@
         <img src="https://img.shields.io/badge/AWS_S3-569A31?style=flat&logo=amazonaws&logoColor=white"/>
         <img src="https://img.shields.io/badge/Vercel-000000?style=flat&logo=vercel&logoColor=white"/>
         <img src="https://img.shields.io/badge/Cloudflare-F38020?style=flat&logo=cloudflare&logoColor=white"/>
+        <img src="https://img.shields.io/badge/GitHub_Actions-2088FF?style=flat&logo=githubactions&logoColor=white"/>
       </td>
     </tr>
   </tbody>
@@ -286,10 +287,26 @@
       </div>
 <br/>  
 
+### 에러 페이지
+- **403, 404 에러**
+        <div align="center">
+        <table>
+          <tr>
+            <td><img width="1707" height="937" alt="403" src="https://github.com/user-attachments/assets/851d4452-ef09-467e-91ac-97ee89bc9fbc" /></td>
+            <td><img width="1692" height="942" alt="404" src="https://github.com/user-attachments/assets/3825a4fe-ba2a-41d4-be9e-7b62529c011a" /></td>
+          </tr>
+          <tr>
+            <td align="center">403 에러</td>
+            <td align="center">404 에러</td>
+          </tr>
+        </table>
+      </div>
+    
+
 ## <span id="member">🧑🏻‍💻 프로젝트 멤버</span>
 
 | 이름 | 역할 |
 | :---------: | :------------------- |
-| [민영재](https://github.com/yeomin4242) | 팀장, FE, BE, PM |
+| [민영재](https://github.com/yeomin4242) | PM, FE, BE |
 | [민웅기](https://github.com/minwoonggi) | FE, BE |
 | [김주희](https://github.com/joooii) | FE, Design |
