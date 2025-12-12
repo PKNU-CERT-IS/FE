@@ -307,6 +307,6 @@
 
 | 이름 | 역할 |
 | :---------: | :------------------- |
-| [민영재](https://github.com/yeomin4242) | PM, FE, BE |
-| [민웅기](https://github.com/minwoonggi) | FE, BE |
+| [민영재](https://github.com/yeomin4242) | PM, FE, BE, Design |
+| [민웅기](https://github.com/minwoonggi) | FE, BE, Design |
 | [김주희](https://github.com/joooii) | FE, Design |
