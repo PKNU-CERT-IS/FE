@@ -202,7 +202,7 @@
     <div align="center">
       <table>
         <tr>
-          <td><img width="5764" height="3772" alt="멤버 목록" src=".github/readme/멤버_목록.png" /></td>
+          <td><img width="5764" height="3772" alt="멤버" src=".github/readme/멤버.jpg" /></td>
         </tr>
         <tr>
           <td align="center">멤버 목록</td>
