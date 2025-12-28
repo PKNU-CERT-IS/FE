@@ -12,7 +12,8 @@
 - [🚀 도메인](#domain)
 - [🌟 주요 기능](#function)
 - [🧑🏻‍💻 프로젝트 멤버](#member)
-  <br/>
+
+<br/>
 
 ## <span id="introduction">📝 프로젝트 소개</span>
 
@@ -26,7 +27,8 @@
     - 기존 Notion으로 관리하던 동아리 활동(스터디, 프로젝트)과 회원 정보를 홈페이지에서 통합 관리함으로써 운영 효율성을 높이고 더 체계적으로 관리할 수 있습니다.
     - 활동에 참여중인 회원 목록을 한 눈에 파악할 수 있어 활동 진행 상황 관리와 운영이 더욱 수월합니다.
   - **회원** - 현재 진행 중인 스터디와 프로젝트를 쉽게 확인할 수 있으며, '참가 신청' 기능을 통해 쉽게 활동에 참여할 수 있어 동아리 활동 참여율을 높일 수 있습니다.
-    <br/>
+
+<br/>
 
 ## <span id="tech">🛠️ 기술 스택</span>
 
@@ -75,6 +77,7 @@
     </tr>
   </tbody>
 </table>
+
 <br/>
 
 ## <span id="domain">🚀 도메인</span>
@@ -98,87 +101,101 @@
   - **회원가입 (Sign Up)** : 회원 정보를 입력하여 회원가입을 할 수 있습니다.
     ![sign-up](.github/readme/sign-up.gif)
 
- <br/>
+<br/>
     
 - **메인 페이지**
   - **동아리 소개 (Home)**
     - CERT-IS 소개 및 미니 캘린더를 통해 이번 달 스케줄 정보를 확인할 수 있습니다.
       ![홈](.github/readme/home.gif)
 
+<br/>
+
 - **공지사항 (Board)**
   - 임원진이 공지사항을 작성하거나 회원이 소개하고자 하는 정보가 있으면 작성하여 모든 회원이 볼 수 있습니다.
     <div align="center">
-      <table>
-        <tr>
-          <td><img width="2000" alt="보드 홈" src=".github/readme/보드_홈.png" /></td>
-          <td><img width="2000" alt="보드 세부" src=".github/readme/보드_세부.png" /></td>
-        </tr>
-        <tr>
-          <td align="center">공지사항 목록</td>
-          <td align="center">공지사항 상세 내용</td>
-        </tr>
-      </table>
+    <table>
+    <tr>
+    <td><img width="2000" alt="보드 홈" src=".github/readme/보드_홈.png" /></td>
+    <td><img width="2000" alt="보드 세부" src=".github/readme/보드_세부.png" /></td>
+    </tr>
+    <tr>
+    <td align="center">공지사항 목록</td>
+    <td align="center">공지사항 상세 내용</td>
+    </tr>
+    </table>
     </div>
+
+<br/>
 
 - **스케줄 (Schedule)**
   - CERT-IS의 전체 일정을 확인할 수 있고, 동아리방 예약이 가능합니다.
     <div align="center">
-      <table>
-        <tr>
-          <td><img width="2000" alt="스케줄 신청" src=".github/readme/스케줄_신청.png" /></td>
-          <td><img width="2000" alt="스케줄 수락 완료시" src=".github/readme/스케줄_수락_완료시.png" /></td>
-        </tr>
-        <tr>
-          <td align="center">스케줄 신청</td>
-          <td align="center">스케줄</td>
-        </tr>
-      </table>
+    <table>
+    <tr>
+    <td><img width="2000" alt="스케줄 신청" src=".github/readme/스케줄_신청.png" /></td>
+    <td><img width="2000" alt="스케줄 수락 완료시" src=".github/readme/스케줄_수락_완료시.png" /></td>
+    </tr>
+    <tr>
+    <td align="center">스케줄 신청</td>
+    <td align="center">스케줄</td>
+    </tr>
+    </table>
     </div>
+
+<br/>
 
 - **스터디 (Study)**
   - 스터디장이 스터디를 생성할 수 있고, 회원은 원하는 스터디에 참가 신청이 가능합니다. 이때 모든 스터디는 1주 ~ 2개월동안 수행 가능합니다.
     <div align="center">
-      <table>
-        <tr>
-          <td><img width="2000" alt="스터디" src=".github/readme/스터디.png" /></td>
-          <td><img width="2000" alt="스터디 세부" src=".github/readme/스터디_세부.png" /></td>
-        </tr>
-        <tr>
-          <td align="center">스터디 목록</td>
-          <td align="center">스터디 상세 내용</td>
-        </tr>
-      </table>
+    <table>
+    <tr>
+    <td><img width="2000" alt="스터디" src=".github/readme/스터디.png" /></td>
+    <td><img width="2000" alt="스터디 세부" src=".github/readme/스터디_세부.png" /></td>
+    </tr>
+    <tr>
+    <td align="center">스터디 목록</td>
+    <td align="center">스터디 상세 내용</td>
+    </tr>
+    </table>
     </div>
+
+<br/>
 
 - **프로젝트 (Project)**
   - 프로젝트장이 프로젝트를 생성할 수 있고, 회원은 원하는 프로젝트에 참가 신청이 가능합니다. 이때 모든 프로젝트는 2주 ~ 6개월동안 수행 가능합니다.
     <div align="center">
-      <table>
-        <tr>
-          <td><img width="2000" alt="프로젝트" src=".github/readme/프로젝트.png" /></td>
-          <td><img width="2000" alt="프로젝트 세부" src=".github/readme/프로젝트_세부.png" /></td>
-        </tr>
-        <tr>
-          <td align="center">프로젝트 목록</td>
-          <td align="center">프로젝트 상세 내용</td>
-        </tr>
-      </table>
+    <table>
+    <tr>
+    <td><img width="2000" alt="프로젝트" src=".github/readme/프로젝트.png" /></td>
+    <td><img width="2000" alt="프로젝트 세부" src=".github/readme/프로젝트_세부.png" /></td>
+    </tr>
+    <tr>
+    <td align="center">프로젝트 목록</td>
+    <td align="center">프로젝트 상세 내용</td>
+    </tr>
+    </table>
     </div>
+
+<br/>
+
 - **블로그 (Blog)**
   - 모든 스터디 또는 프로젝트 종료 시 스터디장은 활동의 결과물을 작성하여 모든 회원이 해당 스터디(프로젝트)의 결과물을 볼 수 있습니다.
   - 모든 블로그는 외부 공개 및 비공개 선택이 가능합니다.
     <div align="center">
-      <table>
-        <tr>
-          <td><img width="2000" alt="블로그" src=".github/readme/블로그.png" /></td>
-          <td><img width="2000" alt="블로그 세부" src=".github/readme/블로그_세부.png" /></td>
-        </tr>
-        <tr>
-          <td align="center">블로그 목록</td>
-          <td align="center">블로그 상세 내용</td>
-        </tr>
-      </table>
+    <table>
+    <tr>
+    <td><img width="2000" alt="블로그" src=".github/readme/블로그.png" /></td>
+    <td><img width="2000" alt="블로그 세부" src=".github/readme/블로그_세부.png" /></td>
+    </tr>
+    <tr>
+    <td align="center">블로그 목록</td>
+    <td align="center">블로그 상세 내용</td>
+    </tr>
+    </table>
     </div>
+
+<br/>
+
 - **회원 정보 (Members)**
   - 회원들의 이메일, Github, LinkedIn을 볼 수 있습니다.
   - 검색 기능을 통해 회원을 검색할 수 있습니다.
@@ -193,20 +210,22 @@
       </table>
     </div>
 
+<br/>
+
 - **프로필 (Profile)**
   - 본인의 스터디 및 프로젝트 기록, 블로그 작성 내역을 확인할 수 있으며, 프로필 수정이 가능합니다.
   - 본인의 벌점 점수와 벌점 유예 기간을 확인할 수 있습니다.
     <div align="center">
-      <table>
-        <tr>
-          <td><img width="1605" height="933" alt="프로필2" src=".github/readme/프로필2.png" /></td>
-          <td><img width="1607" height="933" alt="프로필1" src=".github/readme/프로필1.png" /></td>
-        </tr>
-        <tr>
-          <td align="center">프로필 (내 스터디/프로젝트)</td>
-          <td align="center">프로필 (내 블로그)</td>
-        </tr>
-      </table>
+    <table>
+    <tr>
+    <td><img width="1605" height="933" alt="프로필2" src=".github/readme/프로필2.png" /></td>
+    <td><img width="1607" height="933" alt="프로필1" src=".github/readme/프로필1.png" /></td>
+    </tr>
+    <tr>
+    <td align="center">프로필 (내 스터디/프로젝트)</td>
+    <td align="center">프로필 (내 블로그)</td>
+    </tr>
+    </table>
     </div>
 
 <br/>
@@ -221,43 +240,53 @@
     - 벌점 3점 이상의 회원이 표시되어 집중 관리할 수 있습니다.
       <img width="4000" alt="대시보드" src=".github/readme/대시보드.png" />
 
-  - **회원가입 관리**
-    - 관리자가 실제 동아리 회원인지 여부를 판별해 승인/거절합니다.
-      ![관리자_회원가입 수락](.github/readme/관리자_회원가입_수락.gif)
+  - **회원가입 관리** - 관리자가 실제 동아리 회원인지 여부를 판별해 승인/거절합니다.
+    ![관리자_회원가입 수락](.github/readme/관리자_회원가입_수락.gif)
+
+<br/>
 
 - **스케줄 관리**
   - 회원이 신청한 동아리방 예약을 관리하고, 공식 일정을 등록할 수 있습니다.
     ![관리자_스케줄 등록](.github/readme/관리자_스케줄_등록.gif)
+
+<br/>
+
 - **스터디 및 프로젝트 관리**
   - 모든 스터디 내역과 개설 신청한 스터디, 종료 요청한 스터디를 확인하여 승인/거절할 수 있습니다.
-      <div align="center">
-        <table>
-          <tr>
-            <td><img width="1688" height="946" alt="스터디 목록" src=".github/readme/스터디_목록.png" /></td>
-            <td><img width="1687" height="938" alt="스터디 개설 승인" src=".github/readme/스터디_개설_승인.png" /></td>
-            <td><img width="1667" height="938" alt="스터디 종료 승인" src=".github/readme/스터디_종료_승인.jpg" /></td>
-          </tr>
-          <tr>
-            <td align="center">스터디 (프로젝트) 목록</td>
-            <td align="center">스터디 (프로젝트) 개설 승인 목록</td>
-            <td align="center">스터디 (프로젝트) 종료 승인 목록</td>
-          </tr>
-        </table>
-      </div>
+    <div align="center">
+    <table>
+    <tr>
+    <td><img width="1688" height="946" alt="스터디 목록" src=".github/readme/스터디_목록.png" /></td>
+    <td><img width="1687" height="938" alt="스터디 개설 승인" src=".github/readme/스터디_개설_승인.png" /></td>
+    <td><img width="1667" height="938" alt="스터디 종료 승인" src=".github/readme/스터디_종료_승인.jpg" /></td>
+    </tr>
+    <tr>
+    <td align="center">스터디 (프로젝트) 목록</td>
+    <td align="center">스터디 (프로젝트) 개설 승인 목록</td>
+    <td align="center">스터디 (프로젝트) 종료 승인 목록</td>
+    </tr>
+    </table>
+    </div>
+
+<br/>
+
 - **블로그 관리**
   - 회원이 작성한 블로그 내역을 관리하고, 외부 공개 및 비공개 여부를 설정할 수 있습니다.
-      <div align="center">
-        <table>
-          <tr>
-          <td><img width="1675" height="942" alt="공개 블로그" src=".github/readme/공개_블로그.png" /></td>
-          <td><img width="1671" height="944" alt="비공개 블로그" src=".github/readme/비공개_블로그.png" /></td>
-          </tr>
-          <tr>
-            <td align="center">블로그 외부 공개 목록</td>
-            <td align="center">블로그 외부 비공개 목록</td>
-          </tr>
-        </table>
-      </div>
+    <div align="center">
+    <table>
+    <tr>
+    <td><img width="1675" height="942" alt="공개 블로그" src=".github/readme/공개_블로그.png" /></td>
+    <td><img width="1671" height="944" alt="비공개 블로그" src=".github/readme/비공개_블로그.png" /></td>
+    </tr>
+    <tr>
+    <td align="center">블로그 외부 공개 목록</td>
+    <td align="center">블로그 외부 비공개 목록</td>
+    </tr>
+    </table>
+    </div>
+
+<br/>
+
 - **회원 관리**
   - 모든 회원의 기본 정보와 벌점, 벌점 유예 기간을 관리할 수 있습니다.
   - 모든 회원의 기본 정보를 CSV, EXCEL로 추출이 가능하여 회원 정보를 수월하게 확인할 수 있습니다.
@@ -268,12 +297,13 @@
     <td><img width="1683" height="938" alt="멤버 상세" src=".github/readme/멤버_상세.png" /></td>
     </tr>
     <tr>
-    <td align="center">멤버 목록</td>
-    <td align="center">멤버 상세 정보</td>
+      <td align="center">멤버 목록</td>
+      <td align="center">멤버 상세 정보</td>
     </tr>
     </table>
     </div>
-    <br/>
+
+<br/>
 
 ### 에러 페이지
 
@@ -290,6 +320,8 @@
   </tr>
   </table>
   </div>
+
+<br/>
 
 ## <span id="member">🧑🏻‍💻 프로젝트 멤버</span>
 
