@@ -233,7 +233,7 @@
           <tr>
             <td><img width="1688" height="946" alt="스터디 목록" src=".github/readme/스터디_목록.png" /></td>
             <td><img width="1687" height="938" alt="스터디 개설 승인" src=".github/readme/스터디_개설_승인.png" /></td>
-            <td><img width="1667" height="938" alt="스터디 종료 승인" src=".github/readme/스터디_종료_승인.png" /></td>
+            <td><img width="1667" height="938" alt="스터디 종료 승인" src=".github/readme/스터디_종료_승인.jpg" /></td>
           </tr>
           <tr>
             <td align="center">스터디 (프로젝트) 목록</td>
