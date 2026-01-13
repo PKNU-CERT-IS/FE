@@ -36,6 +36,21 @@ export default async function HomePage() {
   const today = new Date().toISOString();
   const schedules: ScheduleInfo[] = await getSchedules(today);
 
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: 'CERT-IS', 
+    alternateName: [
+   'CERTIS',
+   'certis',
+   'Certis',
+    '써티즈',
+    '서티즈',
+    '써티스',
+],
+    url: process.env.NEXT_PUBLIC_SITE_URL, // 환경변수 URL
+  };
+
   const upcomingEvents = schedules
     .filter((s) => new Date(s.startedAt) > new Date())
     .sort(
@@ -115,15 +130,21 @@ export default async function HomePage() {
 
   return (
     <>
-      <div className="mx-auto">
+
+     <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      /> 
+
+      <main className="mx-auto">
         {/* 1p */}
         <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden">
           <>
-            <div className="text-7xl md:text-8xl font-bold mb-8 animate-fade-in">
+            <h1 className="text-7xl md:text-8xl font-bold mb-8 animate-fade-in">
               <span className="text-gray-900 drop-shadow-lg dark:text-gray-200">
                 CERT-IS
               </span>
-            </div>
+            </h1>
 
             <TypingWrapper />
 
@@ -146,14 +167,14 @@ export default async function HomePage() {
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 my-[13%] text-center">
           <div className="flex flex-col items-center mb-24">
             <SectionBadge text={"About CERT-IS"} />
-            <div className="text-3xl md:text-5xl font-bold mb-8">
+            <h2 className="text-3xl md:text-5xl font-bold mb-8">
               사이버 보안의 최전선
-            </div>
-            <div className="text-xl text-gray-500 max-w-4xl mx-auto dark:text-gray-200">
+            </h2>
+            <h3 className="text-xl text-gray-500 max-w-4xl mx-auto dark:text-gray-200">
               CERT-IS는 급변하는 사이버 위협 환경에서 우리나라의 정보보안을
               책임질 전문가를 양성하는 대학교 동아리입니다. 실무 중심의 교육과
               최신 보안 기술 연구를 통해 미래의 사이버보안 리더를 키워나갑니다.
-            </div>
+            </h3>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {aboutCard.map((card) => (
@@ -166,7 +187,7 @@ export default async function HomePage() {
         <section className=" max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 my-[13%] text-center">
           <div className="flex flex-col items-center mb-24">
             <SectionBadge text={"Schedule"} />
-            <div className="text-4xl font-bold mb-8">이번 달 주요 일정</div>
+            <h2 className="text-4xl font-bold mb-8">이번 달 주요 일정</h2>
             <div className="text-lg text-gray-500 max-w-4xl mx-auto">
               동아리 활동과 교육 스케줄을 확인하세요
             </div>
@@ -233,7 +254,7 @@ export default async function HomePage() {
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 my-[13%] text-center">
           <div className="flex flex-col items-center mb-24">
             <SectionBadge text={"Platform"} />
-            <div className="text-4xl font-bold mb-8">동아리 플랫폼</div>
+            <h2 className="text-4xl font-bold mb-8">동아리 플랫폼</h2>
             <div className="text-lg text-gray-500 max-w-4xl mx-auto">
               체계적인 학습 관리와 효율적인 협업을 위한 통합 플랫폼을 제공합니다
             </div>
@@ -252,11 +273,11 @@ export default async function HomePage() {
               <div className="flex flex-col items-start mb-2">
                 <SectionBadge text={"Our Mission"} />
               </div>
-              <div className="text-4xl font-bold mb-8">
+              <h2 className="text-4xl font-bold mb-8">
                 <span>사이버보안 전문가 양성을 통한</span>
                 <br />
                 <span className="text-cert-dark-red">디지털 세상 보호</span>
-              </div>
+              </h2>
               <div className="text-lg text-gray-500 max-w-4xl mx-auto dark:text-gray-300">
                 급변하는 사이버 위협 환경에서 우리나라의 정보보안을 책임질
                 전문가를 양성하고, 실무 중심의 교육을 통해 즉시 현장에 투입
@@ -337,7 +358,7 @@ export default async function HomePage() {
             </div>
           </div>
         </section>
-      </div>
+      </main>
     </>
   );
 }
