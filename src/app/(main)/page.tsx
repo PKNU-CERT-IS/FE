@@ -48,7 +48,7 @@ export default async function HomePage() {
     '서티즈',
     '써티스',
 ],
-    url: process.env.NEXT_PUBLIC_SITE_URL, // 환경변수 URL
+    url: process.env.NEXT_PUBLIC_SITE_URL || 'https://www.cert-is.com', // 환경변수 URL
   };
 
   const upcomingEvents = schedules
