@@ -6,8 +6,11 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL as string),
-  title: "CERT-IS",
+  title: "CERT-IS (CERTIS)",
   description: "CERT-IS 공식 웹사이트",
+  verification:{
+    google:`${process.env.NEXT_PUBLIC_GOOGLE_VERIFICATION_KEY}` 
+  }
 };
 
 export default function RootLayout({
