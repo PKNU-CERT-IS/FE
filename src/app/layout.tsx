@@ -9,7 +9,8 @@ export const metadata: Metadata = {
   title: "CERT-IS (CERTIS)",
   description: "CERT-IS 공식 웹사이트",
   verification:{
-    google:"U2XzyK9U5dxmkySZMjG7xlqSay3EctQ9WEx0Q6yEQdk" 
+    google:`${process.env.NEXT_PUBLIC_GOOGLE_VERIFICATION_KEY}` 
+
   }
 };
 
