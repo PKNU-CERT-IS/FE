@@ -10,6 +10,7 @@ export const metadata: Metadata = {
   description: "CERT-IS 공식 웹사이트",
   verification:{
     google:`${process.env.NEXT_PUBLIC_GOOGLE_VERIFICATION_KEY}` 
+
   }
 };
 
