@@ -39,7 +39,7 @@ export default function MarkdownEditor({
   };
 
   /**
-   * 🚨 이미지 업로드 훅 (addImageBlobHook)
+   * 이미지 업로드 훅 (addImageBlobHook)
    * - 기본 Base64 변환 동작을 가로챕니다.
    * - 현재는 경고창을 띄우고 동작을 막습니다.
    * - 추후 여기에 S3 업로드 API 통신 코드를 작성하면 됩니다.

@@ -1,13 +1,9 @@
 "use client";
 
 import dynamic from "next/dynamic";
-// 기본 에디터 스타일
 import "@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin-code-syntax-highlight.css";
 import "@toast-ui/editor/dist/toastui-editor.css";
-// 코드 하이라이팅 스타일
 import "prismjs/themes/prism-tomorrow.css";
-
-// 코드 블록 테마 (어두운 테마)
 
 interface ViewerProps {
   content: string;
