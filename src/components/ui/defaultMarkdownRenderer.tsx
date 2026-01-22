@@ -15,7 +15,7 @@ const Viewer = dynamic(
   { ssr: false },
 );
 
-export default function defaultMarkdownRenderer({ content }: ViewerProps) {
+export default function MarkdownRenderer({ content }: ViewerProps) {
   return (
     <div className="toast-ui-viewer-container">
       <Viewer
