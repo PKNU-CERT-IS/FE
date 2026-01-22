@@ -1,38 +1,32 @@
-import "highlight.js/styles/github.css";
-import ReactMarkdown from "react-markdown";
-import rehypeHighlight from "rehype-highlight";
-import remarkGfm from "remark-gfm";
+"use client";
 
-// 코드 하이라이트 스타일
+import dynamic from "next/dynamic";
+import "@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin-code-syntax-highlight.css";
+import "@toast-ui/editor/dist/toastui-editor.css";
+import "prismjs/themes/prism-tomorrow.css";
 
-interface MarkdownRendererProps {
+interface ViewerProps {
   content: string;
 }
 
-export default function MarkdownRenderer({ content }: MarkdownRendererProps) {
+// SSR 방지를 위해 dynamic import 사용
+const Viewer = dynamic(
+  () => import("@toast-ui/react-editor").then((mod) => mod.Viewer),
+  { ssr: false },
+);
+
+export default function MarkdownRenderer({ content }: ViewerProps) {
   return (
-    <div
-      className="
-    prose prose-lg max-w-none
-    prose-headings:text-gray-900 
-    prose-a:text-cert-red prose-a:no-underline hover:prose-a:underline
-    prose-strong:text-gray-900
-    prose-code:text-cert-red prose-code:bg-gray-100 prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-code:before:content-none prose-code:after:content-none
-    prose-blockquote:border-cert-red prose-blockquote:bg-gray-50 prose-blockquote:text-gray-700
-    dark:text-gray-300
-    dark:prose-headings:text-gray-200
-    dark:prose-strong:text-gray-200
-    dark:prose-code:bg-gray-100
-    dark:prose-blockquote:prose-strong:text-gray-900  
-    dark:prose-hr:border-gray-600
-  "
-    >
-      <ReactMarkdown
-        remarkPlugins={[remarkGfm]} // GitHub Flavored Markdown 지원 (테이블, 체크박스 등)
-        rehypePlugins={[rehypeHighlight]} // 코드 하이라이트
-      >
-        {content}
-      </ReactMarkdown>
+    <div className="toast-ui-viewer-container">
+      <Viewer
+        initialValue={content}
+        theme={
+          typeof window !== "undefined" &&
+          document.documentElement.classList.contains("dark")
+            ? "dark"
+            : "light"
+        }
+      />
     </div>
   );
 }
