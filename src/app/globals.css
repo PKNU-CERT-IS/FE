@@ -360,3 +360,133 @@ body {
     scrollbar-width: none; /* Firefox */
   }
 }
+
+/* ----------------------------------------------------------------
+   1. 공통 폰트 및 가독성 (rem 단위 적용)
+   ---------------------------------------------------------------- */
+.toastui-editor-contents,
+.toastui-editor-defaultUI {
+  font-family: inherit !important;
+  font-size: 1rem !important; /* 16px -> 1rem */
+  line-height: 1 !important;
+}
+
+/* ----------------------------------------------------------------
+   2. 다크모드 텍스트 색상 (글씨가 검게 나오는 문제 해결)
+   ---------------------------------------------------------------- */
+/* 에디터 본체와 WYSIWYG 영역의 기본 글자색 */
+.dark .toastui-editor-defaultUI,
+.dark .toastui-editor-contents,
+.dark .ProseMirror {
+  color: hsl(var(--foreground)) !important;
+}
+
+/* 내부 텍스트 요소들 색상 강제 지정 */
+.dark .toastui-editor-contents p,
+.dark .toastui-editor-contents h1,
+.dark .toastui-editor-contents h2,
+.dark .toastui-editor-contents h3,
+.dark .toastui-editor-contents h4,
+.dark .toastui-editor-contents h5,
+.dark .toastui-editor-contents h6,
+.dark .toastui-editor-contents li,
+.dark .toastui-editor-contents span,
+.dark .toastui-editor-contents div:not(.code-block-line) {
+  color: hsl(var(--foreground));
+}
+
+/* WYSIWYG 에디터의 placeholder 색상 보정 */
+.dark .ProseMirror-placeholder {
+  color: #6b7280 !important; /* gray-500 */
+}
+
+/* ----------------------------------------------------------------
+   3. 포인트 컬러 (cert-red) - 체크박스는 제외됨
+   ---------------------------------------------------------------- */
+/* 인용구 */
+.toastui-editor-contents blockquote {
+  border-left: 0.25rem solid var(--color-cert-red) !important;
+  background-color: transparent !important;
+  padding-left: 1rem !important;
+  color: hsl(var(--foreground)) !important;
+  opacity: 0.9;
+}
+
+/* 리스트 불렛 (순서 없는 목록의 점) */
+.toastui-editor-contents ul > li::before {
+  background-color: var(--color-cert-red) !important;
+  margin-top: 0.2rem !important;
+}
+
+/* 리스트 불렛 (순서 없는 목록의 점) */
+/* [수정] .task-list-item(체크박스)이 아닌 li에만 적용되도록 :not() 추가 */
+.toastui-editor-contents ul > li:not(.task-list-item)::before {
+  background-color: var(--color-cert-red) !important;
+  margin-top: 0.625rem !important;
+}
+
+/* 링크 */
+.toastui-editor-contents a {
+  color: var(--color-cert-red) !important;
+  text-decoration: none;
+}
+.toastui-editor-contents a:hover {
+  text-decoration: underline;
+}
+
+/* ----------------------------------------------------------------
+   4. 다크모드 배경 및 UI (하단바, 툴바)
+   ---------------------------------------------------------------- */
+/* 메인 컨테이너 배경 */
+.dark .toastui-editor-defaultUI {
+  background-color: hsl(var(--background)) !important;
+  border-color: var(--color-cert-border) !important;
+}
+
+/* 툴바 배경 */
+.dark .toastui-editor-defaultUI-toolbar {
+  background-color: hsl(var(--background)) !important;
+  border-bottom: 1px solid var(--color-cert-border) !important;
+}
+
+/* 편집 영역 배경 (Markdown & WYSIWYG) */
+.dark .toastui-editor-md-container,
+.dark .toastui-editor-ww-container,
+.dark .bg-white {
+  background-color: hsl(var(--background)) !important;
+}
+
+/* 툴바 아이콘 반전 (검정->흰색) */
+.dark .toastui-editor-toolbar-icons {
+  filter: invert(100%) brightness(1.5);
+}
+
+/* 하단 모드 스위치 (Markdown/WYSIWYG 탭) */
+.dark .toastui-editor-mode-switch {
+  background-color: hsl(var(--background)) !important;
+  border-top: 1px solid var(--color-cert-border) !important;
+}
+
+.dark .toastui-editor-mode-switch .tab-item {
+  background-color: transparent !important;
+  color: #9ca3af !important; /* 비활성 텍스트 gray-400 */
+}
+
+.dark .toastui-editor-mode-switch .tab-item.active {
+  background-color: #1f2937 !important; /* 활성 배경 gray-800 */
+  color: var(--color-cert-red) !important; /* 활성 텍스트 빨강 */
+  border-top-color: var(--color-cert-red) !important;
+}
+
+/* ----------------------------------------------------------------
+   5. 코드 블록 (Prism) 다크모드 보정
+   ---------------------------------------------------------------- */
+.dark .toastui-editor-contents pre {
+  background-color: #111827 !important; /* gray-900 */
+  border: 1px solid var(--color-cert-border);
+}
+
+.dark .toastui-editor-contents pre code {
+  background-color: transparent !important;
+  color: #f3f4f6;
+}
