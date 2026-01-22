@@ -148,7 +148,7 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
 
           {/* 본문 */}
           <div className="p-8">
-            <div className="prose prose-lg max-w-none">
+            <div className="max-w-none">
               {blogData.content ? (
                 <>
                   {/* 실제 마크다운 내용이 들어갈 곳 */}
