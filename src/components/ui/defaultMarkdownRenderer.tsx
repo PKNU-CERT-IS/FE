@@ -19,9 +19,11 @@ export default function MarkdownRenderer({ content }: ViewerProps) {
   return (
     <div className="toast-ui-viewer-container">
       <Viewer
-        initialValue={content}
         theme={
-          document.documentElement.classList.contains("dark") ? "dark" : "light"
+          typeof window !== "undefined" &&
+          document.documentElement.classList.contains("dark")
+            ? "dark"
+            : "light"
         }
       />
     </div>
