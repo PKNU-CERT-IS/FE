@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Metadata } from "next";
 import { ScheduleInfo } from "@/types/schedule";
 import { getSchedules } from "@/app/api/schedule/SCscheduleApi";
+import HomeModal from "@/components/home/homeModal";
 import MiniCalendar from "@/components/home/miniCalendar";
 import SectionBadge from "@/components/home/sectionBadge";
 import TypingWrapper from "@/components/home/typingWrapper";
@@ -37,18 +38,11 @@ export default async function HomePage() {
   const schedules: ScheduleInfo[] = await getSchedules(today);
 
   const jsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'WebSite',
-    name: 'CERT-IS', 
-    alternateName: [
-   'CERTIS',
-   'certis',
-   'Certis',
-    '써티즈',
-    '서티즈',
-    '써티스',
-],
-    url: process.env.NEXT_PUBLIC_SITE_URL || 'https://www.cert-is.com', // 환경변수 URL
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "CERT-IS",
+    alternateName: ["CERTIS", "certis", "Certis", "써티즈", "서티즈", "써티스"],
+    url: process.env.NEXT_PUBLIC_SITE_URL || "https://www.cert-is.com", // 환경변수 URL
   };
 
   const upcomingEvents = schedules
@@ -130,13 +124,13 @@ export default async function HomePage() {
 
   return (
     <>
-
-     <script
+      <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      /> 
+      />
 
       <main className="mx-auto">
+        <HomeModal />
         {/* 1p */}
         <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden">
           <>
@@ -324,7 +318,7 @@ export default async function HomePage() {
                     열정과 도전정신이 있다면 언제든 환영합니다!
                   </div>
                 </div>
-                <div className="space-y-4 mb-8 w-full">
+                <div id="recruit-anchor" className="space-y-4 mb-8 w-full">
                   <div className="flex items-center justify-between text-sm border-b border-gray-200 pb-2">
                     <span className="text-gray-500 dark:text-gray-200">
                       모집 분야
@@ -351,9 +345,14 @@ export default async function HomePage() {
                   </div>
                 </div>
                 {/* 지원서 폼 추후 추가 */}
-                <button className="w-full rounded-md py-2.5 action-button text-white duration-300 dark:bg-cert-red/80 dark:text-gray-200 dark:hover:bg-cert-dark-red">
+                <a
+                  href="https://docs.google.com/forms/d/e/1FAIpQLSfXr3hDD-uJ_2iEksd0nomQautuMG86daVyF4CiNhsQzxy_FA/viewform"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full rounded-md py-2.5 action-button text-white duration-300 dark:bg-cert-red/80 dark:text-gray-200 dark:hover:bg-cert-dark-red"
+                >
                   지원하기
-                </button>
+                </a>
               </div>
             </div>
           </div>
