@@ -884,7 +884,11 @@ export default function EditForm({
           <label className="block text-sm font-medium text-gray-700 mb-2 dark:text-gray-200">
             내용 *
           </label>
-          <MarkdownEditor content={content} setContent={setContent} />
+          <MarkdownEditor
+            content={content}
+            setContent={setContent}
+            type={type}
+          />
         </div>
 
         {/* 액션 버튼 */}

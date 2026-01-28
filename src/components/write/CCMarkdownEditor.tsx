@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import "@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin-code-syntax-highlight.css";
 import "@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-syntax.css";
@@ -8,6 +8,9 @@ import "@toast-ui/editor/dist/toastui-editor.css";
 import { Editor as ToastEditorType } from "@toast-ui/react-editor";
 import "prismjs/themes/prism.css";
 import "tui-color-picker/dist/tui-color-picker.css";
+import { NewPageCategoryType } from "@/types/newPageForm";
+import { imageUploadApi } from "@/app/api/CCImageUploadApi";
+import AlertModal from "@/components/ui/defaultAlertModal";
 
 // SSR 방지 Dynamic Import
 const Editor = dynamic(
@@ -20,16 +23,23 @@ const Editor = dynamic(
   },
 );
 
+const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+
 interface MarkdownEditorProps {
   content: string;
   setContent: (content: string) => void;
+  type: NewPageCategoryType;
 }
 
 export default function MarkdownEditor({
   content,
   setContent,
+  type,
 }: MarkdownEditorProps) {
   const editorRef = useRef<ToastEditorType>(null);
+
+  const [alertOpen, setAlertOpen] = useState<boolean>(false);
+  const [alertMessage, setAlertMessage] = useState<string>("");
 
   // 에디터 내용 변경 핸들러
   const handleChange = () => {
@@ -38,25 +48,42 @@ export default function MarkdownEditor({
     setContent(instance.getMarkdown());
   };
 
-  /**
-   * 이미지 업로드 훅 (addImageBlobHook)
-   * - 기본 Base64 변환 동작을 가로챕니다.
-   * - 현재는 경고창을 띄우고 동작을 막습니다.
-   * - 추후 여기에 S3 업로드 API 통신 코드를 작성하면 됩니다.
-   */
-  const handleImageUpload = (
+  const handleImageUpload = async (
     blob: Blob,
     callback: (url: string, altText: string) => void,
   ) => {
-    console.log("이미지 업로드 시도:", blob);
+    if (blob.size > MAX_FILE_SIZE) {
+      setAlertMessage("이미지 파일 크기는 최대 10MB까지 허용됩니다.");
+      setAlertOpen(true);
+      return false;
+    }
 
-    // TODO: 여기에 S3 이미지 업로드 API 호출 로직 구현 필요
-    alert(
-      "현재 이미지 업로드는 준비 중입니다.\n(서버 부하 방지를 위해 Base64 변환이 차단되었습니다.)",
-    );
+    const formData = new FormData();
+    formData.append("file", blob);
+    formData.append("type", type);
 
-    // callback(imageUrl, 'alt text'); // 성공 시 이 콜백을 호출해야 에디터에 삽입됨
-    return false; // false를 반환하여 기본 동작(Base64 변환) 중단
+    // 이미지 업로드 API 호출
+    // 해당 컴포넌트에서만 사용하고 있어 별도의 util 함수로 분리하지 않음
+    try {
+      const result = await imageUploadApi.uploadImage(blob, type);
+
+      if (result.data && result.data.imageUrl) {
+        // 성공 시 에디터에 이미지 삽입
+        const altText = (blob as File).name || "image";
+        callback(result.data.imageUrl, altText);
+      } else {
+        throw new Error(result.message);
+      }
+    } catch (error: any) {
+      console.error(error);
+      setAlertMessage(
+        error.response?.data?.message ||
+          "이미지 업로드에 실패했습니다. 다시 시도해주세요.",
+      );
+      setAlertOpen(true);
+    }
+
+    return false; // 기본 Base64 변환 방지
   };
 
   return (
@@ -67,7 +94,7 @@ export default function MarkdownEditor({
         initialValue={content || " "}
         previewStyle="vertical"
         height="600px"
-        initialEditType="markdown"
+        initialEditType="wysiwyg"
         useCommandShortcut={true}
         // HTML의 class="dark" 유무를 판단하여 테마 적용
         theme={
@@ -88,6 +115,15 @@ export default function MarkdownEditor({
           ["code", "codeblock"],
           ["scrollSync"],
         ]}
+      />
+
+      <AlertModal
+        key={alertMessage}
+        isOpen={alertOpen}
+        message={alertMessage}
+        type="error"
+        duration={6000}
+        onClose={() => setAlertOpen(false)}
       />
     </div>
   );
