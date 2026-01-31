@@ -10,8 +10,7 @@ export function translateMemberRole(role: string): MembersRoleCategoryType {
     CHAIRMAN: "회장",
     VICECHAIRMAN: "부회장",
     STAFF: "임원진",
-    PLAYER: "PLAYER",
-    UPSOLVER: "UPSOLVER",
+    PLAYER: "회원",
     NONE: "NONE",
   };
 

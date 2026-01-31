@@ -17,7 +17,7 @@ export default function ApproveModal({
 }: ApproveModalProps) {
   const router = useRouter();
 
-  const handleApprove = async (role: "UPSOLVER" | "PLAYER") => {
+  const handleApprove = async (role: "PLAYER") => {
     try {
       await updateMemberGradeRole({
         targetMemberId: id,
@@ -62,18 +62,11 @@ export default function ApproveModal({
         {/* 버튼 영역 (붉은 계열) */}
         <div className="flex flex-col sm:flex-row gap-3">
           <button
-            onClick={() => handleApprove("UPSOLVER")}
-            className="flex-1 flex items-center justify-center gap-2 py-3 sm:py-4 rounded-lg bg-cert-dark-red text-white text-sm sm:text-base font-medium hover:bg-red-700 shadow-md transition-all"
+            onClick={() => handleApprove("PLAYER")}
+            className="action-button flex flex-1 justify-center gap-2 py-3 sm:py-4 text-sm sm:text-base font-medium shadow-md transition-all rounded-lg"
           >
             <ShieldCheck className="w-5 h-5" />
-            UPSOLVER 권한
-          </button>
-          <button
-            onClick={() => handleApprove("PLAYER")}
-            className="flex-1 flex items-center justify-center gap-2 py-3 sm:py-4 rounded-lg bg-red-500 text-white text-sm sm:text-base font-medium hover:bg-red-600 shadow-md transition-all"
-          >
-            <User className="w-5 h-5" />
-            PLAYER 권한
+            회원 권한
           </button>
         </div>
       </div>

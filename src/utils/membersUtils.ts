@@ -19,10 +19,8 @@ export const getRoleBadgeStyle = (
       return "bg-blue-100 text-blue-800 border-blue-600 dark:bg-blue-700 dark:text-blue-200 dark:border-blue-500";
     case "관리자":
       return "bg-purple-100 text-purple-800 border-purple-600 dark:bg-purple-700 dark:text-purple-200 dark:border-purple-500";
-    case "UPSOLVER":
+    case "회원":
       return "bg-green-100 text-green-800 border-green-600 dark:bg-green-700 dark:text-green-200 dark:border-green-500";
-    case "PLAYER":
-      return "bg-gray-100 text-gray-800 border-gray-600 dark:bg-gray-700 dark:text-gray-200 dark:border-gray-500";
     case "NONE":
     case "전체":
       return "bg-slate-100 text-slate-800 border-slate-400 dark:bg-slate-700 dark:text-slate-200 dark:border-slate-500";
@@ -40,10 +38,8 @@ export const getRoleBorderStyle = (
       return "hover:border-blue-600 group-hover:border-blue-600";
     case "관리자":
       return "hover:border-purple-600 group-hover:border-purple-600";
-    case "UPSOLVER":
+    case "회원":
       return "hover:border-green-600 group-hover:border-green-600";
-    case "PLAYER":
-      return "hover:border-gray-600 group-hover:border-gray-600";
     case "NONE":
     case "전체":
       return "hover:border-slate-400 group-hover:border-slate-400";
@@ -103,10 +99,8 @@ const filterByRole = (
       return ["회장", "부회장", "임원진"].includes(member.role);
     case "관리자":
       return member.role === "관리자";
-    case "UPSOLVER":
-      return member.role === "UPSOLVER";
-    case "PLAYER":
-      return member.role === "PLAYER";
+    case "회원":
+      return member.role === "회원";
     case "NONE":
     case "전체":
       return true; // 전체 보기 or 역할 없음 → 모든 멤버 포함
@@ -174,17 +168,15 @@ type Role =
   | "CHAIRMAN"
   | "VICECHAIRMAN"
   | "STAFF"
-  | "PLAYER"
-  | "UPSOLVER"
+  | "PLAYER" // 기본 회원을 player로 영문
   | "NONE";
 
 const roleOrder: Record<Role, number> = {
   CHAIRMAN: 1,
   VICECHAIRMAN: 2,
   STAFF: 3,
-  UPSOLVER: 4,
-  PLAYER: 5,
-  NONE: 6,
+  PLAYER: 4,
+  NONE: 5,
   ADMIN: 99, // ADMIN을 항상 맨 뒤로 보내기 위해 가장 큰 값으로
 };
 
