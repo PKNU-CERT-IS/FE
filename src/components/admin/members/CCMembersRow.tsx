@@ -1,9 +1,7 @@
 "use client";
 
 import { AdminMemberDetailInfoType } from "@/types/admin/adminMembers";
-import { penaltyGracePeriod } from "@/utils/adminPenaltyGracePeriodUtils";
 import DefaultBadge from "@/components/ui/defaultBadge";
-import { AlertTriangle } from "lucide-react";
 
 interface MemberRowProps {
   member: AdminMemberDetailInfoType;
@@ -11,7 +9,7 @@ interface MemberRowProps {
   setSelectedMember: (member: AdminMemberDetailInfoType | null) => void;
 }
 
-export default function CCMebersRow({
+export default function CCMembersRow({
   member,
   selectedMember,
   setSelectedMember,
@@ -23,7 +21,7 @@ export default function CCMebersRow({
       }`}
       onClick={() => setSelectedMember(member)}
     >
-      <td className="px-4 py-3 w-32 sm:w-40 md:w-48 lg:w-56">
+      <td className="px-4 py-3">
         <div className="flex items-center gap-2">
           <span className="font-medium text-sm">{member.name}</span>
           <DefaultBadge
@@ -34,13 +32,14 @@ export default function CCMebersRow({
           </DefaultBadge>
         </div>
       </td>
-      <td className="px-4 py-3 text-xs text-gray-600 w-48 sm:w-56 md:w-64 lg:w-72 dark:text-gray-300 ">
+      <td className="px-4 py-3 text-xs text-gray-600 dark:text-gray-300 ">
         <div className="flex flex-col">
-          <span>{member.major} / </span>
-          <span>{member.studentNumber}</span>
+          <span>
+            {member.major} / {member.studentNumber}
+          </span>
         </div>
       </td>
-      <td className="px-1 py-3 w-56 sm:w-64 md:w-80 lg:w-[24rem]">
+      <td className="px-1 py-3">
         <div className="space-y-1">
           {member.activeProjects.length === 0 &&
           member.activeStudies.length === 0 ? (
@@ -67,27 +66,6 @@ export default function CCMebersRow({
             </>
           )}
         </div>
-      </td>
-      <td className="px-4 py-3 text-center w-16 sm:w-20 md:w-24">
-        <div className="flex items-center justify-center">
-          <span
-            className={`text-sm font-medium ${
-              member.penaltyPoints >= 2
-                ? "text-cert-red"
-                : "text-gray-900 dark:text-gray-300"
-            }`}
-          >
-            {member.penaltyPoints}점
-          </span>
-          {member.penaltyPoints >= 2 && (
-            <AlertTriangle className="w-3 h-3 inline ml-1 text-cert-red" />
-          )}
-        </div>
-      </td>
-      <td className="px-4 py-3 text-center text-xs text-gray-500 w-20 sm:w-24 md:w-28 dark:text-gray-400 ">
-        {member.gracePeriod == null
-          ? "-"
-          : penaltyGracePeriod(member.gracePeriod)}
       </td>
     </tr>
   );

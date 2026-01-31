@@ -3,15 +3,9 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { AdminMemberDetailInfoType } from "@/types/admin/adminMembers";
-import { penaltyGracePeriod } from "@/utils/adminPenaltyGracePeriodUtils";
-import { toOffsetDateTime } from "@/utils/transformRequestValue";
 import { translateGradeToKorean } from "@/utils/transfromResponseValue";
 import { translateGenderToKorean } from "@/utils/transfromResponseValue";
-import {
-  assignPenalty,
-  deleteMember,
-  grantGracePeriod,
-} from "@/app/api/member/CCadminMemberApi";
+import { deleteMember } from "@/app/api/member/CCadminMemberApi";
 import CCMemberEditModal from "@/components/admin/members/CCMemberEditModal";
 import DefaultBadge from "@/components/ui/defaultBadge";
 import DefaultButton from "@/components/ui/defaultButton";
@@ -33,33 +27,33 @@ export default function CCMemberDetailCard({
 }: CCMemberDetailCardProps) {
   const router = useRouter();
 
-  const [isOpenPenaltyModal, setIsOpenPenaltyModal] = useState(false);
+  // const [isOpenPenaltyModal, setIsOpenPenaltyModal] = useState(false);
   const [isOpenKickModal, setIsOpenKickModal] = useState(false);
-  const [isOpenGracePeriodModal, setIsOpenGracePeriodModal] = useState(false);
-  const [newGracePeriod, setNewGracePeriod] = useState(
-    selectedMember?.gracePeriod || "",
-  );
-  const [penaltyCount, setPenaltyCount] = useState(0);
+  // const [isOpenGracePeriodModal, setIsOpenGracePeriodModal] = useState(false);
+  // const [newGracePeriod, setNewGracePeriod] = useState(
+  //   selectedMember?.gracePeriod || "",
+  // );
+  // const [penaltyCount, setPenaltyCount] = useState(0);
 
   const { setIsOpenModal, isOpenModal, modalOutsideRef } = useModal();
-  useEffect(() => {
-    if (selectedMember) {
-      setPenaltyCount(selectedMember.penaltyPoints);
-      setNewGracePeriod(selectedMember.gracePeriod || "");
-    }
-  }, [selectedMember]);
+  // useEffect(() => {
+  //   if (selectedMember) {
+  //     setPenaltyCount(selectedMember.penaltyPoints);
+  //     setNewGracePeriod(selectedMember.gracePeriod || "");
+  //   }
+  // }, [selectedMember]);
 
   useEffect(() => {
     document.body.style.overflow = isOpenModal ? "hidden" : "auto";
   }, [isOpenModal]);
 
-  const handlePenaltyScoreIncrement = () => {
-    setPenaltyCount((prev) => prev + 1);
-  };
+  // const handlePenaltyScoreIncrement = () => {
+  //   setPenaltyCount((prev) => prev + 1);
+  // };
 
-  const handlePenaltyScoreDecrement = () => {
-    setPenaltyCount((prev) => (prev > 0 ? prev - 1 : 0));
-  };
+  // const handlePenaltyScoreDecrement = () => {
+  //   setPenaltyCount((prev) => (prev > 0 ? prev - 1 : 0));
+  // };
 
   const handleUpdateMember = (updatedMember: AdminMemberDetailInfoType) => {
     onUpdateMember?.(updatedMember);
@@ -163,7 +157,7 @@ export default function CCMemberDetailCard({
             </div>
           </div>
 
-          <div className="space-y-2">
+          {/* <div className="space-y-2">
             <div className="flex items-center justify-between">
               <div className="text-sm font-medium dark:text-gray-200">벌점</div>
               <div className="flex items-center gap-2">
@@ -212,10 +206,10 @@ export default function CCMemberDetailCard({
                 onCancel={() => setIsOpenPenaltyModal(false)}
               />
             </div>
-          </div>
+          </div> */}
 
           {/* 유예 기간 */}
-          <div className="space-y-2">
+          {/* <div className="space-y-2">
             <div className="text-sm font-medium dark:text-gray-200">
               유예 기간
             </div>
@@ -266,7 +260,7 @@ export default function CCMemberDetailCard({
                 onCancel={() => setIsOpenGracePeriodModal(false)}
               />
             </div>
-          </div>
+          </div> */}
 
           <div className="border-b-1 border-gray-200 dark:border-gray-700 pb-1.5" />
 

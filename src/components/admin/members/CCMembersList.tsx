@@ -37,8 +37,6 @@ export default function CCMembersList({ filteredMembers }: CCMembersListProps) {
       "역할",
       "활동 스터디",
       "활동 프로젝트",
-      "벌점",
-      "유예 기간",
     ];
 
     const rows = filteredMembers.map((m) => [
@@ -54,8 +52,6 @@ export default function CCMembersList({ filteredMembers }: CCMembersListProps) {
       translateMemberRole(m.role) ?? "",
       (m.activeStudies || []).join(", "),
       (m.activeProjects || []).join(", "),
-      m.penaltyPoints ?? 0,
-      m.gracePeriod ? new Date(m.gracePeriod).toLocaleDateString() : "",
     ]);
 
     const csvContent = [
@@ -98,10 +94,6 @@ export default function CCMembersList({ filteredMembers }: CCMembersListProps) {
       역할: translateMemberRole(m.role) ?? "",
       "활동 스터디": (m.activeStudies || []).join(", "),
       "활동 프로젝트": (m.activeProjects || []).join(", "),
-      벌점: m.penaltyPoints ?? 0,
-      "유예 기간": m.gracePeriod
-        ? new Date(m.gracePeriod).toLocaleDateString()
-        : "",
     }));
 
     const worksheet = XLSX.utils.json_to_sheet(worksheetData);
@@ -158,13 +150,17 @@ export default function CCMembersList({ filteredMembers }: CCMembersListProps) {
 
         <div className="p-0 overflow-y-auto max-h-[40rem]">
           <table className="w-full text-sm text-gray-600 dark:text-gray-300">
+            <colgroup>
+              <col className="w-1/5" />
+              <col className="w-2/5" />
+              <col className="w-2/5" />
+            </colgroup>
+
             <thead className="bg-gray-50 dark:bg-gray-700 text-left">
               <tr>
                 <th className="px-4 py-2">이름</th>
                 <th className="px-4 py-2">전공 / 학번</th>
                 <th className="px-2 py-2">활동</th>
-                <th className="px-4 py-2 text-center">벌점</th>
-                <th className="px-4 py-2 text-center">유예 기간</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200 dark:divide-gray-700">

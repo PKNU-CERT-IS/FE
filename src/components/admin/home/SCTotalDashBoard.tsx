@@ -1,9 +1,8 @@
 import Link from "next/link";
-import { groupMembersByPenalty } from "@/utils/membersUtils";
 import { getMembersForStaff } from "@/app/api/member/SCadminMemberApi";
 import { searchProjects } from "@/app/api/project/SCProjectApi";
 import { searchStudies } from "@/app/api/study/SCStudyApi";
-import { AlertTriangle, BookOpen, TrendingUp, Users } from "lucide-react";
+import { BookOpen, TrendingUp, Users } from "lucide-react";
 
 export default async function SCTotalDashBoard() {
   const studyData = await searchStudies({ studyStatus: "INPROGRESS" });
@@ -12,8 +11,6 @@ export default async function SCTotalDashBoard() {
   const projectCount = projectData?.content?.length ?? 0;
 
   const members = await getMembersForStaff();
-  const membersByPenalty = groupMembersByPenalty(members);
-  // const memberWithMoreThan4Penalty =
   return (
     <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6">
       {/* 전체 회원 */}
@@ -93,7 +90,7 @@ export default async function SCTotalDashBoard() {
       </Link>
 
       {/* 탈퇴 위험 */}
-      <Link href={"/admin/members"}>
+      {/* <Link href={"/admin/members"}>
         <div className="card-list dark-default">
           <div className="p-6 flex flex-row items-center justify-between space-y-0 pb-2">
             <div className="text-sm font-medium text-gray-600 dark:text-gray-300 leading-none tracking-tight">
@@ -113,7 +110,7 @@ export default async function SCTotalDashBoard() {
             </p>
           </div>
         </div>
-      </Link>
+      </Link> */}
     </div>
   );
 }

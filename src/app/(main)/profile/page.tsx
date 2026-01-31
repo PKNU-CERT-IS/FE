@@ -55,7 +55,6 @@ export default async function ProfilePage({ searchParams }: ProfilePageProps) {
           <div className="lg:col-span-1">
             <Suspense fallback={<SCProfileGroupSkeleton />}>
               <SCProfileCard />
-              <SCPenaltyStatus />
               <SCTodaySchedule />
             </Suspense>
           </div>
