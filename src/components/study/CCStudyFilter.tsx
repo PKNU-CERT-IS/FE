@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState, useTransition } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import {
   CATEGORY_LABELS,
   CATEGORY_OPTIONS,
@@ -10,7 +10,7 @@ import {
   SubCategoryKey,
 } from "@/types/category";
 import type { FilterKey, StudyFilterProps } from "@/types/study";
-import { SEMESTER_LABELS, SEMESTER_OPTIONS } from "@/types/study";
+import { SEMESTER_LABELS, SEMESTER_OPTIONS } from "@/utils/semester";
 import { statusToggleOptions } from "@/utils/statusOrderUtils";
 import { cn } from "@/lib/utils";
 import DefaultButton from "@/components/ui/defaultButton";
@@ -28,10 +28,9 @@ export default function CCStudyFilter({
   updateFilter,
   resetSubCategory,
 }: CCStudyFilterProps) {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const view = searchParams.get("view");
-  const [isPending, startTransition] = useTransition();
+  const [isPending, _startTransition] = useTransition();
 
   // 로컬 상태
   const [showSemesterDropdown, setShowSemesterDropdown] =

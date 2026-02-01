@@ -3,8 +3,8 @@
 import { CATEGORY_LABELS } from "@/types/category";
 import { SUBCATEGORY_LABELS, SubCategoryKey } from "@/types/category";
 import { STATUS_LABELS } from "@/types/progressStatus";
-import { SEMESTER_LABELS } from "@/types/study";
 import type { FilterKey, StudyCurrentFilters } from "@/types/study";
+import { SEMESTER_LABELS } from "@/utils/semester";
 import { X } from "lucide-react";
 
 interface CCStudyFilterTagProps {

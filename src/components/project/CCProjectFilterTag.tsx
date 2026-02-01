@@ -1,11 +1,8 @@
 "use client";
 
 import { STATUS_LABELS } from "@/types/progressStatus";
-import {
-  FilterKey,
-  ProjectCurrentFilters,
-  SEMESTER_LABELS,
-} from "@/types/project";
+import { FilterKey, ProjectCurrentFilters } from "@/types/project";
+import { SEMESTER_LABELS } from "@/utils/semester";
 import { X } from "lucide-react";
 
 interface CCProjectFilterTagProps {

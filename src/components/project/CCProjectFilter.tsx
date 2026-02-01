@@ -9,12 +9,8 @@ import {
   SUBCATEGORY_MAP,
   SubCategoryKey,
 } from "@/types/category";
-import {
-  FilterKey,
-  ProjectCurrentFilters,
-  SEMESTER_LABELS,
-  SEMESTER_OPTIONS,
-} from "@/types/project";
+import { FilterKey, ProjectCurrentFilters } from "@/types/project";
+import { SEMESTER_LABELS, SEMESTER_OPTIONS } from "@/utils/semester";
 import { statusToggleOptions } from "@/utils/statusOrderUtils";
 import { cn } from "@/lib/utils";
 import DefaultButton from "@/components/ui/defaultButton";

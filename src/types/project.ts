@@ -1,7 +1,7 @@
-import { AttachedFile } from "./attachedFile";
-import { CategoryType, SubCategoryType } from "./category";
-import { StatusType } from "./progressStatus";
-import { MemberGrade } from "./study";
+import { AttachedFile } from "@/types/attachedFile";
+import { CategoryType, SubCategoryType } from "@/types/category";
+import { StatusType } from "@/types/progressStatus";
+import { MemberGrade, SemesterType } from "@/types/study";
 
 export type FileCategory =
   | "document"
@@ -61,27 +61,6 @@ export type FilterKey =
   | "category"
   | "subCategory"
   | "projectStatus";
-
-export type SemesterType = "ALL" | `${number}-01` | `${number}-02`;
-export function getCurrentSemester(): SemesterType {
-  const now = new Date();
-  const year = now.getFullYear();
-  const month = now.getMonth() + 1;
-  const semester = month <= 6 ? 1 : 2;
-  return `${year}-${semester}` as SemesterType;
-}
-
-// 옵션: ALL + 현재 학기만
-export const SEMESTER_OPTIONS: readonly SemesterType[] = [
-  "ALL",
-  getCurrentSemester(),
-] as const;
-
-// Label: ALL + 현재 학기만
-export const SEMESTER_LABELS: Record<SemesterType, string> = {
-  ALL: "전체",
-  [getCurrentSemester()]: `${getCurrentSemester()}학기`,
-} as const;
 
 export const AUTHOR_STATUS_LABELS: Record<
   "student" | "graduate" | "organization",
