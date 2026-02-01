@@ -87,6 +87,7 @@ export default function StudyFilterController({
           <CCStudyFilter
             studyCurrentFilters={stableFilters}
             updateFilter={updateFilter}
+            isAdmin
           />
         </div>
         <CCStudyFilterTag

@@ -86,6 +86,7 @@ export default function CCProjectFilterController({
           <CCProjectFilter
             projectCurrentFilters={stableFilters}
             updateFilter={updateFilter}
+            isAdmin
           />
         </div>
         <CCProjectFilterTag
