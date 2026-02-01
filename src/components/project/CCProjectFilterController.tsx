@@ -73,6 +73,33 @@ export default function CCProjectFilterController({
     },
     [searchParams, router, isAdmin],
   );
+
+  // 메인카테고리에서 다른 카테고리 선택 시 서브 카테고리 리셋
+  const resetSubCategory = useCallback(
+    (newCategory: string) => {
+      const params = new URLSearchParams(searchParams);
+
+      if (newCategory === "ALL" || newCategory === "") {
+        params.delete("category");
+      } else {
+        params.set("category", newCategory);
+      }
+
+      params.delete("subCategory");
+      params.delete("page");
+
+      startTransition(() => {
+        if (isAdmin) {
+          const tab = params.get("tab") || "project";
+          params.set("tab", tab);
+          router.push(`/admin/study?${params.toString()}`);
+        } else {
+          router.push(`/project?${params.toString()}`);
+        }
+      });
+    },
+    [searchParams, router, isAdmin],
+  );
   useEffect(() => {
     setSearchValue(projectCurrentFilters.search ?? "");
   }, [projectCurrentFilters.search]);
@@ -86,7 +113,7 @@ export default function CCProjectFilterController({
           <CCProjectFilter
             projectCurrentFilters={stableFilters}
             updateFilter={updateFilter}
-            isAdmin
+            resetSubCategory={resetSubCategory}
           />
         </div>
         <CCProjectFilterTag

@@ -18,7 +18,7 @@ export default function CCProjectFilterTag({
   updateFilter,
 }: CCProjectFilterTagProps) {
   return (
-    <div className="flex flex-wrap gap-2 mb-4">
+    <div className="flex flex-wrap mb-0 sm:mb-4 mt-2 sm:mt-0 gap-2">
       {projectCurrentFilters.search && (
         <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800 mb-3 sm:mb-0">
           검색: {projectCurrentFilters.search}

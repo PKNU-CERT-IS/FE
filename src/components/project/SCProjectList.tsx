@@ -3,6 +3,7 @@
 import { SUBCATEGORY_TO_EN } from "@/types/category";
 import type { ProjectList } from "@/types/project";
 import { parseSearchParams } from "@/utils/projectUtils";
+import { STATUS_ORDER } from "@/utils/statusOrderUtils";
 import { getProjects, searchProjects } from "@/app/api/project/SCProjectApi";
 import CCProjectPagination from "@/components/project/CCProjectPagination";
 import SCProjectContent from "@/components/project/SCProjectContent";
@@ -49,12 +50,19 @@ export default async function SCProjectList({
       });
     }
 
-    const projectMaterials: ProjectList[] = data.content;
+    // status 기준 정렬 (진행중 → 준비중 → 완료)
+    const sortedStudyMaterials: ProjectList[] = [...data.content].sort(
+      (a, b) => {
+        const orderA = STATUS_ORDER[a.status] || 999;
+        const orderB = STATUS_ORDER[b.status] || 999;
+        return orderA - orderB;
+      },
+    );
 
     const totalPages = data.totalPages;
     const currentPage = (data.number ?? 0) + 1;
 
-    if (projectMaterials.length === 0) {
+    if (sortedStudyMaterials.length === 0) {
       return (
         <div className="mb-8">
           <SCSearchResultNotFound mode="project" />
@@ -65,7 +73,7 @@ export default async function SCProjectList({
     return (
       <>
         <div className="mb-8">
-          <SCProjectContent materials={projectMaterials} />
+          <SCProjectContent materials={sortedStudyMaterials} />
         </div>
 
         {totalPages > 1 && (
