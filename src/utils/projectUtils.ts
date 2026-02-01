@@ -1,6 +1,7 @@
 import { CategoryType, SubCategoryType } from "@/types/category";
 import { StatusType } from "@/types/progressStatus";
-import { ProjectCurrentFilters, SemesterType } from "@/types/project";
+import { ProjectCurrentFilters } from "@/types/project";
+import { SemesterType } from "@/types/study";
 
 /**
  * URL 검색 파라미터를 CurrentFilters 타입으로 파싱하는 함수

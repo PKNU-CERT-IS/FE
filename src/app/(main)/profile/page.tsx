@@ -3,7 +3,6 @@
 import { Suspense } from "react";
 import { Metadata } from "next";
 import CCTabBar from "@/components/profile/CCTabBar";
-import SCPenaltyStatus from "@/components/profile/SCPenaltyStatus";
 import SCProfileCard from "@/components/profile/SCProfileCard";
 import SCProfileContent from "@/components/profile/SCProfileContent";
 import SCProfileGroupSkeleton from "@/components/profile/SCProfileGroupSkeleton";

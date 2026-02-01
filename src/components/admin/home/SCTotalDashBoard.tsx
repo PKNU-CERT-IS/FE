@@ -12,7 +12,7 @@ export default async function SCTotalDashBoard() {
 
   const members = await getMembersForStaff();
   return (
-    <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6">
+    <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {/* 전체 회원 */}
       <Link href={"/admin/members"}>
         <div className="card-list dark-default">
@@ -88,29 +88,6 @@ export default async function SCTotalDashBoard() {
           </div>
         </div>
       </Link>
-
-      {/* 탈퇴 위험 */}
-      {/* <Link href={"/admin/members"}>
-        <div className="card-list dark-default">
-          <div className="p-6 flex flex-row items-center justify-between space-y-0 pb-2">
-            <div className="text-sm font-medium text-gray-600 dark:text-gray-300 leading-none tracking-tight">
-              탈퇴 위험
-            </div>
-            <div className="p-2 bg-red-100 dark:bg-red-900/40 rounded-lg">
-              <AlertTriangle className="h-5 w-5 text-cert-dark-red dark:text-cert-red" />
-            </div>
-          </div>
-
-          <div className="p-6 pt-0">
-            <div className="text-2xl font-semibold text-cert-dark-red dark:text-cert-red">
-              {membersByPenalty.fourOrMore.length}명
-            </div>
-            <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">
-              벌점 4점 이상 회원
-            </p>
-          </div>
-        </div>
-      </Link> */}
     </div>
   );
 }

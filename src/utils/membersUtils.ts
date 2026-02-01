@@ -6,6 +6,7 @@ import {
   membersGradeCategories,
   membersRoleCategories,
 } from "@/types/members";
+import { MEMBER_GRADE_LABELS, MemberGrade } from "@/types/study";
 
 export const getRoleBadgeStyle = (
   role: MembersRoleCategoryType | "전체" | "NONE",
@@ -140,23 +141,6 @@ export const filterMembers = (
     });
 };
 
-/**
- * 벌점 조건별 회원 배열 반환
- * 1점, 2점, 3점, 4점 이상
- */
-
-export function groupMembersByPenalty(members: AdminMemberDetailInfoType[]) {
-  return {
-    one: members.filter((members) => members.penaltyPoints === 1),
-    two: members.filter((members) => members.penaltyPoints === 2),
-    three: members.filter((members) => members.penaltyPoints === 3),
-    fourOrMore: members.filter((members) => members.penaltyPoints >= 4),
-    twoOrMore: members
-      .filter((m) => m.penaltyPoints >= 2)
-      .sort((a, b) => b.penaltyPoints - a.penaltyPoints),
-  };
-}
-
 export function groupMembersWaitingForApproval(
   members: AdminMemberDetailInfoType[],
 ) {
@@ -188,4 +172,37 @@ export function sortMembersByRole(
     const bRole = roleOrder[b.role as Role] ?? roleOrder["NONE"];
     return aRole - bRole;
   });
+}
+
+// admin - 학년별 회원 그룹 (대시보드)
+export function groupMembersByGrade(members: AdminMemberDetailInfoType[]) {
+  const result: Record<MemberGrade, AdminMemberDetailInfoType[]> = {
+    FRESHMAN: [],
+    SOPHOMORE: [],
+    JUNIOR: [],
+    SENIOR: [],
+    GRADUATED: [],
+    LEAVE: [],
+    NONE: [],
+  };
+
+  members.forEach((member) => {
+    const grade = member.grade as MemberGrade;
+    if (result[grade]) {
+      result[grade].push(member);
+    }
+  });
+
+  return result;
+}
+export function getGradeChartData(members: AdminMemberDetailInfoType[]) {
+  const grouped = groupMembersByGrade(members);
+
+  return (Object.keys(grouped) as MemberGrade[])
+    .filter((grade) => grouped[grade].length > 0)
+    .map((grade) => ({
+      grade,
+      label: MEMBER_GRADE_LABELS[grade],
+      count: grouped[grade].length,
+    }));
 }

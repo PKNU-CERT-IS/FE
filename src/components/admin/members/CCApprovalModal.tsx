@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { updateMemberGradeRole } from "@/app/api/member/CCadminMemberApi";
-import { ShieldCheck, User, X } from "lucide-react";
+import { ShieldCheck, X } from "lucide-react";
 
 interface ApproveModalProps {
   id: number;
