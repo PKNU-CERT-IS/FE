@@ -13,7 +13,10 @@ import {
   translateKoreanToGrade,
   translateKoreanToRole,
 } from "@/utils/transformRequestValue";
-import { translateGradeToKorean } from "@/utils/transfromResponseValue";
+import {
+  translateGradeToKorean,
+  translateMemberRole,
+} from "@/utils/transfromResponseValue";
 import { updateMemberGradeRole } from "@/app/api/member/CCadminMemberApi";
 import { cn } from "@/lib/utils";
 import DefaultButton from "@/components/ui/defaultButton";
@@ -34,8 +37,11 @@ export default function CCRoleEditModal({
   onSave,
   modalRef,
 }: CCRoleEditModalProps) {
-  const [editedMember, setEditedMember] =
-    useState<AdminMemberDetailInfoType>(member);
+  const [editedMember, setEditedMember] = useState<AdminMemberDetailInfoType>({
+    ...member,
+    role: translateMemberRole(member.role) || member.role,
+    grade: translateGradeToKorean(member.grade) || member.grade,
+  });
 
   const [showRoleDropdown, setShowRoleDropdown] = useState(false);
   const roleRef = useRef<HTMLDivElement>(null);
@@ -46,7 +52,11 @@ export default function CCRoleEditModal({
   const router = useRouter();
 
   useEffect(() => {
-    setEditedMember(member);
+    setEditedMember({
+      ...member,
+      role: translateMemberRole(member.role) || member.role,
+      grade: translateGradeToKorean(member.grade) || member.grade,
+    });
   }, [member]);
 
   const closeAllDropdowns = useCallback(() => {
@@ -83,7 +93,13 @@ export default function CCRoleEditModal({
       newRole,
     });
 
-    onSave(editedMember);
+    const updatedMemberData = {
+      ...editedMember,
+      grade: newGrade,
+      role: newRole,
+    };
+
+    onSave(updatedMemberData);
     router.refresh();
     closeModal();
   };
