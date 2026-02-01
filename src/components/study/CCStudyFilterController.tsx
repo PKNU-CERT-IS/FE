@@ -74,6 +74,33 @@ export default function StudyFilterController({
     [searchParams, router, isAdmin],
   );
 
+  // 카테고리 변경 시 서브카테고리 리셋하는 함수
+  const resetSubCategory = useCallback(
+    (newCategory: string) => {
+      const params = new URLSearchParams(searchParams);
+
+      if (newCategory === "ALL" || newCategory === "") {
+        params.delete("category");
+      } else {
+        params.set("category", newCategory);
+      }
+
+      params.delete("subCategory");
+      params.delete("page");
+
+      startTransition(() => {
+        if (isAdmin) {
+          const tab = params.get("tab") || "study";
+          params.set("tab", tab);
+          router.push(`/admin/study?${params.toString()}`);
+        } else {
+          router.push(`/study?${params.toString()}`);
+        }
+      });
+    },
+    [searchParams, router, isAdmin],
+  );
+
   useEffect(() => {
     setSearchValue(studyCurrentFilters.search ?? "");
   }, [studyCurrentFilters.search]);
@@ -87,7 +114,7 @@ export default function StudyFilterController({
           <CCStudyFilter
             studyCurrentFilters={stableFilters}
             updateFilter={updateFilter}
-            isAdmin
+            resetSubCategory={resetSubCategory}
           />
         </div>
         <CCStudyFilterTag
