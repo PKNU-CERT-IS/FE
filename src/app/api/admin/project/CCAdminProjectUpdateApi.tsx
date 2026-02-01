@@ -1,5 +1,5 @@
 import { AttachedFile } from "@/types/attachedFile";
-import { SemesterType } from "@/types/project";
+import { SemesterType } from "@/types/study";
 import { apiClient } from "@/lib/clientIntercept";
 
 export interface CreateProjectFormData {
