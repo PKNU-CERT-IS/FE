@@ -2,8 +2,10 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { deleteMember } from "@/app/api/member/CCadminMemberApi";
-import ApproveModal from "@/components/admin/members/CCApprovalModal";
+import {
+  deleteMember,
+  updateMemberGradeRole,
+} from "@/app/api/member/CCadminMemberApi";
 import ConfirmModal from "@/components/ui/defaultConfirmModal";
 import { CheckCircle, XCircle } from "lucide-react";
 
@@ -29,11 +31,26 @@ export default function RegisterActionButtons({
       console.error("거절 실패:", error);
     }
   };
+
+  const handleApprove = async (role: "PLAYER") => {
+    try {
+      await updateMemberGradeRole({
+        targetMemberId: id,
+        newRole: role,
+        newGrade: grade,
+      });
+      router.refresh();
+      alert("회원가입이 승인되었습니다.");
+    } catch (error) {
+      console.error("승인 실패:", error);
+    }
+  };
+
   return (
     <>
       <button
         type="submit"
-        onClick={() => setIsModalOpen(true)}
+        onClick={() => handleApprove("PLAYER")}
         className="w-full flex items-center justify-center px-3 py-1 bg-green-600 hover:bg-green-700 text-white text-xs rounded h-7 transition-colors cursor-pointer"
       >
         <CheckCircle className="w-3 h-3 mr-1" />
@@ -48,13 +65,6 @@ export default function RegisterActionButtons({
       </button>
 
       {/* 승인 모달 */}
-      {isModalOpen && (
-        <ApproveModal
-          id={id}
-          grade={grade}
-          onClose={() => setIsModalOpen(false)}
-        />
-      )}
 
       {/* 거절 확인 모달 */}
       <ConfirmModal
