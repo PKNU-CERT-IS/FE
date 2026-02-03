@@ -29,12 +29,6 @@ export default async function SCTotalDashBoard() {
             <div className="text-2xl font-semibold text-gray-900 dark:text-gray-100">
               {members.length}명
             </div>
-            <div className="flex items-center mt-2">
-              <TrendingUp className="h-4 w-4 text-green-500 dark:text-green-400 mr-1" />
-              <p className="text-sm text-green-600 dark:text-green-400">
-                +2명 이번 달(미구현)
-              </p>
-            </div>
           </div>
         </div>
       </Link>
