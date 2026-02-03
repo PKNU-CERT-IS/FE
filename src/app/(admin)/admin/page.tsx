@@ -1,6 +1,5 @@
 "server-only";
 
-import CCMemberByGradeCharts from "@/components/admin/home/CCMemberByGradeCharts";
 import SCActivityDashBoard from "@/components/admin/home/SCActivityDashBoard";
 import SCMemberByGradeDashBoard from "@/components/admin/home/SCMemberByGradeDashBoard";
 import SCSignUpList from "@/components/admin/home/SCSignUpList";
@@ -15,9 +14,13 @@ export default function AdminPage() {
           <SCTotalDashBoard />
 
           {/* 학년 분포 + 가입 승인 */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <SCMemberByGradeDashBoard />
-            <SCSignUpList />
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div className="lg:col-span-2">
+              <SCMemberByGradeDashBoard />
+            </div>
+            <div className="lg:col-span-1">
+              <SCSignUpList />
+            </div>
           </div>
 
           {/* 활동 요약 */}
