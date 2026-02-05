@@ -3,8 +3,8 @@
 import { CATEGORY_LABELS } from "@/types/category";
 import { SUBCATEGORY_LABELS, SubCategoryKey } from "@/types/category";
 import { STATUS_LABELS } from "@/types/progressStatus";
-import { SEMESTER_LABELS } from "@/types/study";
 import type { FilterKey, StudyCurrentFilters } from "@/types/study";
+import { SEMESTER_LABELS } from "@/utils/semester";
 import { X } from "lucide-react";
 
 interface CCStudyFilterTagProps {
@@ -17,7 +17,7 @@ export default function CCStudyFilterTag({
   updateFilter,
 }: CCStudyFilterTagProps) {
   return (
-    <div className="flex flex-wrap gap-2 mb-4">
+    <div className="flex flex-wrap mb-0 sm:mb-4 mt-2 sm:mt-0 gap-2">
       {/* 검색 */}
       {studyCurrentFilters.search && (
         <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800 mb-3 sm:mb-0">

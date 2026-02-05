@@ -16,7 +16,7 @@ export default function AdminMembersLayout({
     <div>
       <PageLayout
         title={"Members"}
-        description={"회원 정보와 벌점을 관리하세요."}
+        description={"회원 정보를 관리하세요."}
         icon={<MembersSVG className="stroke-cert-dark-red w-8 h-8" />}
       >
         {children}

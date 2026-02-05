@@ -75,8 +75,7 @@ export function translateKoreanToRole(korean: string): string {
     회장: "CHAIRMAN",
     부회장: "VICECHAIRMAN",
     임원진: "STAFF",
-    PLAYER: "PLAYER",
-    UPSOLVER: "UPSOLVER",
+    회원: "PLAYER",
     NONE: "NONE",
   };
 
@@ -89,8 +88,7 @@ export function translateRoleToKorean(role: string): string {
     CHAIRMAN: "회장",
     VICECHAIRMAN: "부회장",
     STAFF: "임원진",
-    PLAYER: "PLAYER",
-    UPSOLVER: "UPSOLVER",
+    PLAYER: "회원",
     NONE: "없음",
   };
 

@@ -9,8 +9,6 @@ export interface ProfileDataType extends MembersDataType {
   description: string;
   profileImage: string;
   todaySchedules: string[];
-  penaltyCount: number;
-  gracePeriod: string; // ISO Date
   skills: string[];
   createdAt: string; // ISO Date
   major: string;

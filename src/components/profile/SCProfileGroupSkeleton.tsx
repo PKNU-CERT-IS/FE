@@ -17,19 +17,6 @@ export default function SCProfileGroupSkeleton() {
           <div className="w-full h-10 bg-gray-300 dark:bg-gray-700 rounded-lg mt-4" />
         </div>
       </div>
-
-      {/* 벌점 카드 */}
-      <div className="rounded-lg border border-gray-200 p-6 dark:border-gray-700 dark:bg-gray-800">
-        <div className="space-y-4">
-          <div className="w-32 h-5 bg-gray-300 dark:bg-gray-600 rounded" />
-
-          <div className="grid grid-cols-2 gap-4">
-            <div className="h-20 bg-gray-200 dark:bg-gray-700 rounded" />
-            <div className="h-20 bg-gray-200 dark:bg-gray-700 rounded" />
-          </div>
-        </div>
-      </div>
-
       {/* 오늘 일정 카드 */}
       <div className="rounded-lg border border-gray-200 p-6 dark:border-gray-700 dark:bg-gray-800">
         <div className="space-y-4">

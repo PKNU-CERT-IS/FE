@@ -3,21 +3,15 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { AdminMemberDetailInfoType } from "@/types/admin/adminMembers";
-import { penaltyGracePeriod } from "@/utils/adminPenaltyGracePeriodUtils";
-import { toOffsetDateTime } from "@/utils/transformRequestValue";
 import { translateGradeToKorean } from "@/utils/transfromResponseValue";
 import { translateGenderToKorean } from "@/utils/transfromResponseValue";
-import {
-  assignPenalty,
-  deleteMember,
-  grantGracePeriod,
-} from "@/app/api/member/CCadminMemberApi";
+import { deleteMember } from "@/app/api/member/CCadminMemberApi";
 import CCMemberEditModal from "@/components/admin/members/CCMemberEditModal";
 import DefaultBadge from "@/components/ui/defaultBadge";
 import DefaultButton from "@/components/ui/defaultButton";
 import ConfirmModal from "@/components/ui/defaultConfirmModal";
 import { useModal } from "@/hooks/useModal";
-import { Cake, Mail, Minus, Phone, Plus, User, X } from "lucide-react";
+import { Cake, Mail, Phone, User, X } from "lucide-react";
 import EditSVG from "/public/icons/edit.svg";
 
 interface CCMemberDetailCardProps {
@@ -33,33 +27,13 @@ export default function CCMemberDetailCard({
 }: CCMemberDetailCardProps) {
   const router = useRouter();
 
-  const [isOpenPenaltyModal, setIsOpenPenaltyModal] = useState(false);
   const [isOpenKickModal, setIsOpenKickModal] = useState(false);
-  const [isOpenGracePeriodModal, setIsOpenGracePeriodModal] = useState(false);
-  const [newGracePeriod, setNewGracePeriod] = useState(
-    selectedMember?.gracePeriod || "",
-  );
-  const [penaltyCount, setPenaltyCount] = useState(0);
 
   const { setIsOpenModal, isOpenModal, modalOutsideRef } = useModal();
-  useEffect(() => {
-    if (selectedMember) {
-      setPenaltyCount(selectedMember.penaltyPoints);
-      setNewGracePeriod(selectedMember.gracePeriod || "");
-    }
-  }, [selectedMember]);
 
   useEffect(() => {
     document.body.style.overflow = isOpenModal ? "hidden" : "auto";
   }, [isOpenModal]);
-
-  const handlePenaltyScoreIncrement = () => {
-    setPenaltyCount((prev) => prev + 1);
-  };
-
-  const handlePenaltyScoreDecrement = () => {
-    setPenaltyCount((prev) => (prev > 0 ? prev - 1 : 0));
-  };
 
   const handleUpdateMember = (updatedMember: AdminMemberDetailInfoType) => {
     onUpdateMember?.(updatedMember);
@@ -162,112 +136,6 @@ export default function CCMemberDetailCard({
                 )}
             </div>
           </div>
-
-          <div className="space-y-2">
-            <div className="flex items-center justify-between">
-              <div className="text-sm font-medium dark:text-gray-200">벌점</div>
-              <div className="flex items-center gap-2">
-                <DefaultButton
-                  variant="outline"
-                  size="sm"
-                  className="h-6 w-6 p-0 bg-transparent cursor-pointer dark:border-gray-600 dark:text-gray-300"
-                  onClick={handlePenaltyScoreDecrement}
-                >
-                  <Minus className="w-3 h-3" />
-                </DefaultButton>
-                <span className="font-medium text-lg px-2 py-1 rounded text-center w-12 dark:text-gray-200">
-                  {penaltyCount}점
-                </span>
-                <DefaultButton
-                  variant="outline"
-                  size="sm"
-                  className="h-6 w-6 p-0 bg-transparent cursor-pointer dark:border-gray-600 dark:text-gray-300"
-                  onClick={handlePenaltyScoreIncrement}
-                >
-                  <Plus className="w-3 h-3" />
-                </DefaultButton>
-              </div>
-            </div>
-            <div>
-              <DefaultButton
-                className="w-full h-8 text-xs action-button"
-                onClick={() => setIsOpenPenaltyModal(true)}
-              >
-                벌점 부여
-              </DefaultButton>
-              <ConfirmModal
-                isOpen={isOpenPenaltyModal}
-                title="벌점 부여 확인"
-                message={`${selectedMember.name}님에게 벌점을 부여하시겠습니까?`}
-                confirmText="확인"
-                cancelText="취소"
-                onConfirm={async () => {
-                  setIsOpenPenaltyModal(false);
-                  await assignPenalty({
-                    memberId: selectedMember.memberId,
-                    penaltyPoints: penaltyCount,
-                  });
-                  router.refresh();
-                }}
-                onCancel={() => setIsOpenPenaltyModal(false)}
-              />
-            </div>
-          </div>
-
-          {/* 유예 기간 */}
-          <div className="space-y-2">
-            <div className="text-sm font-medium dark:text-gray-200">
-              유예 기간
-            </div>
-            <div className="text-xs text-gray-600 dark:text-gray-300 p-2 bg-gray-50 dark:bg-gray-700 rounded border border-gray-300 dark:border-gray-600">
-              {selectedMember.gracePeriod == null
-                ? "-"
-                : penaltyGracePeriod(selectedMember.gracePeriod)}
-              <span className="ml-1.5">
-                (
-                <input
-                  type="date"
-                  max="9999-12-31"
-                  value={newGracePeriod}
-                  onChange={(e) => setNewGracePeriod(e.target.value)}
-                  className="rounded text-xs cursor-pointer dark:bg-gray-600 dark:border-gray-500 dark:text-gray-200"
-                />
-                )
-              </span>
-            </div>
-
-            <div>
-              <DefaultButton
-                className="w-full h-8 text-xs action-button"
-                onClick={() => setIsOpenGracePeriodModal(true)}
-                disabled={!newGracePeriod}
-              >
-                유예 기간 수정
-              </DefaultButton>
-
-              <ConfirmModal
-                isOpen={isOpenGracePeriodModal}
-                title="유예 기간 수정"
-                message={`${
-                  selectedMember.name
-                }님의 유예 기간을 ${newGracePeriod} (${penaltyGracePeriod(
-                  newGracePeriod,
-                )})로 수정하시겠습니까?`}
-                confirmText="확인"
-                cancelText="취소"
-                onConfirm={async () => {
-                  setIsOpenGracePeriodModal(false);
-                  await grantGracePeriod({
-                    memberId: selectedMember.memberId,
-                    gracePeriod: toOffsetDateTime(newGracePeriod),
-                  });
-                  router.refresh();
-                }}
-                onCancel={() => setIsOpenGracePeriodModal(false)}
-              />
-            </div>
-          </div>
-
           <div className="border-b-1 border-gray-200 dark:border-gray-700 pb-1.5" />
 
           {/* 탈퇴 처리 */}

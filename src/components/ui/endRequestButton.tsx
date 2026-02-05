@@ -2,7 +2,9 @@
 
 import { useState } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
+import { AxiosError } from "axios";
 import { AttachedFile } from "@/types/attachedFile";
+import { ErrorResponse } from "@/types/errorResponse";
 import { endProject } from "@/app/api/project/CCProjectApi";
 import { endStudy } from "@/app/api/study/CCStudyApi";
 import DefaultButton from "@/components/ui/defaultButton";
@@ -61,9 +63,12 @@ export default function EndRequestButton({ id }: { id: number }) {
       }
 
       setIsOpenModal(false);
-    } catch (err) {
-      alert(`${pageLabel} 종료 요청에 실패했습니다.`);
-      throw err;
+      alert(`${pageLabel} 종료 요청이 정상적으로 처리되었습니다.`);
+    } catch (error) {
+      const err = error as AxiosError<ErrorResponse>;
+      const msg =
+        err.response?.data?.message || `${pageLabel} 종료 요청에 실패했습니다.`;
+      alert(msg);
     } finally {
       setSubmitting(false);
     }

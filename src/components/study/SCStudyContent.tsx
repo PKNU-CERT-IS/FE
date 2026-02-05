@@ -7,6 +7,7 @@ import type { StudyList } from "@/types/study";
 import { MEMBER_GRADE_LABELS } from "@/types/study";
 import { formatFileSize } from "@/utils/attachedFileUtils";
 import { getCategoryColor, getStatusColor } from "@/utils/badgeUtils";
+import { STATUS_ORDER } from "@/utils/statusOrderUtils";
 import { getProgressColor, parseSearchParams } from "@/utils/studyHelper";
 import { getStudies, searchStudies } from "@/app/api/study/SCStudyApi";
 import DownloadButton from "@/components/detail/CCDownloadButton";
@@ -62,7 +63,13 @@ export default async function SCStudyContent({
       );
     }
 
-    const studyMaterials: StudyList[] = data.content;
+    // status 기준 정렬 (진행중 → 준비중 → 완료)
+    const sortedStudyMaterials: StudyList[] = [...data.content].sort((a, b) => {
+      const orderA = STATUS_ORDER[a.status] || 999;
+      const orderB = STATUS_ORDER[b.status] || 999;
+      return orderA - orderB;
+    });
+
     const totalPages = data.totalPages;
     const currentPage = (data.number ?? 0) + 1;
 
@@ -80,7 +87,7 @@ export default async function SCStudyContent({
 
         {/* 카드 그리드 */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-          {studyMaterials.map((material) => {
+          {sortedStudyMaterials.map((material) => {
             const participationRate = Math.round(
               (material.currentParticipantNumber /
                 material.maxParticipantNumber) *
@@ -238,7 +245,9 @@ export default async function SCStudyContent({
         </div>
 
         {/* 결과가 없을 때 */}
-        {studyMaterials.length === 0 && <SCSearchResultNotFound mode="study" />}
+        {sortedStudyMaterials.length === 0 && (
+          <SCSearchResultNotFound mode="study" />
+        )}
 
         {/* 페이지네이션 */}
         {totalPages > 1 && (

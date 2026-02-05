@@ -3,6 +3,8 @@
 import { RefObject, useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { AxiosError } from "axios";
+import { ErrorResponse } from "@/types/errorResponse";
 import { COLLEGE_DATA, SelectedMajorInfo, getMajorUtils } from "@/types/major";
 import { MembersDataType, MembersGradeCategoryType } from "@/types/members";
 import { ProfileDataType } from "@/types/profile";
@@ -272,10 +274,14 @@ export default function CCProfileModal({
         major: majorString,
       });
 
-      closeModal();
       router.refresh();
-    } catch (e) {
-      console.error("프로필 수정 실패:", e);
+      closeModal();
+      alert("프로필이 정상적으로 수정되었습니다.");
+    } catch (error) {
+      const err = error as AxiosError<ErrorResponse>;
+      const msg =
+        err.response?.data?.message || "프로필 수정 중 오류가 발생했습니다.";
+      alert(msg);
     }
   };
   return (

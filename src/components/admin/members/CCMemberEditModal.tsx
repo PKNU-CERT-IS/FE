@@ -2,7 +2,9 @@
 
 import { RefObject, useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import { AxiosError } from "axios";
 import { AdminMemberDetailInfoType } from "@/types/admin/adminMembers";
+import { ErrorResponse } from "@/types/errorResponse";
 import {
   MembersGradeCategoryType,
   MembersRoleCategoryType,
@@ -13,7 +15,10 @@ import {
   translateKoreanToGrade,
   translateKoreanToRole,
 } from "@/utils/transformRequestValue";
-import { translateGradeToKorean } from "@/utils/transfromResponseValue";
+import {
+  translateGradeToKorean,
+  translateMemberRole,
+} from "@/utils/transfromResponseValue";
 import { updateMemberGradeRole } from "@/app/api/member/CCadminMemberApi";
 import { cn } from "@/lib/utils";
 import DefaultButton from "@/components/ui/defaultButton";
@@ -34,8 +39,11 @@ export default function CCRoleEditModal({
   onSave,
   modalRef,
 }: CCRoleEditModalProps) {
-  const [editedMember, setEditedMember] =
-    useState<AdminMemberDetailInfoType>(member);
+  const [editedMember, setEditedMember] = useState<AdminMemberDetailInfoType>({
+    ...member,
+    role: translateMemberRole(member.role) || member.role,
+    grade: translateGradeToKorean(member.grade) || member.grade,
+  });
 
   const [showRoleDropdown, setShowRoleDropdown] = useState(false);
   const roleRef = useRef<HTMLDivElement>(null);
@@ -46,7 +54,11 @@ export default function CCRoleEditModal({
   const router = useRouter();
 
   useEffect(() => {
-    setEditedMember(member);
+    setEditedMember({
+      ...member,
+      role: translateMemberRole(member.role) || member.role,
+      grade: translateGradeToKorean(member.grade) || member.grade,
+    });
   }, [member]);
 
   const closeAllDropdowns = useCallback(() => {
@@ -76,16 +88,29 @@ export default function CCRoleEditModal({
 
     // 직급: 드롭다운에서 바꿨으면 editedMember.role, 아니면 원래 member.role
     const newRole = translateKoreanToRole(editedMember.role) || member.role;
+    try {
+      const res = await updateMemberGradeRole({
+        targetMemberId: editedMember.memberId,
+        newGrade,
+        newRole,
+      });
 
-    await updateMemberGradeRole({
-      targetMemberId: editedMember.memberId,
-      newGrade,
-      newRole,
-    });
+      const updatedMemberData = {
+        ...editedMember,
+        grade: newGrade,
+        role: newRole,
+      };
 
-    onSave(editedMember);
-    router.refresh();
-    closeModal();
+      onSave(updatedMemberData);
+
+      router.refresh();
+      closeModal();
+      alert("학년/직급이 정상적으로 저장되었습니다.");
+    } catch (error) {
+      const err = error as AxiosError<ErrorResponse>;
+      const msg = err.response?.data?.message || "저장 중 오류가 발생했습니다.";
+      alert(msg);
+    }
   };
 
   const handleCancel = () => {

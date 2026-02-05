@@ -3,8 +3,7 @@ export const membersRoleCategories = [
   "회장",
   "부회장",
   "임원진",
-  "UPSOLVER",
-  "PLAYER",
+  "회원",
   "NONE",
 ] as const;
 
