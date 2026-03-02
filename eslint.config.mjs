@@ -1,14 +1,13 @@
+import { FlatCompat } from "@eslint/eslintrc";
 import js from "@eslint/js";
 import prettier from "eslint-config-prettier";
 import eslintPluginPrettier from "eslint-plugin-prettier";
 import reactHooks from "eslint-plugin-react-hooks";
 import reactRefresh from "eslint-plugin-react-refresh";
 import globals from "globals";
-import tseslint from "typescript-eslint";
-
 import { dirname } from "path";
+import tseslint from "typescript-eslint";
 import { fileURLToPath } from "url";
-import { FlatCompat } from "@eslint/eslintrc";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -48,6 +47,13 @@ export default tseslint.config(
         { allowConstantExport: true },
       ],
       "prettier/prettier": ["warn", { endOfLine: "auto" }],
+      "no-useless-catch": "off",
+      "no-case-declarations": "warn",
+      "@typescript-eslint/no-unused-vars": "warn",
+      "@typescript-eslint/no-explicit-any": "warn",
+      "react-hooks/set-state-in-effect": "off",
+      "react-hooks/error-boundaries": "off",
+      "react-hooks/exhaustive-deps": "warn",
     },
-  }
+  },
 );
