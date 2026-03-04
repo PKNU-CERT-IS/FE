@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Metadata } from "next";
 import { ScheduleInfo } from "@/types/schedule";
 import { getSchedules } from "@/app/api/schedule/SCscheduleApi";
-import HomeModal from "@/components/home/homeModal";
+// import HomeModal from "@/components/home/homeModal";
 import MiniCalendar from "@/components/home/miniCalendar";
 import SectionBadge from "@/components/home/sectionBadge";
 import TypingWrapper from "@/components/home/typingWrapper";
@@ -130,7 +130,7 @@ export default async function HomePage() {
       />
 
       <main className="mx-auto">
-        <HomeModal />
+        {/* <HomeModal /> */}
         {/* 1p */}
         <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden">
           <>
@@ -346,7 +346,7 @@ export default async function HomePage() {
                 </div>
                 {/* 지원서 폼 추후 추가 */}
                 <a
-                  href="https://docs.google.com/forms/d/e/1FAIpQLSfXr3hDD-uJ_2iEksd0nomQautuMG86daVyF4CiNhsQzxy_FA/viewform"
+                  // href="https://docs.google.com/forms/d/e/1FAIpQLSfXr3hDD-uJ_2iEksd0nomQautuMG86daVyF4CiNhsQzxy_FA/viewform"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full rounded-md py-2.5 action-button text-white duration-300 dark:bg-cert-red/80 dark:text-gray-200 dark:hover:bg-cert-dark-red"
