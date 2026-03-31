@@ -1,6 +1,7 @@
 import { AttachedFile } from "@/types/attachedFile";
 import { SemesterType } from "@/types/study";
 import { apiClient } from "@/lib/clientIntercept";
+import { withIdempotentRetry } from "@/lib/idempotency";
 
 export interface CreateProjectFormData {
   title: string;
@@ -23,11 +24,22 @@ export interface UpdateProjectFormData extends CreateProjectFormData {
 }
 
 // 프로젝트 생성
-export async function createProject(body: CreateProjectFormData) {
+export async function createProject(
+  body: CreateProjectFormData,
+  idempotencyKey?: string,
+) {
   try {
-    const res = await apiClient.post("/project/create", body, {
-      headers: { "Content-Type": "application/json" },
-    });
+    const execute = () =>
+      apiClient.post("/project/create", body, {
+        headers: {
+          "Content-Type": "application/json",
+          ...(idempotencyKey ? { "X-Idempotency-Key": idempotencyKey } : {}),
+        },
+      });
+
+    const res = idempotencyKey
+      ? await withIdempotentRetry(execute)
+      : await execute();
     console.log(res.data);
     return res.data;
   } catch (error) {
@@ -51,11 +63,20 @@ export async function getCCDetailProject(projectId: number) {
 export async function updateProject(
   projectId: number,
   payload: UpdateProjectFormData,
+  idempotencyKey?: string,
 ) {
   try {
-    const res = await apiClient.put(`/project/update`, payload, {
-      headers: { "Content-Type": "application/json" },
-    });
+    const execute = () =>
+      apiClient.put(`/project/update`, payload, {
+        headers: {
+          "Content-Type": "application/json",
+          ...(idempotencyKey ? { "X-Idempotency-Key": idempotencyKey } : {}),
+        },
+      });
+
+    const res = idempotencyKey
+      ? await withIdempotentRetry(execute)
+      : await execute();
     return res.data;
   } catch (error) {
     throw error;
@@ -84,18 +105,27 @@ export async function endProject(
     attachedUrl: string;
     size: number;
   },
+  idempotencyKey?: string,
 ) {
   try {
-    const res = await apiClient.post(
-      "/project/end",
-      {
-        projectId,
-        attachment,
-      },
-      {
-        headers: { "Content-Type": "application/json" },
-      },
-    );
+    const execute = () =>
+      apiClient.post(
+        "/project/end",
+        {
+          projectId,
+          attachment,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            ...(idempotencyKey ? { "X-Idempotency-Key": idempotencyKey } : {}),
+          },
+        },
+      );
+
+    const res = idempotencyKey
+      ? await withIdempotentRetry(execute)
+      : await execute();
     return res.data;
   } catch (error) {
     throw error;
