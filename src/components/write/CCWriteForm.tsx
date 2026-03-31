@@ -25,6 +25,7 @@ import { createBlog } from "@/app/api/blog/CCblogApi";
 import { createBoard } from "@/app/api/board/CCboardApi";
 import { createProject } from "@/app/api/project/CCProjectApi";
 import { createStudy } from "@/app/api/study/CCStudyApi";
+import { createIdempotencyKey } from "@/lib/idempotency";
 import AlertModal from "@/components/ui/defaultAlertModal";
 import DefaultButton from "@/components/ui/defaultButton";
 import FileUpload from "@/components/write/CCFileUpload";
@@ -131,6 +132,8 @@ export default function WriteForm({ type, initialReferences }: WriteFormProps) {
   };
 
   const handleSubmit = async () => {
+    const idempotencyKey = createIdempotencyKey();
+
     try {
       const baseData = {
         title,
@@ -154,7 +157,7 @@ export default function WriteForm({ type, initialReferences }: WriteFormProps) {
             })),
           };
 
-          const apiResponse = await createBoard(submitData);
+          const apiResponse = await createBoard(submitData, idempotencyKey);
           if (apiResponse?.statusCode === 201) {
             router.back();
             setTimeout(() => {
@@ -199,7 +202,7 @@ export default function WriteForm({ type, initialReferences }: WriteFormProps) {
               id: file.id,
             })),
           };
-          const studyApiResponse = await createStudy(submitData);
+          const studyApiResponse = await createStudy(submitData, idempotencyKey);
           if (studyApiResponse?.statusCode === 201) {
             router.back();
             setTimeout(() => {
@@ -229,7 +232,10 @@ export default function WriteForm({ type, initialReferences }: WriteFormProps) {
             })),
             demoUrl,
           };
-          const projectApiResponse = await createProject(submitData);
+          const projectApiResponse = await createProject(
+            submitData,
+            idempotencyKey,
+          );
           if (projectApiResponse?.statusCode === 201) {
             router.back();
             setTimeout(() => {
