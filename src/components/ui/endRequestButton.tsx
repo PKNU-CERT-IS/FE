@@ -7,6 +7,7 @@ import { AttachedFile } from "@/types/attachedFile";
 import { ErrorResponse } from "@/types/errorResponse";
 import { endProject } from "@/app/api/project/CCProjectApi";
 import { endStudy } from "@/app/api/study/CCStudyApi";
+import { createIdempotencyKey } from "@/lib/idempotency";
 import DefaultButton from "@/components/ui/defaultButton";
 import ConfirmModal from "@/components/ui/defaultConfirmModal";
 
@@ -37,6 +38,7 @@ export default function EndRequestButton({ id }: { id: number }) {
   const handleEndRequest = async (attachment: AttachedFile) => {
     if (submitting) return;
     setSubmitting(true);
+    const idempotencyKey = createIdempotencyKey();
 
     try {
       if (!attachment) {
@@ -51,7 +53,7 @@ export default function EndRequestButton({ id }: { id: number }) {
           type: attachment.type,
           size: attachment.size,
           attachedUrl: attachment.attachedUrl,
-        });
+        }, idempotencyKey);
       } else {
         await endProject(id, {
           id: attachment.id,
@@ -59,7 +61,7 @@ export default function EndRequestButton({ id }: { id: number }) {
           type: attachment.type,
           size: attachment.size,
           attachedUrl: attachment.attachedUrl,
-        });
+        }, idempotencyKey);
       }
 
       setIsOpenModal(false);
