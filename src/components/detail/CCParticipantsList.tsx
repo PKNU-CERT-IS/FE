@@ -1,6 +1,6 @@
 "use client";
 
-import { memo, useEffect, useState } from "react";
+import { memo, useCallback, useEffect, useState } from "react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { MEMBER_GRADE_LABELS, ParticipantType } from "@/types/study";
@@ -52,32 +52,31 @@ function CCParticipantsList({
       : getProjectPendingParticipants;
 
   // 승인된 멤버 조회
-  const fetchApproved = async () => {
+  const fetchApproved = useCallback(async () => {
     const data = await getApprovedAPI(dataId, approvedPage, size);
     setApprovedMembers(data.content ?? []);
     setApprovedTotalElements(data.totalElements ?? 0);
     setApprovedTotalPages(data.totalPages ?? 1);
-  };
+  }, [approvedPage, dataId, getApprovedAPI, size]);
 
   // 대기중 멤버 조회
-  const fetchPending = async () => {
+  const fetchPending = useCallback(async () => {
     const data = await getPendingAPI(dataId, pendingPage, size);
     setPendingMembers(data.content ?? []);
     setPendingTotalElements(data.totalElements ?? 0);
     setPendingTotalPages(data.totalPages ?? 1);
-  };
+  }, [dataId, getPendingAPI, pendingPage, size]);
 
   // 최초 및 페이지 이동 시
   useEffect(() => {
     fetchApproved();
-  }, [dataId, approvedPage]);
+  }, [fetchApproved]);
 
   useEffect(() => {
     if (isAdmin || canApproveOrReject) {
       fetchPending();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dataId, pendingPage]);
+  }, [canApproveOrReject, fetchPending, isAdmin]);
 
   // 승인 처리
   const handleApprove = (member: ParticipantType) => {
