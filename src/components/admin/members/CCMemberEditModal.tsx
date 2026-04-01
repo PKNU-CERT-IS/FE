@@ -89,7 +89,7 @@ export default function CCRoleEditModal({
     // 직급: 드롭다운에서 바꿨으면 editedMember.role, 아니면 원래 member.role
     const newRole = translateKoreanToRole(editedMember.role) || member.role;
     try {
-      const res = await updateMemberGradeRole({
+      await updateMemberGradeRole({
         targetMemberId: editedMember.memberId,
         newGrade,
         newRole,

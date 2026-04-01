@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState, useTransition } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import {
   CATEGORY_LABELS,
   CATEGORY_OPTIONS,
@@ -29,10 +29,9 @@ export default function CCProjectFilter({
   updateFilter,
   resetSubCategory,
 }: ProjectCategoryProps) {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const view = searchParams.get("view");
-  const [isPending, startTransition] = useTransition();
+  const [isPending] = useTransition();
 
   const [showSemesterDropdown, setShowSemesterDropdown] = useState(false);
   const [showCategoryDropdown, setShowCategoryDropdown] =

@@ -42,6 +42,7 @@ import {
   updateProject,
 } from "@/app/api/project/CCProjectApi";
 import { getCCDetailStudy, updateStudy } from "@/app/api/study/CCStudyApi";
+import { createIdempotencyKey } from "@/lib/idempotency";
 import AlertModal from "@/components/ui/defaultAlertModal";
 import DefaultButton from "@/components/ui/defaultButton";
 import FileUpload from "@/components/write/CCFileUpload";
@@ -268,6 +269,8 @@ export default function EditForm({
   };
 
   const handleSubmit = async () => {
+    const idempotencyKey = createIdempotencyKey();
+
     try {
       const baseData = {
         title,
@@ -284,7 +287,7 @@ export default function EditForm({
             category: categoryMappingToEN[category as BoardCategoryType],
             attachments,
           };
-          response = await updateBoard(dataId, updateData);
+          response = await updateBoard(dataId, updateData, idempotencyKey);
           if (response?.statusCode === 200) {
             router.push(`/board/${dataId}`);
             router.refresh();
@@ -333,7 +336,7 @@ export default function EditForm({
 
           response = isAdmin
             ? await updateAdminStudy(dataId, updateData)
-            : await updateStudy(dataId, updateData);
+            : await updateStudy(dataId, updateData, idempotencyKey);
 
           if (response?.statusCode === 200) {
             router.push(
@@ -364,7 +367,7 @@ export default function EditForm({
 
           response = isAdmin
             ? await updateAdminProject(dataId, updateData)
-            : await updateProject(dataId, updateData);
+            : await updateProject(dataId, updateData, idempotencyKey);
 
           if (response?.statusCode === 200) {
             router.push(

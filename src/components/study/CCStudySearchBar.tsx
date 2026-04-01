@@ -48,7 +48,7 @@ function CCStudySearchBar({ currentSearch }: StudySearchBarProps) {
     }, DEBOUNCE_DELAY);
 
     return () => clearTimeout(debounceTimer);
-  }, [searchInput, router, searchParams]);
+  }, [pathname, router, searchInput, searchParams]);
 
   return (
     <div className="flex-1">

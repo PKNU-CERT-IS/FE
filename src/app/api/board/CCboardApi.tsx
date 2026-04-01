@@ -3,6 +3,7 @@
 import { AttachedFile } from "@/types/attachedFile";
 import { NewBoardFormData } from "@/types/board";
 import { apiClient } from "@/lib/clientIntercept";
+import { withIdempotentRetry } from "@/lib/idempotency";
 
 // board 전용
 export interface BoardAttachedFile {
@@ -20,11 +21,19 @@ interface UpdateBoardPayload {
 }
 
 // 게시글 생성
-export async function createBoard(body: NewBoardFormData) {
+export async function createBoard(body: NewBoardFormData, idempotencyKey?: string) {
   try {
-    const res = await apiClient.post("/board/create", body, {
-      headers: { "Content-Type": "application/json" },
-    });
+    const execute = () =>
+      apiClient.post("/board/create", body, {
+        headers: {
+          "Content-Type": "application/json",
+          ...(idempotencyKey ? { "X-Idempotency-Key": idempotencyKey } : {}),
+        },
+      });
+
+    const res = idempotencyKey
+      ? await withIdempotentRetry(execute)
+      : await execute();
 
     return res.data;
   } catch (error) {
@@ -62,11 +71,20 @@ export async function deleteBoard(boardId: number) {
 export async function updateBoard(
   boardId: number,
   payload: UpdateBoardPayload,
+  idempotencyKey?: string,
 ) {
   try {
-    const res = await apiClient.put(`/board/edit/${boardId}`, payload, {
-      headers: { "Content-Type": "application/json" },
-    });
+    const execute = () =>
+      apiClient.put(`/board/edit/${boardId}`, payload, {
+        headers: {
+          "Content-Type": "application/json",
+          ...(idempotencyKey ? { "X-Idempotency-Key": idempotencyKey } : {}),
+        },
+      });
+
+    const res = idempotencyKey
+      ? await withIdempotentRetry(execute)
+      : await execute();
 
     return res.data;
   } catch (error) {

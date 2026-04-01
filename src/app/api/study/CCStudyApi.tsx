@@ -1,15 +1,25 @@
 import { CreateStudyFormData, UpdateStudyFormData } from "@/types/study";
 import { apiClient } from "@/lib/clientIntercept";
+import { withIdempotentRetry } from "@/lib/idempotency";
 
 // 스터디 수정
 export async function updateStudy(
   studyId: number,
   payload: UpdateStudyFormData,
+  idempotencyKey?: string,
 ) {
   try {
-    const res = await apiClient.put(`/study/update`, payload, {
-      headers: { "Content-Type": "application/json" },
-    });
+    const execute = () =>
+      apiClient.put(`/study/update`, payload, {
+        headers: {
+          "Content-Type": "application/json",
+          ...(idempotencyKey ? { "X-Idempotency-Key": idempotencyKey } : {}),
+        },
+      });
+
+    const res = idempotencyKey
+      ? await withIdempotentRetry(execute)
+      : await execute();
     return res.data;
   } catch (error) {
     throw error;
@@ -17,11 +27,19 @@ export async function updateStudy(
 }
 
 // 스터디 생성
-export async function createStudy(body: CreateStudyFormData) {
+export async function createStudy(body: CreateStudyFormData, idempotencyKey?: string) {
   try {
-    const res = await apiClient.post("/study/create", body, {
-      headers: { "Content-Type": "application/json" },
-    });
+    const execute = () =>
+      apiClient.post("/study/create", body, {
+        headers: {
+          "Content-Type": "application/json",
+          ...(idempotencyKey ? { "X-Idempotency-Key": idempotencyKey } : {}),
+        },
+      });
+
+    const res = idempotencyKey
+      ? await withIdempotentRetry(execute)
+      : await execute();
     return res.data;
   } catch (error) {
     throw error;
@@ -64,18 +82,27 @@ export async function endStudy(
     attachedUrl: string;
     size: number;
   },
+  idempotencyKey?: string,
 ) {
   try {
-    const res = await apiClient.post(
-      "/study/end",
-      {
-        studyId,
-        attachment,
-      },
-      {
-        headers: { "Content-Type": "application/json" },
-      },
-    );
+    const execute = () =>
+      apiClient.post(
+        "/study/end",
+        {
+          studyId,
+          attachment,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            ...(idempotencyKey ? { "X-Idempotency-Key": idempotencyKey } : {}),
+          },
+        },
+      );
+
+    const res = idempotencyKey
+      ? await withIdempotentRetry(execute)
+      : await execute();
     return res.data;
   } catch (error) {
     throw error;

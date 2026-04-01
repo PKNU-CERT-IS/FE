@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import dynamic from "next/dynamic";
+import { isAxiosError } from "axios";
 import "@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin-code-syntax-highlight.css";
 import "@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-syntax.css";
 import "@toast-ui/editor/dist/toastui-editor.css";
@@ -58,10 +59,6 @@ export default function MarkdownEditor({
       return false;
     }
 
-    const formData = new FormData();
-    formData.append("file", blob);
-    formData.append("type", type);
-
     // 이미지 업로드 API 호출
     // 해당 컴포넌트에서만 사용하고 있어 별도의 util 함수로 분리하지 않음
     try {
@@ -74,11 +71,12 @@ export default function MarkdownEditor({
       } else {
         throw new Error(result.message);
       }
-    } catch (error: any) {
+    } catch (error) {
       console.error(error);
       setAlertMessage(
-        error.response?.data?.message ||
-          "이미지 업로드에 실패했습니다. 다시 시도해주세요.",
+        (isAxiosError<{ message?: string }>(error)
+          ? error.response?.data?.message
+          : undefined) || "이미지 업로드에 실패했습니다. 다시 시도해주세요.",
       );
       setAlertOpen(true);
     }

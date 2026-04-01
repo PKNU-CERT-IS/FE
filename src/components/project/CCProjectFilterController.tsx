@@ -29,7 +29,7 @@ export default function CCProjectFilterController({
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const [_isPending, startTransition] = useTransition();
+  const [, startTransition] = useTransition();
 
   const stableFilters = useMemo(() => {
     return {

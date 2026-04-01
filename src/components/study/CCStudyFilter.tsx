@@ -30,7 +30,7 @@ export default function CCStudyFilter({
 }: CCStudyFilterProps) {
   const searchParams = useSearchParams();
   const view = searchParams.get("view");
-  const [isPending, _startTransition] = useTransition();
+  const [isPending] = useTransition();
 
   // 로컬 상태
   const [showSemesterDropdown, setShowSemesterDropdown] =

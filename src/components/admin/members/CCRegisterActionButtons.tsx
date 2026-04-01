@@ -20,7 +20,6 @@ export default function RegisterActionButtons({
   grade,
 }: RequestActionButtonsProps) {
   const router = useRouter();
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [isRejectOpen, setIsRejectOpen] = useState(false);
   const handleReject = async () => {
     try {
